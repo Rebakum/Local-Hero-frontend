@@ -1,0 +1,6 @@
+{
+  "name": "LocalHero",
+  "description": "UK's Premier Home Services Marketplace for Trusted Local Tradespeople",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
