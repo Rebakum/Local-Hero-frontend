@@ -20,7 +20,7 @@ interface NavLinksProps {
 
 export const NavLinks: React.FC<NavLinksProps> = ({ pathname, atTop }) => {
   return (
-    <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
+    <nav className="hidden lg:flex items-center gap-3">
       {NAV_LINKS.map((link, i) => {
         const isActive = pathname === link.path;
         return (

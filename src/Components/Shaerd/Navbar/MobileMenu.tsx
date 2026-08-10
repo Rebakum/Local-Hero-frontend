@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useBooking } from "../../../Context/BookingContext";
 import { MapPin, Wrench } from "lucide-react";
 import { NAV_LINKS } from "./NavLinks";
+import { MobileAuthMenu } from "./MobileAuthMenu";
 
 interface MobileMenuProps {
   mobileOpen: boolean;
@@ -31,7 +32,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="lg:hidden overflow-hidden border-t border-navy-100 dark:border-white/10 bg-white/97 dark:bg-navy-900/97 backdrop-blur-xl"
         >
-          <div className="container-lh py-6 space-y-5">
+          <div className="container-lh py-6 space-y-6">
+            {/* Auth: profile card when logged in, Login button when logged out */}
+            <MobileAuthMenu close={closeMobile} />
+
             <nav className="flex flex-col gap-4">
               {NAV_LINKS.map((link, i) => {
                 const isActive = pathname === link.path;
@@ -42,7 +46,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
                       duration: 0.4,
-                      delay: 0.08 + i * 0.06,
+                      delay: 0.12 + i * 0.06,
                       ease: [0.16, 1, 0.3, 1],
                     }}
                   >

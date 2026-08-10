@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './Context/AuthContext';
 import { ThemeProvider } from './Context/ThemeContext';
+import { ProfessionalsProvider } from './Context/ProfessionalsContext';
 import { router } from './Router/router';
 import './index.css';
 
@@ -21,7 +22,9 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          <RouterProvider router={router} />
+          <ProfessionalsProvider>
+            <RouterProvider router={router} />
+          </ProfessionalsProvider>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

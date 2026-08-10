@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RootLayout } from '../Layouts/RootLayout';
 import { HomePage } from '../Pages/home/HomePage';
-import { ServicesPage } from '../Pages/services/ServicesPage';
+import { ServicesPage } from '../Pages/servicespage/ServicesPage';
 import { ProfessionalsPage } from '../Pages/professionals/ProfessionalsPage';
 import { HowItWorksPage } from '../Pages/how-it-works/HowItWorksPage';
 import { AboutPage } from '../Pages/about/AboutPage';
@@ -30,6 +30,12 @@ import SavedPros from '../Pages/dashboard/user/SavedPros';
 import Leads from '../Pages/dashboard/provider/Leads';
 import MyJobs from '../Pages/dashboard/provider/MyJobs';
 import Moderation from '../Pages/dashboard/admin/Moderation';
+import TradesManagement from '../Pages/dashboard/admin/manage/TradesManagement';
+import ProfessionalsManagement from '../Pages/dashboard/admin/manage/ProfessionalsManagement';
+import BeforeAfterManagement from '../Pages/dashboard/admin/manage/BeforeAfterManagement';
+import TestimonialsManagement from '../Pages/dashboard/admin/manage/TestimonialsManagement';
+import BookingManagement from '../Pages/dashboard/admin/manage/BookingManagement';
+import AdminPaymentHistory from '../Pages/dashboard/admin/manage/AdminPaymentHistory';
 import ProfilePage from '../Pages/dashboard/profile/ProfilePage';
 
 export const router = createBrowserRouter([
@@ -42,7 +48,8 @@ export const router = createBrowserRouter([
       { path: 'services/:id', element: <ServiceDetailsPage /> },
       { path: 'categories', element: <AllCategoriesPage /> },
       { path: 'professionals', element: <ProfessionalsPage /> },
-      { path: 'pros/:id', element: <ProDetailsPage /> },
+      { path: 'professionals/:id', element: <ProDetailsPage /> },
+      // { path: 'pros/:id', element: <ProDetailsPage /> },
       { path: 'how-it-works', element: <HowItWorksPage /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'faq', element: <FaqPage /> },
@@ -139,6 +146,54 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
             <Moderation />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/trades',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <TradesManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/professionals',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <ProfessionalsManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/before-after',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <BeforeAfterManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/testimonials',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <TestimonialsManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/bookings',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <BookingManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/payments',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <AdminPaymentHistory />
           </ProtectedRoute>
         ),
       },

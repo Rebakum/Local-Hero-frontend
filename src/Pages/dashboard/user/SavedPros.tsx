@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Card } from '../../../Components/ui/shared/Card';
+import { useBooking } from '../../../Context/BookingContext';
 import {
   Star,
   MapPin,
@@ -47,6 +48,7 @@ const TRADE_COLORS: Record<string, string> = {
 const SavedPros: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [savedIds, setSavedIds] = useState<string[]>(MOCK_SAVED_PROS.map((p) => p.id));
+  const { openBooking } = useBooking();
 
   const filtered = MOCK_SAVED_PROS.filter((p) => savedIds.includes(p.id)).filter(
     (p) =>
@@ -177,7 +179,15 @@ const SavedPros: React.FC = () => {
 
                 <div className="flex items-center justify-between pt-3 border-t border-navy-100 dark:border-white/5">
                   <span className="text-sm font-bold text-primary">{pro.hourlyRate}</span>
-                  <button className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 shadow-sm shadow-primary/25">
+                  <button
+                    onClick={() =>
+                      openBooking({
+                        trade: pro.trade as any,
+                        professionalName: pro.name,
+                      })
+                    }
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 shadow-sm shadow-primary/25"
+                  >
                     <Calendar className="w-3.5 h-3.5" />
                     Book Now
                   </button>

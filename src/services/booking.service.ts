@@ -50,6 +50,21 @@ interface ApiEnvelope<T> {
   data: T;
 }
 
+export interface BookingQuery {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+  trade?: string;
+}
+
+export interface BookingListResult {
+  bookings: BookingRecord[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 // The booking wizard collects `date` + `timeSlot` as separate strings; the
 // backend wants a single `bookingDate` (ISO date/datetime string).
 export async function createBooking(
@@ -103,4 +118,39 @@ export async function updateBookingStatus(
 
 export async function cancelBooking(id: string): Promise<BookingRecord> {
   return updateBookingStatus(id, { status: 'CANCELLED' });
+}
+
+export async function getAllBookings(): Promise<BookingRecord[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<BookingRecord[]>>('/bookings');
+  return data.data;
+}
+
+export async function getAdminBookings(query: BookingQuery = {}): Promise<BookingListResult> {
+  const { data } = await axiosInstance.get<ApiEnvelope<BookingRecord[]> & { meta?: { page: number; limit: number; total: number } }>('/bookings', {
+    params: {
+      page: query.page,
+      limit: query.limit,
+      search: query.search || undefined,
+      status: query.status || undefined,
+      trade: query.trade || undefined,
+    },
+  });
+  const meta = data.meta ?? { page: 1, limit: 10, total: data.data.length };
+  return {
+    bookings: data.data,
+    total: meta.total,
+    page: meta.page,
+    limit: meta.limit,
+  };
+}
+
+export async function assignBooking(
+  id: string,
+  professionalId: string
+): Promise<BookingRecord> {
+  const { data } = await axiosInstance.patch<ApiEnvelope<BookingRecord>>(
+    `/bookings/${id}/assign`,
+    { professionalId }
+  );
+  return data.data;
 }

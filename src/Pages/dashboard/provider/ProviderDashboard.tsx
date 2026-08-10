@@ -21,7 +21,7 @@ import {
   CheckCircle2,
   BarChart3,
 } from 'lucide-react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 const MOCK_LEADS = [
   { id: '1', customer: 'James Wilson', service: 'Bathroom Renovation', postcode: 'SW1A 1AA', budget: '£2,500', posted: '2 hours ago', urgent: false, description: 'Full bathroom refit including tiling and plumbing.' },
@@ -32,6 +32,9 @@ const MOCK_LEADS = [
 
 const ProviderDashboard: React.FC = () => {
   const { user, isApproved } = useAuth();
+  const navigate = useNavigate();
+
+  const goToLeads = () => navigate('/dashboard/provider/leads');
 
   return (
     <div className="space-y-8">
@@ -208,13 +211,22 @@ const ProviderDashboard: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <button className="w-9 h-9 rounded-xl bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10 hover:text-navy-700 dark:hover:text-navy-200 transition-all duration-200" title="Call">
+                    <button
+                      onClick={goToLeads}
+                      className="w-9 h-9 rounded-xl bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10 hover:text-navy-700 dark:hover:text-navy-200 transition-all duration-200"
+                      title="Call"
+                    >
                       <Phone className="w-4 h-4" />
                     </button>
-                    <button className="w-9 h-9 rounded-xl bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10 hover:text-navy-700 dark:hover:text-navy-200 transition-all duration-200" title="Message">
+                    <button
+                      onClick={goToLeads}
+                      className="w-9 h-9 rounded-xl bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10 hover:text-navy-700 dark:hover:text-navy-200 transition-all duration-200"
+                      title="Message"
+                    >
                       <MessageSquare className="w-4 h-4" />
                     </button>
                     <button
+                      onClick={goToLeads}
                       disabled={!isApproved}
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm shadow-primary/25"
                     >

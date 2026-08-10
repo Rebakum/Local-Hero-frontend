@@ -15,6 +15,12 @@ import {
   Settings,
   FileText,
   Briefcase,
+  Wrench,
+  UserRound,
+  Images,
+  MessageSquare,
+  CalendarDays,
+  CreditCard,
 } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { logoutUser } from '../services/auth.service';
@@ -48,6 +54,12 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
     { to: '/dashboard/admin/approvals', label: 'Approvals', icon: UserCheck },
     { to: '/dashboard/admin/moderation', label: 'Moderation', icon: Shield },
+    { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays },
+    { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard },
+    { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench },
+    { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound },
+    { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images },
+    { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare },
     { to: '/dashboard/profile', label: 'Profile', icon: User },
   ],
   SUPER_ADMIN: [
@@ -55,6 +67,12 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/super-admin/admin-approvals', label: 'Admin Approvals', icon: Shield },
     { to: '/dashboard/super-admin/user-approvals', label: 'Provider Approvals', icon: Users },
     { to: '/dashboard/super-admin/users', label: 'User Management', icon: UserCheck },
+    { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench },
+    { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound },
+    { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images },
+    { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare },
+    { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays },
+    { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard },
     { to: '/dashboard/super-admin/system', label: 'System', icon: Settings },
     { to: '/dashboard/profile', label: 'Profile', icon: User },
   ],

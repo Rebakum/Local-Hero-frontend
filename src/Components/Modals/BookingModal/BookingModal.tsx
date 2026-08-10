@@ -36,9 +36,7 @@ export const BookingModal: React.FC = () => {
 
   useEffect(() => {
     if (bookingOpenCount > 0) {
-      if (!bookingData.trade) {
-        setStep(1);
-      }
+      setStep(bookingData.trade ? 2 : 1);
       setIsSubmitted(false);
     }
   }, [bookingOpenCount, bookingData.trade]);
@@ -73,7 +71,7 @@ export const BookingModal: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const booking = await createBooking(bookingData);
+      const booking = await createBooking(bookingData, bookingData.professionalId);
       setCreatedBooking(booking);
       setIsSubmitted(true);
     } catch (err: any) {
@@ -188,6 +186,14 @@ export const BookingModal: React.FC = () => {
                 <span>Postcode area</span>
                 <span className="font-bold text-navy-950 dark:text-white">{bookingData.postcode}</span>
               </div>
+              {bookingData.professionalName && (
+                <div className="flex justify-between text-navy-500 dark:text-navy-300">
+                  <span>Professional</span>
+                  <span className="font-bold text-navy-950 dark:text-white">
+                    {bookingData.professionalName}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between text-navy-500 dark:text-navy-300">
                 <span>Urgency</span>
                 <span className="font-bold text-primary">{selectedUrgency.label}</span>
@@ -199,7 +205,7 @@ export const BookingModal: React.FC = () => {
                 setCreatedBooking(null);
                 setStep(1);
                 closeBooking();
-                navigate('/dashboard/bookings');
+                navigate('/dashboard/user/bookings');
               }}
               className="btn btn-primary px-8 py-3.5 text-base"
             >

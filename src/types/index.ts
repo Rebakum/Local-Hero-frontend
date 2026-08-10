@@ -20,7 +20,8 @@ export interface CategoryInfo {
 }
 
 export interface Professional {
-  id: string;
+  id?: string;
+  _id?: string
   name: string;
   trade: TradeCategory;
   companyName: string;
@@ -72,23 +73,43 @@ export interface BeforeAfterPair {
   completionDays: string;
 }
 
-export interface Testimonial {
+export interface ITestimonial {
   id: string;
   author: string;
   role: string;
   city: string;
-  trade: TradeCategory;
+  trade: string;
   rating: number;
   date: string;
   comment: string;
   verifiedJob: string;
-  avatar: string;
-  source: 'Google' | 'Trustpilot' | 'LocalHero Verified';
+  avatar: string | null;
+  source: string;
+  sortOrder?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type Testimonial = ITestimonial;
+
+export interface ICreateTestimonialPayload {
+  author: string;
+  role: string;
+  city: string;
+  trade: string;
+  rating: number;
+  date: string;
+  comment: string;
+  verifiedJob: string;
+  avatar?: string | null;
+  source: string;
 }
 
 export interface BookingFormData {
   trade: TradeCategory | '';
   serviceId?: string;
+  professionalId?: string;
+  professionalName?: string;
   postcode: string;
   date: string;
   timeSlot: string;

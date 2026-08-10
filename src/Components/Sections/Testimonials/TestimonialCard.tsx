@@ -1,27 +1,21 @@
 import React from 'react';
 import { Star, Quote } from 'lucide-react';
+import type { Testimonial } from '../../../types';
 
 interface TestimonialCardProps {
-  t: {
-    id: string;
-    rating: number;
-    comment: string;
-    avatar: string;
-    author: string;
-    role: string;
-    city: string;
-    verifiedJob: string;
-    source: string;
-  };
+  t: Testimonial;
 }
 
 export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
+  const rating = Math.min(5, Math.max(1, Math.round(t.rating || 5)));
+  const avatar = t.avatar || '/images/avatar-placeholder.svg';
+
   return (
     <figure className="group relative h-full rounded-3xl border border-navy-100 dark:border-white/10 bg-white dark:bg-navy-900 p-5 sm:p-7 flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/20">
       <Quote className="absolute -top-2 right-5 w-16 h-16 text-primary/[0.06] dark:text-primary/10 rotate-180" />
 
       <div className="relative flex items-center gap-1">
-        {[...Array(t.rating)].map((_, i) => (
+        {[...Array(rating)].map((_, i) => (
           <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
         ))}
       </div>
@@ -32,7 +26,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
 
       <figcaption className="relative mt-6 pt-5 border-t border-navy-100 dark:border-white/10 flex items-center gap-3.5">
         <img
-          src={t.avatar}
+          src={avatar}
           alt={t.author}
           className="w-11 h-11 rounded-full object-cover ring-2 ring-white dark:ring-navy-900 shadow-sm"
         />

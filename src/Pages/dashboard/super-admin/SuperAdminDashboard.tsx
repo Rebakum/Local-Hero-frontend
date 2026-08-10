@@ -4,6 +4,7 @@ import { useAuth } from '../../../Context/AuthContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
 import { EmptyState } from '../../../Components/ui/shared/EmptyState';
+import { ActionButton } from '../../../Components/dashboard/ActionButton';
 import {
   PoundSterling,
   Shield,
@@ -24,6 +25,9 @@ import {
   AlertCircle,
   Zap,
   Globe,
+  Images,
+  MessageSquare,
+  CreditCard,
 } from 'lucide-react';
 import { getPendingAdmins, approveAdmin, rejectAdmin } from '../../../services/auth.service';
 import type { PendingUser } from '../../../types/auth';
@@ -254,22 +258,24 @@ const SuperAdminDashboard: React.FC = () => {
                         </td>
                         <td className="py-3.5 px-6">
                           <div className="flex items-center justify-end gap-2">
-                            <button
+                            <ActionButton
+                              variant="approve"
+                              size="md"
+                              icon={Check}
+                              isLoading={actionLoading === a.id}
                               onClick={() => handleApprove(a.id)}
-                              disabled={actionLoading === a.id}
-                              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-all duration-200 disabled:opacity-50 shadow-sm shadow-emerald-500/25"
                             >
-                              {actionLoading === a.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                               Approve
-                            </button>
-                            <button
-                              onClick={() => handleReject(a.id)}
+                            </ActionButton>
+                            <ActionButton
+                              variant="reject"
+                              size="md"
+                              icon={X}
                               disabled={actionLoading === a.id}
-                              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-200 disabled:opacity-50"
+                              onClick={() => handleReject(a.id)}
                             >
-                              <X className="w-3.5 h-3.5" />
                               Reject
-                            </button>
+                            </ActionButton>
                           </div>
                         </td>
                       </motion.tr>
@@ -336,6 +342,10 @@ const SuperAdminDashboard: React.FC = () => {
               {[
                 { label: 'Admin Approvals', href: '/dashboard/super-admin/admin-approvals', icon: Shield, color: 'text-blue-500' },
                 { label: 'Provider Approvals', href: '/dashboard/super-admin/user-approvals', icon: Users, color: 'text-emerald-500' },
+                { label: 'Before & After', href: '/dashboard/admin/manage/before-after', icon: Images, color: 'text-violet-500' },
+                { label: 'Testimonials', href: '/dashboard/admin/manage/testimonials', icon: MessageSquare, color: 'text-amber-500' },
+                { label: 'Bookings', href: '/dashboard/admin/manage/bookings', icon: Calendar, color: 'text-blue-500' },
+                { label: 'Payments', href: '/dashboard/admin/manage/payments', icon: CreditCard, color: 'text-emerald-500' },
                 { label: 'User Management', href: '/dashboard/super-admin/users', icon: Settings, color: 'text-primary' },
                 { label: 'Edit Profile', href: '/dashboard/profile', icon: Settings, color: 'text-navy-500' },
               ].map((action) => (

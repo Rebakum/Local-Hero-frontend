@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useInView } from 'motion/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useAuth } from '../../../Context/AuthContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
@@ -22,6 +22,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
+import { CreateTestimonialModal } from '../../../Components/Sections/Testimonials/CreateTestimonialModal';
 
 const MOCK_BOOKINGS = [
   { id: '1', service: 'Emergency Plumbing', provider: "Mike's Plumbing Co.", date: '2026-08-12', status: 'Accepted' as const, postcode: 'SW1A 1AA' },
@@ -54,6 +55,8 @@ const AnimatedCounter: React.FC<{ value: string }> = ({ value }) => {
 
 const UserDashboard: React.FC = () => {
   const { user } = useAuth();
+  const [testimonialOpen, setTestimonialOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="space-y-8">
@@ -264,6 +267,47 @@ const UserDashboard: React.FC = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* Share Your Experience */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <Card padding="lg" className="relative overflow-hidden">
+          <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-primary/5 blur-2xl" />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+              <MessageSquare className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-bold text-navy-900 dark:text-white">
+                {submitted ? 'Thank you for your review!' : 'Share your experience'}
+              </h2>
+              <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">
+                {submitted
+                  ? 'Your testimonial has been submitted and will be reviewed by our team.'
+                  : 'Tell us about the professional who helped you — your review helps other homeowners.'}
+              </p>
+            </div>
+            {!submitted && (
+              <button
+                onClick={() => setTestimonialOpen(true)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors shrink-0"
+              >
+                <Star className="w-4 h-4" />
+                Write a Testimonial
+              </button>
+            )}
+          </div>
+        </Card>
+      </motion.div>
+
+      <CreateTestimonialModal
+        isOpen={testimonialOpen}
+        onClose={() => setTestimonialOpen(false)}
+        onSuccess={() => setSubmitted(true)}
+      />
     </div>
   );
 };

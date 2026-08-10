@@ -55,6 +55,8 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       ...prev,
       trade: 'Plumber',
       urgency: 'Standard',
+      professionalId: undefined,
+      professionalName: undefined,
       ...initialData,
     }));
     setBookingOpenCount((c) => c + 1);

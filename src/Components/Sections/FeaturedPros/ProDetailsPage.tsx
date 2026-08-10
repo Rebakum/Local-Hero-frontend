@@ -1,16 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Star, ShieldCheck, Clock, Maximize2 } from 'lucide-react';
-import { getProfessionalById } from '../../../services/api';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import {
+  ArrowLeft,
+  MapPin,
+  Star,
+  ShieldCheck,
+  Clock,
+  Maximize2,
+  X,
+  Briefcase,
+  Award,
+  CheckCircle2,
+  Calendar,
+  User
+} from 'lucide-react';
+import { getProfessionalById } from '../../../services/content.service';
 import type { Professional } from '../../../types';
+import { useBooking } from '../../../Context/BookingContext';
+import { useAuth } from '../../../Context/AuthContext';
 
 export const ProDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [pro, setPro] = useState<Professional | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'about' | 'portfolio' | 'reviews'>('about');
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const { openBooking } = useBooking();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  const proId = pro?.id || (pro as any)?._id || id || '';
+  
+  const tradeName = React.useMemo(() => {
+    if (!pro?.trade) return 'Professional Service';
+    if (typeof pro.trade === 'string') return pro.trade;
+    if (typeof pro.trade === 'object') {
+      return (pro.trade as any).name || (pro.trade as any).title || 'Professional Service';
+    }
+    return 'Professional Service';
+  }, [pro]);
+
+  const handleBookNow = () => {
+    if (!pro) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: `/professionals/${proId}` } } });
+      return;
+    }
+    openBooking({
+      trade: tradeName,
+      professionalId: proId,
+      professionalName: pro.name,
+    });
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -21,157 +63,341 @@ export const ProDetailsPage: React.FC = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-navy-950 flex flex-col items-center justify-center p-4">
+        <div className="w-12 h-12 border-4 border-red-500/20 border-t-red-600 rounded-full animate-spin mb-4" />
+        <p className="text-sm font-semibold text-slate-500 dark:text-navy-300 animate-pulse">
+          Loading profile details...
+        </p>
+      </div>
+    );
+  }
+
   if (!pro) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4">
-        <div className="max-w-sm w-full text-center bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 rounded-3xl shadow-xl shadow-navy-950/5 dark:shadow-black/30 px-8 py-12">
-          <div className="w-14 h-14 rounded-2xl bg-navy-50 dark:bg-white/5 flex items-center justify-center mx-auto mb-5">
-            <ShieldCheck className="w-6 h-6 text-navy-400 dark:text-navy-500" />
+      <div className="min-h-screen bg-slate-50 dark:bg-navy-950 flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-3xl shadow-xl p-8">
+          <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck className="w-8 h-8 text-slate-400 dark:text-navy-400" />
           </div>
-          <p className="font-heading text-lg font-bold text-navy-950 dark:text-white">Professional not found</p>
-          <p className="text-sm text-navy-500 dark:text-navy-400 mt-1.5">
-            This profile may have moved or no longer exists.
+          <h2 className="font-heading text-xl font-bold text-slate-900 dark:text-white">Professional Not Found</h2>
+          <p className="text-sm text-slate-500 dark:text-navy-300 mt-2">
+            The profile you are looking for might have been removed or is temporarily unavailable.
           </p>
           <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80 transition-colors mt-6"
+            to="/professionals"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-red-600 hover:underline mt-6"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to home
+            <ArrowLeft className="w-4 h-4" /> Return to Professionals
           </Link>
         </div>
       </div>
     );
   }
 
+  const portfolioImages = pro.portfolioImages || (pro as any).portfolio || [];
+  const specialties = pro.specialties || (pro as any).skills || [];
+  const reviews = (pro as any).reviews || [];
+
   return (
-    <div className="bg-navy-50/40 dark:bg-navy-950 min-h-screen pb-28 sm:pb-16 transition-colors">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-navy-500 dark:text-navy-400 hover:text-primary transition-colors mb-6 sm:mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </Link>
-
-        {/* Header card */}
-        <div
-          className={`relative overflow-hidden rounded-3xl bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 shadow-xl shadow-navy-950/5 dark:shadow-black/40 px-5 py-8 sm:px-10 sm:py-10 transition-all duration-700 ease-out ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
-          }`}
-        >
-          {/* decorative glow */}
-          <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-primary/10 dark:bg-primary/20 blur-3xl" />
-
-          <div className="relative flex flex-col sm:flex-row sm:items-center gap-6">
-            <div className="flex flex-col items-center sm:items-start shrink-0">
-              <div className="relative">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden ring-4 ring-primary/15 shadow-lg shadow-primary/10">
-                  <img src={pro.avatar} alt={pro.name} className="w-full h-full object-cover" />
-                </div>
-                <span className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center ring-4 ring-white dark:ring-navy-900">
-                  <ShieldCheck className="w-4 h-4 text-white" />
-                </span>
-              </div>
-            </div>
-
-            <div className="flex-1 min-w-0 text-center sm:text-left">
-              <h1 className="font-heading text-2xl sm:text-3xl font-bold text-navy-950 dark:text-white tracking-tight">
-                {pro.name}
-              </h1>
-              <p className="text-sm font-semibold text-primary mt-1">
-                {pro.trade} <span className="text-navy-300 dark:text-navy-600">·</span> {pro.companyName}
-              </p>
-
-              <div className="flex flex-wrap justify-center sm:justify-start items-center gap-x-4 gap-y-2 mt-4 text-sm">
-                <span className="inline-flex items-center gap-1.5 text-navy-600 dark:text-navy-300">
-                  <MapPin className="w-4 h-4 text-navy-400 dark:text-navy-500" /> {pro.location}
-                </span>
-                <span className="hidden sm:inline w-1 h-1 rounded-full bg-navy-200 dark:bg-navy-700" />
-                <span className="inline-flex items-center gap-1.5 text-navy-600 dark:text-navy-300">
-                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  <span className="font-semibold text-navy-950 dark:text-white">{pro.rating}</span>
-                  <span className="text-navy-400 dark:text-navy-500">({pro.reviewCount})</span>
-                </span>
-                <span className="hidden sm:inline w-1 h-1 rounded-full bg-navy-200 dark:bg-navy-700" />
-                <span className="inline-flex items-center gap-1.5 text-navy-600 dark:text-navy-300">
-                  <Clock className="w-4 h-4 text-navy-400 dark:text-navy-500" /> Responds in ~{pro.responseMinutes} min
-                </span>
-              </div>
-            </div>
-
-            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 sm:gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-navy-100 dark:border-white/10 w-full sm:w-auto">
-              <p className="font-heading text-2xl sm:text-3xl font-black text-navy-950 dark:text-white">
-                £{pro.hourlyRate}
-                <span className="text-sm font-medium text-navy-400 dark:text-navy-500">/hr</span>
-              </p>
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                {pro.availability}
-              </span>
-            </div>
-          </div>
+    <div className="min-h-screen bg-slate-50/60 dark:bg-navy-950 text-slate-800 dark:text-slate-100 pb-28 sm:pb-16 transition-colors">
+      
+      {/* Top Navigation */}
+      <div className="border-b border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-navy-900/50 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+          <Link
+            to="/professionals"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-600 dark:text-navy-300 hover:text-red-600 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Search
+          </Link>
         </div>
+      </div>
 
-        {/* About */}
-        <div className="mt-6 sm:mt-8 rounded-3xl bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 shadow-sm px-5 py-6 sm:px-8 sm:py-8">
-          <h2 className="font-heading text-base font-bold text-navy-950 dark:text-white mb-3">About</h2>
-          <p className="text-navy-600 dark:text-navy-300 leading-relaxed text-[15px]">{pro.bio}</p>
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            {pro.specialties.map((s: string) => (
-              <span
-                key={s}
-                className="text-xs font-medium px-3 py-1.5 rounded-full bg-navy-50 dark:bg-white/5 border border-navy-100 dark:border-white/10 text-navy-700 dark:text-navy-200"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Portfolio */}
-        <div className="mt-6 sm:mt-8">
-          <h2 className="font-heading text-base font-bold text-navy-950 dark:text-white mb-4">Portfolio</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-            {pro.portfolioImages.map((img: string, i: number) => (
-              <div
-                key={i}
-                className="group relative aspect-square rounded-2xl overflow-hidden bg-navy-100 dark:bg-white/5 cursor-pointer"
-              >
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        
+        {/* Main Header Card without Banner */}
+        <div className="bg-white dark:bg-navy-900 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm p-6 sm:p-8 mb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            
+            {/* Avatar & Info */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-5 text-center sm:text-left">
+              <div className="relative shrink-0">
                 <img
-                  src={img}
-                  alt={`${pro.name} portfolio ${i + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  src={pro.avatar || (pro as any).image || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                  alt={pro.name}
+                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover ring-2 ring-slate-100 dark:ring-white/10 shadow-md"
                 />
-                <div className="absolute inset-0 bg-navy-950/0 group-hover:bg-navy-950/30 transition-colors duration-300 flex items-center justify-center">
-                  <Maximize2 className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                <span className="absolute -bottom-1.5 -right-1.5 bg-red-600 text-white p-1 rounded-lg shadow-md">
+                  <ShieldCheck className="w-4 h-4" />
+                </span>
               </div>
-            ))}
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-center sm:justify-start gap-2">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white capitalize">
+                    {pro.name}
+                  </h1>
+                  <CheckCircle2 className="w-5 h-5 text-red-600 fill-red-600/10 shrink-0" />
+                </div>
+                <p className="text-red-600 dark:text-red-400 font-semibold text-sm sm:text-base">
+                  {tradeName} {pro.companyName && <span>• {pro.companyName}</span>}
+                </p>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-navy-300 flex items-center justify-center sm:justify-start gap-1 pt-0.5">
+                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                  {pro.location || (pro as any).address || 'Location Not Specified'}
+                </p>
+              </div>
+            </div>
+
+            {/* Price & Action */}
+            <div className="flex flex-col items-center md:items-end gap-3 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-white/10">
+              <div className="text-center md:text-right">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Hourly Rate</span>
+                <p className="text-2xl font-black text-slate-900 dark:text-white">
+                  £{pro.hourlyRate || (pro as any).rate || '0'}
+                  <span className="text-xs font-normal text-slate-500 dark:text-navy-300">/hr</span>
+                </p>
+              </div>
+              <button
+                onClick={handleBookNow}
+                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition-all text-sm"
+              >
+                Book Appointment
+              </button>
+            </div>
+          </div>
+
+          {/* Quick Metrics */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-white/10">
+            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+              <div className="flex items-center gap-2 text-amber-500 mb-1">
+                <Star className="w-4 h-4 fill-amber-400" />
+                <span className="font-bold text-slate-900 dark:text-white text-base">
+                  {pro.rating || (pro as any).avgRating || '5.0'}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-navy-300">
+                {pro.reviewCount ? `${pro.reviewCount} Reviews` : `${reviews.length} Reviews`}
+              </p>
+            </div>
+
+            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+              <div className="flex items-center gap-2 text-red-600 mb-1">
+                <Clock className="w-4 h-4" />
+                <span className="font-bold text-slate-900 dark:text-white text-base">
+                  {pro.responseMinutes ? `~${pro.responseMinutes}m` : '~30m'}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-navy-300">Response Time</p>
+            </div>
+
+            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+              <div className="flex items-center gap-2 text-emerald-600 mb-1">
+                <Briefcase className="w-4 h-4" />
+                <span className="font-bold text-slate-900 dark:text-white text-base">Verified</span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-navy-300">Background Checked</p>
+            </div>
+
+            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+              <div className="flex items-center gap-2 text-emerald-600 mb-1">
+                <Calendar className="w-4 h-4" />
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
+                  {pro.availability || 'Available Today'}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-navy-300">Current Status</p>
+            </div>
           </div>
         </div>
 
-        {/* Desktop CTA */}
-        <button className="hidden sm:inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold rounded-full mt-10 px-8 py-3.5 shadow-lg shadow-primary/25 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 transition-all">
-          Book {pro.name.split(' ')[0]}
+        {/* Navigation Tabs */}
+        <div className="flex gap-6 border-b border-slate-200 dark:border-white/10 mb-6 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab('about')}
+            className={`pb-3 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${
+              activeTab === 'about'
+                ? 'border-red-600 text-red-600 dark:text-red-500'
+                : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-navy-300 dark:hover:text-white'
+            }`}
+          >
+            Overview & Specialties
+          </button>
+          <button
+            onClick={() => setActiveTab('portfolio')}
+            className={`pb-3 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${
+              activeTab === 'portfolio'
+                ? 'border-red-600 text-red-600 dark:text-red-500'
+                : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-navy-300 dark:hover:text-white'
+            }`}
+          >
+            Portfolio Showcase ({portfolioImages.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('reviews')}
+            className={`pb-3 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${
+              activeTab === 'reviews'
+                ? 'border-red-600 text-red-600 dark:text-red-500'
+                : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-navy-300 dark:hover:text-white'
+            }`}
+          >
+            Client Reviews ({reviews.length})
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'about' && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white dark:bg-navy-900 p-6 sm:p-7 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3">About the Professional</h3>
+                <p className="text-slate-600 dark:text-navy-200 leading-relaxed text-sm sm:text-base break-words whitespace-pre-wrap">
+                  {pro.bio || (pro as any).description || 'No detailed biography provided yet.'}
+                </p>
+              </div>
+
+              {specialties.length > 0 && (
+                <div className="bg-white dark:bg-navy-900 p-6 sm:p-7 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                    <Award className="w-4 h-4 text-red-600" /> Services & Specialties
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {specialties.map((specialty: string, idx: number) => (
+                      <span
+                        key={idx}
+                        className="bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200/60 dark:border-red-900/40 text-xs font-semibold px-3.5 py-1.5 rounded-xl"
+                      >
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <div className="bg-white dark:bg-navy-900 p-6 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm sticky top-6">
+                <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Service Guarantee</h4>
+                <ul className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-navy-300">
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Identity verified</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Direct booking protection</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Transparent hourly rates</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'portfolio' && (
+          <div>
+            {portfolioImages.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {portfolioImages.map((img: string, index: number) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedImage(img)}
+                    className="group relative h-56 rounded-2xl overflow-hidden cursor-pointer bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-white/10"
+                  >
+                    <img
+                      src={img}
+                      alt={`Portfolio item ${index + 1}`}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="bg-white/20 backdrop-blur-md p-2.5 rounded-full text-white">
+                        <Maximize2 className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-white dark:bg-navy-900 rounded-3xl border border-slate-200 dark:border-white/10">
+                <p className="text-xs sm:text-sm text-slate-400">No portfolio images uploaded.</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'reviews' && (
+          <div className="space-y-4">
+            {reviews.length > 0 ? (
+              reviews.map((rev: any, idx: number) => (
+                <div key={idx} className="bg-white dark:bg-navy-900 p-5 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                          {rev.userName || rev.user?.name || 'Anonymous Client'}
+                        </h5>
+                        <p className="text-[10px] text-slate-400">{rev.date || 'Verified Review'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      {rev.rating || '5.0'}
+                    </div>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-navy-200">{rev.comment || rev.text}</p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-12 bg-white dark:bg-navy-900 rounded-3xl border border-slate-200 dark:border-white/10">
+                <p className="text-xs sm:text-sm text-slate-400">No client reviews submitted yet.</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-6 right-6 text-white p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <img
+            src={selectedImage}
+            alt="Enlarged Portfolio Item"
+            className="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl"
+          />
+        </div>
+      )}
+
+      {/* Mobile Sticky Footer */}
+      <div className="sm:hidden fixed bottom-0 inset-x-0 bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border-t border-slate-200 dark:border-white/10 p-3.5 z-40 flex items-center justify-between">
+        <div>
+          <span className="text-[10px] text-slate-400 uppercase font-bold block">Rate</span>
+          <p className="text-base font-black text-slate-900 dark:text-white">
+            £{pro.hourlyRate || (pro as any).rate || '0'}<span className="text-xs font-normal text-slate-500">/hr</span>
+          </p>
+        </div>
+        <button
+          onClick={handleBookNow}
+          className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-xl text-xs sm:text-sm shadow-md"
+        >
+          Book Now
         </button>
       </div>
 
-      {/* Sticky mobile CTA */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 dark:bg-navy-900/90 backdrop-blur-lg border-t border-navy-100 dark:border-white/10 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="font-heading text-lg font-black text-navy-950 dark:text-white leading-none">
-              £{pro.hourlyRate}
-              <span className="text-xs font-medium text-navy-400 dark:text-navy-500">/hr</span>
-            </p>
-          </div>
-          <button className="flex-1 max-w-[200px] bg-primary text-white font-semibold rounded-full py-3 text-sm shadow-lg shadow-primary/25 active:scale-[0.98] transition-transform">
-            Book {pro.name.split(' ')[0]}
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

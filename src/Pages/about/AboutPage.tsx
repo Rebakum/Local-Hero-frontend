@@ -4,7 +4,7 @@ import { WhyChooseUs } from '../../Components/Sections/WhyChooseUs';
 import { TrustedBy } from '../../Components/Sections/TrustedBy';
 import { Stats } from '../../Components/Sections/Stats';
 import { CTA } from '../../Components/Sections/CTA';
-import TestimonialsSlider from '../../Components/Sections/Testimonials/Testimonials';
+import TestimonialsSlider from '../../Components/Sections/Testimonials/TestimonialsSlider';
 
 export const AboutPage: React.FC = () => {
   return (

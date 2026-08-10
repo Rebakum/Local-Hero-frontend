@@ -83,6 +83,14 @@ export const ConfirmStep: React.FC<ConfirmStepProps> = ({
           <span>Selected trade</span>
           <span className="font-bold text-navy-950 dark:text-white capitalize">{displayTrade}</span>
         </div>
+        {bookingData.professionalName && (
+          <div className="flex justify-between text-navy-500 dark:text-navy-300">
+            <span>Professional</span>
+            <span className="font-bold text-navy-950 dark:text-white">
+              {bookingData.professionalName}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between text-navy-500 dark:text-navy-300">
           <span>Postcode / location</span>
           <span className="font-bold text-navy-950 dark:text-white">{bookingData.postcode}</span>

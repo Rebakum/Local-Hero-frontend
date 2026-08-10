@@ -46,7 +46,7 @@ export const Categories: React.FC = () => {
       <div className="container-lh">
         <SectionTitle
           badge
-          eyebrow={`${trades?.length || 0} Trade Categories`}
+          eyebrow={`Trade Categories`}
           title="Find the right pro"
           subtitle="Fixed rates, DBS-checked professionals, transparent pricing and same-week availability across the UK."
         />

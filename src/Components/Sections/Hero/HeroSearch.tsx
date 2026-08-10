@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { motion, type Variants } from 'motion/react';
 import { CheckCircle2, Star } from 'lucide-react';
-import { getFeaturedProfessionals } from '../../../services/api';
+import { useProfessionals } from '../../../Context/ProfessionalsContext';
 
 interface HeroSearchProps {
   itemVariant: Variants;
 }
 
-export const HeroSearch: React.FC<HeroSearchProps> = ({ itemVariant }) => {
-  const [avatars, setAvatars] = useState<string[]>([]);
+const FALLBACK_AVATARS = [
+  'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&q=90&fit=crop&crop=faces&auto=format',
+  'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&q=90&fit=crop&crop=faces&auto=format',
+  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=90&fit=crop&crop=faces&auto=format',
+];
 
-  useEffect(() => {
-    getFeaturedProfessionals()
-      .then((pros) => setAvatars(pros.slice(0, 3).map((p) => p.avatar)))
-      .catch(() => {
-        setAvatars([
-          'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&q=90&fit=crop&crop=faces&auto=format',
-          'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&q=90&fit=crop&crop=faces&auto=format',
-          'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=90&fit=crop&crop=faces&auto=format',
-        ]);
-      });
-  }, []);
+export const HeroSearch: React.FC<HeroSearchProps> = ({ itemVariant }) => {
+  const { professionals } = useProfessionals();
+
+  const avatars = useMemo(() => {
+    const fromPros = professionals.slice(0, 3).map((p) => p.avatar).filter(Boolean);
+    return fromPros.length ? fromPros : FALLBACK_AVATARS;
+  }, [professionals]);
 
   return (
     <motion.div

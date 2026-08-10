@@ -1,6 +1,6 @@
 import axiosInstance from '../lib/axiosInstance';
 
-export type UploadFolder = 'avatars' | 'portfolios' | 'before-after' | 'trades';
+export type UploadFolder = 'avatars' | 'portfolios' | 'before-after' | 'trades' | 'testimonials';
 
 export interface UploadedImage {
   url: string;
