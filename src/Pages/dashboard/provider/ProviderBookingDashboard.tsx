@@ -13,43 +13,21 @@ import {
   Wrench,
   Edit3,
   X,
-  Play,
-  Check,
 } from "lucide-react";
-
-interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-}
-
-interface Booking {
-  id: string;
-  trade: string;
-  postcode: string;
-  address: string;
-  bookingDate: string;
-  timeSlot: string;
-  urgency: string;
-  description: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  notes?: string;
-  status: "PENDING" | "ACCEPTED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED";
-  priceInPence?: number;
-  customer?: Customer;
-  createdAt: string;
-}
+import {
+  getProviderBookings,
+  updateBookingStatus,
+  type BookingRecord,
+  type BookingStatus,
+} from "../../../services/booking.service";
 
 export const ProviderBookingDashboard: React.FC = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
 
   // Selected booking for updating status
-  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newStatus, setNewStatus] = useState<string>("");
   const [priceInPounds, setPriceInPounds] = useState<string>("");
@@ -59,15 +37,8 @@ export const ProviderBookingDashboard: React.FC = () => {
   const fetchProviderBookings = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("/api/v1/bookings/provider/me", {
-        headers: { Authorization: `${token}` },
-      });
-      const data = await res.json();
-
-      if (data.success) {
-        setBookings(data.data);
-      }
+      const data = await getProviderBookings();
+      setBookings(data);
     } catch (error) {
       console.error("Failed to fetch provider bookings", error);
     } finally {
@@ -86,31 +57,20 @@ export const ProviderBookingDashboard: React.FC = () => {
 
     setUpdating(true);
     try {
-      const token = localStorage.getItem("token");
-      const payload: Record<string, unknown> = { status: newStatus };
+      const payload: { status: BookingStatus; priceInPence?: number } = {
+        status: newStatus as BookingStatus,
+      };
 
       if (priceInPounds) {
         payload.priceInPence = Math.round(parseFloat(priceInPounds) * 100);
       }
 
-      const res = await fetch(`/api/v1/bookings/${selectedBooking.id}/status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-
-      if (data.success) {
-        setIsModalOpen(false);
-        fetchProviderBookings();
-      } else {
-        alert(data.message || "Failed to update status");
-      }
+      await updateBookingStatus(selectedBooking.id, payload);
+      setIsModalOpen(false);
+      fetchProviderBookings();
     } catch (error) {
       console.error("Failed to update status", error);
+      alert("Failed to update status");
     } finally {
       setUpdating(false);
     }
@@ -121,7 +81,7 @@ export const ProviderBookingDashboard: React.FC = () => {
     return b.status === statusFilter;
   });
 
-  const getStatusBadge = (status: Booking["status"]) => {
+  const getStatusBadge = (status: BookingStatus) => {
     switch (status) {
       case "PENDING":
         return (

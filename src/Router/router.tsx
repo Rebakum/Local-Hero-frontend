@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RootLayout } from '../Layouts/RootLayout';
+import { BookingProvider } from '../Context/BookingContext';
 import { HomePage } from '../Pages/home/HomePage';
 import { ServicesPage } from '../Pages/servicespage/ServicesPage';
 import { ProfessionalsPage } from '../Pages/professionals/ProfessionalsPage';
@@ -29,6 +30,10 @@ import MyBookings from '../Pages/dashboard/user/MyBookings';
 import SavedPros from '../Pages/dashboard/user/SavedPros';
 import Leads from '../Pages/dashboard/provider/Leads';
 import MyJobs from '../Pages/dashboard/provider/MyJobs';
+import Appointments from '../Pages/dashboard/provider/Appointments';
+import Messages from '../Pages/dashboard/provider/Messages';
+import Reviews from '../Pages/dashboard/provider/Reviews';
+import ProviderPayments from '../Pages/dashboard/provider/ProviderPayments';
 import Moderation from '../Pages/dashboard/admin/Moderation';
 import TradesManagement from '../Pages/dashboard/admin/manage/TradesManagement';
 import ProfessionalsManagement from '../Pages/dashboard/admin/manage/ProfessionalsManagement';
@@ -37,6 +42,8 @@ import TestimonialsManagement from '../Pages/dashboard/admin/manage/Testimonials
 import BookingManagement from '../Pages/dashboard/admin/manage/BookingManagement';
 import AdminPaymentHistory from '../Pages/dashboard/admin/manage/AdminPaymentHistory';
 import ProfilePage from '../Pages/dashboard/profile/ProfilePage';
+import { ProviderBookingDashboard } from '../Pages/dashboard/provider/ProviderBookingDashboard';
+import UserReviews from '../Pages/dashboard/user/UserReviews';
 
 export const router = createBrowserRouter([
   {
@@ -69,7 +76,9 @@ export const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <ProtectedRoute>
-        <DashboardLayout />
+        <BookingProvider>
+          <DashboardLayout />
+        </BookingProvider>
       </ProtectedRoute>
     ),
     children: [
@@ -99,6 +108,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: 'user/reviews',
+        element: (
+          <ProtectedRoute allowedRoles={['user']}>
+            <UserReviews />
+          </ProtectedRoute>
+        ),
+      },
 
       {
         path: 'provider',
@@ -121,6 +138,46 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['serviceProvider']}>
             <MyJobs />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/appointments',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <Appointments />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/messages',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <Messages />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/reviews',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <Reviews />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/payments',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <ProviderPayments />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/providerPBooking',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <ProviderBookingDashboard />
           </ProtectedRoute>
         ),
       },

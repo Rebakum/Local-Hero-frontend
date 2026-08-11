@@ -59,10 +59,45 @@ export interface PendingUser {
 }
 
 export interface ProviderApplicationPayload {
-  serviceCategory: string;
+  trade: string;
+  companyName: string;
+  bio: string;
+  hourlyRate: number;
+  location: string;
+  postcodeArea: string;
+  specialties: string[];
   experienceYears: number;
-  serviceDetails: string;
   phone: string;
+  avatar?: string | null;
+  portfolioImages?: string[];
+}
+
+export interface ProviderApplicationRecord {
+  id: string;
+  userId: string;
+  trade: string;
+  companyName: string;
+  bio: string;
+  hourlyRate: number;
+  location: string;
+  postcodeArea: string;
+  specialties: string[];
+  experienceYears: number;
+  phone: string;
+  avatar: string | null;
+  portfolioImages: string[];
+  status: ApprovalStatus;
+  rejectionReason: string | null;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    phone?: string | null;
+  };
 }
 
 export interface AdminUser {

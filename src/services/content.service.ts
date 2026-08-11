@@ -195,6 +195,11 @@ export async function getTestimonialsAdmin(): Promise<Testimonial[]> {
   return data.data ?? [];
 }
 
+export async function getMyTestimonials(): Promise<Testimonial[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<Testimonial[]>>('/testimonials/me');
+  return data.data ?? [];
+}
+
 export async function createTestimonial(payload: TestimonialInput): Promise<Testimonial> {
   const { data } = await axiosInstance.post<ApiEnvelope<Testimonial>>('/testimonials', payload);
   return data.data;

@@ -54,6 +54,10 @@ export const BookingModal: React.FC = () => {
 
   const handleStep3Next = (e: React.FormEvent) => {
     e.preventDefault();
+    updateBookingData({
+      date: bookingData.date || new Date().toISOString().split('T')[0],
+      timeSlot: bookingData.timeSlot || 'Morning (8am - 12pm)',
+    });
     setStep(4);
   };
 

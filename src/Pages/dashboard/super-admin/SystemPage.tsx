@@ -95,7 +95,7 @@ const SystemPage: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 via-rose-500 to-pink-500 p-6 sm:p-8 text-white shadow-xl shadow-rose-500/20"
+        className="relative overflow-hidden rounded-3xl shadow-xl shadow-rose-500/20 p-10"
       >
         <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-white/10 blur-sm" />
         <div className="absolute left-1/3 top-0 w-64 h-32 bg-white/5 blur-3xl rounded-full" />
@@ -105,14 +105,14 @@ const SystemPage: React.FC = () => {
               <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                 <Settings className="w-4 h-4" />
               </div>
-              <span className="text-sm font-medium text-white/80">System Settings</span>
+              <span className="text-sm font-medium ">System Settings</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Platform Control</h1>
             <p className="mt-2 text-sm text-white/70 max-w-md leading-relaxed">
               Manage API keys, monitor system health, and review audit logs.
             </p>
           </div>
-          <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
+          <div className="hidden sm:flex items-center gap-2 px-4 py-2 shadow-2xl hover:shadow-red-300 rounded-2xl border border-primary bg-white/15 backdrop-blur-sm ">
             <Activity className="w-4 h-4 text-emerald-300" />
             <span className="text-sm font-medium">All Systems Operational</span>
           </div>

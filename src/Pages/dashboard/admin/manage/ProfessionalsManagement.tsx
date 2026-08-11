@@ -75,12 +75,14 @@ const toPayload = (values: ProFormValues): ProfessionalInput => ({
   postcodeArea: values.postcodeArea.trim() || undefined,
   bio: values.bio.trim() || undefined,
   specialties: values.specialties
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean),
+    ? values.specialties
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [],
   availability: values.availability || undefined,
   avatar: values.avatar || undefined,
-  portfolioImages: values.portfolioImages,
+  portfolioImages: values.portfolioImages ?? [],
 });
 
 const ProfessionalsManagement: React.FC = () => {
@@ -211,7 +213,7 @@ const ProfessionalsManagement: React.FC = () => {
         isLoading={isLoading}
         loadingText="Loading professionals..."
         data={filtered}
-        rowKey={(p) => p.id}
+        rowKey={(p) => String(p.id ?? '')}
         emptyTitle="No professionals found"
         emptyDescription="Add your first professional to get started."
         emptyIcon={<Users className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -242,7 +244,7 @@ const ProfessionalsManagement: React.FC = () => {
           {
             key: 'trade',
             header: 'Trade',
-            render: (p) => <span className="text-navy-600 dark:text-navy-300">{p.trade}</span>,
+            render: (p) => <span className="text-navy-600 dark:text-navy-300">{p.trade ?? '—'}</span>,
           },
           {
             key: 'hourlyRate',
@@ -250,7 +252,7 @@ const ProfessionalsManagement: React.FC = () => {
             hideOn: 'sm',
             render: (p) => (
               <span className="font-semibold text-navy-800 dark:text-navy-200">
-                £{p.hourlyRate}
+                £{p.hourlyRate ?? 0}
                 <span className="text-[11px] font-normal text-navy-400">/hr</span>
               </span>
             ),
@@ -271,7 +273,7 @@ const ProfessionalsManagement: React.FC = () => {
             hideOn: 'lg',
             render: (p) => (
               <StatusBadge
-                status={p.availability}
+                status={p.availability ?? 'N/A'}
                 tone={p.availability === 'Available Today' ? 'success' : p.availability === 'Available Tomorrow' ? 'info' : 'neutral'}
               />
             ),
@@ -308,6 +310,7 @@ const ProfessionalsManagement: React.FC = () => {
         footer={
           <>
             <button
+              type="button"
               onClick={() => setModalOpen(false)}
               disabled={saving}
               className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
@@ -315,6 +318,7 @@ const ProfessionalsManagement: React.FC = () => {
               Cancel
             </button>
             <button
+              type="button"
               onClick={onSubmit}
               disabled={saving}
               className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
@@ -325,60 +329,69 @@ const ProfessionalsManagement: React.FC = () => {
           </>
         }
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Full name"
-            required
-            placeholder="e.g. James Stirling"
-            error={errors.name?.message}
-            {...register('name', { required: 'Name is required' })}
-          />
-          <Select
-            label="Trade"
-            required
-            options={TRADE_OPTIONS}
-            placeholder="Select a trade"
-            {...register('trade', { required: 'Trade is required' })}
-          />
-          <Input label="Company name" placeholder="e.g. Stirling Heating & Gas" {...register('companyName')} />
-          <Input
-            label="Hourly rate (£)"
-            type="number"
-            placeholder="e.g. 55"
-            {...register('hourlyRate')}
-          />
-          <Input label="Location" placeholder="e.g. Islington, London" {...register('location')} />
-          <Input label="Postcode area" placeholder="e.g. N1" {...register('postcodeArea')} />
-        </div>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Full name"
+              required
+              placeholder="e.g. James Stirling"
+              error={errors.name?.message}
+              {...register('name', { required: 'Name is required' })}
+            />
+            <Select
+              label="Trade"
+              required
+              options={TRADE_OPTIONS}
+              placeholder="Select a trade"
+              error={errors.trade?.message}
+              {...register('trade', { required: 'Trade is required' })}
+            />
+            <Input label="Company name" placeholder="e.g. Stirling Heating & Gas" {...register('companyName')} />
+            <Input
+              label="Hourly rate (£)"
+              type="number"
+              placeholder="e.g. 55"
+              {...register('hourlyRate')}
+            />
+            <Input label="Location" placeholder="e.g. Islington, London" {...register('location')} />
+            <Input label="Postcode area" placeholder="e.g. N1" {...register('postcodeArea')} />
+          </div>
 
-        <Textarea label="Bio" placeholder="Short biography shown on the profile" className="mt-4" {...register('bio')} />
+          <Textarea label="Bio" placeholder="Short biography shown on the profile" className="mt-4" {...register('bio')} />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <Input
-            label="Specialties"
-            hint="Comma separated"
-            placeholder="Boiler Replacements, Power Flushing"
-            {...register('specialties')}
-          />
-          <Select label="Availability" options={AVAILABILITY_OPTIONS} {...register('availability')} />
-        </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <Input
+              label="Specialties"
+              hint="Comma separated"
+              placeholder="Boiler Replacements, Power Flushing"
+              {...register('specialties')}
+            />
+            <Select label="Availability" options={AVAILABILITY_OPTIONS} {...register('availability')} />
+          </div>
 
-        <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10 space-y-5">
-          <ImageUpload
-            label="Profile avatar"
-            value={avatar}
-            onChange={(v) => setValue('avatar', Array.isArray(v) ? v[0] ?? '' : v)}
-            folder="avatars"
-          />
-          <ImageUpload
-            label="Portfolio images"
-            value={portfolioImages}
-            onChange={(v) => setValue('portfolioImages', Array.isArray(v) ? v : v ? [v] : [])}
-            folder="portfolios"
-            multiple
-            maxFiles={10}
-          />
-        </div>
+          <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10 space-y-5">
+            <ImageUpload
+              label="Profile avatar"
+              value={avatar}
+              onChange={(v) => {
+                const val = Array.isArray(v) ? v[0] ?? '' : v;
+                setValue('avatar', val, { shouldValidate: true, shouldDirty: true });
+              }}
+              folder="avatars"
+            />
+            <ImageUpload
+              label="Portfolio images"
+              value={portfolioImages}
+              onChange={(v) => {
+                const val = Array.isArray(v) ? v : v ? [v] : [];
+                setValue('portfolioImages', val, { shouldValidate: true, shouldDirty: true });
+              }}
+              folder="portfolios"
+              multiple
+              maxFiles={10}
+            />
+          </div>
+        </form>
       </Modal>
 
       {/* Delete Confirm */}

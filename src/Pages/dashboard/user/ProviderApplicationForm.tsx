@@ -9,22 +9,37 @@ import {
   CheckCircle,
   ChevronDown,
   ArrowLeft,
+  Building,
+  DollarSign,
+  MapPin,
+  Tag,
 } from 'lucide-react';
 import { applyProvider } from '../../../services/auth.service';
 import { useAuth } from '../../../Context/AuthContext';
+import { useToast } from '../../../Context/ToastContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { SERVICE_CATEGORIES, type ServiceCategory } from '../../../types/auth';
 
 const ProviderApplicationForm: React.FC = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, refreshProfile } = useAuth();
+  const { success: toastSuccess, error: toastError } = useToast();
 
+ 
   const [form, setForm] = useState({
-    serviceCategory: '' as ServiceCategory | '',
+    trade: '' as ServiceCategory | '',
+    companyName: '',
+    bio: '',
+    hourlyRate: '',
+    location: '',
+    postcodeArea: '',
+    specialties: '', 
     experienceYears: '',
-    serviceDetails: '',
     phone: user?.phone || '',
+    avatar: '',
+    portfolioImages: '', 
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -33,11 +48,13 @@ const ProviderApplicationForm: React.FC = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user?.role === 'serviceProvider') {
+  if (user?.role === 'serviceProvider' && user?.approvalStatus === 'APPROVED') {
     return <Navigate to="/dashboard/provider" replace />;
   }
 
-  if (success) {
+  const isSubmitted = success || user?.approvalStatus === 'PENDING';
+
+  if (isSubmitted) {
     return (
       <div className="max-w-2xl mx-auto space-y-8">
         <motion.div
@@ -80,40 +97,59 @@ const ProviderApplicationForm: React.FC = () => {
     e.preventDefault();
     setError('');
 
-    if (!form.serviceCategory) {
-      setError('Please select a service category.');
-      return;
+    // Form Client-side Validation
+    if (!form.trade) return setError('Please select a trade category.');
+    if (!form.companyName.trim()) return setError('Company name is required.');
+    if (!form.bio.trim()) return setError('Bio is required.');
+    if (!form.hourlyRate || Number(form.hourlyRate) < 1) return setError('Hourly rate must be at least 1.');
+    if (!form.location.trim()) return setError('Location is required.');
+    if (!form.postcodeArea.trim()) return setError('Postcode area is required.');
+    if (!form.phone.trim()) return setError('Phone number is required.');
+    if (!form.experienceYears || Number(form.experienceYears) < 0) return setError('Please enter valid experience years.');
+
+    const formattedSpecialties = form.specialties
+      .split(',')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+
+    if (formattedSpecialties.length === 0) {
+      return setError('At least one specialty is required (separated by comma).');
     }
-    if (!form.experienceYears || Number(form.experienceYears) < 0) {
-      setError('Please enter valid years of experience.');
-      return;
-    }
-    if (!form.serviceDetails.trim()) {
-      setError('Please describe your services.');
-      return;
-    }
-    if (!form.phone.trim()) {
-      setError('Please provide a phone number.');
-      return;
-    }
+
+    const formattedPortfolioImages = form.portfolioImages
+      ? form.portfolioImages.split(',').map((img) => img.trim()).filter((img) => img.length > 0)
+      : [];
 
     setIsSubmitting(true);
 
     try {
-      await applyProvider({
-        serviceCategory: form.serviceCategory,
+      // Backend Payload Mapping
+      const payload = {
+        trade: form.trade,
+        companyName: form.companyName.trim(),
+        bio: form.bio.trim(),
+        hourlyRate: Number(form.hourlyRate),
+        location: form.location.trim(),
+        postcodeArea: form.postcodeArea.trim(),
+        specialties: formattedSpecialties,
         experienceYears: Number(form.experienceYears),
-        serviceDetails: form.serviceDetails.trim(),
         phone: form.phone.trim(),
-      });
+        avatar: form.avatar.trim() || null,
+        portfolioImages: formattedPortfolioImages,
+      };
+
+      await applyProvider(payload);
       setSuccess(true);
+      toastSuccess('Application submitted! Our team will review it shortly.');
+      await refreshProfile();
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
-      setError(
+      const msg =
         apiError.response?.data?.message ||
-          apiError.message ||
-          'Failed to submit application. Please try again.'
-      );
+        apiError.message ||
+        'Failed to submit application. Please check your inputs.';
+      setError(msg);
+      toastError(msg);
     } finally {
       setIsSubmitting(false);
     }
@@ -140,7 +176,7 @@ const ProviderApplicationForm: React.FC = () => {
             Service Provider Application
           </h1>
           <p className="text-sm text-navy-500 dark:text-navy-400 mt-1">
-            Fill out the form below to apply as a service provider. Your application will be reviewed by our Super Admin team.
+            Fill out the details below to apply as a service provider.
           </p>
         </div>
       </motion.div>
@@ -162,75 +198,134 @@ const ProviderApplicationForm: React.FC = () => {
             </motion.div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Service Category */}
-            <div>
-              <label
-                htmlFor="serviceCategory"
-                className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5"
-              >
-                Service Category
-              </label>
-              <div className="relative">
-                <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400 pointer-events-none" />
-                <select
-                  id="serviceCategory"
-                  name="serviceCategory"
-                  required
-                  value={form.serviceCategory}
-                  onChange={handleChange}
-                  className="input-lh pl-10 pr-10 appearance-none"
-                >
-                  <option value="" disabled>
-                    Select your trade...
-                  </option>
-                  {SERVICE_CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400 pointer-events-none" />
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Trade & Company Name */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                  Trade Category *
+                </label>
+                <div className="relative">
+                  <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400 pointer-events-none" />
+                  <select
+                    name="trade"
+                    required
+                    value={form.trade}
+                    onChange={handleChange}
+                    className="input-lh pl-10 pr-10 appearance-none"
+                  >
+                    <option value="" disabled>Select trade...</option>
+                    {SERVICE_CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400 pointer-events-none" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                  Company Name *
+                </label>
+                <div className="relative">
+                  <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
+                  <input
+                    name="companyName"
+                    type="text"
+                    required
+                    value={form.companyName}
+                    onChange={handleChange}
+                    placeholder="e.g. Acme Plumbing Ltd"
+                    className="input-lh pl-10"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Experience Years */}
-            <div>
-              <label
-                htmlFor="experienceYears"
-                className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5"
-              >
-                Years of Experience
-              </label>
-              <input
-                id="experienceYears"
-                name="experienceYears"
-                type="number"
-                min={0}
-                max={50}
-                required
-                value={form.experienceYears}
-                onChange={handleChange}
-                placeholder="e.g. 5"
-                className="input-lh"
-              />
+            {/* Hourly Rate & Experience */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                  Hourly Rate (£) *
+                </label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
+                  <input
+                    name="hourlyRate"
+                    type="number"
+                    min={1}
+                    required
+                    value={form.hourlyRate}
+                    onChange={handleChange}
+                    placeholder="e.g. 45"
+                    className="input-lh pl-10"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                  Years of Experience *
+                </label>
+                <input
+                  name="experienceYears"
+                  type="number"
+                  min={0}
+                  required
+                  value={form.experienceYears}
+                  onChange={handleChange}
+                  placeholder="e.g. 5"
+                  className="input-lh"
+                />
+              </div>
             </div>
 
-            {/* Phone */}
+            {/* Location & Postcode Area */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                  Location / City *
+                </label>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
+                  <input
+                    name="location"
+                    type="text"
+                    required
+                    value={form.location}
+                    onChange={handleChange}
+                    placeholder="e.g. London"
+                    className="input-lh pl-10"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                  Postcode Area *
+                </label>
+                <input
+                  name="postcodeArea"
+                  type="text"
+                  required
+                  value={form.postcodeArea}
+                  onChange={handleChange}
+                  placeholder="e.g. SW1A"
+                  className="input-lh"
+                />
+              </div>
+            </div>
+
+            {/* Phone Number */}
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5"
-              >
-                Phone Number
+              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                Phone Number *
               </label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
                 <input
-                  id="phone"
                   name="phone"
                   type="tel"
-                  autoComplete="tel"
                   required
                   value={form.phone}
                   onChange={handleChange}
@@ -240,32 +335,42 @@ const ProviderApplicationForm: React.FC = () => {
               </div>
             </div>
 
-            {/* Service Details */}
+            {/* Specialties */}
             <div>
-              <label
-                htmlFor="serviceDetails"
-                className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5"
-              >
-                Service Details
+              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                Specialties * (Comma separated)
               </label>
-              <textarea
-                id="serviceDetails"
-                name="serviceDetails"
-                required
-                minLength={20}
-                maxLength={1000}
-                rows={5}
-                value={form.serviceDetails}
-                onChange={handleChange}
-                placeholder="Describe the services you offer, certifications, specialities, areas you cover..."
-                className="input-lh resize-none"
-              />
-              <p className="mt-1.5 text-xs text-navy-400 dark:text-navy-500">
-                {form.serviceDetails.length}/1000 characters
-              </p>
+              <div className="relative">
+                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
+                <input
+                  name="specialties"
+                  type="text"
+                  required
+                  value={form.specialties}
+                  onChange={handleChange}
+                  placeholder="e.g. Pipe Leakage, Boiler Repair, Emergency Services"
+                  className="input-lh pl-10"
+                />
+              </div>
             </div>
 
-            {/* Submit */}
+            {/* Bio / Description */}
+            <div>
+              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                Bio / Service Description *
+              </label>
+              <textarea
+                name="bio"
+                required
+                rows={4}
+                value={form.bio}
+                onChange={handleChange}
+                placeholder="Describe your background, skills, and exact services you offer..."
+                className="input-lh resize-none"
+              />
+            </div>
+
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -274,7 +379,7 @@ const ProviderApplicationForm: React.FC = () => {
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Submitting...
+                  Submitting Application...
                 </>
               ) : (
                 'Submit Application'

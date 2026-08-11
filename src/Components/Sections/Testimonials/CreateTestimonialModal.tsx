@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Star, X } from "lucide-react";
+import { ImageUpload } from "../../ui";
+import { USER_UPLOAD_FOLDER_OPTIONS, type UploadFolder } from "../../../services/upload.service";
 import { createTestimonial, type TestimonialInput } from "../../../services/content.service";
 
 interface CreateTestimonialModalProps {
@@ -28,6 +30,7 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [folder, setFolder] = useState<UploadFolder>("avatars");
 
   if (!isOpen) return null;
 
@@ -43,7 +46,10 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
     setError("");
 
     try {
-      await createTestimonial(formData);
+      await createTestimonial({
+        ...formData,
+        avatar: formData.avatar?.trim() ? formData.avatar.trim() : undefined,
+      });
       setFormData({
         author: "",
         role: "Homeowner",
@@ -185,6 +191,37 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
                 </button>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label className="font-semibold text-gray-700 dark:text-gray-300">
+              Upload folder
+            </label>
+            <select
+              value={folder}
+              onChange={(e) => setFolder(e.target.value as UploadFolder)}
+              className="w-full mt-1 p-2.5 bg-gray-50 dark:bg-gray-800 border rounded-xl"
+            >
+              {USER_UPLOAD_FOLDER_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <ImageUpload
+              label="Avatar"
+              value={formData.avatar ?? ""}
+              onChange={(v) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  avatar: Array.isArray(v) ? v[0] ?? "" : v,
+                }))
+              }
+              folder={folder}
+            />
           </div>
 
           <div>

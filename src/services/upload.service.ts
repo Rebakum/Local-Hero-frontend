@@ -1,6 +1,19 @@
 import axiosInstance from '../lib/axiosInstance';
 
-export type UploadFolder = 'avatars' | 'portfolios' | 'before-after' | 'trades' | 'testimonials';
+export type UploadFolder = 'avatars' | 'portfolios' | 'before-after' | 'trades';
+
+export const UPLOAD_FOLDER_OPTIONS: { value: UploadFolder; label: string }[] = [
+  { value: 'avatars', label: 'Avatars' },
+  { value: 'portfolios', label: 'Portfolios' },
+  { value: 'before-after', label: 'Before / After' },
+  { value: 'trades', label: 'Trades' },
+];
+
+// "before-after" and "trades" are admin-only on the backend, so customer /
+// provider forms only offer the shared folders.
+export const USER_UPLOAD_FOLDER_OPTIONS = UPLOAD_FOLDER_OPTIONS.filter(
+  (option) => option.value === 'avatars' || option.value === 'portfolios'
+);
 
 export interface UploadedImage {
   url: string;

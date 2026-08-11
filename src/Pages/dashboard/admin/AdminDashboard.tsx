@@ -27,8 +27,12 @@ import {
   CreditCard,
 } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
-import { getPendingProviders, approveUser, rejectUser } from '../../../services/auth.service';
-import type { PendingUser } from '../../../types/auth';
+import {
+  getProviderApplications,
+  approveProviderApplication,
+  rejectProviderApplication,
+} from '../../../services/auth.service';
+import type { ProviderApplicationRecord } from '../../../types/auth';
 
 const MOCK_REVIEWS = [
   { id: '1', author: 'John D.', service: 'Plumbing', rating: 5, comment: 'Excellent work, very professional.', flagged: false },
@@ -38,7 +42,7 @@ const MOCK_REVIEWS = [
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
-  const [pendingUsers, setPendingUsers] = useState<PendingUser[]>([]);
+  const [pendingApplications, setPendingApplications] = useState<ProviderApplicationRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [reviews, setReviews] = useState(MOCK_REVIEWS);
@@ -54,8 +58,8 @@ const AdminDashboard: React.FC = () => {
     try {
       setLoading(true);
       setErrorMsg(null);
-      const users = await getPendingProviders();
-      setPendingUsers(users);
+      const applications = await getProviderApplications('PENDING');
+      setPendingApplications(applications);
     } catch (err) {
       setErrorMsg('Data Load please check your internet connection');
     } finally {
@@ -67,11 +71,11 @@ const AdminDashboard: React.FC = () => {
     fetchPending();
   }, [fetchPending]);
 
-  const handleApprove = async (userId: string) => {
+  const handleApprove = async (applicationId: string) => {
     try {
-      setActionLoading(userId);
-      await approveUser(userId);
-      setPendingUsers((prev) => prev.filter((u) => u.id !== userId));
+      setActionLoading(applicationId);
+      await approveProviderApplication(applicationId);
+      setPendingApplications((prev) => prev.filter((a) => a.id !== applicationId));
     } catch (err) {
       setErrorMsg('ব্যবহারকারী অনুমোদন করা যায়নি।');
     } finally {
@@ -79,11 +83,14 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleReject = async (userId: string) => {
+  const handleReject = async (applicationId: string) => {
+    const rejectionReason = window.prompt('Rejection reason (sent to the applicant):');
+    if (!rejectionReason || !rejectionReason.trim()) return;
+
     try {
-      setActionLoading(userId);
-      await rejectUser(userId);
-      setPendingUsers((prev) => prev.filter((u) => u.id !== userId));
+      setActionLoading(applicationId);
+      await rejectProviderApplication(applicationId, rejectionReason.trim());
+      setPendingApplications((prev) => prev.filter((a) => a.id !== applicationId));
     } catch (err) {
       setErrorMsg('ব্যবহারকারী প্রত্যাখ্যান করা যায়নি।');
     } finally {
@@ -114,10 +121,10 @@ const AdminDashboard: React.FC = () => {
               Review pending provider applications and manage flagged content.
             </p>
           </div>
-          {pendingUsers.length > 0 && (
+          {pendingApplications.length > 0 && (
             <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
               <AlertCircle className="w-4 h-4 text-amber-300" />
-              <span className="text-sm font-medium">{pendingUsers.length} Pending Providers</span>
+              <span className="text-sm font-medium">{pendingApplications.length} Pending Providers</span>
             </div>
           )}
         </div>
@@ -141,7 +148,7 @@ const AdminDashboard: React.FC = () => {
               <p className="text-xs text-navy-400 dark:text-navy-500">Applications waiting for review</p>
             </div>
           </div>
-          <Badge variant="warning">{pendingUsers.length} Pending</Badge>
+          <Badge variant="warning">{pendingApplications.length} Pending</Badge>
         </div>
 
         {loading ? (
@@ -149,7 +156,7 @@ const AdminDashboard: React.FC = () => {
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
             <p className="text-sm text-navy-400 dark:text-navy-500">Loading requests...</p>
           </div>
-        ) : pendingUsers.length === 0 ? (
+        ) : pendingApplications.length === 0 ? (
           <EmptyState
             title="No pending providers"
             description="All service provider requests have been processed."
@@ -166,10 +173,10 @@ const AdminDashboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {pendingUsers.map((p) => (
+                {pendingApplications.map((p) => (
                   <tr key={p.id} className="border-b border-navy-50 dark:border-white/5 last:border-0 hover:bg-navy-50 dark:hover:bg-white/[0.02]">
-                    <td className="py-3.5 px-6 font-semibold text-navy-800 dark:text-navy-200">{p.name}</td>
-                    <td className="py-3.5 px-4 text-navy-500 dark:text-navy-400">{p.email}</td>
+                    <td className="py-3.5 px-6 font-semibold text-navy-800 dark:text-navy-200">{p.user?.name}</td>
+                    <td className="py-3.5 px-4 text-navy-500 dark:text-navy-400">{p.user?.email}</td>
                     <td className="py-3.5 px-6 text-right space-x-2">
                       <ActionButton
                         variant="approve"

@@ -165,7 +165,7 @@ export const ProDetailsPage: React.FC = () => {
                 onClick={handleBookNow}
                 className="w-full sm:w-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition-all text-sm"
               >
-                Book Appointment
+                Request Quote
               </button>
             </div>
           </div>

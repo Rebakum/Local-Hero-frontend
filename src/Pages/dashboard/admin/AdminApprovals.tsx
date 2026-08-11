@@ -4,11 +4,15 @@ import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
 import { EmptyState } from '../../../Components/ui/shared/EmptyState';
 import { Loader2, UserCheck, Mail, Calendar, Check, X } from 'lucide-react';
-import { getPendingProviders, approveUser, rejectUser } from '../../../services/auth.service';
-import type { PendingUser } from '../../../types/auth';
+import {
+  getProviderApplications,
+  approveProviderApplication,
+  rejectProviderApplication,
+} from '../../../services/auth.service';
+import type { ProviderApplicationRecord } from '../../../types/auth';
 
 const AdminApprovals: React.FC = () => {
-  const [pendingUsers, setPendingUsers] = useState<PendingUser[]>([]);
+  const [pendingApplications, setPendingApplications] = useState<ProviderApplicationRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -16,8 +20,8 @@ const AdminApprovals: React.FC = () => {
   const fetchPending = useCallback(async () => {
     try {
       setLoading(true);
-      const users = await getPendingProviders();
-      setPendingUsers(users);
+      const applications = await getProviderApplications('PENDING');
+      setPendingApplications(applications);
     } catch {
       setError('Failed to load pending providers.');
     } finally {
@@ -29,25 +33,28 @@ const AdminApprovals: React.FC = () => {
     fetchPending();
   }, [fetchPending]);
 
-  const handleApprove = async (userId: string) => {
+  const handleApprove = async (applicationId: string) => {
     try {
-      setActionLoading(userId);
-      await approveUser(userId);
-      setPendingUsers((prev) => prev.filter((u) => u.id !== userId));
+      setActionLoading(applicationId);
+      await approveProviderApplication(applicationId);
+      setPendingApplications((prev) => prev.filter((a) => a.id !== applicationId));
     } catch {
-      setError('Failed to approve user.');
+      setError('Failed to approve application.');
     } finally {
       setActionLoading(null);
     }
   };
 
-  const handleReject = async (userId: string) => {
+  const handleReject = async (applicationId: string) => {
+    const rejectionReason = window.prompt('Rejection reason (sent to the applicant):');
+    if (!rejectionReason || !rejectionReason.trim()) return;
+
     try {
-      setActionLoading(userId);
-      await rejectUser(userId);
-      setPendingUsers((prev) => prev.filter((u) => u.id !== userId));
+      setActionLoading(applicationId);
+      await rejectProviderApplication(applicationId, rejectionReason.trim());
+      setPendingApplications((prev) => prev.filter((a) => a.id !== applicationId));
     } catch {
-      setError('Failed to reject user.');
+      setError('Failed to reject application.');
     } finally {
       setActionLoading(null);
     }
@@ -82,7 +89,7 @@ const AdminApprovals: React.FC = () => {
         </div>
       )}
 
-      {pendingUsers.length === 0 ? (
+      {pendingApplications.length === 0 ? (
         <Card padding="lg">
           <EmptyState
             title="No pending approvals"
@@ -109,7 +116,7 @@ const AdminApprovals: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {pendingUsers.map((user, i) => (
+                  {pendingApplications.map((user, i) => (
                     <motion.tr
                       key={user.id}
                       initial={{ opacity: 0 }}
@@ -118,16 +125,16 @@ const AdminApprovals: React.FC = () => {
                       className="border-b border-navy-50 dark:border-white/5 last:border-0 hover:bg-navy-50 dark:hover:bg-white/[0.02] transition-colors"
                     >
                       <td className="py-3 px-4">
-                        <p className="font-medium text-navy-800 dark:text-navy-200">{user.name}</p>
+                        <p className="font-medium text-navy-800 dark:text-navy-200">{user.user?.name}</p>
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400">
                           <Mail className="w-3.5 h-3.5" />
-                          <span className="truncate max-w-[200px]">{user.email}</span>
+                          <span className="truncate max-w-[200px]">{user.user?.email}</span>
                         </div>
                       </td>
                       <td className="py-3 px-4 hidden sm:table-cell">
-                        <Badge variant="primary">{user.role.replace('_', ' ')}</Badge>
+                        <Badge variant="primary">Service Provider</Badge>
                       </td>
                       <td className="py-3 px-4 hidden md:table-cell">
                         <div className="flex items-center gap-1.5 text-navy-400 dark:text-navy-500 text-xs">

@@ -42,7 +42,7 @@ export const ServiceBookingCard: React.FC<ServiceBookingCardProps> = ({
             onClick={handleBookNow}
             className="btn btn-primary w-full py-4 text-base font-bold shadow-lg shadow-primary/30 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            Book Now <ArrowRight className="w-5 h-5" />
+            Request Quote<ArrowRight className="w-5 h-5" />
           </button>
 
           <button

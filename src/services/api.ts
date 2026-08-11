@@ -1,10 +1,16 @@
-import type { Professional, Trade, BeforeAfterPair, Testimonial, FAQItem } from '../types';
-import {
-  FEATURED_PROS,
-  FAQS,
-} from '../data/mockData';
+import type {
+  Professional,
+  Trade,
+  BeforeAfterPair,
+  Testimonial,
+  FAQItem,
+} from "../types";
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { FEATURED_PROS, FAQS } from "../data/mockData";
+
+/* =========================================================
+   TYPES
+========================================================= */
 
 export interface PageMeta {
   page: number;
@@ -12,92 +18,221 @@ export interface PageMeta {
   total: number;
 }
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   success: boolean;
+  statusCode?: number;
   message: string;
   data: T;
   meta?: PageMeta;
 }
 
-// Helper Function for Mock Data Pagination
-function paginate<T>(items: T[], page?: number, limit?: number): { items: T[]; meta: PageMeta } {
-  if (!page && !limit) {
-    return { items, meta: { page: 1, limit: items.length || 50, total: items.length } };
-  }
-  const safePage = page ?? 1;
-  const safeLimit = limit ?? 10;
-  const start = (safePage - 1) * safeLimit;
-  return {
-    items: items.slice(start, start + safeLimit),
-    meta: { page: safePage, limit: safeLimit, total: items.length },
-  };
-}
+/* =========================================================
+   API CONFIG
+========================================================= */
 
-// Backend Express API Base URL (Safe Trailing Slash Handling)
-const RAW_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1";
-const API_BASE_URL = RAW_API_URL.replace(/\/$/, "");
+const RAW_API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api/v1";
 
-// Helper to get Auth Headers for Admin/Super Admin endpoints
-const getAuthHeaders = () => {
-  const token = localStorage.getItem("accessToken");
+const API_BASE_URL = RAW_API_URL.replace(/\/+$/, "");
+
+/* =========================================================
+   COMMON HELPERS
+========================================================= */
+
+const delay = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+/* =========================================================
+   AUTH HEADERS
+========================================================= */
+
+const getAuthHeaders = (): HeadersInit => {
+  const token =
+    localStorage.getItem("accessToken") ||
+    localStorage.getItem("access_token");
+
   return {
     "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : {}),
   };
 };
 
-// ==========================================
-// 1. TRADES API (Connected to Express API)
-// ==========================================
+/* =========================================================
+   RESPONSE PARSER
+========================================================= */
+
+const parseResponse = async <T>(
+  response: Response,
+): Promise<ApiResponse<T>> => {
+  const result: unknown = await response
+    .json()
+    .catch(() => null);
+
+  if (!response.ok) {
+    const errorData = result as
+      | {
+          message?: string;
+          error?: string;
+        }
+      | null;
+
+    throw new Error(
+      errorData?.message ||
+        errorData?.error ||
+        `Request failed with status ${response.status}`,
+    );
+  }
+
+  return result as ApiResponse<T>;
+};
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+function paginate<T>(
+  items: T[],
+  page?: number,
+  limit?: number,
+): {
+  items: T[];
+  meta: PageMeta;
+} {
+  if (!page && !limit) {
+    return {
+      items,
+      meta: {
+        page: 1,
+        limit: items.length || 50,
+        total: items.length,
+      },
+    };
+  }
+
+  const safePage = page ?? 1;
+  const safeLimit = limit ?? 10;
+
+  const start = (safePage - 1) * safeLimit;
+
+  return {
+    items: items.slice(start, start + safeLimit),
+    meta: {
+      page: safePage,
+      limit: safeLimit,
+      total: items.length,
+    },
+  };
+}
+
+/* =========================================================
+   1. TRADES
+========================================================= */
 
 export async function getTrades(params?: {
   page?: number;
   limit?: number;
   search?: string;
   category?: string;
-}): Promise<{ trades: Trade[]; meta?: PageMeta }> {
+}): Promise<{
+  trades: Trade[];
+  meta?: PageMeta;
+}> {
   try {
     const queryParams = new URLSearchParams();
 
-    if (params?.page) queryParams.append("page", params.page.toString());
-    if (params?.limit) queryParams.append("limit", params.limit.toString());
-    if (params?.search) queryParams.append("search", params.search);
-    if (params?.category) queryParams.append("category", params.category);
+    if (params?.page) {
+      queryParams.set("page", String(params.page));
+    }
 
-    const res = await fetch(`${API_BASE_URL}/trades?${queryParams.toString()}`);
+    if (params?.limit) {
+      queryParams.set("limit", String(params.limit));
+    }
 
-    if (!res.ok) throw new Error("Failed to fetch trades");
+    if (params?.search?.trim()) {
+      queryParams.set(
+        "search",
+        params.search.trim(),
+      );
+    }
 
-    const result: ApiResponse<Trade[]> = await res.json();
+    if (params?.category?.trim()) {
+      queryParams.set(
+        "category",
+        params.category.trim(),
+      );
+    }
+
+    const query = queryParams.toString();
+
+    const response = await fetch(
+      `${API_BASE_URL}/trades${
+        query ? `?${query}` : ""
+      }`,
+      {
+        method: "GET",
+        headers: getAuthHeaders(),
+        credentials: "include",
+      },
+    );
+
+    const result =
+      await parseResponse<Trade[]>(response);
 
     return {
-      trades: result.data || [],
+      trades: result.data ?? [],
       meta: result.meta,
     };
   } catch (error) {
-    console.error("Error fetching trades:", error);
-    return { trades: [], meta: undefined };
+    console.error(
+      "Error fetching trades:",
+      error,
+    );
+
+    return {
+      trades: [],
+      meta: undefined,
+    };
   }
 }
 
-export async function getTradeById(id: string): Promise<Trade> {
-  const res = await fetch(`${API_BASE_URL}/trades/${id}`);
+export async function getTradeById(
+  id: string,
+): Promise<Trade> {
+  const response = await fetch(
+    `${API_BASE_URL}/trades/${id}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
+  );
 
-  if (!res.ok) throw new Error(`Trade ${id} not found`);
+  const result =
+    await parseResponse<Trade>(response);
 
-  const result: ApiResponse<Trade> = await res.json();
   return result.data;
 }
 
-export async function getAllTrades(): Promise<Trade[]> {
-  const result = await getTrades({ limit: 100 });
+export async function getAllTrades(): Promise<
+  Trade[]
+> {
+  const result = await getTrades({
+    page: 1,
+    limit: 100,
+  });
+
   return result.trades;
 }
 
-
-// ==========================================
-// 2. PROFESSIONALS API (Mock Data Fallback)
-// ==========================================
+/* =========================================================
+   2. PROFESSIONALS
+   Currently using mock data
+========================================================= */
 
 export async function getProfessionals(params?: {
   page?: number;
@@ -105,281 +240,661 @@ export async function getProfessionals(params?: {
   trade?: string;
   featured?: boolean;
   search?: string;
-}): Promise<{ professionals: Professional[]; meta?: PageMeta }> {
+}): Promise<{
+  professionals: Professional[];
+  meta?: PageMeta;
+}> {
   await delay(100);
-  let filtered = FEATURED_PROS;
 
-  if (params?.trade) {
-    const tradeQuery = params.trade.toLowerCase();
-    filtered = filtered.filter((pro) => pro.trade.toLowerCase() === tradeQuery);
-  }
+  let filtered = [...FEATURED_PROS];
+
+
 
   if (params?.featured) {
-    filtered = filtered.filter(() => true);
+    filtered = [...FEATURED_PROS];
   }
 
-  if (params?.search) {
-    const q = params.search.toLowerCase();
-    filtered = filtered.filter((pro) =>
-      [pro.name, pro.trade, pro.companyName, pro.location, pro.postcodeArea, ...(pro.specialties || [])]
-        .some((value) => (value || '').toLowerCase().includes(q)),
+  /* =======================================================
+     TRADE FILTER
+  ======================================================= */
+
+  if (params?.trade?.trim()) {
+    const tradeQuery =
+      params.trade.trim().toLowerCase();
+
+    filtered = filtered.filter(
+      (professional) =>
+        professional.trade
+          .toLowerCase() === tradeQuery,
     );
   }
 
-  const { items, meta } = paginate(filtered, params?.page, params?.limit);
-  return { professionals: items, meta };
-}
+  /* =======================================================
+     SEARCH FILTER
+  ======================================================= */
 
-export async function getProfessionalById(id: string): Promise<Professional> {
+  if (params?.search?.trim()) {
+    const query =
+      params.search.trim().toLowerCase();
+
+    filtered = filtered.filter(
+      (professional) =>
+        [
+          professional.name,
+          professional.trade,
+          professional.companyName,
+          professional.location,
+          professional.postcodeArea,
+          ...(professional.specialties ?? []),
+        ].some((value) =>
+          String(value ?? "")
+            .toLowerCase()
+            .includes(query),
+        ),
+    );
+  }
+
+  /* =======================================================
+     PAGINATION
+  ======================================================= */
+
+  const { items, meta } = paginate(
+    filtered,
+    params?.page,
+    params?.limit,
+  );
+
+  return {
+    professionals: items,
+    meta,
+  };
+}
+export async function getProfessionalById(
+  id: string,
+): Promise<Professional> {
   await delay(100);
-  const pro = FEATURED_PROS.find((p) => p.id === id);
-  if (!pro) throw new Error(`Professional ${id} not found`);
-  return pro;
+
+  const professional = FEATURED_PROS.find(
+    (item) => item.id === id,
+  );
+
+  if (!professional) {
+    throw new Error(
+      `Professional ${id} not found`,
+    );
+  }
+
+  return professional;
 }
 
-export async function getFeaturedProfessionals(): Promise<Professional[]> {
-  const result = await getProfessionals({ featured: true, limit: 10 });
+export async function getFeaturedProfessionals(): Promise<
+  Professional[]
+> {
+  const result = await getProfessionals({
+    featured: true,
+    page: 1,
+    limit: 10,
+  });
+
   return result.professionals;
 }
 
+/* =========================================================
+   3. BEFORE / AFTER
+========================================================= */
 
-// ==========================================
-// 3. BEFORE / AFTER PROJECTS API (Connected to Express API)
-// ==========================================
-
-export async function getBeforeAfterProjects(params?: {
-  page?: number;
-  limit?: number;
-  trade?: string;
-  search?: string;
-}): Promise<{ projects: BeforeAfterPair[]; meta?: PageMeta }> {
+export async function getBeforeAfterProjects(
+  params?: {
+    page?: number;
+    limit?: number;
+    trade?: string;
+    search?: string;
+  },
+): Promise<{
+  projects: BeforeAfterPair[];
+  meta?: PageMeta;
+}> {
   try {
-    const queryParams = new URLSearchParams();
+    const queryParams =
+      new URLSearchParams();
 
-    if (params?.page) queryParams.append("page", params.page.toString());
-    if (params?.limit) queryParams.append("limit", params.limit.toString());
-    if (params?.search && params.search.trim() !== "") {
-      queryParams.append("search", params.search.trim());
+    if (params?.page) {
+      queryParams.set(
+        "page",
+        String(params.page),
+      );
     }
-    if (params?.trade && params.trade.trim() !== "") {
-      queryParams.append("trade", params.trade.trim());
+
+    if (params?.limit) {
+      queryParams.set(
+        "limit",
+        String(params.limit),
+      );
     }
 
-    const res = await fetch(`${API_BASE_URL}/before-after?${queryParams.toString()}`);
+    if (params?.search?.trim()) {
+      queryParams.set(
+        "search",
+        params.search.trim(),
+      );
+    }
 
-    if (!res.ok) throw new Error("Failed to fetch before/after projects");
+    if (params?.trade?.trim()) {
+      queryParams.set(
+        "trade",
+        params.trade.trim(),
+      );
+    }
 
-    const result: ApiResponse<BeforeAfterPair[]> = await res.json();
+    const query = queryParams.toString();
+
+    const response = await fetch(
+      `${API_BASE_URL}/before-after${
+        query ? `?${query}` : ""
+      }`,
+      {
+        method: "GET",
+        headers: getAuthHeaders(),
+        credentials: "include",
+      },
+    );
+
+    const result =
+      await parseResponse<
+        BeforeAfterPair[]
+      >(response);
 
     return {
-      projects: result.data || [],
+      projects: result.data ?? [],
       meta: result.meta,
     };
   } catch (error) {
-    console.error("Error fetching before/after projects:", error);
-    return { projects: [], meta: undefined };
+    console.error(
+      "Error fetching before/after projects:",
+      error,
+    );
+
+    return {
+      projects: [],
+      meta: undefined,
+    };
   }
 }
 
-export async function getBeforeAfterProjectById(id: string): Promise<BeforeAfterPair> {
-  const res = await fetch(`${API_BASE_URL}/before-after/${id}`);
+export async function getBeforeAfterProjectById(
+  id: string,
+): Promise<BeforeAfterPair> {
+  const response = await fetch(
+    `${API_BASE_URL}/before-after/${id}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
+  );
 
-  if (!res.ok) throw new Error(`Before/After project ${id} not found`);
+  const result =
+    await parseResponse<BeforeAfterPair>(
+      response,
+    );
 
-  const result: ApiResponse<BeforeAfterPair> = await res.json();
   return result.data;
 }
 
-export async function getAllBeforeAfterProjects(): Promise<BeforeAfterPair[]> {
-  const result = await getBeforeAfterProjects({ limit: 50 });
+export async function getAllBeforeAfterProjects(): Promise<
+  BeforeAfterPair[]
+> {
+  const result =
+    await getBeforeAfterProjects({
+      page: 1,
+      limit: 50,
+    });
+
   return result.projects;
 }
 
-// Admin Operations (POST, PATCH, DELETE)
-export async function createBeforeAfterProject(payload: Partial<BeforeAfterPair>): Promise<BeforeAfterPair> {
-  const res = await fetch(`${API_BASE_URL}/before-after`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
-  });
+export async function createBeforeAfterProject(
+  payload: Partial<BeforeAfterPair>,
+): Promise<BeforeAfterPair> {
+  const response = await fetch(
+    `${API_BASE_URL}/before-after`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+      credentials: "include",
+      body: JSON.stringify(payload),
+    },
+  );
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to create project");
-  }
+  const result =
+    await parseResponse<BeforeAfterPair>(
+      response,
+    );
 
-  const result: ApiResponse<BeforeAfterPair> = await res.json();
   return result.data;
 }
 
-export async function updateBeforeAfterProject(id: string, payload: Partial<BeforeAfterPair>): Promise<BeforeAfterPair> {
-  const res = await fetch(`${API_BASE_URL}/before-after/${id}`, {
-    method: "PATCH",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
-  });
+export async function updateBeforeAfterProject(
+  id: string,
+  payload: Partial<BeforeAfterPair>,
+): Promise<BeforeAfterPair> {
+  const response = await fetch(
+    `${API_BASE_URL}/before-after/${id}`,
+    {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+      credentials: "include",
+      body: JSON.stringify(payload),
+    },
+  );
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to update project");
-  }
+  const result =
+    await parseResponse<BeforeAfterPair>(
+      response,
+    );
 
-  const result: ApiResponse<BeforeAfterPair> = await res.json();
   return result.data;
 }
 
-export async function deleteBeforeAfterProject(id: string): Promise<boolean> {
-  const res = await fetch(`${API_BASE_URL}/before-after/${id}`, {
-    method: "DELETE",
-    headers: getAuthHeaders(),
-  });
+export async function deleteBeforeAfterProject(
+  id: string,
+): Promise<boolean> {
+  const response = await fetch(
+    `${API_BASE_URL}/before-after/${id}`,
+    {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
+  );
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to delete project");
-  }
+  await parseResponse<unknown>(response);
 
   return true;
 }
 
-
-// ==========================================
-// 4. TESTIMONIALS API (Connected to Express API)
-// ==========================================
+/* =========================================================
+   4. TESTIMONIALS
+========================================================= */
 
 export async function getTestimonials(params?: {
   page?: number;
   limit?: number;
   trade?: string;
   search?: string;
-}): Promise<{ testimonials: Testimonial[]; meta?: PageMeta }> {
+}): Promise<{
+  testimonials: Testimonial[];
+  meta?: PageMeta;
+}> {
   try {
-    const queryParams = new URLSearchParams();
+    const queryParams =
+      new URLSearchParams();
 
-    if (params?.page) queryParams.append("page", params.page.toString());
-    if (params?.limit) queryParams.append("limit", params.limit.toString());
-    if (params?.search && params.search.trim() !== "") {
-      queryParams.append("search", params.search.trim());
+    if (params?.page) {
+      queryParams.set(
+        "page",
+        String(params.page),
+      );
     }
-    if (params?.trade && params.trade.trim() !== "") {
-      queryParams.append("trade", params.trade.trim());
+
+    if (params?.limit) {
+      queryParams.set(
+        "limit",
+        String(params.limit),
+      );
     }
 
-    const res = await fetch(`${API_BASE_URL}/testimonials?${queryParams.toString()}`);
+    if (params?.search?.trim()) {
+      queryParams.set(
+        "search",
+        params.search.trim(),
+      );
+    }
 
-    if (!res.ok) throw new Error("Failed to fetch testimonials");
+    if (params?.trade?.trim()) {
+      queryParams.set(
+        "trade",
+        params.trade.trim(),
+      );
+    }
 
-    const result: ApiResponse<Testimonial[]> = await res.json();
+    const query = queryParams.toString();
+
+    const response = await fetch(
+      `${API_BASE_URL}/testimonials${
+        query ? `?${query}` : ""
+      }`,
+      {
+        method: "GET",
+        headers: getAuthHeaders(),
+        credentials: "include",
+      },
+    );
+
+    const result =
+      await parseResponse<Testimonial[]>(
+        response,
+      );
 
     return {
-      testimonials: result.data || [],
+      testimonials: result.data ?? [],
       meta: result.meta,
     };
   } catch (error) {
-    console.error("Error fetching testimonials:", error);
-    return { testimonials: [], meta: undefined };
+    console.error(
+      "Error fetching testimonials:",
+      error,
+    );
+
+    return {
+      testimonials: [],
+      meta: undefined,
+    };
   }
 }
 
-export async function getTestimonialById(id: string): Promise<Testimonial> {
-  const res = await fetch(`${API_BASE_URL}/testimonials/${id}`);
+export async function getTestimonialById(
+  id: string,
+): Promise<Testimonial> {
+  const response = await fetch(
+    `${API_BASE_URL}/testimonials/${id}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
+  );
 
-  if (!res.ok) throw new Error(`Testimonial ${id} not found`);
+  const result =
+    await parseResponse<Testimonial>(
+      response,
+    );
 
-  const result: ApiResponse<Testimonial> = await res.json();
   return result.data;
 }
 
-export async function getAllTestimonials(): Promise<Testimonial[]> {
-  const result = await getTestimonials({ limit: 50 });
+export async function getAllTestimonials(): Promise<
+  Testimonial[]
+> {
+  const result = await getTestimonials({
+    page: 1,
+    limit: 50,
+  });
+
   return result.testimonials;
 }
 
-// Admin Operations (POST, PATCH, DELETE)
-export async function createTestimonialApi(payload: Partial<Testimonial>): Promise<Testimonial> {
-  const res = await fetch(`${API_BASE_URL}/testimonials`, {
-    method: "POST",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
-  });
+export async function createTestimonialApi(
+  payload: Partial<Testimonial>,
+): Promise<Testimonial> {
+  const response = await fetch(
+    `${API_BASE_URL}/testimonials`,
+    {
+      method: "POST",
+      headers: getAuthHeaders(),
+      credentials: "include",
+      body: JSON.stringify(payload),
+    },
+  );
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to create testimonial");
-  }
+  const result =
+    await parseResponse<Testimonial>(
+      response,
+    );
 
-  const result: ApiResponse<Testimonial> = await res.json();
   return result.data;
 }
 
-export async function updateTestimonialApi(id: string, payload: Partial<Testimonial>): Promise<Testimonial> {
-  const res = await fetch(`${API_BASE_URL}/testimonials/${id}`, {
-    method: "PATCH",
-    headers: getAuthHeaders(),
-    body: JSON.stringify(payload),
-  });
+export async function updateTestimonialApi(
+  id: string,
+  payload: Partial<Testimonial>,
+): Promise<Testimonial> {
+  const response = await fetch(
+    `${API_BASE_URL}/testimonials/${id}`,
+    {
+      method: "PATCH",
+      headers: getAuthHeaders(),
+      credentials: "include",
+      body: JSON.stringify(payload),
+    },
+  );
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to update testimonial");
-  }
+  const result =
+    await parseResponse<Testimonial>(
+      response,
+    );
 
-  const result: ApiResponse<Testimonial> = await res.json();
   return result.data;
 }
 
-export async function deleteTestimonialApi(id: string): Promise<boolean> {
-  const res = await fetch(`${API_BASE_URL}/testimonials/${id}`, {
-    method: "DELETE",
-    headers: getAuthHeaders(),
-  });
+export async function deleteTestimonialApi(
+  id: string,
+): Promise<boolean> {
+  const response = await fetch(
+    `${API_BASE_URL}/testimonials/${id}`,
+    {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
+  );
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to delete testimonial");
-  }
+  await parseResponse<unknown>(response);
 
   return true;
 }
 
-
-// ==========================================
-// 5. FAQS API (Mock Data)
-// ==========================================
+/* =========================================================
+   5. FAQ
+   Currently using mock data
+========================================================= */
 
 export async function getFAQs(params?: {
   page?: number;
   limit?: number;
   category?: string;
   search?: string;
-}): Promise<{ faqs: FAQItem[]; meta?: PageMeta }> {
+}): Promise<{
+  faqs: FAQItem[];
+  meta?: PageMeta;
+}> {
   await delay(100);
-  let filtered = FAQS;
 
-  if (params?.category) {
-    const categoryQuery = params.category.toLowerCase();
-    filtered = filtered.filter((faq) => faq.category.toLowerCase() === categoryQuery);
-  }
+  let filtered = [...FAQS];
 
-  if (params?.search) {
-    const q = params.search.toLowerCase();
-    filtered = filtered.filter((faq) =>
-      [faq.question, faq.answer, faq.category].some((value) => (value || '').toLowerCase().includes(q)),
+  if (params?.category?.trim()) {
+    const categoryQuery =
+      params.category.trim().toLowerCase();
+
+    filtered = filtered.filter(
+      (faq) =>
+        faq.category.toLowerCase() ===
+        categoryQuery,
     );
   }
 
-  const { items, meta } = paginate(filtered, params?.page, params?.limit);
-  return { faqs: items, meta };
+  if (params?.search?.trim()) {
+    const query =
+      params.search.trim().toLowerCase();
+
+    filtered = filtered.filter((faq) =>
+      [
+        faq.question,
+        faq.answer,
+        faq.category,
+      ].some((value) =>
+        String(value || "")
+          .toLowerCase()
+          .includes(query),
+      ),
+    );
+  }
+
+  const { items, meta } = paginate(
+    filtered,
+    params?.page,
+    params?.limit,
+  );
+
+  return {
+    faqs: items,
+    meta,
+  };
 }
 
-export async function getFAQById(id: string): Promise<FAQItem> {
+export async function getFAQById(
+  id: string,
+): Promise<FAQItem> {
   await delay(100);
-  const faq = FAQS.find((f) => f.id === id);
-  if (!faq) throw new Error(`FAQ ${id} not found`);
+
+  const faq = FAQS.find(
+    (item) => item.id === id,
+  );
+
+  if (!faq) {
+    throw new Error(
+      `FAQ ${id} not found`,
+    );
+  }
+
   return faq;
 }
 
-export async function getAllFAQs(): Promise<FAQItem[]> {
-  const result = await getFAQs({ limit: 50 });
+export async function getAllFAQs(): Promise<
+  FAQItem[]
+> {
+  const result = await getFAQs({
+    page: 1,
+    limit: 50,
+  });
+
   return result.faqs;
 }
+
+/* =========================================================
+   GENERIC API CLIENT
+   Used by payment.service.ts and other services
+========================================================= */
+
+const api = {
+  get: async <T>(
+    url: string,
+  ): Promise<{ data: ApiResponse<T> }> => {
+    const response = await fetch(
+      `${API_BASE_URL}${url}`,
+      {
+        method: "GET",
+        headers: getAuthHeaders(),
+        credentials: "include",
+      },
+    );
+
+    const result =
+      await parseResponse<T>(response);
+
+    return {
+      data: result,
+    };
+  },
+
+  post: async <T>(
+    url: string,
+    body?: unknown,
+  ): Promise<{ data: ApiResponse<T> }> => {
+    const response = await fetch(
+      `${API_BASE_URL}${url}`,
+      {
+        method: "POST",
+        headers: getAuthHeaders(),
+        credentials: "include",
+        body:
+          body !== undefined
+            ? JSON.stringify(body)
+            : undefined,
+      },
+    );
+
+    const result =
+      await parseResponse<T>(response);
+
+    return {
+      data: result,
+    };
+  },
+
+  patch: async <T>(
+    url: string,
+    body?: unknown,
+  ): Promise<{ data: ApiResponse<T> }> => {
+    const response = await fetch(
+      `${API_BASE_URL}${url}`,
+      {
+        method: "PATCH",
+        headers: getAuthHeaders(),
+        credentials: "include",
+        body:
+          body !== undefined
+            ? JSON.stringify(body)
+            : undefined,
+      },
+    );
+
+    const result =
+      await parseResponse<T>(response);
+
+    return {
+      data: result,
+    };
+  },
+
+  put: async <T>(
+    url: string,
+    body?: unknown,
+  ): Promise<{ data: ApiResponse<T> }> => {
+    const response = await fetch(
+      `${API_BASE_URL}${url}`,
+      {
+        method: "PUT",
+        headers: getAuthHeaders(),
+        credentials: "include",
+        body:
+          body !== undefined
+            ? JSON.stringify(body)
+            : undefined,
+      },
+    );
+
+    const result =
+      await parseResponse<T>(response);
+
+    return {
+      data: result,
+    };
+  },
+
+  delete: async <T>(
+    url: string,
+  ): Promise<{ data: ApiResponse<T> }> => {
+    const response = await fetch(
+      `${API_BASE_URL}${url}`,
+      {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+        credentials: "include",
+      },
+    );
+
+    const result =
+      await parseResponse<T>(response);
+
+    return {
+      data: result,
+    };
+  },
+};
+
+/* =========================================================
+   DEFAULT EXPORT
+========================================================= */
+
+export default api;

@@ -1,29 +1,29 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { Plus, Pencil, Trash2, Search, Loader2, AlertCircle, MessageSquareQuote, Star } from 'lucide-react';
 import {
   DataTable,
   Modal,
   ConfirmDialog,
-  ImageUpload,
   PageHeader,
   Input,
   Select,
   Textarea,
-} from '../../../../Components/ui';
-import { Badge } from '../../../../Components/ui/shared/Badge';
+  ImageUpload,
+} from '../../ui';
+import { Badge } from '../../ui/shared/Badge';
 import {
-  getTestimonialsAdmin,
+  getMyTestimonials,
   createTestimonial,
   updateTestimonial,
   deleteTestimonial,
   type TestimonialInput,
-} from '../../../../services/content.service';
+} from '../../../services/content.service';
+import type { Testimonial } from '../../../types';
 import {
-  UPLOAD_FOLDER_OPTIONS,
+  USER_UPLOAD_FOLDER_OPTIONS,
   type UploadFolder,
-} from '../../../../services/upload.service';
-import type { Testimonial } from '../../../../types';
+} from '../../../services/upload.service';
+import { useAuth } from '../../../Context/AuthContext';
 
 const TRADE_OPTIONS = [
   { value: 'Plumber', label: 'Plumber' },
@@ -47,7 +47,7 @@ const TRADE_TONES: Record<string, 'primary' | 'success' | 'warning' | 'neutral'>
   Roofer: 'neutral',
 };
 
-interface TestimonialFormValues {
+interface ReviewFormValues {
   author: string;
   role: string;
   city: string;
@@ -58,37 +58,64 @@ interface TestimonialFormValues {
   verifiedJob: string;
   avatar: string;
   folder: string;
-  source: string;
 }
 
-const toFormValues = (testimonial: Testimonial | null): TestimonialFormValues => ({
-  author: testimonial?.author ?? '',
-  role: testimonial?.role ?? 'Homeowner',
-  city: testimonial?.city ?? '',
-  trade: testimonial?.trade ?? '',
-  rating: testimonial?.rating ?? 5,
-  date: testimonial?.date ?? new Date().toLocaleDateString('en-GB'),
-  comment: testimonial?.comment ?? '',
-  verifiedJob: testimonial?.verifiedJob ?? '',
-  avatar: testimonial?.avatar ?? '',
+const emptyForm = (authorName: string): ReviewFormValues => ({
+  author: authorName || '',
+  role: 'Homeowner',
+  city: '',
+  trade: '',
+  rating: 5,
+  date: new Date().toLocaleDateString('en-GB'),
+  comment: '',
+  verifiedJob: '',
+  avatar: '',
   folder: 'avatars',
-  source: testimonial?.source ?? 'PLATFORM',
 });
 
-const toPayload = (values: TestimonialFormValues): TestimonialInput => ({
-  author: values.author.trim(),
-  role: values.role.trim() || undefined,
-  city: values.city.trim() || undefined,
-  trade: values.trade,
-  rating: Number(values.rating) || 5,
-  date: values.date.trim() || undefined,
-  comment: values.comment.trim() || undefined,
-  verifiedJob: values.verifiedJob.trim() || undefined,
-  avatar: values.avatar || undefined,
-  source: values.source.trim() || 'PLATFORM',
+const toFormValues = (t: Testimonial | null, authorName: string): ReviewFormValues =>
+  t
+    ? {
+        author: t.author || authorName,
+        role: t.role || 'Homeowner',
+        city: t.city || '',
+        trade: t.trade || '',
+        rating: t.rating ?? 5,
+        date: t.date || new Date().toLocaleDateString('en-GB'),
+        comment: t.comment || '',
+        verifiedJob: t.verifiedJob || '',
+        avatar: t.avatar ?? '',
+        folder: 'avatars',
+      }
+    : emptyForm(authorName);
+
+const toPayload = (v: ReviewFormValues): TestimonialInput => ({
+  author: v.author.trim(),
+  role: v.role.trim() || undefined,
+  city: v.city.trim() || undefined,
+  trade: v.trade,
+  rating: v.rating,
+  date: v.date.trim() || undefined,
+  comment: v.comment.trim() || undefined,
+  verifiedJob: v.verifiedJob.trim() || undefined,
+  avatar: v.avatar.trim() || undefined,
+  source: 'PLATFORM',
 });
 
-const TestimonialsManagement: React.FC = () => {
+interface MyTestimonialsManagerProps {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
+  eyebrow,
+  title,
+  description,
+}) => {
+  const { user } = useAuth();
+  const authorName = user?.name ?? '';
+
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,27 +124,20 @@ const TestimonialsManagement: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Testimonial | null>(null);
   const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState<ReviewFormValues>(() => emptyForm(authorName));
 
   const [deleteTarget, setDeleteTarget] = useState<Testimonial | null>(null);
   const [deleting, setDeleting] = useState(false);
-
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<TestimonialFormValues>({
-    defaultValues: toFormValues(null),
-  });
-
-  const avatar = watch('avatar');
-  const folder = watch('folder');
-  const rating = watch('rating');
 
   const loadTestimonials = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await getTestimonialsAdmin();
+      const data = await getMyTestimonials();
       setTestimonials(data);
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
-      setError(apiError.response?.data?.message || apiError.message || 'Failed to load testimonials.');
+      setError(apiError.response?.data?.message || apiError.message || 'Failed to load your reviews.');
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +151,7 @@ const TestimonialsManagement: React.FC = () => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) return testimonials;
     return testimonials.filter((t) =>
-      [t.author, t.comment, t.verifiedJob, t.city, t.trade, t.role]
+      [t.comment, t.trade, t.verifiedJob, t.city, t.author]
         .filter(Boolean)
         .some((v) => (v as string).toLowerCase().includes(q)),
     );
@@ -139,21 +159,24 @@ const TestimonialsManagement: React.FC = () => {
 
   const openCreate = () => {
     setEditing(null);
-    reset(toFormValues(null));
+    setForm(emptyForm(authorName));
     setModalOpen(true);
   };
 
-  const openEdit = (testimonial: Testimonial) => {
-    setEditing(testimonial);
-    reset(toFormValues(testimonial));
+  const openEdit = (t: Testimonial) => {
+    setEditing(t);
+    setForm(toFormValues(t, authorName));
     setModalOpen(true);
   };
 
-  const onSubmit = handleSubmit(async (values) => {
+  const handleChange = (field: keyof ReviewFormValues, value: string | number) =>
+    setForm((prev) => ({ ...prev, [field]: value }));
+
+  const handleSubmit = async () => {
     setSaving(true);
     setError(null);
     try {
-      const payload = toPayload(values);
+      const payload = toPayload(form);
       if (editing) {
         await updateTestimonial(editing.id, payload);
       } else {
@@ -163,11 +186,11 @@ const TestimonialsManagement: React.FC = () => {
       await loadTestimonials();
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
-      setError(apiError.response?.data?.message || apiError.message || 'Failed to save testimonial.');
+      setError(apiError.response?.data?.message || apiError.message || 'Failed to save your review.');
     } finally {
       setSaving(false);
     }
-  });
+  };
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -179,7 +202,7 @@ const TestimonialsManagement: React.FC = () => {
       setDeleteTarget(null);
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
-      setError(apiError.response?.data?.message || apiError.message || 'Failed to delete testimonial.');
+      setError(apiError.response?.data?.message || apiError.message || 'Failed to delete your review.');
       setDeleteTarget(null);
     } finally {
       setDeleting(false);
@@ -189,16 +212,16 @@ const TestimonialsManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="Admin Panel"
-        title="Testimonials Management"
-        description="Create, edit and remove customer testimonials and reviews shown across the platform."
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
         actions={
           <button
             onClick={openCreate}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4" />
-            New Testimonial
+            Write a Review
           </button>
         }
       />
@@ -212,13 +235,13 @@ const TestimonialsManagement: React.FC = () => {
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
         <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
-          {filtered.length} {filtered.length === 1 ? 'testimonial' : 'testimonials'}
+          {filtered.length} {filtered.length === 1 ? 'review' : 'reviews'}
         </p>
         <div className="relative sm:ml-auto w-full sm:w-72">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400" />
           <input
             type="text"
-            placeholder="Search testimonials..."
+            placeholder="Search your reviews..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="input-lh pl-9 h-10 text-sm"
@@ -228,40 +251,17 @@ const TestimonialsManagement: React.FC = () => {
 
       <DataTable<Testimonial>
         isLoading={isLoading}
-        loadingText="Loading testimonials..."
+        loadingText="Loading your reviews..."
         data={filtered}
         rowKey={(t) => t.id}
-        emptyTitle="No testimonials found"
-        emptyDescription="Add your first customer testimonial to get started."
+        emptyTitle="No reviews yet"
+        emptyDescription="Share your experience by writing your first review."
         emptyIcon={<MessageSquareQuote className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
         columns={[
           {
-            key: 'author',
-            header: 'Author',
-            render: (t) => (
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full overflow-hidden bg-navy-100 dark:bg-white/5 shrink-0 border border-navy-100 dark:border-white/10">
-                  {t.avatar ? (
-                    <img src={t.avatar} alt={t.author} className="w-full h-full object-cover" />
-                  ) : (
-                    <img src="/images/avatar-placeholder.svg" alt={t.author} className="w-full h-full object-cover" />
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <p className="font-semibold text-navy-800 dark:text-navy-200 truncate max-w-[200px]">{t.author}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[200px]">
-                    {t.role} &bull; {t.city}
-                  </p>
-                </div>
-              </div>
-            ),
-          },
-          {
             key: 'trade',
             header: 'Trade',
-            render: (t) => (
-              <Badge variant={TRADE_TONES[t.trade] ?? 'neutral'}>{t.trade}</Badge>
-            ),
+            render: (t) => <Badge variant={TRADE_TONES[t.trade] ?? 'neutral'}>{t.trade}</Badge>,
           },
           {
             key: 'rating',
@@ -316,8 +316,8 @@ const TestimonialsManagement: React.FC = () => {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editing ? `Edit ${editing.author}` : 'New Testimonial'}
-        description="Customer testimonials shown in the public Testimonials section."
+        title={editing ? 'Edit Review' : 'Write a Review'}
+        description="Share your experience to help other customers choose the right professional."
         size="lg"
         icon={<MessageSquareQuote className="w-5 h-5" />}
         footer={
@@ -330,12 +330,12 @@ const TestimonialsManagement: React.FC = () => {
               Cancel
             </button>
             <button
-              onClick={onSubmit}
+              onClick={handleSubmit}
               disabled={saving}
               className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {saving && <Loader2 className="w-4 h-4 animate-spin" />}
-              {editing ? 'Save changes' : 'Create testimonial'}
+              {editing ? 'Save changes' : 'Submit review'}
             </button>
           </>
         }
@@ -345,20 +345,38 @@ const TestimonialsManagement: React.FC = () => {
             label="Author name"
             required
             placeholder="e.g. John Doe"
-            error={errors.author?.message}
-            {...register('author', { required: 'Author name is required' })}
+            value={form.author}
+            onChange={(e) => handleChange('author', e.target.value)}
           />
-          <Input label="Role" placeholder="e.g. Homeowner / Landlord" {...register('role')} />
-          <Input label="City" placeholder="e.g. London" {...register('city')} />
+          <Input
+            label="Role"
+            required
+            placeholder="e.g. Homeowner / Landlord"
+            value={form.role}
+            onChange={(e) => handleChange('role', e.target.value)}
+          />
+          <Input
+            label="City"
+            required
+            placeholder="e.g. London"
+            value={form.city}
+            onChange={(e) => handleChange('city', e.target.value)}
+          />
           <Select
             label="Trade"
             required
             options={TRADE_OPTIONS}
             placeholder="Select a trade"
-            {...register('trade', { required: 'Trade is required' })}
+            value={form.trade}
+            onChange={(e) => handleChange('trade', e.target.value)}
           />
-          <Input label="Verified job" placeholder="e.g. Boiler Repair & Servicing" {...register('verifiedJob')} />
-          <Input label="Source" placeholder="PLATFORM" {...register('source')} />
+          <Input
+            label="Verified job"
+            required
+            placeholder="e.g. Boiler Repair & Servicing"
+            value={form.verifiedJob}
+            onChange={(e) => handleChange('verifiedJob', e.target.value)}
+          />
         </div>
 
         <div className="mt-4">
@@ -368,12 +386,12 @@ const TestimonialsManagement: React.FC = () => {
               <button
                 type="button"
                 key={star}
-                onClick={() => setValue('rating', star)}
+                onClick={() => handleChange('rating', star)}
                 className="transition-transform hover:scale-110"
               >
                 <Star
                   className={`w-6 h-6 ${
-                    (rating ?? 5) >= star ? 'fill-amber-400 text-amber-400' : 'text-navy-200 dark:text-navy-600'
+                    form.rating >= star ? 'fill-amber-400 text-amber-400' : 'text-navy-200 dark:text-navy-600'
                   }`}
                 />
               </button>
@@ -381,21 +399,29 @@ const TestimonialsManagement: React.FC = () => {
           </div>
         </div>
 
-        <Textarea label="Comment" placeholder="Share the customer's experience..." className="mt-4" {...register('comment')} />
-
         <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10 space-y-4">
           <Select
             label="Upload folder"
-            options={UPLOAD_FOLDER_OPTIONS}
-            {...register('folder')}
+            options={USER_UPLOAD_FOLDER_OPTIONS}
+            value={form.folder}
+            onChange={(e) => handleChange('folder', e.target.value)}
           />
           <ImageUpload
             label="Avatar"
-            value={avatar}
-            onChange={(v) => setValue('avatar', Array.isArray(v) ? v[0] ?? '' : v)}
-            folder={folder as UploadFolder}
+            value={form.avatar}
+            onChange={(v) => handleChange('avatar', Array.isArray(v) ? v[0] ?? '' : v)}
+            folder={form.folder as UploadFolder}
           />
         </div>
+
+        <Textarea
+          label="Comment"
+          required
+          placeholder="Share your experience..."
+          className="mt-4"
+          value={form.comment}
+          onChange={(e) => handleChange('comment', e.target.value)}
+        />
       </Modal>
 
       {/* Delete Confirm */}
@@ -404,12 +430,12 @@ const TestimonialsManagement: React.FC = () => {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         loading={deleting}
-        title="Delete testimonial?"
-        description={`This will permanently remove the testimonial from "${deleteTarget?.author}". This action cannot be undone.`}
-        confirmLabel="Delete testimonial"
+        title="Delete review?"
+        description={`This will permanently remove your review about "${deleteTarget?.trade}". This action cannot be undone.`}
+        confirmLabel="Delete review"
       />
     </div>
   );
 };
 
-export default TestimonialsManagement;
+export default MyTestimonialsManager;

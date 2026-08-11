@@ -1,4 +1,4 @@
-ï»¿import { Professional, BeforeAfterPair, Testimonial, FAQItem, Trade } from '../types';
+import { Professional, BeforeAfterPair, Testimonial, FAQItem, Trade } from '../types';
 
 const LOCAL_AVATAR = '/images/avatar-placeholder.svg';
 const LOCAL_IMAGE_A = '/images/service2.png';
@@ -29,7 +29,7 @@ export const FEATURED_PROS: Professional[] = [
       dbsChecked: true,
       gasSafe: true,
       insured: true,
-      insuranceAmount: 'Â£5,000,000',
+      insuranceAmount: '£5,000,000',
     },
     bio: 'Gas Safe registered heating engineer with over 14 years experience across North & Central London. Specialising in Worcester Bosch & Vaillant boilers.',
     specialties: ['Boiler Replacements', 'Power Flushing', 'Underfloor Heating', 'Gas Certificates'],
@@ -57,7 +57,7 @@ export const FEATURED_PROS: Professional[] = [
       dbsChecked: true,
       niceic: true,
       insured: true,
-      insuranceAmount: 'Â£2,000,000',
+      insuranceAmount: '£2,000,000',
     },
     bio: 'NICEIC Approved Contractor with a focus on smart home upgrades, fuseboard modernisations, and home EV charging points.',
     specialties: ['Consumer Unit Upgrades', 'EV Charger Install', 'Full Home Rewire', 'EICR Certificates'],
@@ -84,7 +84,7 @@ export const FEATURED_PROS: Professional[] = [
     verifiedStatus: {
       dbsChecked: true,
       insured: true,
-      insuranceAmount: 'Â£2,000,000',
+      insuranceAmount: '£2,000,000',
     },
     bio: 'Emergency locksmith providing non-destructive entry and British Standard BS3621 anti-snap cylinder upgrades. 24/7 rapid response guarantee.',
     specialties: ['Non-Destructive Entry', 'Ultion Lock Upgrade', 'uPVC Door Mechanisms', 'Smart Door Locks'],
@@ -111,7 +111,7 @@ export const FEATURED_PROS: Professional[] = [
     verifiedStatus: {
       dbsChecked: true,
       insured: true,
-      insuranceAmount: 'Â£1,000,000',
+      insuranceAmount: '£1,000,000',
     },
     bio: 'Meticulous deep cleaning specialist for high-end residential homes and estate agency end-of-tenancy guarantees.',
     specialties: ['End of Tenancy Guarantee', 'Oven Deep Clean', 'Upholstery Steam Cleaning'],
@@ -137,7 +137,7 @@ export const FEATURED_PROS: Professional[] = [
     verifiedStatus: {
       dbsChecked: true,
       insured: true,
-      insuranceAmount: 'Â£2,000,000',
+      insuranceAmount: '£2,000,000',
     },
     bio: 'Bespoke carpenter specialising in custom period home alcove units, oak staircases, and fitted wardrobes in Scottish properties.',
     specialties: ['Alcove Storage', 'Solid Oak Flooring', 'Custom Bookcases', 'Timber Sash Repairs'],
@@ -163,7 +163,7 @@ export const FEATURED_PROS: Professional[] = [
     verifiedStatus: {
       dbsChecked: true,
       insured: true,
-      insuranceAmount: 'Â£1,000,000',
+      insuranceAmount: '£1,000,000',
     },
     bio: 'RHS-qualified garden designer providing seasonal maintenance, porcelain patio paving, and high-pressure stone cleaning.',
     specialties: ['Porcelain Paving', 'Indian Sandstone Jetwash', 'Turfing & Irrigation'],
@@ -183,7 +183,7 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterPair[] = [
     beforeImage: LOCAL_IMAGE_A,
     afterImage: LOCAL_IMAGE_B,
     description: 'Complete pipework rerouting, brass tapware installation, and Metro subway tile splashback in a 19th-century Fulham property.',
-    cost: 'Â£1,850',
+    cost: '£1,850',
     completionDays: '3 Days',
   },
   {
@@ -194,7 +194,7 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterPair[] = [
     beforeImage: LOCAL_IMAGE_C,
     afterImage: LOCAL_IMAGE_D,
     description: 'Cleared 40sqm of overgrown brambles, installed sub-base drainage, laid Grey Italian Porcelain slabs and outdoor LED mood lights.',
-    cost: 'Â£4,200',
+    cost: '£4,200',
     completionDays: '5 Days',
   },
   {
@@ -205,7 +205,7 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterPair[] = [
     beforeImage: LOCAL_IMAGE_E,
     afterImage: LOCAL_IMAGE_F,
     description: 'Handcrafted moisture-resistant MDF twin alcove cupboards with traditional shaker doors and integrated warm LED strip lighting.',
-    cost: 'Â£1,400',
+    cost: '£1,400',
     completionDays: '2 Days',
   },
 ];
@@ -221,7 +221,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: '2 days ago',
     comment: 'When our boiler started leaking at 8pm on a freezing Tuesday, James from LocalHero arrived within 35 minutes! Fixed the pressure relief valve quickly and charged the exact upfront quote. Absolute lifesavers.',
     verifiedJob: 'Emergency Boiler Valve Repair',
-    avatar: 'https://randomuser.me/api/portraits/women/65.jpg',
+    avatar: null,
     source: 'Trustpilot',
   },
   {
@@ -234,7 +234,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: '1 week ago',
     comment: 'Booked an EICR inspection and consumer unit upgrade for my rental flat. Sarah was incredibly professional, provided all official NICEIC certificates within 24 hours, and left the flat spotless.',
     verifiedJob: 'Consumer Unit & EICR Inspection',
-    avatar: 'https://randomuser.me/api/portraits/men/54.jpg',
+    avatar: null,
     source: 'Google',
   },
   {
@@ -247,7 +247,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: '3 weeks ago',
     comment: 'The alcove cabinets David built transformed our living room completely. The attention to detail, precision scribe cuts around Victorian skirting, and paint prep were second to none.',
     verifiedJob: 'Bespoke Alcove Cabinets',
-    avatar: 'https://randomuser.me/api/portraits/women/23.jpg',
+    avatar: null,
     source: 'LocalHero Verified',
   },
   {
@@ -260,7 +260,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: '4 days ago',
     comment: 'Locked out at midnight after a long flight and Marcus turned up in 12 minutes flat. Non-destructive entry, no drama, and he upgraded my cylinder to an anti-snap lock on the spot.',
     verifiedJob: 'Emergency Lockout & Cylinder Upgrade',
-    avatar: 'https://randomuser.me/api/portraits/women/50.jpg',
+    avatar: null,
     source: 'Google',
   },
   {
@@ -273,7 +273,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: '2 weeks ago',
     comment: 'We use Elena for every end-of-tenancy turnover now. Landlords sign off first viewing, every time. The oven and upholstery steam clean are next level.',
     verifiedJob: 'End of Tenancy Deep Clean',
-    avatar: 'https://randomuser.me/api/portraits/men/41.jpg',
+    avatar: null,
     source: 'Trustpilot',
   },
   {
@@ -286,7 +286,7 @@ export const TESTIMONIALS: Testimonial[] = [
     date: '5 days ago',
     comment: 'Liam relaid our entire back garden in porcelain paving and it looks like something out of a magazine. Turned up on time both days and cleaned up completely after himself.',
     verifiedJob: 'Porcelain Patio Paving',
-    avatar: 'https://randomuser.me/api/portraits/women/12.jpg',
+    avatar: null,
     source: 'LocalHero Verified',
   },
 ];
@@ -305,7 +305,7 @@ export const FAQS: FAQItem[] = [
     id: 'faq-1',
     category: 'General',
     question: 'How does LocalHero vet tradespeople in the UK?',
-    answer: 'Every professional on LocalHero undergoes our strict 6-point verification process. We verify proof of identity (DBS background check), professional qualifications (e.g. Gas Safe, NICEIC, NVQ certifications), public liability insurance (minimum Â£1M coverage), business address, and past client references before they can accept bookings.',
+    answer: 'Every professional on LocalHero undergoes our strict 6-point verification process. We verify proof of identity (DBS background check), professional qualifications (e.g. Gas Safe, NICEIC, NVQ certifications), public liability insurance (minimum £1M coverage), business address, and past client references before they can accept bookings.',
   },
   {
     id: 'faq-2',
@@ -323,7 +323,7 @@ export const FAQS: FAQItem[] = [
     id: 'faq-4',
     category: 'Pros & Vetting',
     question: 'Is my property protected if something goes wrong?',
-    answer: 'Yes! All jobs booked and paid through the LocalHero app are covered by our Â£2,000,000 Property Damage Guarantee in addition to the professionalâ€™s own mandatory Public Liability Insurance.',
+    answer: 'Yes! All jobs booked and paid through the LocalHero app are covered by our £2,000,000 Property Damage Guarantee in addition to the professional’s own mandatory Public Liability Insurance.',
   },
   {
     id: 'faq-5',
@@ -341,14 +341,14 @@ export const TRADES: Trade[] = [
     subtitle: 'Expert Plumbing & Heating',
     iconName: 'Wrench',
     description: 'Boilers, leaks, radiator installs, bathroom fittings, emergency unblocking.',
-    avgHourlyRate: 'Â£45 - Â£75/hr',
+    avgHourlyRate: '£45 - £75/hr',
     activeProsCount: 1420,
     popularTasks: ['Boiler Servicing', 'Leak Repair', 'Radiator Fitting', 'Drain Unblocking'],
     badge: '24/7 Emergency',
     featuredService: {
       id: 'srv-1',
       title: 'Emergency Boiler Repair',
-      estimatedPrice: 'From Â£85',
+      estimatedPrice: 'From £85',
       timeEstimate: '1 - 2 Hours',
       popularFor: 'No heating, leaks, pressure loss',
       description:
@@ -365,14 +365,14 @@ export const TRADES: Trade[] = [
     subtitle: 'Certified Electrical Services',
     iconName: 'Zap',
     description: 'Fuse board upgrades, rewiring, EV charger installation, EICR inspection certificates.',
-    avgHourlyRate: 'Â£50 - Â£85/hr',
+    avgHourlyRate: '£50 - £85/hr',
     activeProsCount: 1180,
     popularTasks: ['EICR Certificate', 'EV Charger Install', 'Fuseboard Upgrade', 'Lighting & Sockets'],
     badge: 'NICEIC Certified',
     featuredService: {
       id: 'srv-2',
       title: 'Consumer Unit Upgrade',
-      estimatedPrice: 'From Â£420',
+      estimatedPrice: 'From £420',
       timeEstimate: '4 - 6 Hours',
       popularFor: 'Fuse board replacement & rewiring',
       description:
@@ -388,14 +388,14 @@ export const TRADES: Trade[] = [
     subtitle: 'Domestic & Deep Cleaning',
     iconName: 'Sparkles',
     description: 'End-of-tenancy deep cleaning, carpet sanitising, regular domestic home care.',
-    avgHourlyRate: 'Â£18 - Â£32/hr',
+    avgHourlyRate: '£18 - £32/hr',
     activeProsCount: 2350,
     popularTasks: ['End of Tenancy', 'Deep Carpet Clean', 'Weekly Domestic', 'Oven Cleaning'],
     badge: 'Eco Friendly',
     featuredService: {
       id: 'srv-3',
       title: 'End of Tenancy Cleaning',
-      estimatedPrice: 'From Â£160',
+      estimatedPrice: 'From £160',
       timeEstimate: '3 - 5 Hours',
       popularFor: 'Move-out deep cleaning',
       description:
@@ -411,13 +411,13 @@ export const TRADES: Trade[] = [
     subtitle: 'Interior & Exterior Decorating',
     iconName: 'Paintbrush',
     description: 'Interior room painting, exterior masonry protection, wallpapering, woodwork staining.',
-    avgHourlyRate: 'Â£28 - Â£45/hr',
+    avgHourlyRate: '£28 - £45/hr',
     activeProsCount: 940,
     popularTasks: ['Full Room Interior', 'Exterior Masonry', 'Feature Wall Wallpaper', 'Sash Window Paint'],
     featuredService: {
       id: 'srv-4',
       title: 'Interior & Exterior Painting',
-      estimatedPrice: 'From Â£250',
+      estimatedPrice: 'From £250',
       timeEstimate: '1 - 2 Days',
       popularFor: 'Walls, ceilings & woodwork',
       description:
@@ -433,13 +433,13 @@ export const TRADES: Trade[] = [
     subtitle: 'Lawn Care & Landscaping',
     iconName: 'Trees',
     description: 'Lawn maintenance, patio pressure washing, hedge trimming, garden clearance & turfing.',
-    avgHourlyRate: 'Â£25 - Â£40/hr',
+    avgHourlyRate: '£25 - £40/hr',
     activeProsCount: 890,
     popularTasks: ['Patio Jet Wash', 'Hedge Trimming', 'Turf Laying', 'Seasonal Clearance'],
     featuredService: {
       id: 'srv-5',
       title: 'Garden Maintenance',
-      estimatedPrice: 'From Â£95',
+      estimatedPrice: 'From £95',
       timeEstimate: '2 - 3 Hours',
       popularFor: 'Lawn care & hedge trimming',
       description:
@@ -455,13 +455,13 @@ export const TRADES: Trade[] = [
     subtitle: 'Bespoke Joinery & Carpentry',
     iconName: 'Hammer',
     description: 'Custom alcove shelving, door hanging, bespoke wardrobes, kitchen unit fitting.',
-    avgHourlyRate: 'Â£35 - Â£60/hr',
+    avgHourlyRate: '£35 - £60/hr',
     activeProsCount: 760,
     popularTasks: ['Alcove Shelving', 'Internal Door Hanging', 'Bespoke Wardrobe', 'Decking Installation'],
     featuredService: {
       id: 'srv-6',
       title: 'Custom Carpentry',
-      estimatedPrice: 'From Â£180',
+      estimatedPrice: 'From £180',
       timeEstimate: '4 - 8 Hours',
       popularFor: 'Shelving, doors & wardrobes',
       description:
@@ -477,14 +477,14 @@ export const TRADES: Trade[] = [
     subtitle: '24/7 Security & Lock Services',
     iconName: 'Key',
     description: 'Emergency lockout access, anti-snap Ultion lock upgrades, smart lock fitting.',
-    avgHourlyRate: 'Â£60 - Â£110/hr',
+    avgHourlyRate: '£60 - £110/hr',
     activeProsCount: 620,
     popularTasks: ['Emergency Lockout', 'Anti-Snap Cylinders', 'Smart Yale Lock', 'uPVC Door Repair'],
     badge: '45-Min Dispatch',
     featuredService: {
       id: 'srv-7',
       title: 'Emergency Lock Replacement',
-      estimatedPrice: 'From Â£120',
+      estimatedPrice: 'From £120',
       timeEstimate: '30 - 45 Minutes',
       popularFor: 'Lost keys & lock upgrades',
       description:
@@ -501,13 +501,13 @@ export const TRADES: Trade[] = [
     subtitle: 'Roof Repairs & Maintenance',
     iconName: 'Home',
     description: 'Roof tile replacements, gutter unblocking & clearing, flat roof felt/EPDM repairs.',
-    avgHourlyRate: 'Â£45 - Â£80/hr',
+    avgHourlyRate: '£45 - £80/hr',
     activeProsCount: 510,
     popularTasks: ['Gutter Clean & Fix', 'Slipping Slate Fix', 'Flat Roof EPDM', 'Chimney Repointing'],
     featuredService: {
       id: 'srv-8',
       title: 'Roof Repair & Gutter Cleaning',
-      estimatedPrice: 'From Â£150',
+      estimatedPrice: 'From £150',
       timeEstimate: '2 - 5 Hours',
       popularFor: 'Leaks, tiles & gutters',
       description:

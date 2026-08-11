@@ -37,6 +37,23 @@ interface TradeFormValues {
   featuredImage: string;
 }
 
+const defaultFormValues: TradeFormValues = {
+  category: '',
+  subtitle: '',
+  iconName: '',
+  description: '',
+  avgHourlyRate: '',
+  startingPrice: '',
+  activeProsCount: '',
+  popularTasks: '',
+  badge: '',
+  featuredTitle: '',
+  featuredPrice: '',
+  featuredTime: '',
+  featuredDescription: '',
+  featuredImage: '',
+};
+
 const toFormValues = (trade: Trade): TradeFormValues => ({
   category: trade.category ?? trade.id ?? '',
   subtitle: trade.subtitle ?? '',
@@ -44,7 +61,7 @@ const toFormValues = (trade: Trade): TradeFormValues => ({
   description: trade.description ?? '',
   avgHourlyRate: trade.avgHourlyRate ?? '',
   startingPrice: trade.startingPrice ?? '',
-  activeProsCount: String(trade.activeProsCount ?? ''),
+  activeProsCount: trade.activeProsCount != null ? String(trade.activeProsCount) : '',
   popularTasks: (trade.popularTasks ?? []).join(', '),
   badge: trade.badge ?? '',
   featuredTitle: trade.featuredService?.title ?? '',
@@ -54,31 +71,36 @@ const toFormValues = (trade: Trade): TradeFormValues => ({
   featuredImage: trade.featuredService?.image ?? '',
 });
 
-const toPayload = (values: TradeFormValues, original: Trade | null): TradeInput => ({
-  category: values.category.trim(),
-  subtitle: values.subtitle.trim() || undefined,
-  iconName: values.iconName.trim() || undefined,
-  description: values.description.trim() || undefined,
-  avgHourlyRate: values.avgHourlyRate.trim() || undefined,
-  startingPrice: values.startingPrice.trim() || undefined,
-  activeProsCount: values.activeProsCount ? Number(values.activeProsCount) : undefined,
-  popularTasks:
-    values.popularTasks
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean),
-  badge: values.badge.trim() || undefined,
-  featuredService: {
-    title: values.featuredTitle.trim() || (original?.featuredService?.title ?? ''),
-    estimatedPrice: values.featuredPrice.trim() || undefined,
-    timeEstimate: values.featuredTime.trim() || undefined,
-    description: values.featuredDescription.trim() || undefined,
-    included: original?.featuredService?.included ?? [],
-    icon: original?.featuredService?.icon ?? undefined,
-    image: values.featuredImage || original?.featuredService?.image || undefined,
-    isEmergency: original?.featuredService?.isEmergency ?? false,
-  },
-});
+const toPayload = (values: TradeFormValues, original: Trade | null): TradeInput => {
+  const featuredTitle = values.featuredTitle.trim() || original?.featuredService?.title || values.category.trim();
+
+  return {
+    category: values.category.trim(),
+    subtitle: values.subtitle.trim() || undefined,
+    iconName: values.iconName.trim() || undefined,
+    description: values.description.trim() || undefined,
+    avgHourlyRate: values.avgHourlyRate.trim() || undefined,
+    startingPrice: values.startingPrice.trim() || undefined,
+    activeProsCount: values.activeProsCount ? Number(values.activeProsCount) : undefined,
+    popularTasks: values.popularTasks
+      ? values.popularTasks
+          .split(',')
+          .map((t) => t.trim())
+          .filter(Boolean)
+      : [],
+    badge: values.badge.trim() || undefined,
+    featuredService: {
+      title: featuredTitle,
+      estimatedPrice: values.featuredPrice.trim() || undefined,
+      timeEstimate: values.featuredTime.trim() || undefined,
+      description: values.featuredDescription.trim() || undefined,
+      included: original?.featuredService?.included ?? [],
+      icon: original?.featuredService?.icon ?? undefined,
+      image: values.featuredImage || original?.featuredService?.image || undefined,
+      isEmergency: original?.featuredService?.isEmergency ?? false,
+    },
+  };
+};
 
 const TradesManagement: React.FC = () => {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -93,7 +115,17 @@ const TradesManagement: React.FC = () => {
   const [deleteTarget, setDeleteTarget] = useState<Trade | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<TradeFormValues>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<TradeFormValues>({
+    defaultValues: defaultFormValues,
+  });
+
   const featuredImage = watch('featuredImage');
 
   const loadTrades = useCallback(async () => {
@@ -101,7 +133,7 @@ const TradesManagement: React.FC = () => {
     setError(null);
     try {
       const data = await getTradesAdmin();
-      setTrades(data);
+      setTrades(data || []);
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
       setError(apiError.response?.data?.message || apiError.message || 'Failed to load trades.');
@@ -126,7 +158,7 @@ const TradesManagement: React.FC = () => {
 
   const openCreate = () => {
     setEditing(null);
-    reset(toFormValues({ id: '', category: '', popularTasks: [] } as Trade));
+    reset(defaultFormValues);
     setModalOpen(true);
   };
 
@@ -322,6 +354,7 @@ const TradesManagement: React.FC = () => {
         footer={
           <>
             <button
+              type="button"
               onClick={() => setModalOpen(false)}
               disabled={saving}
               className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
@@ -329,6 +362,7 @@ const TradesManagement: React.FC = () => {
               Cancel
             </button>
             <button
+              type="button"
               onClick={onSubmit}
               disabled={saving}
               className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
@@ -339,47 +373,99 @@ const TradesManagement: React.FC = () => {
           </>
         }
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input label="Category name" required placeholder="e.g. Plumber" error={errors.category?.message} {...register('category', { required: 'Category is required' })} />
-          <Input label="Subtitle" placeholder="e.g. Expert Plumbing & Heating" {...register('subtitle')} />
-          <Input label="Icon name" hint="lucide icon name, e.g. Wrench" {...register('iconName')} />
-          <Input label="Avg hourly rate" placeholder="e.g. £45 - £75/hr" {...register('avgHourlyRate')} />
-          <Input label="Starting price" placeholder="e.g. From £85" {...register('startingPrice')} />
-          <Input
-            label="Active pros count"
-            type="number"
-            placeholder="e.g. 1420"
-            {...register('activeProsCount')}
-          />
-          <Input label="Badge" placeholder="e.g. 24/7 Emergency" {...register('badge')} />
-        </div>
-
-        <Textarea label="Description" placeholder="Short description of this trade" className="mt-4" {...register('description')} />
-
-        <Input label="Popular tasks" hint="Comma separated, e.g. Boiler Servicing, Leak Repair" placeholder="Boiler Servicing, Leak Repair" className="mt-4" {...register('popularTasks')} />
-
-        <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10">
-          <p className="text-xs font-semibold text-navy-700 dark:text-navy-300 uppercase tracking-wider mb-3">
-            Featured service
-          </p>
+        <form onSubmit={onSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input label="Service title" placeholder="e.g. Emergency Boiler Repair" {...register('featuredTitle')} />
-            <Input label="Estimated price" placeholder="e.g. From £85" {...register('featuredPrice')} />
-            <Input label="Time estimate" placeholder="e.g. 1 - 2 Hours" {...register('featuredTime')} />
-          </div>
-          <Textarea label="Service description" placeholder="Describe this featured service" className="mt-4" {...register('featuredDescription')} />
-          <div className="mt-4">
-            <ImageUpload
-              label="Service image"
-              value={featuredImage}
-              onChange={(v) => {
-                const url = Array.isArray(v) ? v[0] ?? '' : v;
-                setValue('featuredImage', url);
-              }}
-              folder="trades"
+            <Input
+              label="Category name"
+              required
+              placeholder="e.g. Plumber"
+              error={errors.category?.message}
+              {...register('category', { required: 'Category is required' })}
             />
+            <Input
+              label="Subtitle"
+              placeholder="e.g. Expert Plumbing & Heating"
+              {...register('subtitle')}
+            />
+            <Input
+              label="Icon name"
+              hint="lucide icon name, e.g. Wrench"
+              {...register('iconName')}
+            />
+            <Input
+              label="Avg hourly rate"
+              placeholder="e.g. £45 - £75/hr"
+              {...register('avgHourlyRate')}
+            />
+            <Input
+              label="Starting price"
+              placeholder="e.g. From £85"
+              {...register('startingPrice')}
+            />
+            <Input
+              label="Active pros count"
+              type="number"
+              placeholder="e.g. 1420"
+              {...register('activeProsCount')}
+            />
+            <Input label="Badge" placeholder="e.g. 24/7 Emergency" {...register('badge')} />
           </div>
-        </div>
+
+          <Textarea
+            label="Description"
+            placeholder="Short description of this trade"
+            className="mt-4"
+            {...register('description')}
+          />
+
+          <Input
+            label="Popular tasks"
+            hint="Comma separated, e.g. Boiler Servicing, Leak Repair"
+            placeholder="Boiler Servicing, Leak Repair"
+            className="mt-4"
+            {...register('popularTasks')}
+          />
+
+          <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10">
+            <p className="text-xs font-semibold text-navy-700 dark:text-navy-300 uppercase tracking-wider mb-3">
+              Featured service
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Service title"
+                placeholder="e.g. Emergency Boiler Repair"
+                {...register('featuredTitle')}
+              />
+              <Input
+                label="Estimated price"
+                placeholder="e.g. From £85"
+                {...register('featuredPrice')}
+              />
+              <Input
+                label="Time estimate"
+                placeholder="e.g. 1 - 2 Hours"
+                {...register('featuredTime')}
+              />
+            </div>
+            <Textarea
+              label="Service description"
+              placeholder="Describe this featured service"
+              className="mt-4"
+              {...register('featuredDescription')}
+            />
+            <div className="mt-4">
+              <ImageUpload
+                label="Service image"
+                value={featuredImage}
+                onChange={(v) => {
+                  const url = Array.isArray(v) ? v[0] ?? '' : v;
+                  setValue('featuredImage', url, { shouldValidate: true, shouldDirty: true });
+                }}
+                folder="trades"
+              />
+            </div>
+          </div>
+        </form>
       </Modal>
 
       {/* Delete Confirm */}

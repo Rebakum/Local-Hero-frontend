@@ -38,8 +38,11 @@ export interface BookingRecord {
   } | null;
   payment?: {
     id: string;
+    bookingId: string;
     status: 'PENDING' | 'PAID' | 'FAILED' | 'REFUNDED';
     amountInPence: number;
+    currency: string;
+    paidAt?: string | null;
   } | null;
 }
 
@@ -107,7 +110,13 @@ export async function getBookingById(id: string): Promise<BookingRecord> {
 
 export async function updateBookingStatus(
   id: string,
-  update: { status: BookingStatus; priceInPence?: number; professionalId?: string }
+  update: {
+    status: BookingStatus;
+    priceInPence?: number;
+    professionalId?: string;
+    bookingDate?: string;
+    timeSlot?: string;
+  }
 ): Promise<BookingRecord> {
   const { data } = await axiosInstance.patch<ApiEnvelope<BookingRecord>>(
     `/bookings/${id}/status`,

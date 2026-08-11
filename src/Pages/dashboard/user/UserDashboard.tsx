@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useInView } from 'motion/react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../../Context/AuthContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
@@ -20,22 +20,21 @@ import {
   Bell,
   Star,
   Zap,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
 import { CreateTestimonialModal } from '../../../Components/Sections/Testimonials/CreateTestimonialModal';
-
-const MOCK_BOOKINGS = [
-  { id: '1', service: 'Emergency Plumbing', provider: "Mike's Plumbing Co.", date: '2026-08-12', status: 'Accepted' as const, postcode: 'SW1A 1AA' },
-  { id: '2', service: 'Full House Clean', provider: 'SparkleClean UK', date: '2026-08-15', status: 'Pending' as const, postcode: 'E1 6AN' },
-  { id: '3', service: 'Garden Landscaping', provider: 'GreenThumb Pros', date: '2026-08-20', status: 'Completed' as const, postcode: 'W1D 3AL' },
-  { id: '4', service: 'Electrical Inspection', provider: 'VoltFix Electricians', date: '2026-08-22', status: 'Pending' as const, postcode: 'N1 9GU' },
-];
+import { getMyBookings } from '../../../services/booking.service';
+import type { BookingRecord } from '../../../services/booking.service';
 
 const STATUS_STYLES: Record<string, { badge: 'success' | 'warning' | 'neutral'; icon: React.FC<{ className?: string }>; dot: string }> = {
-  Accepted: { badge: 'success', icon: CheckCircle2, dot: 'bg-emerald-500' },
-  Pending: { badge: 'warning', icon: Clock, dot: 'bg-amber-500' },
-  Completed: { badge: 'neutral', icon: CheckCircle2, dot: 'bg-navy-400' },
-  Rejected: { badge: 'emergency' as 'warning', icon: XCircle, dot: 'bg-red-500' },
+  ACCEPTED: { badge: 'success', icon: CheckCircle2, dot: 'bg-emerald-500' },
+  IN_PROGRESS: { badge: 'success', icon: CheckCircle2, dot: 'bg-blue-500' },
+  PENDING: { badge: 'warning', icon: Clock, dot: 'bg-amber-500' },
+  COMPLETED: { badge: 'neutral', icon: CheckCircle2, dot: 'bg-navy-400' },
+  REJECTED: { badge: 'emergency' as 'warning', icon: XCircle, dot: 'bg-red-500' },
+  CANCELLED: { badge: 'warning', icon: XCircle, dot: 'bg-red-400' },
 };
 
 const AnimatedCounter: React.FC<{ value: string }> = ({ value }) => {
@@ -57,6 +56,33 @@ const UserDashboard: React.FC = () => {
   const { user } = useAuth();
   const [testimonialOpen, setTestimonialOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [bookingsLoading, setBookingsLoading] = useState(true);
+  const [bookingsError, setBookingsError] = useState('');
+
+  const loadBookings = useCallback(async () => {
+    try {
+      setBookingsLoading(true);
+      setBookingsError('');
+      const data = await getMyBookings();
+      setBookings(data);
+    } catch {
+      setBookingsError('Failed to load your bookings. Please try again.');
+    } finally {
+      setBookingsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadBookings();
+  }, [loadBookings]);
+
+  const activeCount = bookings.filter((b) => ['PENDING', 'ACCEPTED', 'IN_PROGRESS'].includes(b.status)).length;
+  const completedCount = bookings.filter((b) => b.status === 'COMPLETED').length;
+
+  const recentBookings = [...bookings]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5);
 
   return (
     <div className="space-y-8">
@@ -65,7 +91,7 @@ const UserDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary/90 to-primary/70 p-6 sm:p-8 text-white shadow-xl shadow-primary/20"
+        className="relative overflow-hidden rounded-3xl  p-6 sm:p-8 text-navy-950 shadow-xl shadow-primary/20"
       >
         {/* Decorative elements */}
         <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-white/10 blur-sm" />
@@ -80,10 +106,8 @@ const UserDashboard: React.FC = () => {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="flex items-center gap-2 mb-2"
             >
-              <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <span className="text-sm font-medium text-white/80">Welcome back,</span>
+            
+              <span className="text-sm font-medium text-navy-950">Welcome back,</span>
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, x: -12 }}
@@ -97,7 +121,7 @@ const UserDashboard: React.FC = () => {
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-2 text-sm text-white/70 max-w-md leading-relaxed"
+              className="mt-2 text-sm text-navy-950 max-w-md leading-relaxed"
             >
               Manage your bookings, get quotes from trusted professionals, and track your service history all in one place.
             </motion.p>
@@ -121,10 +145,10 @@ const UserDashboard: React.FC = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { icon: ClipboardList, label: 'Active Bookings', value: '2', color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: '+1 this week', trend: 'up' },
-          { icon: MessageSquare, label: 'Pending Quotes', value: '3', color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: '2 urgent', trend: 'up' },
+          { icon: ClipboardList, label: 'Active Bookings', value: String(activeCount), color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: 'in progress', trend: 'up' },
           { icon: Bookmark, label: 'Saved Pros', value: '5', color: 'from-primary to-primary/80', lightColor: 'bg-primary/10', textColor: 'text-primary', change: '+2 this month', trend: 'up' },
-          { icon: Calendar, label: 'Completed', value: '12', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'All time', trend: 'up' },
+          { icon: Calendar, label: 'Completed', value: String(completedCount), color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'All time', trend: 'up' },
+          { icon: MessageSquare, label: 'Pending Quotes', value: '3', color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: '2 urgent', trend: 'up' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -173,7 +197,7 @@ const UserDashboard: React.FC = () => {
                 <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">Your latest service requests</p>
               </div>
             </div>
-            <Badge variant="primary">{MOCK_BOOKINGS.length} Active</Badge>
+            <Badge variant="primary">{recentBookings.length} Recent</Badge>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -187,8 +211,40 @@ const UserDashboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {MOCK_BOOKINGS.map((booking, i) => {
-                  const statusConfig = STATUS_STYLES[booking.status] || STATUS_STYLES.Pending;
+                {bookingsLoading ? (
+                  <tr>
+                    <td colSpan={5} className="py-12">
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <Loader2 className="w-7 h-7 text-primary animate-spin" />
+                        <p className="text-sm text-navy-400 dark:text-navy-500">Loading your bookings...</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : bookingsError ? (
+                  <tr>
+                    <td colSpan={5} className="py-12">
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <AlertCircle className="w-7 h-7 text-red-400" />
+                        <p className="text-sm text-navy-400 dark:text-navy-500">{bookingsError}</p>
+                        <button onClick={loadBookings} className="text-xs font-semibold text-primary hover:underline mt-1">
+                          Retry
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ) : recentBookings.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-12">
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <ClipboardList className="w-7 h-7 text-navy-300 dark:text-navy-600" />
+                        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">No bookings yet</p>
+                        <p className="text-xs text-navy-400 dark:text-navy-500">Book a professional to get started.</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  recentBookings.map((booking, i) => {
+                  const statusConfig = STATUS_STYLES[booking.status] || STATUS_STYLES.PENDING;
                   return (
                     <motion.tr
                       key={booking.id}
@@ -202,13 +258,13 @@ const UserDashboard: React.FC = () => {
                           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                             <Wrench className="w-4 h-4 text-primary" />
                           </div>
-                          <span className="font-semibold text-navy-800 dark:text-navy-200">{booking.service}</span>
+                          <span className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{booking.trade}</span>
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 text-navy-500 dark:text-navy-400 hidden md:table-cell">{booking.provider}</td>
+                      <td className="py-3.5 px-4 text-navy-500 dark:text-navy-400 hidden md:table-cell">{booking.professional?.companyName || booking.professional?.name || 'Unassigned'}</td>
                       <td className="py-3.5 px-4 hidden sm:table-cell">
                         <span className="text-navy-500 dark:text-navy-400 text-sm">
-                          {new Date(booking.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                          {new Date(booking.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 hidden lg:table-cell">
@@ -221,13 +277,14 @@ const UserDashboard: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${statusConfig.dot}`} />
                           <Badge variant={statusConfig.badge}>
-                            {booking.status}
+                            {booking.status.replace('_', ' ')}
                           </Badge>
                         </div>
                       </td>
                     </motion.tr>
                   );
-                })}
+                })
+              )}
               </tbody>
             </table>
           </div>

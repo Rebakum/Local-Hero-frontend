@@ -8,6 +8,7 @@ import type {
   DeleteAccountPayload,
   PendingUser,
   ProviderApplicationPayload,
+  ProviderApplicationRecord,
   AdminUser,
   ChangeRolePayload,
 } from '../types/auth';
@@ -54,13 +55,6 @@ export async function deleteAccount(payload: DeleteAccountPayload): Promise<void
   await axiosInstance.delete('/users/me', { data: payload });
 }
 
-export async function getPendingProviders(): Promise<PendingUser[]> {
-  const { data } = await axiosInstance.get<ApiEnvelope<PendingUser[]>>(
-    '/admin/users?role=serviceProvider&approvalStatus=PENDING',
-  );
-  return data.data;
-}
-
 export async function approveUser(userId: string): Promise<void> {
   await axiosInstance.patch(`/admin/users/${userId}/approve`);
 }
@@ -84,19 +78,70 @@ export async function rejectAdmin(userId: string): Promise<void> {
   await axiosInstance.patch(`/super-admin/users/${userId}/reject`);
 }
 
+// ---------- Provider Applications ----------
+// The "Become a Provider" flow is backed by the ProviderApplication model
+// (POST /provider-applications). Approving an application is what promotes
+// the user to serviceProvider and creates their Professional profile.
+
 export async function applyProvider(
   payload: ProviderApplicationPayload,
-): Promise<{ success: boolean; message?: string }> {
-  const { data } = await axiosInstance.post<{ success: boolean; message?: string }>(
-    '/users/apply-provider',
+): Promise<ProviderApplicationRecord> {
+  const { data } = await axiosInstance.post<ApiEnvelope<ProviderApplicationRecord>>(
+    '/provider-applications',
     payload,
   );
-  return data;
+  return data.data;
+}
+
+export async function getMyProviderApplication(): Promise<ProviderApplicationRecord | null> {
+  const { data } = await axiosInstance.get<ApiEnvelope<ProviderApplicationRecord | null>>(
+    '/provider-applications/me',
+  );
+  return data.data ?? null;
+}
+
+export async function getProviderApplications(
+  status?: 'PENDING' | 'APPROVED' | 'REJECTED',
+): Promise<ProviderApplicationRecord[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<ProviderApplicationRecord[]>>(
+    '/provider-applications',
+    { params: { status, limit: 100 } },
+  );
+  return data.data;
+}
+
+export async function approveProviderApplication(applicationId: string): Promise<void> {
+  await axiosInstance.patch(`/provider-applications/${applicationId}/approve`);
+}
+
+export async function rejectProviderApplication(
+  applicationId: string,
+  rejectionReason: string,
+): Promise<void> {
+  await axiosInstance.patch(`/provider-applications/${applicationId}/reject`, {
+    rejectionReason,
+  });
 }
 
 export async function getAllUsers(): Promise<AdminUser[]> {
-  const { data } = await axiosInstance.get<ApiEnvelope<AdminUser[]>>('/admin/users');
-  return data.data;
+  // The backend paginates (default limit 10); the management screen needs
+  // the full list for client-side filtering, so fetch every page.
+  const PAGE_SIZE = 100;
+  const first = await axiosInstance.get<ApiEnvelope<AdminUser[]>>('/admin/users', {
+    params: { page: 1, limit: PAGE_SIZE },
+  });
+  const all = [...(first.data.data ?? [])];
+  const total = first.data.meta?.total ?? all.length;
+
+  const pageCount = Math.ceil(total / PAGE_SIZE);
+  for (let page = 2; page <= pageCount; page++) {
+    const next = await axiosInstance.get<ApiEnvelope<AdminUser[]>>('/admin/users', {
+      params: { page, limit: PAGE_SIZE },
+    });
+    all.push(...(next.data.data ?? []));
+  }
+
+  return all;
 }
 
 export async function changeUserRole(userId: string, payload: ChangeRolePayload): Promise<void> {

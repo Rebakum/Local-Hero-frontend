@@ -28,6 +28,7 @@ import { useTheme } from '../Context/ThemeContext';
 import { Link as RouterLink } from 'react-router-dom';
 import type { UserRole } from '../types/auth';
 import { Badge } from '../Components/ui/shared/Badge';
+import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
 
 interface SidebarLink {
   to: string;
@@ -42,12 +43,18 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/user/bookings', label: 'My Bookings', icon: FileText },
     { to: '/dashboard/user/saved', label: 'Saved Pros', icon: Star },
     { to: '/dashboard/user/apply-provider', label: 'Become a Provider', icon: Briefcase },
+    { to: '/dashboard/user/reviews', label: 'Review', icon: Briefcase },
     { to: '/dashboard/profile', label: 'Profile', icon: User },
   ],
   serviceProvider: [
     { to: '/dashboard/provider', label: 'Dashboard', icon: LayoutDashboard, exact: true },
     { to: '/dashboard/provider/leads', label: 'Leads', icon: Users },
-    { to: '/dashboard/provider/jobs', label: 'My Jobs', icon: FileText },
+    { to: '/dashboard/provider/appointments', label: 'Appointments', icon: CalendarDays },
+    { to: '/dashboard/provider/jobs', label: 'My Jobs', icon: Briefcase },
+    { to: '/dashboard/provider/providerPBooking', label: 'Bookings', icon: FileText },
+    { to: '/dashboard/provider/messages', label: 'Messages', icon: MessageSquare },
+    { to: '/dashboard/provider/reviews', label: 'Reviews', icon: Star },
+    { to: '/dashboard/provider/payments', label: 'Payments', icon: CreditCard },
     { to: '/dashboard/profile', label: 'Profile', icon: User },
   ],
   ADMIN: [
@@ -230,6 +237,8 @@ const DashboardLayout: React.FC = () => {
           <Outlet />
         </main>
       </div>
+
+      <BookingModal />
     </div>
   );
 };
