@@ -12,12 +12,15 @@ import {
   Award,
   CheckCircle2,
   Calendar,
-  User
+  User,
+  MessageSquare
 } from 'lucide-react';
 import { getProfessionalById } from '../../../services/content.service';
+import { getOrCreateConversation } from '../../../services/messaging.service';
 import type { Professional } from '../../../types';
 import { useBooking } from '../../../Context/BookingContext';
 import { useAuth } from '../../../Context/AuthContext';
+import { SaveFavouriteButton } from '../../ui/SaveFavouriteButton';
 
 export const ProDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,10 +30,12 @@ export const ProDetailsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'about' | 'portfolio' | 'reviews'>('about');
 
   const { openBooking } = useBooking();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
   const proId = pro?.id || (pro as any)?._id || id || '';
+  const [messageError, setMessageError] = useState<string | null>(null);
+  const [messaging, setMessaging] = useState(false);
   
   const tradeName = React.useMemo(() => {
     if (!pro?.trade) return 'Professional Service';
@@ -52,6 +57,29 @@ export const ProDetailsPage: React.FC = () => {
       professionalId: proId,
       professionalName: pro.name,
     });
+  };
+
+  const handleMessage = async () => {
+    if (!pro) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: { pathname: `/professionals/${proId}` } } });
+      return;
+    }
+    setMessaging(true);
+    setMessageError(null);
+    try {
+      const conversation = await getOrCreateConversation(proId);
+      const messagesPath =
+        user?.role === 'serviceProvider'
+          ? '/dashboard/provider/messages'
+          : '/dashboard/user/messages';
+      navigate(messagesPath, { state: { conversationId: conversation.id } });
+    } catch (err: unknown) {
+      const apiError = err as { response?: { data?: { message?: string } }; message?: string };
+      setMessageError(apiError.response?.data?.message || apiError.message || 'Could not open conversation.');
+    } finally {
+      setMessaging(false);
+    }
   };
 
   useEffect(() => {
@@ -153,21 +181,37 @@ export const ProDetailsPage: React.FC = () => {
             </div>
 
             {/* Price & Action */}
-            <div className="flex flex-col items-center md:items-end gap-3 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-white/10">
-              <div className="text-center md:text-right">
-                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Hourly Rate</span>
-                <p className="text-2xl font-black text-slate-900 dark:text-white">
-                  £{pro.hourlyRate || (pro as any).rate || '0'}
-                  <span className="text-xs font-normal text-slate-500 dark:text-navy-300">/hr</span>
-                </p>
+              <div className="flex flex-col items-center md:items-end gap-3 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-white/10">
+                <div className="text-center md:text-right">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Hourly Rate</span>
+                  <p className="text-2xl font-black text-slate-900 dark:text-white">
+                    £{pro.hourlyRate || (pro as any).rate || '0'}
+                    <span className="text-xs font-normal text-slate-500 dark:text-navy-300">/hr</span>
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                  {proId && <SaveFavouriteButton professionalId={proId} variant="button" className="flex-1 sm:flex-none" />}
+                  <button
+                    onClick={handleMessage}
+                    disabled={messaging}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 font-semibold px-8 py-3.5 rounded-2xl transition-all text-sm border border-slate-200 dark:border-white/10 text-navy-700 dark:text-navy-200 hover:bg-navy-50 dark:hover:bg-white/5 disabled:opacity-50"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Message
+                  </button>
+                  <button
+                    onClick={handleBookNow}
+                    className="w-full sm:w-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition-all text-sm"
+                  >
+                    Request Quote
+                  </button>
+                </div>
+                {messageError && (
+                  <p className="text-xs font-semibold text-red-600 dark:text-red-400 text-center md:text-right mt-2">
+                    {messageError}
+                  </p>
+                )}
               </div>
-              <button
-                onClick={handleBookNow}
-                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition-all text-sm"
-              >
-                Request Quote
-              </button>
-            </div>
           </div>
 
           {/* Quick Metrics */}

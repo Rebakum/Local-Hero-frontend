@@ -27,8 +27,8 @@ export function slugify(text: string): string {
     .replace(/\s+/g, '-');
 }
 
-export function getTradeDisplayName(trade: { category?: string; name?: string; title?: string; id?: string }): string {
-  return trade.category || trade.name || trade.title || trade.id || '';
+export function getTradeDisplayName(trade: { category?: string; id?: string }): string {
+  return trade.category || trade.id || '';
 }
 
 export function getIconComponent(iconName: string, icons: Record<string, React.FC<any>>): React.FC<any> {

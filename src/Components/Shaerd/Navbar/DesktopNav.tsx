@@ -2,6 +2,7 @@ import React from "react";
 import { NavLinks } from "./NavLinks";
 import { ThemeToggle } from "../ThemeToggle";
 import { AuthMenu } from "./AuthMenu";
+import { NotificationBell } from "./NotificationBell";
 import { Wrench } from "lucide-react";
 
 interface DesktopNavProps {
@@ -39,6 +40,8 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
           <Wrench className="w-4 h-4" />
           <span>Post a Job</span>
         </button>
+
+        <NotificationBell atTop={atTop} />
 
         <AuthMenu atTop={atTop} />
       </div>

@@ -2,35 +2,43 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Search, X, ChevronDown, Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home, LayoutGrid,
 } from 'lucide-react';
-import type { Trade } from '../../types';
 
 const TRADE_ICONS: Record<string, React.FC<any>> = {
   Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home,
 };
 
+export interface CategoryOption {
+  id: string;
+  label: string;
+  iconName: string;
+  count: number;
+}
+
 interface ServicesFilterSidebarProps {
-  trades: Trade[];
+  categories: CategoryOption[];
+  totalCount: number;
   query: string;
   onQueryChange: (value: string) => void;
   activeCategory: string | null;
   onCategoryChange: (id: string | null) => void;
-  countFor: (id: string | null) => number;
 }
 
 export const ServicesFilterSidebar: React.FC<ServicesFilterSidebarProps> = ({
-  trades,
+  categories,
+  totalCount,
   query,
   onQueryChange,
   activeCategory,
   onCategoryChange,
-  countFor,
 }) => {
   const hasActiveFilters = query.trim() !== '' || activeCategory !== null;
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const activeTrade = trades.find((t) => t.id === activeCategory);
-  const ActiveIcon = activeTrade ? TRADE_ICONS[activeTrade.iconName] || Wrench : LayoutGrid;
+  const activeCategoryOption = categories.find((c) => c.id === activeCategory);
+  const ActiveIcon = activeCategoryOption
+    ? TRADE_ICONS[activeCategoryOption.iconName] || Wrench
+    : LayoutGrid;
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -99,7 +107,7 @@ export const ServicesFilterSidebar: React.FC<ServicesFilterSidebarProps> = ({
           >
             <span className="flex items-center gap-2">
               <ActiveIcon size={16} className="text-primary" />
-              {activeTrade ? activeTrade.category : 'All Services'}
+              {activeCategoryOption ? activeCategoryOption.label : 'All Services'}
             </span>
             <ChevronDown
               size={16}
@@ -121,16 +129,16 @@ export const ServicesFilterSidebar: React.FC<ServicesFilterSidebarProps> = ({
                   <LayoutGrid size={15} />
                   All Services
                 </span>
-                <span className="text-xs text-navy-400">{countFor(null)}</span>
+                <span className="text-xs text-navy-400">{totalCount}</span>
               </button>
 
-              {trades.map((trade) => {
-                const Icon = TRADE_ICONS[trade.iconName] || Wrench;
-                const isActive = activeCategory === trade.id;
+              {categories.map((category) => {
+                const Icon = TRADE_ICONS[category.iconName] || Wrench;
+                const isActive = activeCategory === category.id;
                 return (
                   <button
-                    key={trade.id}
-                    onClick={() => selectCategory(trade.id)}
+                    key={category.id}
+                    onClick={() => selectCategory(category.id)}
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium ${
                       isActive
                         ? 'bg-primary/10 text-primary'
@@ -139,10 +147,10 @@ export const ServicesFilterSidebar: React.FC<ServicesFilterSidebarProps> = ({
                   >
                     <span className="flex items-center gap-2.5">
                       <Icon size={15} />
-                      {trade.category}
+                      {category.label}
                     </span>
                     <span className={`text-xs ${isActive ? 'text-primary' : 'text-navy-400'}`}>
-                      {countFor(trade.id)}
+                      {category.count}
                     </span>
                   </button>
                 );
@@ -165,16 +173,16 @@ export const ServicesFilterSidebar: React.FC<ServicesFilterSidebarProps> = ({
               <LayoutGrid size={15} />
               All Services
             </span>
-            <span className="text-xs text-navy-400">{countFor(null)}</span>
+            <span className="text-xs text-navy-400">{totalCount}</span>
           </button>
 
-          {trades.map((trade) => {
-            const Icon = TRADE_ICONS[trade.iconName] || Wrench;
-            const isActive = activeCategory === trade.id;
+          {categories.map((category) => {
+            const Icon = TRADE_ICONS[category.iconName] || Wrench;
+            const isActive = activeCategory === category.id;
             return (
               <button
-                key={trade.id}
-                onClick={() => selectCategory(trade.id)}
+                key={category.id}
+                onClick={() => selectCategory(category.id)}
                 className={`group flex items-center justify-between rounded-xl py-2.5 pl-3 pr-2.5 text-sm font-medium transition-colors ${
                   isActive
                     ? 'border-l-2 border-primary bg-primary/5 text-primary'
@@ -183,10 +191,10 @@ export const ServicesFilterSidebar: React.FC<ServicesFilterSidebarProps> = ({
               >
                 <span className="flex items-center gap-2.5">
                   <Icon size={15} />
-                  {trade.category}
+                  {category.label}
                 </span>
                 <span className={`text-xs ${isActive ? 'text-primary' : 'text-navy-400'}`}>
-                  {countFor(trade.id)}
+                  {category.count}
                 </span>
               </button>
             );

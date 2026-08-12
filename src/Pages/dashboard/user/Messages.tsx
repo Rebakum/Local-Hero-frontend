@@ -4,9 +4,9 @@ import { MessagesManager } from '../../../Components/dashboard/MessagesManager';
 const Messages: React.FC = () => {
   return (
     <MessagesManager
-      eyebrow="Provider Panel"
+      eyebrow="Customer Dashboard"
       title="Messages"
-      description="Conversations with customers about their bookings and quotes."
+      description="Private conversations with professionals about your bookings and quotes."
     />
   );
 };

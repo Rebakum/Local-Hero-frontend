@@ -39,13 +39,13 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
 }) => {
   if (!trade) return null;
 
-  const tradeName = trade.name || trade.title || '';
-  const iconKey = trade.iconName || trade.icon || 'Wrench';
+  const tradeName = trade.category || '';
+  const iconKey = trade.iconName || 'Wrench';
   const Icon = ICONS[iconKey] || Wrench;
   const rating = trade.rating || '4.9';
   const reviewsCount = trade.reviewsCount || 240;
   const startingPrice = trade.startingPrice || trade.avgHourlyRate || '£45/hr';
-  const prosCount = trade.activeProsCount ?? trade.prosCount ?? 120;
+  const prosCount = trade.activeProsCount ?? 120;
   const description = trade.description || `Get matched with background-checked ${tradeName} experts in your area. Guaranteed fixed quotes with no hidden fees.`;
   const features = trade.features || [
     "DBS-checked & verified professionals",

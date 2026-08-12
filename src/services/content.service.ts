@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axiosInstance';
-import type { Professional, Trade, BeforeAfterPair, Testimonial, TradeCategory } from '../types';
+import type { Professional, Trade, Profession, BeforeAfterPair, Testimonial, TradeCategory } from '../types';
 
 
 interface ApiEnvelope<T> {
@@ -49,6 +49,16 @@ export function normalizeProfessional(raw: Record<string, unknown>): Professiona
     availability: ((raw.availability as Professional['availability']) ?? 'Available Today'),
     portfolioImages: Array.isArray(raw.portfolioImages) ? (raw.portfolioImages as string[]) : [],
     badgeText: raw.badgeText as string | undefined,
+    isFeatured: Boolean(raw.isFeatured ?? false),
+    sortOrder: Number(raw.sortOrder ?? 0),
+    isVerified: Boolean(raw.isVerified ?? false),
+    isEmergency: Boolean(raw.isEmergency ?? false),
+    workingHours: raw.workingHours as Record<string, unknown> | undefined,
+    certifications: Array.isArray(raw.certifications) ? (raw.certifications as string[]) : undefined,
+    insuranceInfo: raw.insuranceInfo as string | undefined,
+    serviceAreas: Array.isArray(raw.serviceAreas) ? (raw.serviceAreas as string[]) : undefined,
+    yearsOfExperience:
+      raw.yearsOfExperience != null ? Number(raw.yearsOfExperience) : undefined,
   };
 }
 
@@ -87,6 +97,16 @@ export interface ProfessionalInput {
   specialties?: string[];
   availability?: string;
   portfolioImages?: string[];
+  badgeText?: string;
+  isFeatured?: boolean;
+  sortOrder?: number;
+  isVerified?: boolean;
+  isEmergency?: boolean;
+  workingHours?: Record<string, unknown>;
+  certifications?: string[];
+  insuranceInfo?: string;
+  serviceAreas?: string[];
+  yearsOfExperience?: number;
 }
 
 export interface BeforeAfterInput {
@@ -134,6 +154,41 @@ export async function deleteTrade(id: string): Promise<void> {
   await axiosInstance.delete(`/trades/${id}`);
 }
 
+// ---------- Professions (Trade -> Profession) ----------
+
+export interface ProfessionInput {
+  tradeId?: string;
+  trade?: string;
+  name: string;
+  description?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export async function getProfessionsAdmin(params?: {
+  page?: number;
+  limit?: number;
+  tradeId?: string;
+  search?: string;
+}): Promise<Profession[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<Profession[]>>('/professions', { params });
+  return data.data ?? [];
+}
+
+export async function createProfession(payload: ProfessionInput): Promise<Profession> {
+  const { data } = await axiosInstance.post<ApiEnvelope<Profession>>('/professions', payload);
+  return data.data;
+}
+
+export async function updateProfession(id: string, payload: ProfessionInput): Promise<Profession> {
+  const { data } = await axiosInstance.patch<ApiEnvelope<Profession>>(`/professions/${id}`, payload);
+  return data.data;
+}
+
+export async function deleteProfession(id: string): Promise<void> {
+  await axiosInstance.delete(`/professions/${id}`);
+}
+
 // ---------- Professionals ----------
 
 export async function getProfessionalsAdmin(): Promise<Professional[]> {
@@ -144,6 +199,13 @@ export async function getProfessionalsAdmin(): Promise<Professional[]> {
 
 export async function getProfessionalsPublic(): Promise<Professional[]> {
   const res = await axiosInstance.get<unknown>('/professionals');
+  return extractArray<Record<string, unknown>>(res.data).map(normalizeProfessional);
+}
+
+export async function getProfessionalsByTrade(trade: string): Promise<Professional[]> {
+  const res = await axiosInstance.get<unknown>('/professionals', {
+    params: { trade, limit: 100 },
+  });
   return extractArray<Record<string, unknown>>(res.data).map(normalizeProfessional);
 }
 

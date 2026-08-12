@@ -138,6 +138,7 @@ export async function getTrades(params?: {
   limit?: number;
   search?: string;
   category?: string;
+  sortBy?: string;
 }): Promise<{
   trades: Trade[];
   meta?: PageMeta;
@@ -165,6 +166,10 @@ export async function getTrades(params?: {
         "category",
         params.category.trim(),
       );
+    }
+
+    if (params?.sortBy) {
+      queryParams.set("sortBy", params.sortBy);
     }
 
     const query = queryParams.toString();

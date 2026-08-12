@@ -30,9 +30,9 @@ export const TradeStep: React.FC<TradeStepProps> = ({
       </h4>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {trades.map((cat: any) => {
-          const catName = cat.category || cat.name || cat.title || cat.id || '';
+          const catName = cat.category || cat.id || '';
           const hourlyRate = cat.featuredService?.estimatedPrice || cat.avgHourlyRate || cat.startingPrice || '£40/hr';
-          const prosCount = cat.activeProsCount ?? cat.prosCount ?? 100;
+          const prosCount = cat.activeProsCount ?? 100;
 
           return (
             <button

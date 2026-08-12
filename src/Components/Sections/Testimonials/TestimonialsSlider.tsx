@@ -23,9 +23,7 @@ export const TestimonialsSlider: React.FC = () => {
         slidesPerView={1}
         slidesPerGroup={1}
         spaceBetween={24}
-        loop={true}
-        loopAdditionalSlides={3}
-        watchSlidesProgress={true}
+        loop={false}
         speed={700}
         autoplay={{
           delay: 1000,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Star, ArrowRight, BadgeCheck } from 'lucide-react';
 import { Professional } from '../../../types';
+import { SaveFavouriteButton } from '../../ui/SaveFavouriteButton';
 
 export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
   const proId = pro.id || (pro as any)._id || '';
@@ -40,6 +41,13 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
           <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
           <span className="text-xs font-bold text-white">{rating}</span>
         </div>
+
+        {/* Save to favourites — floating heart, top-right */}
+        {proId && (
+          <div className="absolute top-3 right-3 z-20">
+            <SaveFavouriteButton professionalId={proId} />
+          </div>
+        )}
 
        
 

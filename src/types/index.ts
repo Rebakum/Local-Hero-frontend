@@ -45,6 +45,15 @@ export interface Professional {
   availability: 'Available Today' | 'Available Tomorrow' | 'Booked 2 Days';
   portfolioImages: string[];
   badgeText?: string;
+  isFeatured?: boolean;
+  sortOrder?: number;
+  isVerified?: boolean;
+  isEmergency?: boolean;
+  workingHours?: Record<string, unknown>;
+  certifications?: string[];
+  insuranceInfo?: string;
+  serviceAreas?: string[];
+  yearsOfExperience?: number;
 }
 
 export interface ServiceItem {
@@ -144,21 +153,32 @@ export interface TradeService {
 
 export interface Trade {
   id: string;
-  name?: string;
-  title?: string;
-  subtitle?:string;
-  category?: string;
-  icon?: string;
+  category: string;
+  subtitle?: string;
   iconName: string;
   description: string;
   avgHourlyRate: string;
   startingPrice?: string;
   activeProsCount: number;
-  prosCount?: number;
   popularTasks: string[];
   badge?: string;
-  featuredService: TradeService;
+  featuredService?: TradeService;
   rating?: number | string;
   reviewsCount?: number;
   features?: string[];
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface Profession {
+  id: string;
+  tradeId: string;
+  name: string;
+  description?: string | null;
+  isActive?: boolean;
+  sortOrder?: number;
+  trade?: {
+    id: string;
+    category: string;
+  };
 }

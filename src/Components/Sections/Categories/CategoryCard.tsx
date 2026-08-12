@@ -21,9 +21,9 @@ interface CategoryCardProps {
 }
 
 export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) => {
-  const tradeName = trade.name || trade.title || '';
-  const category = trade.category || trade.subtitle || 'Expert Home Service';
-  const iconKey = trade.iconName || trade.icon || 'Wrench';
+  const tradeName = trade.category || '';
+  const subtitle = trade.subtitle || 'Expert Home Service';
+  const iconKey = trade.iconName || 'Wrench';
   const Icon = ICON_MAP[iconKey] || Wrench;
 
   return (
@@ -40,7 +40,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) =
         {tradeName}
       </h3>
       <p className="mt-1 text-[11px] sm:text-xs text-navy-500 dark:text-navy-300 text-center line-clamp-1">
-        {category}
+        {subtitle}
       </p>
 
       <div className="mt-auto pt-4 sm:pt-5">

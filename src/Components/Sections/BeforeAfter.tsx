@@ -1,6 +1,4 @@
 ﻿import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { getAllBeforeAfterProjects } from '../../services/api';
 import { useBooking } from '../../Context/BookingContext';
 import { useTheme } from '../../Context/ThemeContext';
@@ -10,8 +8,6 @@ import {
   MapPin, Clock, ArrowRight, CheckCircle2, PoundSterling, SlidersHorizontal, Loader2
 } from 'lucide-react';
 import type { BeforeAfterPair } from '../../types';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const CHECKLIST = [
   '100% escrow-protected payment',
@@ -34,23 +30,6 @@ export const BeforeAfter: React.FC = () => {
       .catch(() => setProjects([]))
       .finally(() => setLoading(false));
   }, []);
-
-  useEffect(() => {
-    if (projects.length === 0) return;
-
-    const mm = gsap.matchMedia();
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      const ctx = gsap.context(() => {
-        gsap.to('.parallax-img', {
-          yPercent: 10,
-          ease: 'none',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 1 },
-        });
-      }, sectionRef);
-      return () => ctx.revert();
-    });
-    return () => mm.revert();
-  }, [projects]);
 
   const project = projects[activeIndex];
 

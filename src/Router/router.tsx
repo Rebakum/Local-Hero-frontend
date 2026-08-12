@@ -36,7 +36,9 @@ import Reviews from '../Pages/dashboard/provider/Reviews';
 import ProviderPayments from '../Pages/dashboard/provider/ProviderPayments';
 import Moderation from '../Pages/dashboard/admin/Moderation';
 import TradesManagement from '../Pages/dashboard/admin/manage/TradesManagement';
+import ProfessionsManagement from '../Pages/dashboard/admin/manage/ProfessionsManagement';
 import ProfessionalsManagement from '../Pages/dashboard/admin/manage/ProfessionalsManagement';
+import SubscriptionsManagement from '../Pages/dashboard/admin/manage/SubscriptionsManagement';
 import BeforeAfterManagement from '../Pages/dashboard/admin/manage/BeforeAfterManagement';
 import TestimonialsManagement from '../Pages/dashboard/admin/manage/TestimonialsManagement';
 import BookingManagement from '../Pages/dashboard/admin/manage/BookingManagement';
@@ -44,6 +46,12 @@ import AdminPaymentHistory from '../Pages/dashboard/admin/manage/AdminPaymentHis
 import ProfilePage from '../Pages/dashboard/profile/ProfilePage';
 import { ProviderBookingDashboard } from '../Pages/dashboard/provider/ProviderBookingDashboard';
 import UserReviews from '../Pages/dashboard/user/UserReviews';
+import MyQuotes from '../Pages/dashboard/user/MyQuotes';
+import UserMessages from '../Pages/dashboard/user/Messages';
+import UserNotifications from '../Pages/dashboard/user/Notifications';
+import ProviderQuotes from '../Pages/dashboard/provider/ProviderQuotes';
+import ProviderNotifications from '../Pages/dashboard/provider/Notifications';
+import ProviderSubscription from '../Pages/dashboard/provider/Subscription';
 
 export const router = createBrowserRouter([
   {
@@ -116,6 +124,30 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: 'user/quotes',
+        element: (
+          <ProtectedRoute allowedRoles={['user']}>
+            <MyQuotes />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/messages',
+        element: (
+          <ProtectedRoute allowedRoles={['user']}>
+            <UserMessages />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'user/notifications',
+        element: (
+          <ProtectedRoute allowedRoles={['user']}>
+            <UserNotifications />
+          </ProtectedRoute>
+        ),
+      },
 
       {
         path: 'provider',
@@ -166,6 +198,30 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: 'provider/quotes',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <ProviderQuotes />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/notifications',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <ProviderNotifications />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'provider/subscription',
+        element: (
+          <ProtectedRoute allowedRoles={['serviceProvider']}>
+            <ProviderSubscription />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: 'provider/payments',
         element: (
           <ProtectedRoute allowedRoles={['serviceProvider']}>
@@ -211,6 +267,22 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
             <TradesManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/subscriptions',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <SubscriptionsManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/manage/professions',
+        element: (
+          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+            <ProfessionsManagement />
           </ProtectedRoute>
         ),
       },

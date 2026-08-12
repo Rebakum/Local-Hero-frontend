@@ -21,7 +21,7 @@ export const Categories: React.FC = () => {
   }, []);
 
   const handleOpenDetails = (trade: any) => {
-    const slug = (trade?.slug || trade?.name || trade?.title || trade?.id || '')
+    const slug = (trade?.category || trade?.id || '')
       .toString()
       .trim()
       .toLowerCase()

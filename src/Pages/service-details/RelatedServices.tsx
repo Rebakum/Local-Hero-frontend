@@ -2,21 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Clock } from 'lucide-react';
 import { Reveal, Stagger, StaggerItem } from '../../Components/ui/Reveal';
-
-interface RelatedTrade {
-  id: string;
-  featuredService: {
-    image: string;
-    title: string;
-    description: string;
-    estimatedPrice: string;
-    timeEstimate: string;
-    isEmergency?: boolean;
-  } | null;
-}
+import type { Trade } from '../../types';
 
 interface RelatedServicesProps {
-  related: RelatedTrade[];
+  related: Trade[];
 }
 
 export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => {
