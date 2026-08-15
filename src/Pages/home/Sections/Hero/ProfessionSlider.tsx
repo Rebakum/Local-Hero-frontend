@@ -40,18 +40,18 @@ const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
   };
 
   return (
-    <div
-      onClick={onSelect}
-      className={`group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800/90 p-4 backdrop-blur-sm shadow-lg border transition-all duration-300 hover:-translate-y-2 hover:scale-[1.05] hover:shadow-2xl dark:border-white/10 ${
-        active
-          ? 'border-primary shadow-2xl ring-2 ring-primary/40 scale-[1.04]'
-          : 'border-neutral-200 hover:border-primary/50'
-      }`}
-    >
+   <div
+  onClick={onSelect}
+  className={`group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800/90 p-4 backdrop-blur-sm shadow-lg border transition-all duration-300 hover:-translate-y-2 hover:scale-[1.05] hover:shadow-2xl dark:border-white/10 ${
+    active
+      ? 'z-20 -translate-y-3 scale-[1.05] shadow-2xl border-primary ring-2 ring-primary/40'
+      : 'z-0 border-neutral-200 hover:border-primary/50 hover:shadow-2xl'
+  }`}
+>
       {/* Gradient top accent — solid once active, animates in on hover otherwise */}
       <span
         className={`pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-primary/40 transition-transform duration-300 origin-left ${
-          active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+          active ? 'scale-y-105 hover:shadow-3xl' : 'scale-x-0 group-hover:scale-y-105 hover:shadow-3xl'
         }`}
       />
 
@@ -122,9 +122,7 @@ interface ProfessionSliderProps {
 export default function ProfessionSlider({ pros, activePro, setActivePro }: ProfessionSliderProps) {
   const swiperRef = useRef<SwiperType | null>(null);
 
-  // Mirrors HeroTeacherSlider's handleSlideChange: whichever slide the
-  // carousel lands on (auto or manual) becomes the active pro, which the
-  // banner portrait in Hero.tsx picks up.
+ 
   const handleSlideChange = useCallback(
     (swiper: SwiperType) => {
       if (pros.length === 0) return;
@@ -145,14 +143,9 @@ export default function ProfessionSlider({ pros, activePro, setActivePro }: Prof
 
   return (
     <div className="relative z-30 mb-2 md:mb-4">
-      {/* container-lh — same wrapper the headline/buttons above use, so
-          the slider's side margins line up with the rest of the hero
-          content instead of using their own separate padding. */}
+
       <div className="container-lh relative">
-        {/* Clip wrapper: padded just enough to clear the arrow buttons,
-            and overflow-x-hidden so a card can never render behind or
-            past them. overflow-y stays visible so the hover-lift/shadow
-            on a card isn't clipped. */}
+      
         <div className="overflow-x-hidden overflow-y-visible px-12 py-4 md:px-14">
           <Swiper
             modules={[Autoplay]}
@@ -185,8 +178,7 @@ export default function ProfessionSlider({ pros, activePro, setActivePro }: Prof
           </Swiper>
         </div>
 
-        {/* Arrows — sit at container-lh's own edge, outside the clip
-            wrapper's padding, so no card is ever visible beyond them */}
+       
         <button
           type="button"
           aria-label="Previous professionals"

@@ -117,7 +117,6 @@ import { HeroContent } from './HeroContent';
 
 import { HeroButtons } from './HeroButtons';
 import { HeroSearch } from './HeroSearch';
-import HeroSlider from './HeroSlider';
 import ProfessionSlider from './ProfessionSlider';
 
 const container: Variants = {
