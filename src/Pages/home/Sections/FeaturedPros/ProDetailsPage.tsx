@@ -163,25 +163,25 @@ export const ProDetailsPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="space-y-1">
+              <div className="min-w-0 space-y-1">
                 <div className="flex items-center justify-center sm:justify-start gap-2">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white capitalize">
+                  <h1 className="min-w-0 text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white capitalize break-words text-center sm:text-left">
                     {pro.name}
                   </h1>
                   <CheckCircle2 className="w-5 h-5 text-red-600 fill-red-600/10 shrink-0" />
                 </div>
-                <p className="text-red-600 dark:text-red-400 font-semibold text-sm sm:text-base">
+                <p className="text-red-600 dark:text-red-400 font-semibold text-sm sm:text-base break-words">
                   {tradeName} {pro.companyName && <span>• {pro.companyName}</span>}
                 </p>
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-navy-300 flex items-center justify-center sm:justify-start gap-1 pt-0.5">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-navy-300 flex items-center justify-center sm:justify-start gap-1 pt-0.5 break-words">
+                  <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                   {pro.location || (pro as any).address || 'Location Not Specified'}
                 </p>
               </div>
             </div>
 
             {/* Price & Action */}
-              <div className="flex flex-col items-center md:items-end gap-3 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-white/10">
+              <div className="flex flex-col md:items-end gap-3 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-white/10">
                 <div className="text-center md:text-right">
                   <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">Hourly Rate</span>
                   <p className="text-2xl font-black text-slate-900 dark:text-white">
@@ -189,7 +189,7 @@ export const ProDetailsPage: React.FC = () => {
                     <span className="text-xs font-normal text-slate-500 dark:text-navy-300">/hr</span>
                   </p>
                 </div>
-                <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                   {proId && <SaveFavouriteButton professionalId={proId} variant="button" className="flex-1 sm:flex-none" />}
                   <button
                     onClick={handleMessage}
@@ -216,42 +216,36 @@ export const ProDetailsPage: React.FC = () => {
 
           {/* Quick Metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8 pt-6 border-t border-slate-100 dark:border-white/10">
-            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+            <div className="min-w-0 bg-slate-50/80 dark:bg-white/5 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5">
               <div className="flex items-center gap-2 text-amber-500 mb-1">
-                <Star className="w-4 h-4 fill-amber-400" />
-                <span className="font-bold text-slate-900 dark:text-white text-base">
-                  {pro.rating || (pro as any).avgRating || '5.0'}
-                </span>
+                <Star className="w-4 h-4 fill-amber-400 shrink-0" />
+                <span className="font-bold text-slate-900 dark:text-white text-base">{pro.rating || (pro as any).avgRating || '5.0'}</span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-navy-300">
+              <p className="text-xs text-slate-500 dark:text-navy-300 truncate">
                 {pro.reviewCount ? `${pro.reviewCount} Reviews` : `${reviews.length} Reviews`}
               </p>
             </div>
 
-            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+            <div className="min-w-0 bg-slate-50/80 dark:bg-white/5 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5">
               <div className="flex items-center gap-2 text-red-600 mb-1">
-                <Clock className="w-4 h-4" />
-                <span className="font-bold text-slate-900 dark:text-white text-base">
-                  {pro.responseMinutes ? `~${pro.responseMinutes}m` : '~30m'}
-                </span>
+                <Clock className="w-4 h-4 shrink-0" />
+                <span className="font-bold text-slate-900 dark:text-white text-base">{pro.responseMinutes ? `~${pro.responseMinutes}m` : '~30m'}</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-navy-300">Response Time</p>
             </div>
 
-            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+            <div className="min-w-0 bg-slate-50/80 dark:bg-white/5 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5">
               <div className="flex items-center gap-2 text-emerald-600 mb-1">
-                <Briefcase className="w-4 h-4" />
+                <Briefcase className="w-4 h-4 shrink-0" />
                 <span className="font-bold text-slate-900 dark:text-white text-base">Verified</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-navy-300">Background Checked</p>
             </div>
 
-            <div className="bg-slate-50/80 dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5">
+            <div className="min-w-0 bg-slate-50/80 dark:bg-white/5 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-white/5">
               <div className="flex items-center gap-2 text-emerald-600 mb-1">
-                <Calendar className="w-4 h-4" />
-                <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm">
-                  {pro.availability || 'Available Today'}
-                </span>
+                <Calendar className="w-4 h-4 shrink-0" />
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs sm:text-sm truncate">{pro.availability || 'Available Today'}</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-navy-300">Current Status</p>
             </div>
@@ -323,7 +317,7 @@ export const ProDetailsPage: React.FC = () => {
             </div>
 
             <div>
-              <div className="bg-white dark:bg-navy-800 p-6 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg sticky top-6">
+              <div className="bg-white dark:bg-navy-800 p-6 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg lg:sticky lg:top-24">
                 <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Service Guarantee</h4>
                 <ul className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-navy-300">
                   <li className="flex items-center gap-2.5">

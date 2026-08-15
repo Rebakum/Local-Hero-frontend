@@ -18,13 +18,13 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
         overflow-hidden flex flex-col w-full shadow-lg border border-neutral-200 transition-all duration-300
         hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
     >
-      {/* Image Stage — photo fills the frame, no empty gaps */}
-      <div className="relative w-full h-56 sm:h-60 overflow-hidden bg-slate-950">
+     
+      <div className="relative w-full h-64 sm:h-72 overflow-hidden bg-slate-950">
         <img
           src={avatarUrl}
           alt={pro.name}
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover object-top
+          className="absolute  w-full h-full object-cover object-[50%_10%]
             transition-transform duration-700 ease-out group-hover:scale-[1.06]"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
@@ -33,7 +33,7 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
         />
 
         {/* Gradient for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-black/0 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/10 to-black/0 z-10 pointer-events-none" />
 
         {/* Rating — floating glass badge, top-left */}
         <div className="absolute top-3 left-3 z-20 flex items-center gap-1 rounded-full
@@ -49,7 +49,7 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
           </div>
         )}
 
-       
+
 
         {/* Name & Trade over the image */}
         <div className="absolute bottom-3 left-3.5 sm:left-4 right-3.5 sm:right-4 z-20">

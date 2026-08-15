@@ -119,10 +119,15 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
   /* Home page teaser — simple grid without filters */
   if (limit) {
     return (
-      <div className="mt-8 md:mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {displayed.map((pro) => {
+      <div className="mt-8 md:mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {displayed.map((pro, i) => {
           const proId = pro.id || pro._id;
-          return <ProCard key={proId} pro={pro} />;
+          // Show 4 cards on small screens, all 6 on md+.
+          return (
+            <div key={proId} className={i >= 4 ? 'hidden md:block' : ''}>
+              <ProCard pro={pro} />
+            </div>
+          );
         })}
       </div>
     );

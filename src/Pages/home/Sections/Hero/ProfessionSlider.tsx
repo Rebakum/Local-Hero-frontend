@@ -1,12 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Star, BadgeCheck, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
-import { useProfessionals } from '@/src/Context/ProfessionalsContext';
 import { useBooking } from '@/src/Context/BookingContext';
-import { FEATURED_PROS as FALLBACK_PROS } from '@/src/data/mockData';
 import type { Professional, TradeCategory } from '@/src/types';
 
 const initials = (name?: string) =>
@@ -18,7 +16,13 @@ const initials = (name?: string) =>
     .join('')
     .toUpperCase();
 
-const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
+interface ProCardProps {
+  pro: Professional;
+  active: boolean;
+  onSelect: () => void;
+}
+
+const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
   const { openBooking } = useBooking();
   const avatar = pro.avatar || '';
   const proName = pro.name || 'Local Pro';
@@ -26,7 +30,8 @@ const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
   const rating = typeof pro.rating === 'number' ? pro.rating.toFixed(1) : '4.9';
   const rate = pro.hourlyRate ? `£${pro.hourlyRate}/hr` : 'Fixed rates';
 
-  const handleBook = () => {
+  const handleBook = (e: React.MouseEvent) => {
+    e.stopPropagation();
     openBooking({
       trade: (pro.trade as TradeCategory) || 'Plumber',
       professionalId: pro.id || pro._id,
@@ -35,9 +40,20 @@ const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
   };
 
   return (
-    <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800/90 p-4 backdrop-blur-sm shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
-      {/* Gradient top accent */}
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-0.5 scale-x-0 bg-gradient-to-r from-primary via-secondary to-primary/40 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+    <div
+      onClick={onSelect}
+      className={`group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800/90 p-4 backdrop-blur-sm shadow-lg border transition-all duration-300 hover:-translate-y-2 hover:scale-[1.05] hover:shadow-2xl dark:border-white/10 ${
+        active
+          ? 'border-primary shadow-2xl ring-2 ring-primary/40 scale-[1.04]'
+          : 'border-neutral-200 hover:border-primary/50'
+      }`}
+    >
+      {/* Gradient top accent — solid once active, animates in on hover otherwise */}
+      <span
+        className={`pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-primary/40 transition-transform duration-300 origin-left ${
+          active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+        }`}
+      />
 
       {/* Soft glow on hover */}
       <span className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(120px_60px_at_20%_0%,theme(colors.primary/12%),transparent)]" />
@@ -97,10 +113,33 @@ const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
   );
 };
 
-export default function ProfessionSlider() {
-  const { professionals } = useProfessionals();
-  const pros = professionals.length > 0 ? professionals : FALLBACK_PROS;
+interface ProfessionSliderProps {
+  pros: Professional[];
+  activePro: Professional | null;
+  setActivePro: (pro: Professional) => void;
+}
+
+export default function ProfessionSlider({ pros, activePro, setActivePro }: ProfessionSliderProps) {
   const swiperRef = useRef<SwiperType | null>(null);
+
+  // Mirrors HeroTeacherSlider's handleSlideChange: whichever slide the
+  // carousel lands on (auto or manual) becomes the active pro, which the
+  // banner portrait in Hero.tsx picks up.
+  const handleSlideChange = useCallback(
+    (swiper: SwiperType) => {
+      if (pros.length === 0) return;
+      const index = swiper.realIndex % pros.length;
+      setActivePro(pros[index]);
+    },
+    [pros, setActivePro]
+  );
+
+  const isActive = (pro: Professional) => {
+    if (!activePro) return false;
+    const proKey = pro.id || pro._id;
+    const activeKey = activePro.id || activePro._id;
+    return proKey && activeKey ? proKey === activeKey : pro === activePro;
+  };
 
   if (pros.length === 0) return null;
 
@@ -135,11 +174,12 @@ export default function ProfessionSlider() {
             onSwiper={(swiper) => {
               swiperRef.current = swiper;
             }}
+            onSlideChange={handleSlideChange}
             className="!overflow-visible py-4"
           >
             {pros.map((pro, i) => (
               <SwiperSlide key={pro.id || pro._id || i} className="!h-auto">
-                <ProCard pro={pro} />
+                <ProCard pro={pro} active={isActive(pro)} onSelect={() => setActivePro(pro)} />
               </SwiperSlide>
             ))}
           </Swiper>

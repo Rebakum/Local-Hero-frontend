@@ -15,7 +15,7 @@ export const FeaturedPros: React.FC = () => {
           </p>
         </div>
 
-        <FeaturedProsGrid   limit={4} />
+        <FeaturedProsGrid   limit={6} />
       </div>
     </section>
   );
