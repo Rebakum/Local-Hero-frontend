@@ -1,6 +1,7 @@
 import React from 'react';
-import { Logo } from './Logo'; // এই লাইনটি মুছে ফেলুন (মুছে ফেলা হয়েছে)
+import { Logo } from './Logo'; // এই লাইনটি মুছে ফেলুন (মুছে ফেলা হয়েছে)
 import { ThemeToggle } from '../ThemeToggle';
+import { NotificationBell } from './NotificationBell';
 import { Menu, X } from 'lucide-react';
 
 interface MobileNavToggleProps {
@@ -19,13 +20,13 @@ export const MobileNavToggle: React.FC<MobileNavToggleProps> = ({
   isTransparent,
 }) => {
   return (
-    <div className="flex lg:hidden items-center gap-4">
-     
+    <div className="flex lg:hidden items-center gap-2 sm:gap-4">
+      <NotificationBell atTop={atTop} />
       <ThemeToggle atTop={atTop} isScrolled={isScrolled} />
 
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="p-2.5 rounded-xl transition-all duration-300 bg-navy-100 dark:bg-navy-800/80 text-navy-800 dark:text-navy-100"
+        className="p-2.5 rounded-full transition-all duration-300 bg-navy-100 dark:bg-navy-800/80 text-navy-800 dark:text-navy-100"
       >
         {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>

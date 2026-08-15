@@ -13,9 +13,9 @@ const SERVICES = [
 const COMPANY_LINKS = [
   { label: 'About LocalHero', to: '/about' },
   { label: 'Become a Pro', to: '/professionals' },
-  { label: 'Trust & Safety', to: '/about' },
-  { label: 'Careers', to: '/about' },
-  { label: 'Blog', to: '/about' },
+  { label: 'Trust & Safety', to: '/trust-and-safety' },
+  { label: 'FAQ', to: '/faq' },
+  { label: 'Blog', to: '/blog' },
 ];
 
 export const FooterLinks: React.FC = () => {
@@ -71,8 +71,8 @@ export const FooterLinks: React.FC = () => {
           </li>
           <li className="flex items-center gap-3">
             <Mail className="w-4 h-4 text-primary shrink-0" />
-            <a href="mailto:hello@localhero.co.uk" className="hover:underline hover:text-white">
-              hello@localhero.co.uk
+            <a href="mailto:hello@localhero.com" className="hover:underline hover:text-white">
+              hello@localhero.com
             </a>
           </li>
           <li className="flex items-center gap-3">

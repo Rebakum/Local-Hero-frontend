@@ -6,6 +6,7 @@ import {
   AlertCircle,
   Send,
   ChevronLeft,
+  Search,
 } from 'lucide-react';
 import { PageHeader } from '../ui';
 import { useAuth } from '../../Context/AuthContext';
@@ -41,6 +42,7 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [active, setActive] = useState<Conversation | null>(null);
@@ -143,6 +145,15 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
     return c.customer?.name ?? 'Customer';
   };
 
+  const filteredConversations = conversations.filter((c) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      participantName(c).toLowerCase().includes(q) ||
+      lastMessagePreview(c).toLowerCase().includes(q)
+    );
+  });
+
   const lastMessagePreview = (c: Conversation) => {
     const last = c.messages?.[0];
     if (!last) return 'No messages yet';
@@ -168,12 +179,22 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
               activeId ? 'hidden md:flex' : 'flex'
             }`}
           >
-            <div className="p-4 border-b border-navy-100 dark:border-white/10">
+            <div className="p-4 border-b border-navy-100 dark:border-white/10 space-y-2">
               <p className="text-sm font-bold text-navy-800 dark:text-white">
                 Conversations
               </p>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-navy-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search conversations..."
+                  className="input-lh pl-9 h-9 text-xs"
+                />
+              </div>
               <p className="text-xs text-navy-400 dark:text-navy-500">
-                {conversations.length} total
+                {filteredConversations.length} total
               </p>
             </div>
             <div className="flex-1 overflow-y-auto">
@@ -181,18 +202,18 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-6 h-6 text-primary animate-spin" />
                 </div>
-              ) : conversations.length === 0 ? (
+              ) : filteredConversations.length === 0 ? (
                 <div className="py-12 text-center px-6">
                   <MessageSquare className="w-10 h-10 text-navy-300 dark:text-navy-600 mx-auto mb-3" />
                   <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">
-                    No conversations yet
+                    {conversations.length === 0 ? 'No conversations yet' : 'No matches found'}
                   </p>
                   <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">
                     Messages will appear here once a customer and business start chatting.
                   </p>
                 </div>
               ) : (
-                conversations.map((c) => (
+                filteredConversations.map((c) => (
                   <button
                     key={c.id}
                     onClick={() => openConversation(c.id)}
@@ -304,7 +325,7 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
                   <button
                     onClick={handleSend}
                     disabled={sending || !input.trim()}
-                    className="w-10 h-10 shrink-0 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors disabled:opacity-50"
+                    className="w-10 h-10 shrink-0 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors disabled:opacity-50"
                   >
                     {sending ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

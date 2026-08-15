@@ -1,9 +1,11 @@
 import React from 'react';
-import { motion, useInView } from 'motion/react';
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { motion } from 'motion/react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../../Context/AuthContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
+import { AnimatedCounter } from '../../../Components/dashboard/AnimatedCounter';
+import { DataTable } from '../../../Components/ui/DataTable';
 import {
   Calendar,
   ClipboardList,
@@ -15,16 +17,13 @@ import {
   XCircle,
   MapPin,
   Wrench,
-  Sparkles,
   TrendingUp,
   Bell,
   Star,
   Zap,
-  Loader2,
-  AlertCircle,
 } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
-import { CreateTestimonialModal } from '../../../Components/Sections/Testimonials/CreateTestimonialModal';
+import { CreateTestimonialModal } from '../../../Pages/home/Sections/Testimonials/CreateTestimonialModal';
 import { getMyBookings } from '../../../services/booking.service';
 import type { BookingRecord } from '../../../services/booking.service';
 
@@ -35,21 +34,6 @@ const STATUS_STYLES: Record<string, { badge: 'success' | 'warning' | 'neutral'; 
   COMPLETED: { badge: 'neutral', icon: CheckCircle2, dot: 'bg-navy-400' },
   REJECTED: { badge: 'emergency' as 'warning', icon: XCircle, dot: 'bg-red-500' },
   CANCELLED: { badge: 'warning', icon: XCircle, dot: 'bg-red-400' },
-};
-
-const AnimatedCounter: React.FC<{ value: string }> = ({ value }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 0, y: 8 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {value}
-    </motion.span>
-  );
 };
 
 const UserDashboard: React.FC = () => {
@@ -79,10 +63,6 @@ const UserDashboard: React.FC = () => {
 
   const activeCount = bookings.filter((b) => ['PENDING', 'ACCEPTED', 'IN_PROGRESS'].includes(b.status)).length;
   const completedCount = bookings.filter((b) => b.status === 'COMPLETED').length;
-
-  const recentBookings = [...bookings]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 5);
 
   return (
     <div className="space-y-8">
@@ -186,109 +166,97 @@ const UserDashboard: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Card padding="sm" className="overflow-hidden">
-          <div className="px-6 py-4 border-b border-navy-100 dark:border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                <ClipboardList className="w-4.5 h-4.5 text-primary" />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-navy-900 dark:text-white">Recent Bookings</h2>
-                <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">Your latest service requests</p>
-              </div>
-            </div>
-            <Badge variant="primary">{recentBookings.length} Recent</Badge>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-navy-100 dark:border-white/10 bg-navy-50/50 dark:bg-white/[0.02]">
-                  <th className="text-left py-3 px-6 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider">Service</th>
-                  <th className="text-left py-3 px-4 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider hidden md:table-cell">Provider</th>
-                  <th className="text-left py-3 px-4 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider hidden sm:table-cell">Date</th>
-                  <th className="text-left py-3 px-4 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider hidden lg:table-cell">Location</th>
-                  <th className="text-left py-3 px-4 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookingsLoading ? (
-                  <tr>
-                    <td colSpan={5} className="py-12">
-                      <div className="flex flex-col items-center justify-center gap-3">
-                        <Loader2 className="w-7 h-7 text-primary animate-spin" />
-                        <p className="text-sm text-navy-400 dark:text-navy-500">Loading your bookings...</p>
-                      </div>
-                    </td>
-                  </tr>
-                ) : bookingsError ? (
-                  <tr>
-                    <td colSpan={5} className="py-12">
-                      <div className="flex flex-col items-center justify-center gap-2">
-                        <AlertCircle className="w-7 h-7 text-red-400" />
-                        <p className="text-sm text-navy-400 dark:text-navy-500">{bookingsError}</p>
-                        <button onClick={loadBookings} className="text-xs font-semibold text-primary hover:underline mt-1">
-                          Retry
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ) : recentBookings.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-12">
-                      <div className="flex flex-col items-center justify-center gap-2">
-                        <ClipboardList className="w-7 h-7 text-navy-300 dark:text-navy-600" />
-                        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">No bookings yet</p>
-                        <p className="text-xs text-navy-400 dark:text-navy-500">Book a professional to get started.</p>
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  recentBookings.map((booking, i) => {
-                  const statusConfig = STATUS_STYLES[booking.status] || STATUS_STYLES.PENDING;
-                  return (
-                    <motion.tr
-                      key={booking.id}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + i * 0.06, duration: 0.4 }}
-                      className="border-b border-navy-50 dark:border-white/5 last:border-0 hover:bg-navy-50 dark:hover:bg-white/[0.02] transition-all duration-200 group"
-                    >
-                      <td className="py-3.5 px-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
-                            <Wrench className="w-4 h-4 text-primary" />
-                          </div>
-                          <span className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{booking.trade}</span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 text-navy-500 dark:text-navy-400 hidden md:table-cell">{booking.professional?.companyName || booking.professional?.name || 'Unassigned'}</td>
-                      <td className="py-3.5 px-4 hidden sm:table-cell">
-                        <span className="text-navy-500 dark:text-navy-400 text-sm">
-                          {new Date(booking.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 hidden lg:table-cell">
-                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
-                          <MapPin className="w-3 h-3" />
-                          {booking.postcode}
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full ${statusConfig.dot}`} />
-                          <Badge variant={statusConfig.badge}>
-                            {booking.status.replace('_', ' ')}
-                          </Badge>
-                        </div>
-                      </td>
-                    </motion.tr>
-                  );
-                })
-              )}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        <DataTable<BookingRecord>
+          isLoading={bookingsLoading}
+          loadingText="Loading your bookings..."
+          data={bookings}
+          rowKey={(booking) => booking.id}
+          searchable
+          searchPlaceholder="Search bookings..."
+          searchKeys={(b) => [b.trade, b.professional?.name ?? '', b.professional?.companyName ?? '', b.postcode, b.id]}
+          sortable
+          filters={[
+            {
+              key: 'status',
+              label: 'Status',
+              options: [
+                { value: 'PENDING', label: 'Pending' },
+                { value: 'ACCEPTED', label: 'Accepted' },
+                { value: 'IN_PROGRESS', label: 'In Progress' },
+                { value: 'COMPLETED', label: 'Completed' },
+                { value: 'REJECTED', label: 'Rejected' },
+                { value: 'CANCELLED', label: 'Cancelled' },
+              ],
+            },
+          ]}
+          emptyTitle="No bookings yet"
+          emptyDescription="Book a professional to get started."
+          emptyIcon={<ClipboardList className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
+          columns={[
+            {
+              key: 'trade',
+              header: 'Service',
+              sortValue: (b) => b.trade,
+              render: (booking) => (
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                    <Wrench className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="font-semibold text-navy-800 dark:text-navy-200 capitalize">
+                    {booking.trade}
+                  </span>
+                </div>
+              ),
+            },
+            {
+              key: 'provider',
+              header: 'Provider',
+              hideOn: 'md',
+              sortValue: (b) => b.professional?.companyName || b.professional?.name || 'Unassigned',
+              render: (booking) => (
+                <span className="text-navy-500 dark:text-navy-400">
+                  {booking.professional?.companyName || booking.professional?.name || 'Unassigned'}
+                </span>
+              ),
+            },
+            {
+              key: 'date',
+              header: 'Date',
+              hideOn: 'sm',
+              sortValue: (b) => new Date(b.bookingDate).getTime(),
+              render: (booking) => (
+                <span className="text-navy-500 dark:text-navy-400 text-sm">
+                  {new Date(booking.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                </span>
+              ),
+            },
+            {
+              key: 'location',
+              header: 'Location',
+              hideOn: 'lg',
+              sortValue: (b) => b.postcode,
+              render: (booking) => (
+                <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+                  <MapPin className="w-3 h-3" />
+                  {booking.postcode}
+                </div>
+              ),
+            },
+            {
+              key: 'status',
+              header: 'Status',
+              render: (booking) => {
+                const statusConfig = STATUS_STYLES[booking.status] || STATUS_STYLES.PENDING;
+                return (
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${statusConfig.dot}`} />
+                    <Badge variant={statusConfig.badge}>{booking.status.replace('_', ' ')}</Badge>
+                  </div>
+                );
+              },
+            },
+          ]}
+        />
       </motion.div>
 
       {/* Quick Actions */}
@@ -350,7 +318,7 @@ const UserDashboard: React.FC = () => {
             {!submitted && (
               <button
                 onClick={() => setTestimonialOpen(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors shrink-0"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors shrink-0"
               >
                 <Star className="w-4 h-4" />
                 Write a Testimonial

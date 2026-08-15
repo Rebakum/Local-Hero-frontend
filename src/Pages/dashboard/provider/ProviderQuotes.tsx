@@ -110,6 +110,10 @@ const ProviderQuotes: React.FC = () => {
           loadingText="Loading open requests..."
           data={available}
           rowKey={(q) => q.id}
+          searchable
+          searchPlaceholder="Search open requests..."
+          searchKeys={(q) => [q.trade, q.city, q.postcode, q.description]}
+          sortable
           emptyTitle="No open requests"
           emptyDescription="When customers post a job matching your trade, it will appear here."
           emptyIcon={<MessageSquareQuote className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -187,6 +191,10 @@ const ProviderQuotes: React.FC = () => {
           loadingText="Loading your responses..."
           data={mine}
           rowKey={(q) => q.id}
+          searchable
+          searchPlaceholder="Search your responses..."
+          searchKeys={(q) => [q.trade, q.city, q.postcode, q.description]}
+          sortable
           emptyTitle="No responses yet"
           emptyDescription="Quotes you send will appear here with their status."
           emptyIcon={<Clock className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -244,14 +252,14 @@ const ProviderQuotes: React.FC = () => {
             <button
               onClick={() => setRespondTarget(null)}
               disabled={responding}
-              className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleRespond}
               disabled={responding || !Number(amount)}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {responding && <Loader2 className="w-4 h-4 animate-spin" />}
               Send quote

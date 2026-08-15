@@ -140,6 +140,10 @@ const MyJobs: React.FC = () => {
           loadingText="Loading your jobs..."
           data={filtered}
           rowKey={(b) => b.id}
+          searchable
+          searchPlaceholder="Search jobs..."
+          searchKeys={(b) => [b.trade, b.fullName, b.email, b.address, b.postcode, b.id]}
+          sortable
           emptyTitle="No active jobs"
           emptyDescription="Accepted bookings appear here so you can start and complete them."
           emptyIcon={<Briefcase className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -250,7 +254,7 @@ const MyJobs: React.FC = () => {
                   <button
                     onClick={() => setCancelTarget(booking)}
                     disabled={actionLoading === booking.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
                   >
                     <Ban className="w-3.5 h-3.5" />
                     Cancel

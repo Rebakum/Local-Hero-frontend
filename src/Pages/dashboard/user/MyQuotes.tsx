@@ -169,7 +169,7 @@ const MyQuotes: React.FC = () => {
         actions={
           <button
             onClick={() => setFormOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Request a Quote
@@ -205,6 +205,7 @@ const MyQuotes: React.FC = () => {
         loadingText="Loading your quotes..."
         data={filtered}
         rowKey={(q) => q.id}
+        sortable
         emptyTitle="No quote requests"
         emptyDescription="Post a job request and receive quotes from local professionals."
         emptyIcon={<MessageSquareQuote className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -276,14 +277,14 @@ const MyQuotes: React.FC = () => {
             <button
               onClick={() => setFormOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
               disabled={saving || !form.trade || !form.postcode.trim() || !form.city.trim() || !form.description.trim()}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {saving && <Loader2 className="w-4 h-4 animate-spin" />}
               Submit request
@@ -371,7 +372,7 @@ const MyQuotes: React.FC = () => {
         footer={
           <button
             onClick={() => setViewing(null)}
-            className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
+            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
           >
             Close
           </button>
@@ -418,7 +419,7 @@ const MyQuotes: React.FC = () => {
                         <button
                           onClick={() => handleResponseStatus(response.id, 'ACCEPTED')}
                           disabled={acting === response.id}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
                         >
                           <Check className="w-3.5 h-3.5" />
                           Accept
@@ -426,7 +427,7 @@ const MyQuotes: React.FC = () => {
                         <button
                           onClick={() => handleResponseStatus(response.id, 'REJECTED')}
                           disabled={acting === response.id}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
                         >
                           <XCircle className="w-3.5 h-3.5" />
                           Reject

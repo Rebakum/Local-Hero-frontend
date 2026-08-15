@@ -29,13 +29,13 @@ export const ProDetailsModal: React.FC = () => {
         <button
           onClick={closeProModal}
           aria-label="Close"
-          className="absolute top-4 right-4 z-10 p-2 rounded-xl bg-white/10 backdrop-blur text-white hover:bg-white/25 transition-colors"
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 backdrop-blur text-white hover:bg-white/25 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
-      <div className="p-6 pt-0 overflow-y-auto flex-1 relative space-y-6">
+      <div className="p-6 pt-0 overflow-y-auto flex-1 min-h-0 relative space-y-6">
         {/* Avatar & title */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-14 pb-5 border-b border-navy-100 dark:border-white/10">
           <div className="flex items-end gap-4">
@@ -82,7 +82,7 @@ export const ProDetailsModal: React.FC = () => {
           {badges.map((badge) => (
             <div
               key={badge.label}
-              className={`p-2.5 rounded-xl border flex items-center gap-2 transition-all ${
+              className={`p-2.5 rounded-full border flex items-center gap-2 transition-all ${
                 badge.show
                   ? 'border-primary/25 bg-primary/10'
                   : 'border-navy-100 dark:border-white/10 bg-cream-100 dark:bg-navy-800 opacity-40'

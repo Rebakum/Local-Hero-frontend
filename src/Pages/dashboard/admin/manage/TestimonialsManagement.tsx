@@ -195,7 +195,7 @@ const TestimonialsManagement: React.FC = () => {
         actions={
           <button
             onClick={openCreate}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-white text-sm font-semibold shadow-sm shadow-primary/25 hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4" />
             New Testimonial
@@ -231,6 +231,23 @@ const TestimonialsManagement: React.FC = () => {
         loadingText="Loading testimonials..."
         data={filtered}
         rowKey={(t) => t.id}
+        sortable
+        filters={[
+          {
+            key: 'trade',
+            label: 'Trade',
+            options: [
+              { value: 'Plumber', label: 'Plumber' },
+              { value: 'Electrician', label: 'Electrician' },
+              { value: 'Cleaner', label: 'Cleaner' },
+              { value: 'Painter', label: 'Painter' },
+              { value: 'Gardener', label: 'Gardener' },
+              { value: 'Carpenter', label: 'Carpenter' },
+              { value: 'Locksmith', label: 'Locksmith' },
+              { value: 'Roofer', label: 'Roofer' },
+            ],
+          },
+        ]}
         emptyTitle="No testimonials found"
         emptyDescription="Add your first customer testimonial to get started."
         emptyIcon={<MessageSquareQuote className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -297,14 +314,14 @@ const TestimonialsManagement: React.FC = () => {
             <button
               onClick={() => openEdit(testimonial)}
               title="Edit"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
             >
               <Pencil className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => setDeleteTarget(testimonial)}
               title="Delete"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
@@ -325,14 +342,14 @@ const TestimonialsManagement: React.FC = () => {
             <button
               onClick={() => setModalOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={onSubmit}
               disabled={saving}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {saving && <Loader2 className="w-4 h-4 animate-spin" />}
               {editing ? 'Save changes' : 'Create testimonial'}

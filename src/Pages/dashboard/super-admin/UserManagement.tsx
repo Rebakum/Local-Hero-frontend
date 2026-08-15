@@ -248,6 +248,7 @@ const UserManagement: React.FC = () => {
         loadingText="Loading users..."
         data={filteredUsers}
         rowKey={(u) => u.id}
+        sortable
         emptyTitle="No users found"
         emptyDescription={
           activeFilter === 'ALL'
@@ -316,7 +317,7 @@ const UserManagement: React.FC = () => {
                 <button
                   onClick={() => handleApprove(u.id)}
                   disabled={actionLoading === u.id}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
                   title="Approve"
                 >
                   {actionLoading === u.id ? (
@@ -329,7 +330,7 @@ const UserManagement: React.FC = () => {
                 <button
                   onClick={() => handleReject(u.id)}
                   disabled={actionLoading === u.id}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
                   title="Reject"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -343,7 +344,7 @@ const UserManagement: React.FC = () => {
                 <button
                   onClick={() => setRoleDropdownOpen(roleDropdownOpen === u.id ? null : u.id)}
                   disabled={actionLoading === u.id}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
                   title="Change role"
                 >
                   <Shield className="w-3.5 h-3.5" />

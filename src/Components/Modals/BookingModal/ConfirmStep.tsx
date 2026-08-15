@@ -68,7 +68,7 @@ export const ConfirmStep: React.FC<ConfirmStepProps> = ({
         <input
           type="email"
           required
-          placeholder="e.g. john@example.co.uk"
+          placeholder="e.g. john@example.com"
           value={bookingData.email || ''}
           onChange={(e) => updateBookingData({ email: e.target.value })}
           className="input-lh"

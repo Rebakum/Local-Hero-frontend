@@ -48,12 +48,11 @@ const Navbar: React.FC = () => {
           : 'border-b border-black/[0.06] dark:border-white/[0.06] shadow-lg bg-white/95 dark:bg-navy-900/95 backdrop-blur-xl'
       }`}
     >
-      <TopHeader isScrolled={isScrolled} />
+     
 
-      <div className="container-lh h-14 sm:h-16 md:h-20 flex items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 md:px-6">
+      <div className="container-lh h-14 sm:h-16 md:h-20 flex items-center justify-between gap-5 sm:gap-4 px-3 sm:px-4 md:px-6">
 
         <Logo atTop={atTop} />
-
         <DesktopNav
           pathname={pathname}
           atTop={atTop}
@@ -61,7 +60,6 @@ const Navbar: React.FC = () => {
           isTransparent={isTransparent}
           openBooking={openBooking}
         />
-
         <MobileNavToggle
           mobileOpen={mobileOpen}
           setMobileOpen={setMobileOpen}

@@ -1,21 +1,25 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import type { UserRole } from '../types/auth';
 import { RootLayout } from '../Layouts/RootLayout';
 import { BookingProvider } from '../Context/BookingContext';
 import { HomePage } from '../Pages/home/HomePage';
 import { ServicesPage } from '../Pages/servicespage/ServicesPage';
 import { ProfessionalsPage } from '../Pages/professionals/ProfessionalsPage';
-import { HowItWorksPage } from '../Pages/how-it-works/HowItWorksPage';
-import { AboutPage } from '../Pages/about/AboutPage';
-import { FaqPage } from '../Pages/faq/FaqPage';
-import { NotFoundPage } from '../Pages/not-found/NotFoundPage';
+import { AboutPage } from '../Pages/About/AboutPage';
+import { FaqPage } from '../Pages/Faq/FaqPage';
+import { NotFoundPage } from '../Pages/Not-found/NotFoundPage';
 import { ServiceDetailsPage } from '../Pages/service-details/ServiceDetailsPage';
 import { ContactPage } from '../Pages/Contact/ContactPage';
-import ProDetailsPage from '../Components/Sections/FeaturedPros/ProDetailsPage';
+import ProDetailsPage from '../Pages/home/Sections/FeaturedPros/ProDetailsPage';
 import AllCategoriesPage from '../Pages/AllCategories/AllCategoriesPage';
-import LoginPage from '../Pages/login/LoginPage';
-import RegisterPage from '../Pages/register/RegisterPage';
+import LoginPage from '../Pages/Auth/login/LoginPage';
+import RegisterPage from '../Pages/Auth/register/RegisterPage';
+import VerifyEmailPage from '../Pages/Auth/verify-email/VerifyEmailPage';
+import ForgotPasswordPage from '../Pages/Auth/forgot-password/ForgotPasswordPage';
+import ResetPasswordPage from '../Pages/Auth/reset-password/ResetPasswordPage';
 import DashboardLayout from '../Layouts/DashboardLayout';
-import ProtectedRoute from '../Components/ProtectedRoute';
+import ProtectedRoute from '../Layouts/ProtectedRoute';
 import UserDashboard from '../Pages/dashboard/user/UserDashboard';
 import ProviderDashboard from '../Pages/dashboard/provider/ProviderDashboard';
 import AdminDashboard from '../Pages/dashboard/admin/AdminDashboard';
@@ -52,6 +56,90 @@ import UserNotifications from '../Pages/dashboard/user/Notifications';
 import ProviderQuotes from '../Pages/dashboard/provider/ProviderQuotes';
 import ProviderNotifications from '../Pages/dashboard/provider/Notifications';
 import ProviderSubscription from '../Pages/dashboard/provider/Subscription';
+import PricingPage from '../Pages/Pricing/PricingPage';
+import { BlogPage } from '../Pages/Blog/BlogPage';
+import { TrustSafetyPage } from '../Pages/TrustSafety/TrustSafetyPage';
+
+const ADMIN_ROLES: UserRole[] = ['ADMIN', 'SUPER_ADMIN'];
+const USER_ROLES: UserRole[] = ['user'];
+const PROVIDER_ROLES: UserRole[] = ['serviceProvider'];
+const SUPER_ADMIN_ROLES: UserRole[] = ['SUPER_ADMIN'];
+
+interface ProtectedRouteEntry {
+  path: string;
+  roles: UserRole[];
+  element: ReactNode;
+}
+
+const publicRoutes = [
+  { path: 'services', element: <ServicesPage /> },
+  { path: 'services/:id', element: <ServiceDetailsPage /> },
+  { path: 'categories', element: <AllCategoriesPage /> },
+  { path: 'professionals', element: <ProfessionalsPage /> },
+  { path: 'professionals/:id', element: <ProDetailsPage /> },
+  { path: 'pricing', element: <PricingPage /> },
+  { path: 'about', element: <AboutPage /> },
+  { path: 'blog', element: <BlogPage /> },
+  { path: 'trust-and-safety', element: <TrustSafetyPage /> },
+  { path: 'faq', element: <FaqPage /> },
+  { path: 'contact', element: <ContactPage /> },
+];
+
+const authRoutes = [
+  { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
+  { path: '/verify-email', element: <VerifyEmailPage /> },
+  { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  { path: '/reset-password', element: <ResetPasswordPage /> },
+];
+
+const protectedRouteEntries: ProtectedRouteEntry[] = [
+  { path: 'user', roles: USER_ROLES, element: <UserDashboard /> },
+  { path: 'user/bookings', roles: USER_ROLES, element: <MyBookings /> },
+  { path: 'user/saved', roles: USER_ROLES, element: <SavedPros /> },
+  { path: 'user/reviews', roles: USER_ROLES, element: <UserReviews /> },
+  { path: 'user/quotes', roles: USER_ROLES, element: <MyQuotes /> },
+  { path: 'user/messages', roles: USER_ROLES, element: <UserMessages /> },
+  { path: 'user/notifications', roles: USER_ROLES, element: <UserNotifications /> },
+  { path: 'user/apply-provider', roles: USER_ROLES, element: <ProviderApplicationForm /> },
+
+  { path: 'provider', roles: PROVIDER_ROLES, element: <ProviderDashboard /> },
+  { path: 'provider/leads', roles: PROVIDER_ROLES, element: <Leads /> },
+  { path: 'provider/jobs', roles: PROVIDER_ROLES, element: <MyJobs /> },
+  { path: 'provider/appointments', roles: PROVIDER_ROLES, element: <Appointments /> },
+  { path: 'provider/messages', roles: PROVIDER_ROLES, element: <Messages /> },
+  { path: 'provider/reviews', roles: PROVIDER_ROLES, element: <Reviews /> },
+  { path: 'provider/quotes', roles: PROVIDER_ROLES, element: <ProviderQuotes /> },
+  { path: 'provider/notifications', roles: PROVIDER_ROLES, element: <ProviderNotifications /> },
+  { path: 'provider/subscription', roles: PROVIDER_ROLES, element: <ProviderSubscription /> },
+  { path: 'provider/payments', roles: PROVIDER_ROLES, element: <ProviderPayments /> },
+  { path: 'provider/providerPBooking', roles: PROVIDER_ROLES, element: <ProviderBookingDashboard /> },
+
+  { path: 'admin', roles: ADMIN_ROLES, element: <AdminDashboard /> },
+  { path: 'admin/approvals', roles: ADMIN_ROLES, element: <AdminApprovals /> },
+  { path: 'admin/moderation', roles: ADMIN_ROLES, element: <Moderation /> },
+  { path: 'admin/manage/trades', roles: ADMIN_ROLES, element: <TradesManagement /> },
+  { path: 'admin/manage/subscriptions', roles: ADMIN_ROLES, element: <SubscriptionsManagement /> },
+  { path: 'admin/manage/professions', roles: ADMIN_ROLES, element: <ProfessionsManagement /> },
+  { path: 'admin/manage/professionals', roles: ADMIN_ROLES, element: <ProfessionalsManagement /> },
+  { path: 'admin/manage/before-after', roles: ADMIN_ROLES, element: <BeforeAfterManagement /> },
+  { path: 'admin/manage/testimonials', roles: ADMIN_ROLES, element: <TestimonialsManagement /> },
+  { path: 'admin/manage/bookings', roles: ADMIN_ROLES, element: <BookingManagement /> },
+  { path: 'admin/manage/payments', roles: ADMIN_ROLES, element: <AdminPaymentHistory /> },
+
+  { path: 'super-admin', roles: SUPER_ADMIN_ROLES, element: <SuperAdminDashboard /> },
+  { path: 'super-admin/admin-approvals', roles: SUPER_ADMIN_ROLES, element: <SuperAdminApprovals /> },
+  { path: 'super-admin/user-approvals', roles: SUPER_ADMIN_ROLES, element: <SuperAdminProviderApprovals /> },
+  { path: 'super-admin/users', roles: SUPER_ADMIN_ROLES, element: <UserManagement /> },
+  { path: 'super-admin/system', roles: SUPER_ADMIN_ROLES, element: <SystemPage /> },
+];
+
+const protectedRoutes: RouteObject[] = protectedRouteEntries.map(
+  ({ path, roles, element }) => ({
+    path,
+    element: <ProtectedRoute allowedRoles={roles}>{element}</ProtectedRoute>,
+  })
+);
 
 export const router = createBrowserRouter([
   {
@@ -59,27 +147,11 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'services', element: <ServicesPage /> },
-      { path: 'services/:id', element: <ServiceDetailsPage /> },
-      { path: 'categories', element: <AllCategoriesPage /> },
-      { path: 'professionals', element: <ProfessionalsPage /> },
-      { path: 'professionals/:id', element: <ProDetailsPage /> },
-      // { path: 'pros/:id', element: <ProDetailsPage /> },
-      { path: 'how-it-works', element: <HowItWorksPage /> },
-      { path: 'about', element: <AboutPage /> },
-      { path: 'faq', element: <FaqPage /> },
-      { path: 'contact', element: <ContactPage /> },
+      ...publicRoutes,
       { path: '*', element: <NotFoundPage /> },
     ],
   },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
+  ...authRoutes,
   {
     path: '/dashboard',
     element: (
@@ -91,296 +163,8 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Navigate to="/dashboard/user" replace /> },
-
-      {
-        path: 'user',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <UserDashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/bookings',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <MyBookings />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/saved',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <SavedPros />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/reviews',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <UserReviews />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/quotes',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <MyQuotes />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/messages',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <UserMessages />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'user/notifications',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <UserNotifications />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: 'provider',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <ProviderDashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/leads',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <Leads />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/jobs',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <MyJobs />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/appointments',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <Appointments />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/messages',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <Messages />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/reviews',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <Reviews />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/quotes',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <ProviderQuotes />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/notifications',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <ProviderNotifications />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/subscription',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <ProviderSubscription />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/payments',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <ProviderPayments />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'provider/providerPBooking',
-        element: (
-          <ProtectedRoute allowedRoles={['serviceProvider']}>
-            <ProviderBookingDashboard />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: 'admin',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <AdminDashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/approvals',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <AdminApprovals />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/moderation',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <Moderation />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/trades',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <TradesManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/subscriptions',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <SubscriptionsManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/professions',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <ProfessionsManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/professionals',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <ProfessionalsManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/before-after',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <BeforeAfterManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/testimonials',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <TestimonialsManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/bookings',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <BookingManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'admin/manage/payments',
-        element: (
-          <ProtectedRoute allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-            <AdminPaymentHistory />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: 'super-admin',
-        element: (
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-            <SuperAdminDashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'super-admin/admin-approvals',
-        element: (
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-            <SuperAdminApprovals />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'super-admin/user-approvals',
-        element: (
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-            <SuperAdminProviderApprovals />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'super-admin/users',
-        element: (
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-            <UserManagement />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'super-admin/system',
-        element: (
-          <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
-            <SystemPage />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: 'user/apply-provider',
-        element: (
-          <ProtectedRoute allowedRoles={['user']}>
-            <ProviderApplicationForm />
-          </ProtectedRoute>
-        ),
-      },
-
-      {
-        path: 'profile',
-        element: <ProfilePage />,
-      },
+      ...protectedRoutes,
+      { path: 'profile', element: <ProfilePage /> },
     ],
   },
 ]);

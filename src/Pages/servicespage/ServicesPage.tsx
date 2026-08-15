@@ -2,9 +2,9 @@ import React from 'react';
 import { SectionTitle } from '../../Components/ui/SectionTitle';
 import { ServicesHowItWorks } from './ServicesHowItWorks';
 import { ServicesGrid } from './ServicesGrid';
-import { FAQ } from '../../Components/Sections/FAQ/FAQ';
-import { CTA } from '../../Components/Sections/CTA';
-import { Stats } from '../../Components/Sections/Stats';
+import { FAQ } from '../home/Sections/FAQ/FAQ';
+import { CTA } from '../home/Sections/CTA';
+import { Stats } from '../home/Sections/Stats';
 
 export const ServicesPage: React.FC = () => {
   return (
@@ -19,10 +19,7 @@ export const ServicesPage: React.FC = () => {
         />
 
         <ServicesGrid />
-      <ServicesHowItWorks />
-      <Stats />     
-      <FAQ />
-      <CTA />
+      
       </section>
       
         

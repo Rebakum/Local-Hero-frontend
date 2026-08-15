@@ -16,6 +16,7 @@ import {
   UserX,
   MessageSquare,
 } from 'lucide-react';
+import { Pagination } from '../../../Components/ui/Pagination';
 
 type ModerationType = 'review' | 'account';
 
@@ -52,6 +53,8 @@ const Moderation: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'pending' | 'resolved'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 5;
 
   const filtered = items.filter((item) => {
     const matchesType = activeFilter === 'ALL' || item.type === activeFilter;
@@ -63,6 +66,9 @@ const Moderation: React.FC = () => {
       item.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesType && matchesStatus && matchesSearch;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const counts = {
     ALL: items.length,
@@ -153,8 +159,11 @@ const Moderation: React.FC = () => {
           ] as const).map((tab) => (
             <button
               key={tab.key}
-              onClick={() => setActiveFilter(tab.key)}
-              className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all duration-200 ${
+              onClick={() => {
+                setActiveFilter(tab.key);
+                setPage(1);
+              }}
+              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
                 activeFilter === tab.key
                   ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 border border-red-200 dark:border-red-500/20'
                   : 'bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10 border border-transparent'
@@ -169,8 +178,11 @@ const Moderation: React.FC = () => {
           {(['ALL', 'pending', 'resolved'] as const).map((s) => (
             <button
               key={s}
-              onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-all duration-200 ${
+              onClick={() => {
+                setStatusFilter(s);
+                setPage(1);
+              }}
+              className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
                 statusFilter === s
                   ? 'bg-navy-800 dark:bg-white/10 text-white'
                   : 'bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10'
@@ -186,7 +198,10 @@ const Moderation: React.FC = () => {
             type="text"
             placeholder="Search flagged items..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setPage(1);
+            }}
             className="input-lh pl-9 h-10 text-sm"
           />
         </div>
@@ -206,7 +221,7 @@ const Moderation: React.FC = () => {
             </div>
           ) : (
             <div className="divide-y divide-navy-50 dark:divide-white/5">
-              {filtered.map((item, i) => {
+              {paged.map((item, i) => {
                 const config = TYPE_CONFIG[item.type];
                 return (
                   <motion.div
@@ -241,7 +256,7 @@ const Moderation: React.FC = () => {
                           <button
                             onClick={() => handleAction(item.id, 'approve')}
                             disabled={actionLoading === item.id}
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-all duration-200 disabled:opacity-50 shadow-sm shadow-emerald-500/25"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-all duration-200 disabled:opacity-50 shadow-sm shadow-emerald-500/25"
                           >
                             {actionLoading === item.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                             Approve
@@ -249,7 +264,7 @@ const Moderation: React.FC = () => {
                           <button
                             onClick={() => handleAction(item.id, 'remove')}
                             disabled={actionLoading === item.id}
-                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-200 disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-200 disabled:opacity-50"
                           >
                             <X className="w-3.5 h-3.5" />
                             Remove
@@ -261,6 +276,15 @@ const Moderation: React.FC = () => {
                 );
               })}
             </div>
+          )}
+
+          {totalPages > 1 && (
+            <Pagination
+              page={page}
+              pageSize={PAGE_SIZE}
+              total={filtered.length}
+              onPageChange={setPage}
+            />
           )}
         </Card>
       </motion.div>

@@ -6,8 +6,6 @@ import {
   Clock,
   XCircle,
   RefreshCw,
-  ChevronLeft,
-  ChevronRight,
   DollarSign,
   User,
   Briefcase,
@@ -19,6 +17,7 @@ import {
   type PaymentStats,
 } from "../../../../services/payment.service";
 import { PageHeader } from "../../../../Components/ui";
+import { Pagination } from "../../../../Components/ui/Pagination";
 
 export const AdminPaymentHistory: React.FC = () => {
   const [payments, setPayments] = useState<PaymentRecord[]>([]);
@@ -98,7 +97,7 @@ export const AdminPaymentHistory: React.FC = () => {
             fetchPayments();
             fetchStats();
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg transition"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-full transition"
         >
           <RefreshCw className="w-4 h-4" /> Refresh
         </button>
@@ -307,27 +306,13 @@ export const AdminPaymentHistory: React.FC = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-            <span className="text-xs text-gray-500">
-              Page {page} of {totalPages}
-            </span>
-            <div className="flex items-center gap-2">
-              <button
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-                className="p-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-300 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-                className="p-2 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-600 dark:text-gray-300 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+          <Pagination
+            page={page}
+            pageSize={10}
+            total={totalPages * 10}
+            onPageChange={(p) => setPage(p)}
+            showRange={false}
+          />
         )}
       </div>
     </div>

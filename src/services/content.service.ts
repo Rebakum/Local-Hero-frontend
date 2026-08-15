@@ -131,6 +131,8 @@ export interface TestimonialInput {
   verifiedJob?: string;
   avatar?: string;
   source?: string;
+  professionalId?: string;
+  bookingId?: string;
 }
 
 // ---------- Trades ----------

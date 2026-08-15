@@ -2,7 +2,6 @@ import React from 'react';
 import { FooterTop } from './FooterTop';
 import { FooterLinks } from './FooterLinks';
 import { FooterBottom } from './FooterBottom';
-
 import { PhoneCall } from 'lucide-react';
 import { SectionTitle } from '../../ui';
 

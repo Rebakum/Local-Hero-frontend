@@ -64,7 +64,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
                     </div>
 
                     <div className="mt-4 pt-2">
-                      <span className="flex items-center justify-center gap-2 text-xs font-bold text-white bg-primary hover:bg-primary/90 rounded-xl px-4 py-2.5 transition group-hover:bg-primary">
+                      <span className="flex items-center justify-center gap-2 text-xs font-bold text-white bg-primary hover:bg-primary/90 rounded-full px-4 py-2.5 transition group-hover:bg-primary">
                         View Details <ArrowRight size={14} />
                       </span>
                     </div>

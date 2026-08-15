@@ -96,6 +96,21 @@ const ProviderPayments: React.FC = () => {
           loadingText="Loading payments..."
           data={paidBookings}
           rowKey={(b) => b.id}
+          searchable
+          searchPlaceholder="Search payments..."
+          searchKeys={(b) => [b.trade, b.fullName, b.email, b.id]}
+          sortable
+          filters={[
+            {
+              key: 'status',
+              label: 'Booking status',
+              options: [
+                { value: 'COMPLETED', label: 'Completed' },
+                { value: 'ACCEPTED', label: 'Accepted' },
+                { value: 'IN_PROGRESS', label: 'In Progress' },
+              ],
+            },
+          ]}
           emptyTitle="No payments yet"
           emptyDescription="Once a customer pays for an accepted booking, it will appear here."
           emptyIcon={<CreditCard className="w-12 h-12 text-navy-300 dark:text-navy-600" />}

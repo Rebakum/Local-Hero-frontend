@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Bell,
   CheckCheck,
   Loader2,
   AlertCircle,
   Inbox,
+  Star,
 } from 'lucide-react';
 import {
   DataTable,
@@ -31,6 +33,7 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
   description,
 }) => {
   const { socket } = useSocket();
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +98,20 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
     }
   };
 
+  // Opening a "your service is complete, leave a review" notification takes
+  // the customer to the review page for that booking (and marks it read).
+  const handleOpen = async (notification: Notification) => {
+    const data = notification.data as { action?: string; bookingId?: string } | null;
+
+    if (data?.action === 'LEAVE_REVIEW' && data.bookingId) {
+      if (!notification.isRead) await handleMarkRead(notification);
+      navigate(`/dashboard/user/reviews?bookingId=${encodeURIComponent(data.bookingId)}`);
+      return;
+    }
+
+    if (!notification.isRead) await handleMarkRead(notification);
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -105,7 +122,7 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
           <button
             onClick={handleMarkAll}
             disabled={updating === 'all' || unread === 0}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
           >
             {updating === 'all' ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -129,6 +146,20 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
         loadingText="Loading notifications..."
         data={notifications}
         rowKey={(n) => n.id}
+        searchable
+        searchPlaceholder="Search notifications..."
+        searchKeys={(n) => [n.title, n.body ?? '', n.type]}
+        sortable
+        filters={[
+          {
+            key: 'isRead',
+            label: 'Status',
+            options: [
+              { value: 'false', label: 'Unread' },
+              { value: 'true', label: 'Read' },
+            ],
+          },
+        ]}
         emptyTitle="No notifications"
         emptyDescription="You're all caught up."
         emptyIcon={<Inbox className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -170,25 +201,39 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
             ),
           },
         ]}
-        actions={(notification) => (
-          <>
-            {!notification.isRead && (
-              <button
-                onClick={() => handleMarkRead(notification)}
-                disabled={updating === notification.id}
-                title="Mark as read"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors disabled:opacity-50"
-              >
-                {updating === notification.id ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <CheckCheck className="w-3.5 h-3.5" />
-                )}
-                Mark read
-              </button>
-            )}
-          </>
-        )}
+        actions={(notification) => {
+          const data = notification.data as { action?: string; bookingId?: string } | null;
+          const isReviewCta = data?.action === 'LEAVE_REVIEW' && !!data.bookingId;
+          return (
+            <>
+              {isReviewCta && (
+                <button
+                  onClick={() => void handleOpen(notification)}
+                  title="Leave a review for this completed service"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold hover:bg-amber-200 dark:hover:bg-amber-500/20 transition-colors"
+                >
+                  <Star className="w-3.5 h-3.5" />
+                  Leave a review
+                </button>
+              )}
+              {!notification.isRead && (
+                <button
+                  onClick={() => handleMarkRead(notification)}
+                  disabled={updating === notification.id}
+                  title="Mark as read"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors disabled:opacity-50"
+                >
+                  {updating === notification.id ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <CheckCheck className="w-3.5 h-3.5" />
+                  )}
+                  Mark read
+                </button>
+              )}
+            </>
+          );
+        }}
       />
 
       {!isLoading && unread > 0 && (

@@ -4,7 +4,7 @@ import { getAllTrades } from '../../services/api';
 import { getProfessionalsByTrade } from '../../services/content.service';
 import { Zap, ArrowLeft, Wrench, Clock, Users, BadgeCheck, Loader2 } from 'lucide-react';
 import type { Trade, TradeService, Professional } from '../../types';
-import { ProCard } from '../../Components/Sections/FeaturedPros/FeaturedProCard';
+import { ProCard } from '../home/Sections/FeaturedPros/FeaturedProCard';
 
 import { ServiceHero } from './ServiceHero';
 import { ServiceOverview } from './ServiceOverview';
@@ -171,7 +171,7 @@ export const ServiceDetailsPage: React.FC = () => {
                 <button
                   key={service.id || `${trade.id}-${idx}`}
                   onClick={() => setSelectedIndex(idx)}
-                  className={`px-4 py-2.5 rounded-2xl text-sm font-heading font-bold border transition-all ${
+                  className={`px-4 py-2.5 rounded-full text-sm font-heading font-bold border transition-all ${
                     selectedIndex === idx
                       ? 'bg-primary text-white border-primary shadow-md shadow-primary/25'
                       : 'bg-white dark:bg-navy-900 border-slate-200 dark:border-white/10 text-navy-700 dark:text-navy-200 hover:border-primary/50'

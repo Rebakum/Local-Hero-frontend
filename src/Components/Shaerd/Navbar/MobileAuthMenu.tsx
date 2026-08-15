@@ -143,7 +143,7 @@ export const MobileAuthMenu: React.FC<MobileAuthMenuProps> = ({ close }) => {
         <button
           type="button"
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+          className="flex w-full items-center gap-3 px-4 py-3 rounded-full text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Logout

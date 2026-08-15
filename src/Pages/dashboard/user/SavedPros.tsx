@@ -14,6 +14,7 @@ import {
   AlertCircle,
   RefreshCw,
 } from 'lucide-react';
+import { Pagination } from '../../../Components/ui/Pagination';
 import {
   getMyFavourites,
   removeFavourite,
@@ -38,6 +39,8 @@ const SavedPros: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [removing, setRemoving] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 9;
   const { openBooking } = useBooking();
 
   const load = useCallback(async () => {
@@ -68,6 +71,9 @@ const SavedPros: React.FC = () => {
       ),
     [professionals, searchQuery]
   );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleRemove = async (id: string) => {
     setRemoving(id);
@@ -128,7 +134,10 @@ const SavedPros: React.FC = () => {
             type="text"
             placeholder="Search saved pros..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setPage(1);
+            }}
             className="input-lh pl-9 h-10 text-sm"
           />
         </div>
@@ -147,7 +156,7 @@ const SavedPros: React.FC = () => {
           </div>
           <button
             onClick={load}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-500/20 transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-500/20 transition-colors shrink-0"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Retry
@@ -188,8 +197,9 @@ const SavedPros: React.FC = () => {
           </Card>
         </motion.div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((pro, i) => (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {paged.map((pro, i) => (
             <motion.div
               key={pro.id}
               initial={{ opacity: 0, y: 16 }}
@@ -264,7 +274,7 @@ const SavedPros: React.FC = () => {
                         professionalId: pro.id,
                       })
                     }
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 shadow-sm shadow-primary/25"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 shadow-sm shadow-primary/25"
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     Book Now
@@ -274,6 +284,18 @@ const SavedPros: React.FC = () => {
             </motion.div>
           ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="pt-4">
+            <Pagination
+              page={page}
+              pageSize={PAGE_SIZE}
+              total={filtered.length}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
+        </>
       )}
     </div>
   );

@@ -56,7 +56,7 @@ export const Modal: React.FC<ModalProps> = ({
         <button
           onClick={onClose}
           aria-label="Close modal"
-          className="w-8 h-8 rounded-lg flex items-center justify-center text-navy-400 dark:text-navy-500 hover:bg-navy-100 dark:hover:bg-white/10 hover:text-navy-700 dark:hover:text-navy-200 transition-colors shrink-0"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-navy-400 dark:text-navy-500 hover:bg-navy-100 dark:hover:bg-white/10 hover:text-navy-700 dark:hover:text-navy-200 transition-colors shrink-0"
         >
           <X className="w-4 h-4" />
         </button>
@@ -64,7 +64,7 @@ export const Modal: React.FC<ModalProps> = ({
     </div>
 
     {/* Body */}
-    <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
+    <div className="flex-1 min-h-0 overflow-y-auto px-6 py-5">{children}</div>
 
     {/* Footer */}
     {footer && (

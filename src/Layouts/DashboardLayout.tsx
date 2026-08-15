@@ -32,6 +32,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import type { UserRole } from '../types/auth';
 import { Badge } from '../Components/ui/shared/Badge';
 import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
+import { NotificationBell } from '../Components/Shaerd/Navbar/NotificationBell';
 
 interface SidebarLink {
   to: string;
@@ -179,6 +180,8 @@ const DashboardLayout: React.FC = () => {
                 <p className="text-[10px] text-navy-400 dark:text-navy-500 leading-tight">{user?.email}</p>
               </div>
             </div>
+
+            <NotificationBell atTop={false} />
 
             <RouterLink
               to="/"

@@ -1,9 +1,6 @@
 import React from 'react';
 import { SectionTitle } from '../../Components/ui/SectionTitle';
-
-import { BeforeAfter } from '../../Components/Sections/BeforeAfter';
-import { CTA } from '../../Components/Sections/CTA';
-import FeaturedProsGrid from '../../Components/Sections/FeaturedPros/FeaturedProsGrid';
+import FeaturedProsGrid from '../home/Sections/FeaturedPros/FeaturedProsGrid';
 
 export const ProfessionalsPage: React.FC = () => {
   return (
@@ -19,8 +16,7 @@ export const ProfessionalsPage: React.FC = () => {
         <FeaturedProsGrid/>
       </section>
 
-      <BeforeAfter />
-      <CTA />
+     
     </div>
   );
 };

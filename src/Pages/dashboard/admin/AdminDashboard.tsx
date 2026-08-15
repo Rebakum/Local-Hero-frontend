@@ -4,13 +4,12 @@ import { motion } from 'motion/react';
 import { useAuth } from '../../../Context/AuthContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
-import { EmptyState } from '../../../Components/ui/shared/EmptyState';
 import { ActionButton } from '../../../Components/dashboard/ActionButton';
+import { DataTable } from '../../../Components/ui/DataTable';
 import {
   Users,
   Briefcase,
   UserCheck,
-  Loader2,
   Mail,
   Calendar,
   Check,
@@ -105,29 +104,54 @@ const AdminDashboard: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-violet-500 to-purple-500 p-6 sm:p-8 text-white shadow-xl shadow-violet-500/20"
+        className="relative overflow-hidden rounded-3xl bg-white dark:bg-navy-900 p-6 sm:p-8 text-navy-950 dark:text-white shadow-xl shadow-primary/20"
       >
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-white/10 blur-sm" />
-        <div className="absolute -right-4 bottom-0 w-28 h-28 rounded-full bg-white/5" />
-        <div className="absolute left-1/3 top-0 w-64 h-32 bg-white/5 blur-3xl rounded-full" />
+        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm" />
+        <div className="absolute -right-4 bottom-0 w-28 h-28 rounded-full bg-primary/5" />
+        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full" />
 
         <div className="relative z-10 flex items-start justify-between">
           <div>
-            <span className="text-sm font-medium text-white/80">Admin Control Panel</span>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mt-1">
-              Welcome, {user?.name || 'Admin'}
-            </h1>
-            <p className="mt-2 text-sm text-white/70 max-w-md leading-relaxed">
+            <motion.div
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="flex items-center gap-2 mb-2"
+            >
+              <span className="text-sm font-medium">Welcome back,</span>
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="text-2xl sm:text-3xl font-bold tracking-tight"
+            >
+              {user?.name || 'Admin'}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="mt-2 text-sm text-navy-950/70 dark:text-white/70 max-w-md leading-relaxed"
+            >
               Review pending provider applications and manage flagged content.
-            </p>
+            </motion.p>
           </div>
+
           {pendingApplications.length > 0 && (
-            <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-              <AlertCircle className="w-4 h-4 text-amber-300" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.5, type: 'spring', stiffness: 200 }}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-navy-100/60 dark:bg-white/10 backdrop-blur-sm border border-navy-100 dark:border-white/20"
+            >
+              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               <span className="text-sm font-medium">{pendingApplications.length} Pending Providers</span>
-            </div>
+            </motion.div>
           )}
         </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       </motion.div>
 
       {errorMsg && (
@@ -151,58 +175,55 @@ const AdminDashboard: React.FC = () => {
           <Badge variant="warning">{pendingApplications.length} Pending</Badge>
         </div>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            <p className="text-sm text-navy-400 dark:text-navy-500">Loading requests...</p>
-          </div>
-        ) : pendingApplications.length === 0 ? (
-          <EmptyState
-            title="No pending providers"
-            description="All service provider requests have been processed."
-            icon={<UserCheck className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
-          />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-navy-100 dark:border-white/10 bg-navy-50/50 dark:bg-white/[0.02]">
-                  <th className="text-left py-3 px-6 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase">Name</th>
-                  <th className="text-left py-3 px-4 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase">Email</th>
-                  <th className="text-right py-3 px-6 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingApplications.map((p) => (
-                  <tr key={p.id} className="border-b border-navy-50 dark:border-white/5 last:border-0 hover:bg-navy-50 dark:hover:bg-white/[0.02]">
-                    <td className="py-3.5 px-6 font-semibold text-navy-800 dark:text-navy-200">{p.user?.name}</td>
-                    <td className="py-3.5 px-4 text-navy-500 dark:text-navy-400">{p.user?.email}</td>
-                    <td className="py-3.5 px-6 text-right space-x-2">
-                      <ActionButton
-                        variant="approve"
-                        size="sm"
-                        icon={Check}
-                        isLoading={actionLoading === p.id}
-                        onClick={() => handleApprove(p.id)}
-                      >
-                        Approve
-                      </ActionButton>
-                      <ActionButton
-                        variant="reject"
-                        size="sm"
-                        icon={X}
-                        disabled={actionLoading === p.id}
-                        onClick={() => handleReject(p.id)}
-                      >
-                        Reject
-                      </ActionButton>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <DataTable<ProviderApplicationRecord>
+          isLoading={loading}
+          loadingText="Loading requests..."
+          data={pendingApplications}
+          rowKey={(p) => p.id}
+          searchable
+          searchPlaceholder="Search pending providers..."
+          searchKeys={(p) => [p.user?.name ?? '', p.user?.email ?? '']}
+          sortable
+          emptyTitle="No pending providers"
+          emptyDescription="All service provider requests have been processed."
+          emptyIcon={<UserCheck className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
+          columns={[
+            {
+              key: 'name',
+              header: 'Name',
+              sortValue: (p) => p.user?.name ?? '',
+              render: (p) => <span className="font-semibold text-navy-800 dark:text-navy-200">{p.user?.name}</span>,
+            },
+            {
+              key: 'email',
+              header: 'Email',
+              sortValue: (p) => p.user?.email ?? '',
+              render: (p) => <span className="text-navy-500 dark:text-navy-400">{p.user?.email}</span>,
+            },
+          ]}
+          actions={(p) => (
+            <>
+              <ActionButton
+                variant="approve"
+                size="sm"
+                icon={Check}
+                isLoading={actionLoading === p.id}
+                onClick={() => handleApprove(p.id)}
+              >
+                Approve
+              </ActionButton>
+              <ActionButton
+                variant="reject"
+                size="sm"
+                icon={X}
+                disabled={actionLoading === p.id}
+                onClick={() => handleReject(p.id)}
+              >
+                Reject
+              </ActionButton>
+            </>
+          )}
+        />
       </Card>
 
       {/* Content Management Quick Links */}

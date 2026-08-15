@@ -38,11 +38,7 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
     return (
       <Link
         to="/login"
-        className={`btn px-5 py-2.5  flex items-center gap-2 text-sm font-semibold transition-all duration-300 hover:scale-[1.02] ${
-          atTop
-            ? 'bg-navy-950 dark:bg-white text-white dark:text-navy-950 hover:bg-navy-800 dark:hover:bg-navy-100'
-            : 'bg-navy-950 dark:bg-white text-white dark:text-navy-950 hover:bg-navy-800 dark:hover:bg-navy-100'
-        }`}
+        className="btn btn-outline px-7 py-4 dark:border-white/40 border-primary dark:text-white hover:bg-white hover:text-navy-950"
       >
         <LogIn className="w-4 h-4" />
         Login
@@ -184,7 +180,7 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
                 type="button"
                 role="menuitem"
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                className="flex w-full items-center gap-3 px-4 py-2.5 rounded-full text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Logout

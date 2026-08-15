@@ -109,7 +109,7 @@ export const BookingModal: React.FC = () => {
         <button
           onClick={closeBooking}
           aria-label="Close"
-          className="p-2 rounded-xl text-navy-400 hover:text-navy-950 hover:bg-navy-100 dark:hover:bg-white/10 dark:hover:text-white transition-colors"
+          className="p-2 rounded-full text-navy-400 hover:text-navy-950 hover:bg-navy-100 dark:hover:bg-white/10 dark:hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -160,7 +160,7 @@ export const BookingModal: React.FC = () => {
       )}
 
       {/* Body */}
-      <div className="p-6 overflow-y-auto flex-1">
+      <div className="p-6 overflow-y-auto flex-1 min-h-0">
         {isSubmitted ? (
           <div className="text-center py-8 space-y-5">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-black text-white flex items-center justify-center mx-auto shadow-glow">

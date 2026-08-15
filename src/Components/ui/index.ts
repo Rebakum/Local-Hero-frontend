@@ -9,6 +9,7 @@ export { ThemeLogo } from './ThemeLogo';
 
 export { ConfirmDialog } from './ConfirmDialog';
 export { DataTable, type DataTableColumn } from './DataTable';
+export { Pagination } from './Pagination';
 export { ImageUpload } from './ImageUpload';
 export { Modal } from './Modal';
 export { PageHeader } from './PageHeader';

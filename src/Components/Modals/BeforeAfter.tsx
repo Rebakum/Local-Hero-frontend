@@ -77,7 +77,7 @@ export const CreateBeforeAfterModal: React.FC<CreateBeforeAfterModalProps> = ({
           </h3>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition"
+            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full transition"
           >
             <X size={20} />
           </button>
@@ -181,14 +181,14 @@ export const CreateBeforeAfterModal: React.FC<CreateBeforeAfterModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="w-1/2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 py-2.5 rounded-lg text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition"
+              className="w-1/2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-100 dark:hover:bg-slate-700 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="w-1/2 bg-primary text-white py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 transition"
+              className="w-1/2 bg-primary text-white py-2.5 rounded-full text-sm font-semibold hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2 transition"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               {loading ? "Saving..." : "Create Transformation"}

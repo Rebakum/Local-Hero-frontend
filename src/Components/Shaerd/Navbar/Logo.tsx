@@ -38,11 +38,15 @@ export const Logo: React.FC<LogoProps> = ({ atTop }) => {
   })();
 
   return (
-    <RouterLink to="/" className="flex items-center shrink-0" aria-label="LocalHero home">
+    <RouterLink
+      to="/"
+      className="group flex items-center shrink-0 transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
+      aria-label="LocalHero home"
+    >
       <img
         src={logoSrc}
         alt="LocalHero"
-        className="h-8 sm:h-9 w-auto select-none"
+        className="h-8 sm:h-9 w-auto select-none drop-shadow-sm transition-all duration-300 group-hover:drop-shadow-lg"
         draggable={false}
       />
     </RouterLink>

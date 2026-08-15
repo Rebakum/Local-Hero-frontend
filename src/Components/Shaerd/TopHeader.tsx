@@ -35,11 +35,11 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ isScrolled }) => {
             0800 917 8020
           </a>
           <a
-            href="mailto:hello@localhero.co.uk"
+            href="mailto:hello@localhero.com"
             className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors"
           >
             <Mail className="w-3 h-3 text-primary" />
-            hello@localhero.co.uk
+            hello@localhero.com
           </a>
         </div>
       </div>

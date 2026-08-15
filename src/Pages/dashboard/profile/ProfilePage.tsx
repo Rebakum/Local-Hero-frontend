@@ -265,7 +265,7 @@ const ProfilePage: React.FC = () => {
               </p>
               <button
                 onClick={() => setDeleteModalOpen(true)}
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors"
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
                 Delete Account
@@ -331,7 +331,7 @@ const ProfilePage: React.FC = () => {
               <button
                 type="submit"
                 disabled={!deletePassword || isDeleting}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isDeleting ? (
                   <>

@@ -213,7 +213,7 @@ const MyBookings: React.FC = () => {
               key={tab.key}
               type="button"
               onClick={() => setActiveFilter(tab.key)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
                 activeFilter === tab.key
                   ? 'bg-primary text-white shadow-md shadow-primary/25'
                   : 'bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10'
@@ -255,6 +255,7 @@ const MyBookings: React.FC = () => {
           loadingText="Loading your bookings..."
           data={filtered}
           rowKey={(booking) => booking.id}
+          sortable
           emptyTitle="No bookings found"
           emptyDescription="Try adjusting your filters — or book a pro from the homepage."
           emptyIcon={
@@ -376,7 +377,7 @@ const MyBookings: React.FC = () => {
                     type="button"
                     onClick={() => handlePay(booking.id)}
                     disabled={payingId === booking.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-white text-xs font-semibold hover:bg-primary/90 disabled:opacity-50 transition-colors"
                   >
                     {payingId === booking.id ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -393,7 +394,7 @@ const MyBookings: React.FC = () => {
                     type="button"
                     onClick={() => handleCancel(booking.id)}
                     disabled={cancellingId === booking.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
                   >
                     {cancellingId === booking.id ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />

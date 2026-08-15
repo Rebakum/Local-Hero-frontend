@@ -14,10 +14,23 @@ export type NotificationType =
   | 'BOOKING_CONFIRMATION'
   | 'BOOKING_REMINDER'
   | 'BOOKING_CANCELLED'
+  | 'BOOKING_REJECTED'
+  | 'BOOKING_IN_PROGRESS'
+  | 'BOOKING_COMPLETED'
   | 'NEW_REVIEW'
+  | 'REVIEW_REQUESTED'
   | 'NEW_MESSAGE'
   | 'PAYMENT_SUCCESS'
   | 'PAYMENT_FAILED'
+  | 'PAYMENT_REFUNDED'
+  | 'PROVIDER_APPLICATION_SUBMITTED'
+  | 'PROVIDER_APPLICATION_APPROVED'
+  | 'PROVIDER_APPLICATION_REJECTED'
+  | 'LEAD_ACCEPTED'
+  | 'WELCOME'
+  | 'ACCOUNT_UPDATED'
+  | 'ANNOUNCEMENT'
+  | 'PASSWORD_CHANGED'
   | 'GENERAL';
 
 export interface Notification {
@@ -63,6 +76,13 @@ export const getMyNotifications = async (
     limit: meta.limit,
     total: meta.total,
   };
+};
+
+export const getUnreadNotificationCount = async (): Promise<number> => {
+  const { data } = await axiosInstance.get<
+    ApiEnvelope<{ count: number }>
+  >('/notifications/unread-count');
+  return data.data?.count ?? 0;
 };
 
 export const markNotificationRead = async (id: string): Promise<Notification> => {

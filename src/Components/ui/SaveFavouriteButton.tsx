@@ -78,7 +78,7 @@ export const SaveFavouriteButton: React.FC<SaveFavouriteButtonProps> = ({
       <button
         onClick={handleToggle}
         disabled={busy}
-        className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 font-semibold px-8 py-3.5 rounded-2xl transition-all text-sm border ${
+        className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 font-semibold px-8 py-3.5 rounded-full transition-all text-sm border ${
           saved
             ? 'bg-red-600 text-white border-red-600 shadow-lg shadow-red-600/20'
             : 'bg-white text-red-600 border-red-200 hover:bg-red-50 dark:bg-navy-800 dark:text-red-400 dark:border-red-900/50 dark:hover:bg-red-950/30'

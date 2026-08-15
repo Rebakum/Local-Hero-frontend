@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import { Bell, CheckCheck, Inbox, Loader2 } from 'lucide-react';
 import { useAuth } from '../../../Context/AuthContext';
@@ -7,6 +7,7 @@ import { useSocket } from '../../../Context/SocketContext';
 import { useClickOutside, useEscapeKey } from '../../../hooks';
 import {
   getMyNotifications,
+  getUnreadNotificationCount,
   markAllNotificationsRead,
   markNotificationRead,
   type Notification,
@@ -19,8 +20,10 @@ interface NotificationBellProps {
 export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => {
   const { isAuthenticated, user } = useAuth();
   const { socket } = useSocket();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -40,34 +43,70 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
     }
   }, [isAuthenticated]);
 
+  const loadCount = useCallback(async () => {
+    if (!isAuthenticated) return;
+    try {
+      const count = await getUnreadNotificationCount();
+      setUnreadCount(count);
+    } catch {
+      // Ignore transient errors.
+    }
+  }, [isAuthenticated]);
+
   useEffect(() => {
-    load();
-  }, [load]);
+    void load();
+    void loadCount();
+  }, [load, loadCount]);
+
+  // Poll so the badge stays dynamic even if a socket event is missed or
+  // notifications change from another tab/device.
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const id = window.setInterval(() => {
+      void loadCount();
+    }, 15000);
+    return () => window.clearInterval(id);
+  }, [isAuthenticated, loadCount]);
 
   // Real-time: reload when a new notification arrives.
   useEffect(() => {
     if (!socket) return;
     const onNotification = () => {
       void load();
+      void loadCount();
     };
     socket.on('notification:new', onNotification);
     return () => {
       socket.off('notification:new', onNotification);
     };
-  }, [socket, load]);
+  }, [socket, load, loadCount]);
 
-  if (!isAuthenticated || !user) return null;
+  // Keep the badge fresh when the tab regains focus.
+  useEffect(() => {
+    const refresh = () => {
+      if (document.visibilityState === 'visible') void loadCount();
+    };
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refresh);
+    return () => {
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', refresh);
+    };
+  }, [loadCount]);
 
-  const unread = notifications.filter((n) => !n.isRead).length;
+  const unread = isAuthenticated ? unreadCount : 0;
   const dashboardPath =
-    user.role === 'serviceProvider'
+    user?.role === 'serviceProvider'
       ? '/dashboard/provider/notifications'
       : '/dashboard/user/notifications';
 
   const handleToggle = () => {
     const next = !open;
     setOpen(next);
-    if (next) void load();
+    if (next && isAuthenticated) {
+      void load();
+      void loadCount();
+    }
   };
 
   const handleMarkRead = async (notification: Notification) => {
@@ -77,6 +116,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
       setNotifications((prev) =>
         prev.map((n) => (n.id === notification.id ? { ...n, isRead: true } : n))
       );
+      setUnreadCount((prev) => Math.max(0, prev - 1));
     } catch {
       // Ignore.
     }
@@ -86,9 +126,26 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
     try {
       await markAllNotificationsRead();
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setUnreadCount(0);
     } catch {
       // Ignore.
     }
+  };
+
+  // Clicking a "your service is complete, leave a review" notification takes
+  // the customer straight to the review page for that booking and marks the
+  // notification as read. Every other notification is just marked read.
+  const handleNotificationClick = async (notification: Notification) => {
+    const data = notification.data as { action?: string; bookingId?: string } | null;
+
+    if (data?.action === 'LEAVE_REVIEW' && data.bookingId) {
+      if (!notification.isRead) await handleMarkRead(notification);
+      setOpen(false);
+      navigate(`/dashboard/user/reviews?bookingId=${encodeURIComponent(data.bookingId)}`);
+      return;
+    }
+
+    await handleMarkRead(notification);
   };
 
   return (
@@ -97,7 +154,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
         type="button"
         onClick={handleToggle}
         aria-label="Notifications"
-        className={`relative p-2 rounded-xl transition-colors ${
+        className={`relative p-2 rounded-full transition-colors ${
           open ? 'bg-primary/10 text-primary' : atTop
             ? 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
             : 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
@@ -119,7 +176,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute right-0 top-full mt-3 w-80 rounded-3xl bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 shadow-xl shadow-navy-950/10 dark:shadow-black/40 overflow-hidden"
+            className="absolute right-0 top-full mt-3 w-80 max-w-[calc(100vw-1.5rem)] rounded-3xl bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 shadow-xl shadow-navy-950/10 dark:shadow-black/40 overflow-hidden"
           >
             <div className="flex items-center justify-between px-5 py-4 border-b border-navy-100 dark:border-white/10">
               <p className="font-heading text-sm font-bold text-navy-950 dark:text-white">
@@ -137,7 +194,24 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
             </div>
 
             <div className="max-h-80 overflow-y-auto py-1">
-              {loading ? (
+              {!isAuthenticated || !user ? (
+                <div className="py-10 text-center px-6">
+                  <Bell className="w-10 h-10 text-navy-300 dark:text-navy-600 mx-auto mb-3" />
+                  <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">
+                    Stay in the loop
+                  </p>
+                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">
+                    Sign in to see job updates, quotes and reminders.
+                  </p>
+                  <Link
+                    to="/login"
+                    onClick={() => setOpen(false)}
+                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-xs font-semibold text-white shadow-glow transition-all duration-300 hover:bg-primary/90"
+                  >
+                    Sign in
+                  </Link>
+                </div>
+              ) : loading ? (
                 <div className="flex items-center justify-center py-10">
                   <Loader2 className="w-6 h-6 text-primary animate-spin" />
                 </div>
@@ -153,7 +227,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
                 notifications.map((notification) => (
                   <button
                     key={notification.id}
-                    onClick={() => handleMarkRead(notification)}
+                    onClick={() => void handleNotificationClick(notification)}
                     className={`w-full text-left px-5 py-3 flex items-start gap-3 transition-colors hover:bg-navy-50 dark:hover:bg-white/5 ${
                       notification.isRead ? '' : 'bg-primary/5'
                     }`}
@@ -186,15 +260,17 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
               )}
             </div>
 
-            <div className="border-t border-navy-100 dark:border-white/10 p-2">
-              <Link
-                to={dashboardPath}
-                onClick={() => setOpen(false)}
-                className="block text-center py-2 rounded-xl text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
-              >
-                View all notifications
-              </Link>
-            </div>
+            {isAuthenticated && user && (
+              <div className="border-t border-navy-100 dark:border-white/10 p-2">
+                <Link
+                  to={dashboardPath}
+                  onClick={() => setOpen(false)}
+                  className="block text-center py-2 rounded-full text-sm font-semibold text-primary hover:bg-primary/5 transition-colors"
+                >
+                  View all notifications
+                </Link>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

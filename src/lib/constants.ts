@@ -206,7 +206,7 @@ export const BEFORE_AFTER_CHECKLIST = [
 
 export const CONTACT_INFO_CARDS = [
   { iconName: 'Phone', title: 'Call Us', subtitle: 'Mon-Sun, 24/7 Dispatch', detail: '0800 123 4567', href: 'tel:08001234567', isLink: true },
-  { iconName: 'Mail', title: 'Email Us', subtitle: 'We reply within 2 hours', detail: 'support@localhero.co.uk', href: 'mailto:support@localhero.co.uk', isLink: true },
+  { iconName: 'Mail', title: 'Email Us', subtitle: 'We reply within 2 hours', detail: 'support@localhero.com', href: 'mailto:support@localhero.com', isLink: true },
   { iconName: 'MapPin', title: 'Headquarters', subtitle: 'London HQ Office', detail: '100 Bishopsgate, London, EC2N 4AG', isLink: false },
   { iconName: 'Clock', title: 'Support Hours', subtitle: 'Emergency Response', detail: '24/7 Active', isLink: false, isGreen: true },
 ];

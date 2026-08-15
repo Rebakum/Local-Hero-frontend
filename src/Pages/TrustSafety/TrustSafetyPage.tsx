@@ -1,0 +1,255 @@
+import React from 'react';
+import {
+  ShieldCheck,
+  BadgeCheck,
+  Fingerprint,
+  Lock,
+  CreditCard,
+  Star,
+  FileCheck,
+  UserCheck,
+  ClipboardCheck,
+  HeartHandshake,
+  AlertTriangle,
+  PhoneCall,
+  IdCard,
+  Timer,
+  Headphones,
+  KeyRound,
+  RefreshCcw,
+} from 'lucide-react';
+import { SectionTitle } from '@/src/Components/ui/SectionTitle';
+import { Reveal } from '@/src/Components/ui/Reveal';
+import { Stagger, StaggerItem } from '@/src/Components/ui/Reveal';
+
+
+const TRUST_BADGES = [
+  { icon: BadgeCheck, label: '100% DBS Checked' },
+  { icon: IdCard, label: 'ID & Address Verified' },
+  { icon: CreditCard, label: 'Secure Payments' },
+  { icon: Star, label: 'Verified Reviews' },
+];
+
+const STATS = [
+  { value: '100%', label: 'Pros DBS checked' },
+  { value: '14,200+', label: 'Verified reviews' },
+  { value: '45 min', label: 'Emergency dispatch' },
+  { value: '4.9/5', label: 'Average rating' },
+];
+
+const VETTING_STEPS = [
+  {
+    icon: UserCheck,
+    step: '01',
+    title: 'Identity & address check',
+    text: 'Every pro must prove who they are and where they work using Government-approved ID documents.',
+  },
+  {
+    icon: ShieldCheck,
+    step: '02',
+    title: 'DBS criminal record check',
+    text: 'A Disclosure and Barring Service check is mandatory before anyone is allowed inside your home.',
+  },
+  {
+    icon: FileCheck,
+    step: '03',
+    title: 'Licence & insurance review',
+    text: 'We verify trade licences (Gas Safe, NICEIC and more) plus public liability insurance of £1m+.',
+  },
+  {
+    icon: RefreshCcw,
+    step: '04',
+    title: 'Ongoing rating monitoring',
+    text: 'Ratings and reviews are monitored continuously — pros who slip below 4.5 stars are removed.',
+  },
+];
+
+const PILLARS = [
+  {
+    icon: Fingerprint,
+    title: 'Secure Account Protection',
+    text: 'Two-factor authentication and encrypted credentials keep your LocalHero account locked down at every step.',
+  },
+  {
+    icon: Lock,
+    title: 'Private, Encrypted Messaging',
+    text: 'Chat with pros inside the app. Your address, phone number and payment details are never shared directly.',
+  },
+  {
+    icon: CreditCard,
+    title: 'Escrow-Style Payments',
+    text: 'Money is only released to the pro once the job is complete and you confirm you’re happy.',
+  },
+  {
+    icon: Star,
+    title: 'Verified Reviews Only',
+    text: 'Reviews are linked to completed bookings. It is impossible for pros to review themselves or friends.',
+  },
+  {
+    icon: HeartHandshake,
+    title: 'Workmanship Guarantee',
+    text: 'Jobs booked through LocalHero are protected by our 12-month workmanship guarantee. We sort it out.',
+  },
+  {
+    icon: Headphones,
+    title: '24/7 Human Support',
+    text: 'A real person answers the phone around the clock — before, during and after your job.',
+  },
+];
+
+const STANDARDS = [
+  {
+    icon: Timer,
+    title: 'Fixed, upfront pricing',
+    text: 'The quote you accept is the price you pay. No call-out fees, no surprise add-ons.',
+  },
+  {
+    icon: KeyRound,
+    title: 'No doorstep haggling',
+    text: 'Pros can never charge more than the agreed fixed quote — it’s written into their contract.',
+  },
+  {
+    icon: ClipboardCheck,
+    title: 'Job completion checklist',
+    text: 'Every job closes with a checklist so you know exactly what was done and what to look for.',
+  },
+  {
+    icon: AlertTriangle,
+    title: 'Simple reporting tools',
+    text: 'Spot something wrong? Report it in two taps and our safety team reviews it within hours.',
+  },
+];
+
+export const TrustSafetyPage: React.FC = () => {
+  return (
+    <div className="mt-24">
+      
+
+
+      {/* ============ SAFETY PILLARS ============ */}
+      <section className="relative overflow-hidden bg-navy-950 border-y border-white/10 py-16 md:py-24">
+        <div
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
+            backgroundSize: '26px 26px',
+          }}
+        />
+        <div className="absolute top-1/2 right-0 translate-y-[-50%] w-[420px] h-[420px] rounded-full bg-primary/15 blur-[140px] pointer-events-none" />
+
+        <div className="container-lh relative z-10">
+          <SectionTitle
+            eyebrow="The LocalHero Promise"
+            badge={true}
+            dark
+            title="Protection in every layer"
+            subtitle="Six safeguards that hold across every single booking, from first message to final payment."
+          />
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {PILLARS.map(({ icon: Icon, title, text }, i) => (
+              <Reveal key={title} delay={i * 0.06}>
+                <div className="group h-full rounded-2xl border border-white/10 bg-white/5 p-7 backdrop-blur-md transition-all duration-300 hover:border-primary/40 hover:bg-white/10">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-5 font-heading text-lg font-bold text-white">
+                    {title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-white/55">
+                    {text}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ OUR STANDARDS ============ */}
+      <section className="container-lh section-pad">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                <FileCheck className="w-3.5 h-3.5" />
+                Our Standards
+              </span>
+              <h2 className="mt-5 font-heading text-3xl sm:text-4xl font-extrabold leading-tight text-navy-950 dark:text-white">
+                Fair for you.
+                <span className="text-primary"> Fair for the pro.</span>
+              </h2>
+              <p className="mt-4 text-sm sm:text-base leading-relaxed text-navy-500 dark:text-navy-300">
+                Trust works both ways. The same guarantees that protect your
+                home also make sure the tradespeople who work in it are treated
+                and paid properly.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            {STANDARDS.map(({ icon: Icon, title, text }, i) => (
+              <Reveal key={title} delay={i * 0.08}>
+                <div className="group flex h-full gap-4 rounded-2xl border border-navy-100 dark:border-white/10 bg-white dark:bg-navy-900 p-6 shadow-soft transition-all duration-300 hover:border-primary/40">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-950 text-white transition-colors duration-300 group-hover:bg-primary">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-base font-bold text-navy-950 dark:text-white">
+                      {title}
+                    </h3>
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-navy-500 dark:text-navy-300">
+                      {text}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ REPORT A CONCERN ============ */}
+      <section className="container-lh section-pad pt-0">
+        <div className="relative overflow-hidden rounded-[2rem] bg-navy-950 p-8 sm:p-12 md:p-16">
+          <div className="grid-fade absolute inset-0" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[420px] h-[220px] rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col items-center gap-8 text-center lg:flex-row lg:justify-between lg:text-left">
+            <div className="max-w-xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                See something off?
+              </span>
+              <h2 className="mt-5 font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+                Report it in two taps.
+              </h2>
+              <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed">
+                Whether it’s a poor job, suspicious behaviour or a safety
+                concern, our trust &amp; safety team reviews every report within
+                hours — and takes action.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center gap-4 sm:flex-row">
+              <button className="btn btn-primary px-8 py-3.5 text-sm font-semibold">
+                Report a concern
+              </button>
+              <a
+                href="tel:08001234567"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-primary transition-colors"
+              >
+                <PhoneCall className="w-4 h-4" />
+                0800 123 4567
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ CTA ============ */}
+      
+    </div>
+  );
+};

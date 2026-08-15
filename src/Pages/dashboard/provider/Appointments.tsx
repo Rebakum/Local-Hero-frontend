@@ -69,6 +69,22 @@ const Appointments: React.FC = () => {
           loadingText="Loading your appointments..."
           data={appointments}
           rowKey={(b) => b.id}
+          searchable
+          searchPlaceholder="Search appointments..."
+          searchKeys={(b) => [b.trade, b.fullName, b.email, b.address, b.postcode]}
+          sortable
+          filters={[
+            {
+              key: 'status',
+              label: 'Status',
+              options: [
+                { value: 'ACCEPTED', label: 'Accepted' },
+                { value: 'IN_PROGRESS', label: 'In Progress' },
+                { value: 'COMPLETED', label: 'Completed' },
+                { value: 'CANCELLED', label: 'Cancelled' },
+              ],
+            },
+          ]}
           emptyTitle="No appointments yet"
           emptyDescription="Accepted bookings will appear here with their scheduled date and time."
           emptyIcon={<Calendar className="w-12 h-12 text-navy-300 dark:text-navy-600" />}

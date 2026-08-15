@@ -8,8 +8,6 @@ import {
   UserPlus,
   Edit3,
   Search,
-  ChevronLeft,
-  ChevronRight,
   X,
   Phone,
   Mail,
@@ -23,6 +21,7 @@ import {
   type BookingRecord,
   type BookingStatus,
 } from "../../../../services/booking.service";
+import { Pagination } from "../../../../Components/ui/Pagination";
 
 export const BookingManagement: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
@@ -178,7 +177,7 @@ export const BookingManagement: React.FC = () => {
 
         <button
           onClick={fetchBookings}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg transition"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-full transition"
         >
           <RefreshCw className="w-4 h-4" /> Refresh
         </button>
@@ -342,7 +341,7 @@ export const BookingManagement: React.FC = () => {
                           setSelectedProfessionalId(booking.professionalId || "");
                           setIsAssignModalOpen(true);
                         }}
-                        className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-800"
+                        className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
                       >
                         <UserPlus className="w-4 h-4" />
                       </button>
@@ -357,7 +356,7 @@ export const BookingManagement: React.FC = () => {
                           );
                           setIsStatusModalOpen(true);
                         }}
-                        className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-800"
+                        className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
                       >
                         <Edit3 className="w-4 h-4" />
                       </button>
@@ -371,27 +370,13 @@ export const BookingManagement: React.FC = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-            <span className="text-xs text-gray-500">
-              Page {page} of {totalPages}
-            </span>
-            <div className="flex items-center gap-2">
-              <button
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-                className="p-2 border border-gray-200 dark:border-gray-700 rounded-lg disabled:opacity-50"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-                className="p-2 border border-gray-200 dark:border-gray-700 rounded-lg disabled:opacity-50"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+          <Pagination
+            page={page}
+            pageSize={10}
+            total={totalPages * 10}
+            onPageChange={(p) => setPage(p)}
+            showRange={false}
+          />
         )}
       </div>
 
@@ -432,14 +417,14 @@ export const BookingManagement: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsAssignModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {updating ? "Assigning..." : "Assign & Accept"}
                 </button>
@@ -507,14 +492,14 @@ export const BookingManagement: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsStatusModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {updating ? "Saving..." : "Save Changes"}
                 </button>

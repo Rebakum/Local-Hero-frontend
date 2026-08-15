@@ -1,5 +1,5 @@
 import React from 'react';
-import { MyTestimonialsManager } from '../../../Components/Sections/Testimonials/MyTestimonialsManager';
+import { MyTestimonialsManager } from '../../../Pages/home/Sections/Testimonials/MyTestimonialsManager';
 
 const Reviews: React.FC = () => {
   return (

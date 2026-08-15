@@ -42,7 +42,7 @@ export const AdminBeforeAfterManager: React.FC = () => {
         </div>
         <button
           onClick={() => alert("Open Add Modal")}
-          className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold hover:opacity-90 transition"
+          className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition"
         >
           <Plus size={16} /> Add New
         </button>

@@ -13,6 +13,7 @@ import {
   Wrench,
   Edit3,
   X,
+  Search,
 } from "lucide-react";
 import {
   getProviderBookings,
@@ -20,11 +21,15 @@ import {
   type BookingRecord,
   type BookingStatus,
 } from "../../../services/booking.service";
+import { Pagination } from "../../../Components/ui/Pagination";
 
 export const ProviderBookingDashboard: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 6;
 
   // Selected booking for updating status
   const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
@@ -77,9 +82,22 @@ export const ProviderBookingDashboard: React.FC = () => {
   };
 
   const filteredBookings = bookings.filter((b) => {
-    if (statusFilter === "ALL") return true;
-    return b.status === statusFilter;
+    if (statusFilter !== "ALL" && b.status !== statusFilter) return false;
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      return (
+        b.trade.toLowerCase().includes(q) ||
+        b.fullName.toLowerCase().includes(q) ||
+        b.email.toLowerCase().includes(q) ||
+        b.postcode.toLowerCase().includes(q) ||
+        b.description.toLowerCase().includes(q)
+      );
+    }
+    return true;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filteredBookings.length / PAGE_SIZE));
+  const pagedBookings = filteredBookings.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const getStatusBadge = (status: BookingStatus) => {
     switch (status) {
@@ -140,20 +158,39 @@ export const ProviderBookingDashboard: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-800 pb-3">
-        {["ALL", "ACCEPTED", "IN_PROGRESS", "COMPLETED", "CANCELLED"].map((status) => (
-          <button
-            key={status}
-            onClick={() => setStatusFilter(status)}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold transition ${
-              statusFilter === status
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200"
-            }`}
-          >
-            {status.replace("_", " ")}
-          </button>
-        ))}
+      <div className="flex flex-col gap-3 border-b border-gray-200 dark:border-gray-800 pb-3">
+        <div className="flex flex-wrap gap-2">
+          {["ALL", "ACCEPTED", "IN_PROGRESS", "COMPLETED", "CANCELLED"].map((status) => (
+            <button
+              key={status}
+              onClick={() => {
+                setStatusFilter(status);
+                setPage(1);
+              }}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold transition ${
+                statusFilter === status
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200"
+              }`}
+            >
+              {status.replace("_", " ")}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full sm:w-80">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search jobs..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setPage(1);
+            }}
+            className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
       </div>
 
       {/* Booking Cards Grid */}
@@ -165,8 +202,9 @@ export const ProviderBookingDashboard: React.FC = () => {
           <p className="text-gray-500 font-medium">No assigned jobs found in this section.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredBookings.map((booking) => (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {pagedBookings.map((booking) => (
             <div
               key={booking.id}
               className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6 shadow-sm flex flex-col justify-between space-y-4 hover:border-gray-200 transition"
@@ -256,6 +294,18 @@ export const ProviderBookingDashboard: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="pt-2">
+            <Pagination
+              page={page}
+              pageSize={PAGE_SIZE}
+              total={filteredBookings.length}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
+        </>
       )}
 
       {/* MODAL: Update Status */}
@@ -314,14 +364,14 @@ export const ProviderBookingDashboard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={updating}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-full hover:bg-indigo-700 disabled:opacity-50"
                 >
                   {updating ? "Saving..." : "Update Job"}
                 </button>

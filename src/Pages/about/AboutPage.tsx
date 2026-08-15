@@ -1,11 +1,6 @@
 import React from 'react';
 import { SectionTitle } from '../../Components/ui/SectionTitle';
-import { WhyChooseUs } from '../../Components/Sections/WhyChooseUs';
-import { TrustedBy } from '../../Components/Sections/TrustedBy';
-import { Stats } from '../../Components/Sections/Stats';
-import { CTA } from '../../Components/Sections/CTA';
-import TestimonialsSlider from '../../Components/Sections/Testimonials/TestimonialsSlider';
-
+import { WhyChooseUs } from '../home/Sections/WhyChooseUs';
 export const AboutPage: React.FC = () => {
   return (
     <div className="mt-24 ">
@@ -25,10 +20,7 @@ export const AboutPage: React.FC = () => {
 
       </section>
         <WhyChooseUs />
-        <TrustedBy />
-        <Stats />
-        <TestimonialsSlider />
-        <CTA />
+        
     </div>
   );
 };

@@ -2,15 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 
-export const NAV_LINKS = [
-  { label: 'Home', path: '/' },
+export const NAV_LINKS = [ 
   { label: 'Services', path: '/services' },
   { label: 'All Categories', path: '/categories' },
-  { label: 'About', path: '/about' },
   { label: 'Professionals', path: '/professionals' },
-  { label: 'How it Works', path: '/how-it-works' },
-  { label: 'FAQ', path: '/faq' },
-  { label: 'Contact Us', path: '/contact' },
+   { label: 'Pricing', path: '/pricing' },
+   { label: 'Contact Us', path: '/contact' },
 ];
 
 interface NavLinksProps {
@@ -42,7 +39,7 @@ export const NavLinks: React.FC<NavLinksProps> = ({ pathname, atTop }) => {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
               }}
-              className={`relative py-1 text-sm font-medium transition-colors duration-300 ${
+              className={`relative py-1 px-1 text-sm font-medium  transition-colors duration-300 ${
                 isActive
                   ? 'text-primary font-semibold'
                   : atTop

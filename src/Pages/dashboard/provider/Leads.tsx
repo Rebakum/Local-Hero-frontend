@@ -166,6 +166,21 @@ const Leads: React.FC = () => {
           loadingText="Loading booking requests..."
           data={pending}
           rowKey={(b) => b.id}
+          searchable
+          searchPlaceholder="Search leads..."
+          searchKeys={(b) => [b.trade, b.fullName, b.email, b.description, b.address, b.postcode]}
+          sortable
+          filters={[
+            {
+              key: 'urgency',
+              label: 'Urgency',
+              options: [
+                { value: 'Standard', label: 'Standard' },
+                { value: 'Urgent (Same Day)', label: 'Urgent (Same Day)' },
+                { value: 'Emergency 24/7 (45 Mins)', label: 'Emergency' },
+              ],
+            },
+          ]}
           emptyTitle="No pending requests"
           emptyDescription="New booking / quote requests will appear here."
           emptyIcon={<Zap className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
@@ -245,7 +260,7 @@ const Leads: React.FC = () => {
               <button
                 onClick={() => setRejectTarget(booking)}
                 disabled={actionLoading === booking.id}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
               >
                 <XCircle className="w-3.5 h-3.5" />
                 Reject
@@ -276,14 +291,14 @@ const Leads: React.FC = () => {
             <button
               onClick={() => setQuoteBooking(null)}
               disabled={accepting}
-              className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleAcceptWithQuote}
               disabled={accepting || !Number(quotePrice)}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {accepting && <Loader2 className="w-4 h-4 animate-spin" />}
               Accept & set price
@@ -328,14 +343,14 @@ const Leads: React.FC = () => {
             <button
               onClick={() => setRescheduleTarget(null)}
               disabled={rescheduling}
-              className="px-4 py-2 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleReschedule}
               disabled={rescheduling || !rescheduleDate || !rescheduleTime.trim()}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {rescheduling && <Loader2 className="w-4 h-4 animate-spin" />}
               Save new date & time

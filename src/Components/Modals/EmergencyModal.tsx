@@ -57,12 +57,12 @@ export const EmergencyModal: React.FC = () => {
             <h3 className="font-heading text-xl font-extrabold tracking-tight">Emergency Dispatch</h3>
           </div>
         </div>
-        <button onClick={handleReset} aria-label="Close" className="p-2 rounded-xl hover:bg-white/10 transition-colors">
+        <button onClick={handleReset} aria-label="Close" className="p-2 rounded-full hover:bg-white/10 transition-colors">
           <X className="w-5 h-5 text-white" />
         </button>
       </div>
 
-      <div className="p-6 overflow-y-auto space-y-5">
+      <div className="p-6 overflow-y-auto flex-1 min-h-0 space-y-5">
         {dispatched ? (
           <div className="text-center py-6 space-y-4">
             <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/25 text-primary flex items-center justify-center mx-auto relative">

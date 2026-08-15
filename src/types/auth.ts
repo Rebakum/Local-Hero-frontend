@@ -14,6 +14,15 @@ export interface RegisterCredentials {
   role?: UserRole;
 }
 
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ResetPasswordPayload {
+  token: string;
+  newPassword: string;
+}
+
 export interface AuthUser {
   id: string;
   name: string;
@@ -23,6 +32,7 @@ export interface AuthUser {
   phone?: string;
   isApproved?: boolean;
   approvalStatus?: ApprovalStatus;
+  emailVerified?: boolean;
   createdAt?: string;
 }
 

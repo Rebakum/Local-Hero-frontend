@@ -34,7 +34,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
     type={type}
     onClick={onClick}
     aria-label={ariaLabel}
-    className={`${SIZE_CLASSES[size]} rounded-xl border flex items-center justify-center transition-colors ${VARIANT_CLASSES[variant]} ${className}`}
+    className={`${SIZE_CLASSES[size]} rounded-full border flex items-center justify-center transition-colors ${VARIANT_CLASSES[variant]} ${className}`}
   >
     {children}
   </button>

@@ -68,8 +68,8 @@ export const ContactPage: React.FC = () => {
             </div>
             <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base">Email Us</h3>
             <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 mb-3">We reply within 2 hours</p>
-            <a href="mailto:support@localhero.co.uk" className="text-sm font-bold text-primary hover:underline mt-auto">
-              support@localhero.co.uk
+            <a href="mailto:support@localhero.com" className="text-sm font-bold text-primary hover:underline mt-auto">
+              support@localhero.com
             </a>
           </div>
 
@@ -156,7 +156,7 @@ export const ContactPage: React.FC = () => {
                     <input
                       type="email"
                       required
-                      placeholder="e.g. sarah@example.co.uk"
+                      placeholder="e.g. sarah@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="input-lh"

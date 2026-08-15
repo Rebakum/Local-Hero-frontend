@@ -47,7 +47,7 @@ export const ServiceBookingCard: React.FC<ServiceBookingCardProps> = ({
 
           <button
             onClick={() => navigate('/services')}
-            className="mt-3 w-full flex items-center justify-center gap-2 rounded-2xl border border-slate-200 dark:border-white/10 py-3 text-sm font-semibold text-navy-600 dark:text-navy-300 transition hover:bg-slate-50 dark:hover:bg-navy-800"
+            className="mt-3 w-full flex items-center justify-center gap-2 rounded-full border border-slate-200 dark:border-white/10 py-3 text-sm font-semibold text-navy-600 dark:text-navy-300 transition hover:bg-slate-50 dark:hover:bg-navy-800"
           >
             <ArrowLeft size={14} />
             Browse Other Services

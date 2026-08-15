@@ -35,9 +35,29 @@ export async function registerUser(credentials: RegisterCredentials): Promise<Au
   return data;
 }
 
+export async function verifyEmail(token: string): Promise<AuthUser> {
+  const { data } = await axiosInstance.get<ApiEnvelope<{ user: AuthUser }>>(
+    '/auth/verify-email',
+    { params: { token } },
+  );
+  return data.data.user;
+}
+
+export async function resendVerificationEmail(email: string): Promise<void> {
+  await axiosInstance.post('/auth/resend-verification', { email });
+}
+
 export async function getProfile(): Promise<AuthUser> {
   const { data } = await axiosInstance.get<ApiEnvelope<AuthUser>>('/users/me');
   return data.data;
+}
+
+export async function forgotPassword(email: string): Promise<void> {
+  await axiosInstance.post('/auth/forget-password', { email });
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<void> {
+  await axiosInstance.post('/auth/reset-password', { token, newPassword });
 }
 
 export async function logoutUser(): Promise<void> {
