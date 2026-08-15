@@ -27,8 +27,8 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
       />
 
       <div className="flex items-center gap-2 pl-4 border-l border-navy-100 dark:border-white/10">
-        <ThemeToggle atTop={atTop} isScrolled={isScrolled} />
-        <NotificationBell atTop={atTop} />
+        <ThemeToggle atTop={atTop} isScrolled={isScrolled} variant="chip" />
+        <NotificationBell atTop={atTop} variant="chip" />
         <button
           onClick={() => openBooking()}
          className="btn btn-primary px-8 py-3.5 text-base "

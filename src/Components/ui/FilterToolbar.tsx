@@ -1,10 +1,8 @@
 import React from 'react';
-import { Search, ArrowUpDown, X, Loader2 } from 'lucide-react';
+import { Search, X, Loader2 } from 'lucide-react';
+import { SortDropdown, type SortOption } from './SortDropdown';
 
-export interface SortOption {
-  value: string;
-  label: string;
-}
+export type { SortOption };
 
 interface FilterToolbarProps {
   resultCount: number;
@@ -67,22 +65,13 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
 
         <div className="sm:ml-auto" />
 
-        {/* Right — sort */}
-        <div className="flex items-center gap-2">
-          <ArrowUpDown size={14} className="text-navy-400" />
-          <select
-            value={sortBy}
-            onChange={(e) => onSortChange(e.target.value)}
-            aria-label="Sort results"
-            className="cursor-pointer rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2 text-xs font-semibold text-navy-900 outline-none transition-colors focus:border-primary dark:border-white/10 dark:bg-white/5 dark:text-white"
-          >
-            {sortOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Right — sort (modern dropdown) */}
+        <SortDropdown
+          value={sortBy}
+          onChange={onSortChange}
+          options={sortOptions}
+          align="right"
+        />
       </div>
     </div>
   );

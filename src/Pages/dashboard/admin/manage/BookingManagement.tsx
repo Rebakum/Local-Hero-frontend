@@ -7,7 +7,6 @@ import {
   RefreshCw,
   UserPlus,
   Edit3,
-  Search,
   X,
   Phone,
   Mail,
@@ -21,17 +20,12 @@ import {
   type BookingRecord,
   type BookingStatus,
 } from "../../../../services/booking.service";
-import { Pagination } from "../../../../Components/ui/Pagination";
+import { DataTable } from "../../../../Components/ui/DataTable";
 
 export const BookingManagement: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<string>("");
-  const [tradeFilter, setTradeFilter] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
 
   // Modals state
   const [selectedBooking, setSelectedBooking] = useState<BookingRecord | null>(null);
@@ -44,20 +38,13 @@ export const BookingManagement: React.FC = () => {
   const [quotedPriceInPounds, setQuotedPriceInPounds] = useState<string>("");
   const [updating, setUpdating] = useState<boolean>(false);
 
-  // Fetch all bookings
+  // Fetch all bookings (client-side search / filter / sort / pagination)
   const fetchBookings = async () => {
     setLoading(true);
     setError("");
     try {
-      const result = await getAdminBookings({
-        page,
-        limit: 10,
-        search: searchTerm || undefined,
-        status: statusFilter || undefined,
-        trade: tradeFilter || undefined,
-      });
-      setBookings(result.bookings);
-      setTotalPages(Math.max(1, Math.ceil(result.total / result.limit)));
+      const result = await getAdminBookings({ limit: 500 });
+      setBookings(result.bookings || []);
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
       setError(apiError.response?.data?.message || apiError.message || "Failed to fetch bookings");
@@ -68,13 +55,7 @@ export const BookingManagement: React.FC = () => {
 
   useEffect(() => {
     fetchBookings();
-  }, [page, statusFilter, tradeFilter]);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPage(1);
-    fetchBookings();
-  };
+  }, []);
 
   // Handle Assign Professional Submission
   const handleAssignProfessional = async (e: React.FormEvent) => {
@@ -167,7 +148,6 @@ export const BookingManagement: React.FC = () => {
         <div>
           <span>Admin Panel</span>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-           
             Booking Requests Management
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -189,196 +169,163 @@ export const BookingManagement: React.FC = () => {
         </div>
       )}
 
-      {/* Filter and Search Bar */}
-      <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
-        <form onSubmit={handleSearchSubmit} className="relative w-full md:w-80">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search customer, email, postcode..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </form>
-
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          <select
-            value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value);
-              setPage(1);
-            }}
-            className="py-2 px-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">All Statuses</option>
-            <option value="PENDING">PENDING</option>
-            <option value="ACCEPTED">ACCEPTED</option>
-            <option value="IN_PROGRESS">IN_PROGRESS</option>
-            <option value="COMPLETED">COMPLETED</option>
-            <option value="CANCELLED">CANCELLED</option>
-            <option value="REJECTED">REJECTED</option>
-          </select>
-
-          <input
-            type="text"
-            placeholder="Filter Trade..."
-            value={tradeFilter}
-            onChange={(e) => {
-              setTradeFilter(e.target.value);
-              setPage(1);
-            }}
-            className="py-2 px-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-      </div>
-
-      {/* Bookings Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-600 dark:text-gray-300">
-            <thead className="bg-gray-50 dark:bg-gray-800/50 text-xs uppercase font-semibold text-gray-500 border-b border-gray-100 dark:border-gray-800">
-              <tr>
-                <th className="py-3.5 px-4">Customer Details</th>
-                <th className="py-3.5 px-4">Service Required</th>
-                <th className="py-3.5 px-4">Date & Location</th>
-                <th className="py-3.5 px-4">Assigned Professional</th>
-                <th className="py-3.5 px-4">Quote Price</th>
-                <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-              {loading ? (
-                <tr>
-                  <td colSpan={7} className="py-12 text-center text-gray-400">
-                    Loading bookings...
-                  </td>
-                </tr>
-              ) : bookings.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="py-12 text-center text-gray-400">
-                    No bookings found.
-                  </td>
-                </tr>
+      {/* Bookings Table — search / filter / sort / pagination built in */}
+      <DataTable<BookingRecord>
+        isLoading={loading}
+        loadingText="Loading bookings..."
+        data={bookings}
+        rowKey={(b) => b.id}
+        searchable
+        searchPlaceholder="Search customer, email, phone, trade, postcode..."
+        searchKeys={(b) => [
+          b.fullName,
+          b.email,
+          b.phone,
+          b.trade,
+          b.postcode,
+          b.address,
+          b.professional?.name ?? '',
+        ]}
+        sortable
+        filters={[
+          {
+            key: 'status',
+            label: 'Status',
+            options: [
+              { value: 'PENDING', label: 'Pending' },
+              { value: 'ACCEPTED', label: 'Accepted' },
+              { value: 'IN_PROGRESS', label: 'In Progress' },
+              { value: 'COMPLETED', label: 'Completed' },
+              { value: 'CANCELLED', label: 'Cancelled' },
+              { value: 'REJECTED', label: 'Rejected' },
+            ],
+          },
+        ]}
+        emptyTitle="No bookings found"
+        emptyDescription="Try a different search or filter."
+        columns={[
+          {
+            key: 'customer',
+            header: 'Customer Details',
+            sortValue: (b) => b.fullName,
+            render: (b) => (
+              <div className="space-y-0.5">
+                <p className="font-semibold text-gray-900 dark:text-white">{b.fullName}</p>
+                <p className="text-xs text-gray-400 flex items-center gap-1">
+                  <Mail className="w-3 h-3" /> {b.email}
+                </p>
+                <p className="text-xs text-gray-400 flex items-center gap-1">
+                  <Phone className="w-3 h-3" /> {b.phone}
+                </p>
+              </div>
+            ),
+          },
+          {
+            key: 'service',
+            header: 'Service Required',
+            sortValue: (b) => b.trade,
+            render: (b) => (
+              <div>
+                <span className="font-semibold text-indigo-600 dark:text-indigo-400 block">
+                  {b.trade}
+                </span>
+                <span className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-900 inline-block mt-1">
+                  Urgency: {b.urgency}
+                </span>
+              </div>
+            ),
+          },
+          {
+            key: 'date',
+            header: 'Date & Location',
+            sortValue: (b) => new Date(b.bookingDate).getTime(),
+            render: (b) => (
+              <div className="text-xs space-y-1">
+                <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                  {new Date(b.bookingDate).toLocaleDateString("en-GB")} ({b.timeSlot})
+                </div>
+                <div className="flex items-center gap-1 text-gray-500">
+                  <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                  {b.postcode}, {b.address}
+                </div>
+              </div>
+            ),
+          },
+          {
+            key: 'professional',
+            header: 'Assigned Professional',
+            sortValue: (b) => b.professional?.name ?? '',
+            render: (b) =>
+              b.professional ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                    {b.professional.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-medium text-xs text-gray-900 dark:text-white">
+                      {b.professional.name}
+                    </p>
+                    <p className="text-[10px] text-gray-400">
+                      {b.professional.companyName || "Freelance"}
+                    </p>
+                  </div>
+                </div>
               ) : (
-                bookings.map((booking) => (
-                  <tr
-                    key={booking.id}
-                    className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition"
-                  >
-                    <td className="py-3.5 px-4">
-                      <div className="space-y-0.5">
-                        <p className="font-semibold text-gray-900 dark:text-white">
-                          {booking.fullName}
-                        </p>
-                        <p className="text-xs text-gray-400 flex items-center gap-1">
-                          <Mail className="w-3 h-3" /> {booking.email}
-                        </p>
-                        <p className="text-xs text-gray-400 flex items-center gap-1">
-                          <Phone className="w-3 h-3" /> {booking.phone}
-                        </p>
-                      </div>
-                    </td>
+                <span className="text-xs text-gray-400 italic">Unassigned</span>
+              ),
+          },
+          {
+            key: 'price',
+            header: 'Quote Price',
+            sortValue: (b) => b.priceInPence ?? 0,
+            render: (b) =>
+              b.priceInPence ? (
+                <span className="font-bold text-gray-900 dark:text-white">
+                  £{(b.priceInPence / 100).toFixed(2)}
+                </span>
+              ) : (
+                <span className="text-xs text-amber-600 font-normal">Not quoted</span>
+              ),
+          },
+          {
+            key: 'status',
+            header: 'Status',
+            sortValue: (b) => b.status,
+            render: (b) => getStatusBadge(b.status),
+          },
+        ]}
+        actions={(b) => (
+          <>
+            <button
+              title="Assign Professional"
+              onClick={() => {
+                setSelectedBooking(b);
+                setSelectedProfessionalId(b.professionalId || "");
+                setIsAssignModalOpen(true);
+              }}
+              className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
+            >
+              <UserPlus className="w-4 h-4" />
+            </button>
 
-                    <td className="py-3.5 px-4">
-                      <div>
-                        <span className="font-semibold text-indigo-600 dark:text-indigo-400 block">
-                          {booking.trade}
-                        </span>
-                        <span className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-900 inline-block mt-1">
-                          Urgency: {booking.urgency}
-                        </span>
-                      </div>
-                    </td>
-
-                    <td className="py-3.5 px-4 text-xs space-y-1">
-                      <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
-                        <Calendar className="w-3.5 h-3.5 text-gray-400" />
-                        {new Date(booking.bookingDate).toLocaleDateString("en-GB")} ({booking.timeSlot})
-                      </div>
-                      <div className="flex items-center gap-1 text-gray-500">
-                        <MapPin className="w-3.5 h-3.5 text-gray-400" />
-                        {booking.postcode}, {booking.address}
-                      </div>
-                    </td>
-
-                    <td className="py-3.5 px-4">
-                      {booking.professional ? (
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                            {booking.professional.name.charAt(0)}
-                          </div>
-                          <div>
-                            <p className="font-medium text-xs text-gray-900 dark:text-white">
-                              {booking.professional.name}
-                            </p>
-                            <p className="text-[10px] text-gray-400">
-                              {booking.professional.companyName || "Freelance"}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-xs text-gray-400 italic">Unassigned</span>
-                      )}
-                    </td>
-
-                    <td className="py-3.5 px-4 font-bold text-gray-900 dark:text-white">
-                      {booking.priceInPence ? (
-                        `£${(booking.priceInPence / 100).toFixed(2)}`
-                      ) : (
-                        <span className="text-xs text-amber-600 font-normal">Not quoted</span>
-                      )}
-                    </td>
-
-                    <td className="py-3.5 px-4">{getStatusBadge(booking.status)}</td>
-
-                    <td className="py-3.5 px-4 text-right space-x-1">
-                      <button
-                        title="Assign Professional"
-                        onClick={() => {
-                          setSelectedBooking(booking);
-                          setSelectedProfessionalId(booking.professionalId || "");
-                          setIsAssignModalOpen(true);
-                        }}
-                        className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
-                      >
-                        <UserPlus className="w-4 h-4" />
-                      </button>
-
-                      <button
-                        title="Update Status / Quote Price"
-                        onClick={() => {
-                          setSelectedBooking(booking);
-                          setNewStatus(booking.status);
-                          setQuotedPriceInPounds(
-                            booking.priceInPence ? (booking.priceInPence / 100).toString() : ""
-                          );
-                          setIsStatusModalOpen(true);
-                        }}
-                        className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <Pagination
-            page={page}
-            pageSize={10}
-            total={totalPages * 10}
-            onPageChange={(p) => setPage(p)}
-            showRange={false}
-          />
+            <button
+              title="Update Status / Quote Price"
+              onClick={() => {
+                setSelectedBooking(b);
+                setNewStatus(b.status);
+                setQuotedPriceInPounds(
+                  b.priceInPence ? (b.priceInPence / 100).toString() : ""
+                );
+                setIsStatusModalOpen(true);
+              }}
+              className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
+            >
+              <Edit3 className="w-4 h-4" />
+            </button>
+          </>
         )}
-      </div>
+      />
 
       {/* MODAL 1: Assign Professional */}
       {isAssignModalOpen && selectedBooking && (

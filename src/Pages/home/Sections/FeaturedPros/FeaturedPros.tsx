@@ -3,7 +3,7 @@ import { FeaturedProsGrid } from './FeaturedProsGrid';
 
 export const FeaturedPros: React.FC = () => {
   return (
-    <section className="py-8 md:py-12">
+    <section className="section-pad border-y border-navy-100/60 dark:border-white/10">
       <div className="container-lh">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Featured pros</p>

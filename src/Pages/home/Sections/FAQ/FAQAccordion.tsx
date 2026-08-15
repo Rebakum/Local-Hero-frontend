@@ -23,7 +23,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
   onClearSearch,
 }) => {
   return (
-    <div className="mt-8 bg-white dark:bg-navy-900 rounded-3xl border border-navy-100 dark:border-white/10 px-6 md:px-8 divide-y divide-navy-100 dark:divide-white/10">
+    <div className="mt-8 bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 px-6 md:px-8 divide-y divide-navy-100 dark:divide-white/10 shadow-lg">
       {items.length === 0 && (
         <div className="py-14 text-center">
           <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">

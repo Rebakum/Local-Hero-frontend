@@ -11,7 +11,7 @@ const stats = [
 export const ServiceStatsBar: React.FC = () => {
   return (
     <Reveal delay={0.15}>
-      <div className="mt-16 bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-8 sm:p-10 shadow-sm">
+      <div className="mt-16 bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-8 sm:p-10 shadow-lg">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-slate-100 dark:divide-white/5">
           {stats.map((stat) => (
             <div key={stat.label} className="p-2">

@@ -51,10 +51,10 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
   const RoleIcon = role.icon;
 
   const menuLinks = [
-    { to: role.dashboardPath, label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/dashboard/profile', label: 'My Profile', icon: UserRound },
+    { to: role.dashboardPath, label: 'Dashboard', icon: LayoutDashboard, color: 'text-primary', chip: 'bg-primary/10' },
+    { to: '/dashboard/profile', label: 'My Profile', icon: UserRound, color: 'text-sky-600 dark:text-sky-400', chip: 'bg-sky-100 dark:bg-sky-500/10' },
     ...(role.showBookings
-      ? [{ to: '/dashboard/user/bookings', label: 'My Bookings', icon: CalendarDays }]
+      ? [{ to: '/dashboard/user/bookings', label: 'My Bookings', icon: CalendarDays, color: 'text-amber-600 dark:text-amber-400', chip: 'bg-amber-100 dark:bg-amber-500/10' }]
       : []),
   ];
 
@@ -141,16 +141,7 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
                   <RoleIcon className="w-3 h-3" />
                   {role.label}
                 </span>
-                {isApproved ? (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
-                    <Check className="w-3 h-3" />
-                    Approved
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[11px] font-bold">
-                    Pending approval
-                  </span>
-                )}
+                
               </div>
             </div>
 
@@ -166,7 +157,9 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
                   onClick={() => setOpen(false)}
                   className="flex items-center gap-3 px-5 py-2.5 text-sm font-medium text-navy-600 dark:text-navy-300 hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors"
                 >
-                  <link.icon className="w-4 h-4 text-navy-400 dark:text-navy-500" />
+                  <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${link.chip} ${link.color}`}>
+                    <link.icon className="w-4 h-4" />
+                  </span>
                   {link.label}
                 </Link>
               ))}

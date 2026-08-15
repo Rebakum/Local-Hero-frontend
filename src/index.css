@@ -76,6 +76,28 @@
     color: var(--color-navy-300);
   }
 
+  /* ============ APPLE-STYLE DARK MODE ============
+     Layered elevation + label hierarchy inspired by
+     Apple's modern dark UI (iOS / macOS):
+       - Page background ......... pure black (#000)      — Apple systemBackground
+       - Elevated surfaces ........ #1C1C1E (cards, modals) — Apple secondarySystemBackground
+       - Nested / input surfaces .. #2C2C2E                — Apple tertiarySystemBackground
+       - Hover fills .............. #3A3A3C                — Apple quaternarySystemFill
+       - Primary label ............ #FAFAFA (headings)
+       - Secondary label .......... #D2D2D8 (body text)
+       - Muted / caption label .... #98989D                — Apple secondaryLabel
+       - Faint label .............. #68686E                — Apple tertiaryLabel
+  */
+  .dark {
+    --color-navy-950: #000000;
+    --color-navy-900: #1c1c1e;
+    --color-navy-800: #2c2c2e;
+    --color-navy-700: #3a3a3c;
+    --color-navy-200: #d2d2d8;
+    --color-navy-300: #98989d;
+    --color-navy-400: #68686e;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     color: var(--color-navy-950);
@@ -146,6 +168,11 @@
   /* Consistent vertical rhythm for every section */
   .section-pad {
     padding-block: clamp(3rem, 6vw, 7.5rem);
+  }
+
+  /* Consistent top offset for pages rendered under the fixed navbar */
+  .page-top {
+    padding-top: 6rem;
   }
 
   /* Eyebrow  tiny uppercase label */
@@ -272,7 +299,7 @@
   }
   .dark .card {
     background: var(--color-navy-900);
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   }
 
@@ -292,8 +319,8 @@
     box-shadow: var(--shadow-card);
   }
   .dark .glass {
-    background: rgba(16, 16, 18, 0.78);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(28, 28, 30, 0.82);
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   /* ============ INPUTS ============ */

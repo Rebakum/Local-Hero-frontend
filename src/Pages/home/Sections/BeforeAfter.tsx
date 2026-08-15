@@ -36,7 +36,7 @@ export const BeforeAfter: React.FC = () => {
   // 1. Return null or a skeleton/spinner while loading or if no projects exist
   if (loading) {
     return (
-      <section className="bg-cream-100 dark:bg-black py-12 flex justify-center items-center">
+      <section className="bg-cream-100 dark:bg-black section-pad flex justify-center items-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </section>
     );
@@ -47,7 +47,7 @@ export const BeforeAfter: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 py-8 md:py-12">
+    <section ref={sectionRef} className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad">
       <div className="container-lh">
         <SectionTitle
           badge
@@ -67,10 +67,10 @@ export const BeforeAfter: React.FC = () => {
                   setActiveIndex(idx);
                   setPosition(50);
                 }}
-                className={`px-4 py-2 rounded-full text-xs font-heading font-bold transition-all border-primary ${
+                className={`px-4 py-2 rounded-full text-xs font-heading font-bold transition-all duration-200 border-primary ${
                   activeIndex === idx
-                    ? 'bg-primary text-white'
-                    : 'bg-white dark:bg-navy-800 border border-navy-200 dark:border-white/15 text-navy-600 dark:text-navy-200'
+                    ? 'bg-primary text-white shadow-md shadow-primary/25'
+                    : 'bg-white dark:bg-navy-800 border border-navy-200 dark:border-white/15 text-navy-600 dark:text-navy-200 hover:-translate-y-0.5 hover:border-primary/60 hover:text-primary hover:shadow-md'
                 }`}
               >
                 {proj.title}
@@ -83,7 +83,7 @@ export const BeforeAfter: React.FC = () => {
 
           {/* Interactive split slider */}
           <Reveal className="lg:col-span-7" delay={0.1}>
-            <div className="relative w-full h-[280px] sm:h-[380px] md:h-[480px] rounded-4xl overflow-hidden border border-navy-100 dark:border-white/10 shadow-lift select-none group">
+            <div className="relative w-full h-[280px] sm:h-[380px] md:h-[480px] rounded-4xl overflow-hidden border border-neutral-200 dark:border-white/10 shadow-lg select-none group">
               <img
                 src={project.afterImage}
                 alt={`${project.title} after`}
@@ -149,7 +149,7 @@ export const BeforeAfter: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <div className="rounded-2xl bg-white dark:bg-navy-800 border border-navy-100 dark:border-white/10 p-3.5 sm:p-5 space-y-1">
+              <div className="rounded-2xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 p-3.5 sm:p-5 space-y-1 shadow-lg">
                 <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300 flex items-center gap-1">
                   <PoundSterling className="w-3.5 h-3.5 text-primary" /> Project cost
                 </div>
@@ -158,7 +158,7 @@ export const BeforeAfter: React.FC = () => {
                 </div>
                 <div className="text-[11px] font-semibold text-primary">Fixed upfront quote</div>
               </div>
-              <div className="rounded-2xl bg-white dark:bg-navy-800 border border-navy-100 dark:border-white/10 p-3.5 sm:p-5 space-y-1">
+              <div className="rounded-2xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 p-3.5 sm:p-5 space-y-1 shadow-lg">
                 <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300 flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-primary" /> Time to complete
                 </div>

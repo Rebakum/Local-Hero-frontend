@@ -24,7 +24,7 @@ export const PopularServiceCard: React.FC<PopularServiceCardProps> = ({ trade })
   if (!s) return null;
 
   return (
-    <article className="group rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-navy-900 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col justify-between w-full">
+    <article className="group rounded-2xl bg-white dark:bg-navy-800 overflow-hidden flex flex-col justify-between w-full h-full shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
       
       {/* Top Image Container - object-top ব্যবহার করা হয়েছে যেন ওপরের অংশ না কাটে */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 dark:bg-navy-950">

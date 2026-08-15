@@ -214,7 +214,7 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* 2. Main Content Layer */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 lg:pt-36 pb-8 md:pb-16 flex-1 flex items-center">
+        <div className="container-lh relative z-10 pt-24 md:pt-32 lg:pt-36 pb-8 md:pb-16 flex-1 flex items-center">
           <motion.div
             style={{ opacity: fadeOpacity }}
             className="grid relative grid-cols-1 lg:grid-cols-12 gap-6 items-center w-full max-w-5xl"

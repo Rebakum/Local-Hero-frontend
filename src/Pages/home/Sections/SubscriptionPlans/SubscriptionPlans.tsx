@@ -63,7 +63,7 @@ const PLANS: Plan[] = [
 
 export const SubscriptionPlans: React.FC = () => {
   return (
-    <section className="bg-cream-100 dark:bg-black py-16 md:py-24">
+    <section className="bg-cream-100 dark:bg-black section-pad border-y border-navy-100/60 dark:border-white/10">
       <div className="container-lh">
         <SectionTitle
           eyebrow="Subscription"
@@ -81,10 +81,10 @@ export const SubscriptionPlans: React.FC = () => {
               <StaggerItem key={plan.id} className="h-full">
                 <Reveal className="h-full">
                   <div
-                    className={`relative flex flex-col h-full rounded-3xl border p-7 sm:p-8 transition-all duration-300 ${
+                    className={`relative flex flex-col h-full rounded-3xl border border-neutral-200 dark:border-white/10 p-7 sm:p-8 transition-all duration-300 shadow-lg ${
                       plan.highlight
-                        ? 'bg-white dark:bg-navy-900 border-primary/40 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)] md:-translate-y-2'
-                        : 'bg-white dark:bg-navy-900 border-slate-200 dark:border-white/10 hover:border-primary/40'
+                        ? 'bg-white dark:bg-navy-800 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)] md:-translate-y-2 hover:shadow-2xl'
+                        : 'bg-white dark:bg-navy-800 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl'
                     }`}
                   >
                     {plan.highlight && (

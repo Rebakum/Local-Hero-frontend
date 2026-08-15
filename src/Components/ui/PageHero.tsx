@@ -36,7 +36,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
       </div>
 
       {/* Main Content Area - pb-6 sm:pb-10 দিয়ে একদম নিচে এলাইন করা হয়েছে */}
-      <div className="container-lh relative z-10 mx-auto px-4 sm:px-6 md:px-10 lg:px-16 pt-16 pb-6 sm:pb-10 md:pb-12 w-full">
+      <div className="container-lh relative z-10 pt-16 pb-6 sm:pb-10 md:pb-12 w-full">
         <Reveal>
           <div className="flex flex-col md:flex-row md:items-end  gap-6 sm:gap-8 md:gap-10">
             

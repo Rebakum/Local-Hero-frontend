@@ -28,11 +28,11 @@ const STATS = [
 export const Stats: React.FC = () => {
   return (
     <Reveal>
-      <div className="relative w-full py-10 px-8">
+      <div className="relative w-full py-10">
         <Stagger className="grid grid-cols-1 gap-5 md:grid-cols-4">
           {STATS.map((stat) => (
             <StaggerItem key={stat.label}>
-              <div className="group relative h-full shadow-2xl  overflow-hidden rounded-2xl border border-navy-100/80 bg-white/90  p-4 sm:p-5 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 dark:border-white/10 dark:bg-navy-800 dark:hover:border-primary/50 dark:hover:shadow-black/60">
+              <div className="group relative h-full overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800 p-4 sm:p-5 backdrop-blur-md shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
                 
                 {/* Premium Gradient Ambient Glow */}
                 <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-primary/10 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />

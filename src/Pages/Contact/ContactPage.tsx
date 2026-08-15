@@ -30,13 +30,13 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-cream-100 mt-24 dark:bg-navy-900 min-h-screen pb-16">
+    <div className="bg-cream-100 page-top dark:bg-navy-900 min-h-screen pb-16">
       
      
       
 
       {/* 2. Main Page Content Container */}
-      <div className="container-lh max-w-6xl mx-auto px-4 pt-6 sm:px-6">
+      <div className="container-lh">
         
         {/* Section Header */}
         <div className="mt-12 mb-8">
@@ -51,7 +51,7 @@ export const ContactPage: React.FC = () => {
 
         {/* Contact Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+          <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
             <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
               <Phone className="w-6 h-6" />
             </div>
@@ -62,7 +62,7 @@ export const ContactPage: React.FC = () => {
             </a>
           </div>
 
-          <div className="bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+          <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
             <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
               <Mail className="w-6 h-6" />
             </div>
@@ -73,7 +73,7 @@ export const ContactPage: React.FC = () => {
             </a>
           </div>
 
-          <div className="bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+          <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
             <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
               <MapPin className="w-6 h-6" />
             </div>
@@ -84,7 +84,7 @@ export const ContactPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+          <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-2xl p-6 flex flex-col items-start shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
             <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
               <Clock className="w-6 h-6" />
             </div>
@@ -100,7 +100,7 @@ export const ContactPage: React.FC = () => {
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Form (7 Cols) */}
-          <div className="lg:col-span-7 bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-10 shadow-sm">
+          <div className="lg:col-span-7 bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-10 shadow-lg">
             {isSubmitted ? (
               <div className="text-center py-10 space-y-4">
                 <div className="w-16 h-16 bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto">
@@ -221,7 +221,7 @@ export const ContactPage: React.FC = () => {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Live Map / Address Placeholder */}
-            <div className="bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 shadow-lg">
               <h4 className="font-heading font-extrabold text-navy-950 dark:text-white text-base mb-3 flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-primary" /> UK Service Coverage
               </h4>

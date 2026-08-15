@@ -132,9 +132,9 @@ const ProviderDashboard: React.FC = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative overflow-hidden rounded-3xl bg-white dark:bg-navy-900 p-6 sm:p-8 text-navy-950 dark:text-white shadow-xl shadow-primary/20"
       >
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm" />
-        <div className="absolute -right-4 bottom-0 w-28 h-28 rounded-full bg-primary/5" />
-        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full" />
+        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm pointer-events-none" />
+        <div className="absolute -right-4 bottom-0 w-28 h-28 rounded-full bg-primary/5 pointer-events-none" />
+        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
         <div className="relative z-10 flex items-start justify-between">
           <div>
@@ -167,7 +167,7 @@ const ProviderDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.5, type: 'spring', stiffness: 200 }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-navy-100/60 dark:bg-white/10 backdrop-blur-sm border border-navy-100 dark:border-white/20"
           >
             <Zap className="w-4 h-4 text-primary" />

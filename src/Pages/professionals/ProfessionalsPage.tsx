@@ -4,8 +4,8 @@ import FeaturedProsGrid from '../home/Sections/FeaturedPros/FeaturedProsGrid';
 
 export const ProfessionalsPage: React.FC = () => {
   return (
-    <div className="mt-24">
-      <section className="pt-16 pb-6">
+    <div className="page-top">
+      <section className="container-lh section-pad border-y border-navy-100/60 dark:border-white/10">
         <SectionTitle
           eyebrow="Our Professionals"
           badge={true}

@@ -36,7 +36,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             {/* Auth: profile card when logged in, Login button when logged out */}
             <MobileAuthMenu close={closeMobile} />
 
-            <nav className="flex flex-col gap-4">
+            <nav className="flex flex-col gap-2">
               {NAV_LINKS.map((link, i) => {
                 const isActive = pathname === link.path;
                 return (
@@ -53,12 +53,19 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                     <Link
                       to={link.path}
                       onClick={closeMobile}
-                      className={`text-base font-semibold transition-colors duration-300 block ${
+                      className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-base font-semibold transition-all duration-300 ${
                         isActive
-                          ? "text-primary"
-                          : "text-navy-800 dark:text-navy-100 hover:text-primary"
+                          ? "bg-primary/10 text-primary"
+                          : "text-navy-800 hover:bg-navy-100 dark:text-navy-100 dark:hover:bg-white/5"
                       }`}
                     >
+                      <span
+                        className={`flex h-9 w-9 items-center justify-center rounded-xl ${link.chip} ${link.color} ${
+                          isActive ? "" : "group-hover:scale-110"
+                        } transition-transform duration-300`}
+                      >
+                        <link.icon className="w-4.5 h-4.5" />
+                      </span>
                       {link.label}
                     </Link>
                   </motion.div>

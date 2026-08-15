@@ -41,7 +41,7 @@ export const Categories: React.FC = () => {
   return (
     <section
       id="services"
-      className="bg-cream-100 dark:bg-black py-8 md:py-12"
+      className="bg-cream-100 dark:bg-black section-pad border-y border-navy-100/60 dark:border-white/10"
     >
       <div className="container-lh">
         <SectionTitle

@@ -21,7 +21,7 @@ export const ServiceHowItWorks: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((item) => (
-            <div key={item.step} className="bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 text-center hover:border-primary/40 transition-all hover:-translate-y-1 shadow-sm">
+            <div key={item.step} className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 text-center shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
               <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
                 <item.icon size={26} />
               </div>

@@ -15,9 +15,10 @@ import {
 
 interface NotificationBellProps {
   atTop: boolean;
+  variant?: 'default' | 'chip';
 }
 
-export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => {
+export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, variant = 'default' }) => {
   const { isAuthenticated, user } = useAuth();
   const { socket } = useSocket();
   const navigate = useNavigate();
@@ -98,7 +99,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
   const dashboardPath =
     user?.role === 'serviceProvider'
       ? '/dashboard/provider/notifications'
-      : '/dashboard/user/notifications';
+      : user?.role === 'ADMIN'
+        ? '/dashboard/admin/notifications'
+        : user?.role === 'SUPER_ADMIN'
+          ? '/dashboard/super-admin/notifications'
+          : '/dashboard/user/notifications';
 
   const handleToggle = () => {
     const next = !open;
@@ -132,9 +137,9 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
     }
   };
 
-  // Clicking a "your service is complete, leave a review" notification takes
-  // the customer straight to the review page for that booking and marks the
-  // notification as read. Every other notification is just marked read.
+  // Clicking a notification marks it read and opens it on the notification
+  // page for the current role (highlighted there). "Leave a review" CTAs go
+  // straight to the review page for that booking instead.
   const handleNotificationClick = async (notification: Notification) => {
     const data = notification.data as { action?: string; bookingId?: string } | null;
 
@@ -145,7 +150,9 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
       return;
     }
 
-    await handleMarkRead(notification);
+    if (!notification.isRead) await handleMarkRead(notification);
+    setOpen(false);
+    navigate(`${dashboardPath}?open=${encodeURIComponent(notification.id)}`);
   };
 
   return (
@@ -154,10 +161,16 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop }) => 
         type="button"
         onClick={handleToggle}
         aria-label="Notifications"
-        className={`relative p-2 rounded-full transition-colors ${
-          open ? 'bg-primary/10 text-primary' : atTop
-            ? 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
-            : 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
+        className={`relative p-2 rounded-full transition-all duration-200 ${
+          variant === 'chip'
+            ? open
+              ? 'bg-amber-200 text-amber-700 dark:bg-amber-500/25 dark:text-amber-300'
+              : 'bg-amber-100 text-amber-600 hover:bg-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:hover:bg-amber-500/20'
+            : open
+              ? 'bg-primary/10 text-primary'
+              : atTop
+                ? 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
+                : 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
         }`}
       >
         <Bell className="w-5 h-5" />

@@ -32,7 +32,7 @@ const WEEK_LABELS = Array.from({ length: 12 }, (_, i) => `W${i + 1}`);
 
 export const DashboardPreview: React.FC = () => {
   return (
-    <section className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 py-8 md:py-12">
+    <section className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad">
       <div className="container-lh">
         <SectionTitle
           badge
@@ -42,7 +42,7 @@ export const DashboardPreview: React.FC = () => {
         />
 
         <Reveal delay={0.1}>
-        <div className="mt-8 md:mt-14 card rounded-4xl overflow-hidden shadow-lift">
+        <div className="mt-8 md:mt-14 rounded-4xl overflow-hidden bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 dark:border-white/10">
           {/* Browser chrome */}
           <div className="border-b border-navy-100 dark:border-white/10 px-4 py-3 flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-primary" />

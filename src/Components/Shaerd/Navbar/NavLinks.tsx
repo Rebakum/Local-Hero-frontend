@@ -1,13 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { Wrench, LayoutGrid, Users, CreditCard, MessageSquare } from 'lucide-react';
 
-export const NAV_LINKS = [ 
-  { label: 'Services', path: '/services' },
-  { label: 'All Categories', path: '/categories' },
-  { label: 'Professionals', path: '/professionals' },
-   { label: 'Pricing', path: '/pricing' },
-   { label: 'Contact Us', path: '/contact' },
+export const NAV_LINKS = [
+  {
+    label: 'Services',
+    path: '/services',
+    icon: Wrench,
+    color: 'text-primary',
+    chip: 'bg-primary/10 group-hover:bg-primary/20 dark:group-hover:bg-primary/30',
+  },
+  {
+    label: 'All Categories',
+    path: '/categories',
+    icon: LayoutGrid,
+    color: 'text-sky-600 dark:text-sky-400',
+    chip: 'bg-sky-100 group-hover:bg-sky-200 dark:bg-sky-500/10 dark:group-hover:bg-sky-500/20',
+  },
+  {
+    label: 'Professionals',
+    path: '/professionals',
+    icon: Users,
+    color: 'text-emerald-600 dark:text-emerald-400',
+    chip: 'bg-emerald-100 group-hover:bg-emerald-200 dark:bg-emerald-500/10 dark:group-hover:bg-emerald-500/20',
+  },
+  {
+    label: 'Pricing',
+    path: '/pricing',
+    icon: CreditCard,
+    color: 'text-amber-600 dark:text-amber-400',
+    chip: 'bg-amber-100 group-hover:bg-amber-200 dark:bg-amber-500/10 dark:group-hover:bg-amber-500/20',
+  },
+  {
+    label: 'Contact Us',
+    path: '/contact',
+    icon: MessageSquare,
+    color: 'text-violet-600 dark:text-violet-400',
+    chip: 'bg-violet-100 group-hover:bg-violet-200 dark:bg-violet-500/10 dark:group-hover:bg-violet-500/20',
+  },
 ];
 
 interface NavLinksProps {
@@ -52,7 +83,7 @@ export const NavLinks: React.FC<NavLinksProps> = ({ pathname, atTop }) => {
                 <motion.span
                   layoutId="nav-underline"
                   className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-primary"
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 />
               )}
             </Link>

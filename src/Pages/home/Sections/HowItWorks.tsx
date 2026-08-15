@@ -32,7 +32,7 @@ export const HowItWorks: React.FC = () => {
   return (
     <section
       id="how-it-works"
-      className="bg-white dark:bg-black border-y border-navy-100/60 dark:border-white/10 py-8 md:py-12"
+      className="bg-white dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad"
     >
       <div className="container-lh">
         <SectionTitle badge eyebrow="How it works" title="Book in 3 steps" />
@@ -42,7 +42,7 @@ export const HowItWorks: React.FC = () => {
             return (
               <StaggerItem key={step.title}>
                 <div
-                  className="card rounded-3xl p-6 sm:p-8 relative hover:-translate-y-1 hover:shadow-lift hover:border-primary/25 transition-all"
+                  className="rounded-3xl p-6 sm:p-8 relative bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
                 >
                   <span className="absolute top-6 right-7 font-heading text-6xl font-extrabold leading-none text-navy-100 dark:text-white/5 select-none">
                     {step.number}

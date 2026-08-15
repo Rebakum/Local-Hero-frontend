@@ -57,14 +57,14 @@ export const WhyChooseUs: React.FC = () => {
     <section
       ref={sectionRef}
       id="why-us"
-      className="bg-white dark:bg-black border-y border-navy-100/60 dark:border-white/10 py-8 md:py-12"
+      className="bg-white dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad"
     >
       <div className="container-lh">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-14 items-center">
 
           {/* Visual side */}
           <Reveal className="lg:col-span-5 relative order-2 lg:order-1" delay={0.1}>
-            <div className="relative rounded-[1.75rem] sm:rounded-4xl overflow-hidden border border-navy-100/80 dark:border-white/10 shadow-lift bg-linear-to-br from-primary/10 via-cream-100 to-white dark:from-black dark:via-navy-900 dark:to-black">
+            <div className="relative rounded-[1.75rem] sm:rounded-4xl overflow-hidden border border-neutral-200 dark:border-white/10 shadow-lg bg-linear-to-br from-primary/10 via-cream-100 to-white dark:from-black dark:via-navy-900 dark:to-black">
               <div className="parallax-img flex items-center justify-center h-64 sm:h-80 md:h-95 lg:h-115 xl:h-135">
                 <img src={heroImage} alt="Trusted LocalHero service illustration" className="h-full w-full object-cover" />
               </div>

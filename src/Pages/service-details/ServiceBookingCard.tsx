@@ -24,7 +24,7 @@ export const ServiceBookingCard: React.FC<ServiceBookingCardProps> = ({
 
   return (
     <Reveal>
-      <div className="bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
+      <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -z-0" />
 
         <div className="relative z-10">

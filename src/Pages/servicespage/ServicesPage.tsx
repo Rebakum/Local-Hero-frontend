@@ -1,15 +1,13 @@
 import React from 'react';
 import { SectionTitle } from '../../Components/ui/SectionTitle';
-import { ServicesHowItWorks } from './ServicesHowItWorks';
 import { ServicesGrid } from './ServicesGrid';
-import { FAQ } from '../home/Sections/FAQ/FAQ';
-import { CTA } from '../home/Sections/CTA';
-import { Stats } from '../home/Sections/Stats';
+
+
 
 export const ServicesPage: React.FC = () => {
   return (
-    <div className='mt-24'>
-      <section className="pt-16 pb-6 ">
+    <div className='page-top'>
+      <section className="section-pad border-y border-navy-100/60 dark:border-white/10">
         <SectionTitle
           eyebrow="Our Services"
           badge={true}

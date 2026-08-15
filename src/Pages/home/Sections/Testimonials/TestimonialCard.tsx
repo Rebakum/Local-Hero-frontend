@@ -13,7 +13,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
   const isDemo = isDemoTestimonial(t);
 
   return (
-    <figure className="group relative h-full rounded-3xl border border-navy-100 dark:border-white/10 bg-white dark:bg-navy-900 p-5 sm:p-7 flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/20">
+    <figure className="group relative h-full rounded-3xl bg-white dark:bg-navy-800 p-5 sm:p-7 flex flex-col overflow-hidden shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
       <Quote className="absolute -top-2 right-5 w-16 h-16 text-primary/[0.06] dark:text-primary/10 rotate-180" />
 
       {isDemo && (

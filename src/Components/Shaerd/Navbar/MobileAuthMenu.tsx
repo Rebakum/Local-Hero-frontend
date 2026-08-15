@@ -51,10 +51,10 @@ export const MobileAuthMenu: React.FC<MobileAuthMenuProps> = ({ close }) => {
   const RoleIcon = role.icon;
 
   const menuLinks = [
-    { to: role.dashboardPath, label: 'Dashboard', icon: LayoutDashboard },
-    { to: '/dashboard/profile', label: 'My Profile', icon: UserRound },
+    { to: role.dashboardPath, label: 'Dashboard', icon: LayoutDashboard, color: 'text-primary', chip: 'bg-primary/10' },
+    { to: '/dashboard/profile', label: 'My Profile', icon: UserRound, color: 'text-sky-600 dark:text-sky-400', chip: 'bg-sky-100 dark:bg-sky-500/10' },
     ...(role.showBookings
-      ? [{ to: '/dashboard/user/bookings', label: 'My Bookings', icon: CalendarDays }]
+      ? [{ to: '/dashboard/user/bookings', label: 'My Bookings', icon: CalendarDays, color: 'text-amber-600 dark:text-amber-400', chip: 'bg-amber-100 dark:bg-amber-500/10' }]
       : []),
   ];
 
@@ -130,7 +130,9 @@ export const MobileAuthMenu: React.FC<MobileAuthMenuProps> = ({ close }) => {
             onClick={close}
             className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-navy-700 dark:text-navy-200 hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors"
           >
-            <link.icon className="w-4 h-4 text-navy-400 dark:text-navy-500" />
+            <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${link.chip} ${link.color}`}>
+              <link.icon className="w-4 h-4" />
+            </span>
             {link.label}
           </Link>
         ))}

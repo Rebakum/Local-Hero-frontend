@@ -34,7 +34,7 @@ export const FAQ: React.FC = () => {
   return (
     <section
       id="faq"
-      className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 py-8 md:py-12"
+      className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad"
     >
       <div className="container-lh">
         <SectionTitle

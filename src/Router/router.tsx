@@ -4,12 +4,12 @@ import type { UserRole } from '../types/auth';
 import { RootLayout } from '../Layouts/RootLayout';
 import { BookingProvider } from '../Context/BookingContext';
 import { HomePage } from '../Pages/home/HomePage';
-import { ServicesPage } from '../Pages/servicespage/ServicesPage';
+import { ServicesPage } from '../Pages/Servicespage/ServicesPage';
 import { ProfessionalsPage } from '../Pages/professionals/ProfessionalsPage';
 import { AboutPage } from '../Pages/About/AboutPage';
 import { FaqPage } from '../Pages/Faq/FaqPage';
 import { NotFoundPage } from '../Pages/Not-found/NotFoundPage';
-import { ServiceDetailsPage } from '../Pages/service-details/ServiceDetailsPage';
+import { ServiceDetailsPage } from '../Pages/Service-details/ServiceDetailsPage';
 import { ContactPage } from '../Pages/Contact/ContactPage';
 import ProDetailsPage from '../Pages/home/Sections/FeaturedPros/ProDetailsPage';
 import AllCategoriesPage from '../Pages/AllCategories/AllCategoriesPage';
@@ -24,9 +24,11 @@ import UserDashboard from '../Pages/dashboard/user/UserDashboard';
 import ProviderDashboard from '../Pages/dashboard/provider/ProviderDashboard';
 import AdminDashboard from '../Pages/dashboard/admin/AdminDashboard';
 import AdminApprovals from '../Pages/dashboard/admin/AdminApprovals';
+import AdminNotifications from '../Pages/dashboard/admin/Notifications';
 import SuperAdminDashboard from '../Pages/dashboard/super-admin/SuperAdminDashboard';
 import SuperAdminApprovals from '../Pages/dashboard/super-admin/SuperAdminApprovals';
 import SuperAdminProviderApprovals from '../Pages/dashboard/super-admin/SuperAdminProviderApprovals';
+import SuperAdminNotifications from '../Pages/dashboard/super-admin/Notifications';
 import UserManagement from '../Pages/dashboard/super-admin/UserManagement';
 import SystemPage from '../Pages/dashboard/super-admin/SystemPage';
 import ProviderApplicationForm from '../Pages/dashboard/user/ProviderApplicationForm';
@@ -117,6 +119,7 @@ const protectedRouteEntries: ProtectedRouteEntry[] = [
 
   { path: 'admin', roles: ADMIN_ROLES, element: <AdminDashboard /> },
   { path: 'admin/approvals', roles: ADMIN_ROLES, element: <AdminApprovals /> },
+  { path: 'admin/notifications', roles: ADMIN_ROLES, element: <AdminNotifications /> },
   { path: 'admin/moderation', roles: ADMIN_ROLES, element: <Moderation /> },
   { path: 'admin/manage/trades', roles: ADMIN_ROLES, element: <TradesManagement /> },
   { path: 'admin/manage/subscriptions', roles: ADMIN_ROLES, element: <SubscriptionsManagement /> },
@@ -130,6 +133,7 @@ const protectedRouteEntries: ProtectedRouteEntry[] = [
   { path: 'super-admin', roles: SUPER_ADMIN_ROLES, element: <SuperAdminDashboard /> },
   { path: 'super-admin/admin-approvals', roles: SUPER_ADMIN_ROLES, element: <SuperAdminApprovals /> },
   { path: 'super-admin/user-approvals', roles: SUPER_ADMIN_ROLES, element: <SuperAdminProviderApprovals /> },
+  { path: 'super-admin/notifications', roles: SUPER_ADMIN_ROLES, element: <SuperAdminNotifications /> },
   { path: 'super-admin/users', roles: SUPER_ADMIN_ROLES, element: <UserManagement /> },
   { path: 'super-admin/system', roles: SUPER_ADMIN_ROLES, element: <SystemPage /> },
 ];

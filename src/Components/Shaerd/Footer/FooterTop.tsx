@@ -6,7 +6,7 @@ export const FooterTop: React.FC = () => {
   return (
     <div className="lg:col-span-4 space-y-6">
       {/* LOGO */}
-      <Link to="/" className="flex items-start justify-start">
+      <Link to="/" className="flex items-start justify-start transition-opacity duration-300 hover:opacity-75">
         <img
           src="/logoBlack/logo3.png"
           alt="LocalHero"

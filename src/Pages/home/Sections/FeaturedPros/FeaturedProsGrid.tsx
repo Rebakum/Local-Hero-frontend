@@ -104,7 +104,7 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
 
   if (displayed.length === 0) {
     return (
-      <div className="mt-8 md:mt-12 rounded-3xl bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 px-6 py-14 text-center">
+      <div className="mt-8 md:mt-12 rounded-3xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 px-6 py-14 text-center shadow-lg">
         <SearchX size={28} className="mx-auto text-primary" />
         <p className="mt-4 font-heading text-lg font-bold text-navy-950 dark:text-white">
           No professionals found

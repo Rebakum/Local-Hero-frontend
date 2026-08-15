@@ -8,7 +8,7 @@ import { SectionTitle } from '../../ui';
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-navy-950 text-white font-sans">
-      <div className="container-lh px-6 lg:px-16 py-12 ">
+      <div className="container-lh py-12">
         {/* TOP CTA SECTION WITH SECTION TITLE */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-16 gap-6">
           <SectionTitle

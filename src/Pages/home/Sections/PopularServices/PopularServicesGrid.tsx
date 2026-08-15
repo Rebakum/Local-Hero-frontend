@@ -23,7 +23,7 @@ export const PopularServicesGrid: React.FC<PopularServicesGridProps> = ({ trades
   return (
     <Stagger className="mt-8 md:mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       {trades.map((trade) => (
-        <StaggerItem key={trade.id}>
+        <StaggerItem key={trade.id} className="h-full">
           <PopularServiceCard trade={trade} />
         </StaggerItem>
       ))}

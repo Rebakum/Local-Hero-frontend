@@ -5,20 +5,17 @@ import { getProfessionalsByTrade } from '../../services/content.service';
 import { Zap, ArrowLeft, Wrench, Clock, Users, BadgeCheck, Loader2 } from 'lucide-react';
 import type { Trade, TradeService, Professional } from '../../types';
 import { ProCard } from '../home/Sections/FeaturedPros/FeaturedProCard';
-
 import { ServiceHero } from './ServiceHero';
 import { ServiceOverview } from './ServiceOverview';
 import { ServiceIncluded } from './ServiceIncluded';
 import { ServiceWhyChoose } from './ServiceWhyChoose';
 import { ServiceBookingCard } from './ServiceBookingCard';
 import { ServiceGuarantee } from './ServiceGuarantee';
-import { ServiceHowItWorks } from './ServiceHowItWorks';
-import { ServiceStatsBar } from './ServiceStatsBar';
-
 import { RelatedServices } from './RelatedServices';
 
-// Build the full list of services offered under a trade: the featured service
-// plus every popular task (each task becomes a bookable service).
+
+
+
 const buildServices = (trade: Trade): TradeService[] => {
   const services: TradeService[] = [];
 
@@ -111,7 +108,7 @@ export const ServiceDetailsPage: React.FC = () => {
   const related = allTrades.filter((t) => t.id !== trade.id).slice(0, 3);
 
   return (
-    <div className="bg-slate-50 dark:bg-navy-950 min-h-screen pt-16 pb-20">
+    <div className="bg-slate-50 dark:bg-navy-950 min-h-screen page-top pb-20">
       <div className="w-full relative h-[400px] sm:h-[500px] md:h-[600px]">
         <ServiceHero
           image={s.image}
@@ -123,8 +120,8 @@ export const ServiceDetailsPage: React.FC = () => {
       </div>
 
       {/* Trade context bar */}
-      <div className="container-lh max-w-6xl mx-auto px-4 sm:px-6 -mt-8 relative z-10">
-        <div className="bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/10 rounded-3xl shadow-lg px-6 py-5 flex flex-wrap items-center gap-x-8 gap-y-3">
+      <div className="container-lh -mt-8 relative z-10">
+        <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-lg px-6 py-5 flex flex-wrap items-center gap-x-8 gap-y-3">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
               <Wrench size={20} />
@@ -159,7 +156,7 @@ export const ServiceDetailsPage: React.FC = () => {
       </div>
 
       {/* Main Content Layout */}
-      <div className="container-lh max-w-6xl mx-auto mt-8 sm:mt-12 px-4 sm:px-6">
+      <div className="container-lh mt-8 sm:mt-12">
         {/* All services selector */}
         {services.length > 1 && (
           <div className="mb-10">
@@ -236,8 +233,7 @@ export const ServiceDetailsPage: React.FC = () => {
           </div>
         ) : null}
 
-        <ServiceHowItWorks />
-        <ServiceStatsBar />
+       
 
         <RelatedServices related={related} />
       </div>

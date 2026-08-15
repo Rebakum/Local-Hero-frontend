@@ -122,12 +122,12 @@ const STANDARDS = [
 
 export const TrustSafetyPage: React.FC = () => {
   return (
-    <div className="mt-24">
+    <div className="page-top">
       
 
 
       {/* ============ SAFETY PILLARS ============ */}
-      <section className="relative overflow-hidden bg-navy-950 border-y border-white/10 py-16 md:py-24">
+      <section className="relative overflow-hidden bg-navy-950 section-pad border-y border-navy-100/60 dark:border-white/10">
         <div
           className="absolute inset-0 opacity-20 pointer-events-none"
           style={{
@@ -168,7 +168,7 @@ export const TrustSafetyPage: React.FC = () => {
       </section>
 
       {/* ============ OUR STANDARDS ============ */}
-      <section className="container-lh section-pad">
+      <section className="container-lh section-pad border-y border-navy-100/60 dark:border-white/10">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <div>
@@ -191,7 +191,7 @@ export const TrustSafetyPage: React.FC = () => {
           <div className="grid gap-5 sm:grid-cols-2">
             {STANDARDS.map(({ icon: Icon, title, text }, i) => (
               <Reveal key={title} delay={i * 0.08}>
-                <div className="group flex h-full gap-4 rounded-2xl border border-navy-100 dark:border-white/10 bg-white dark:bg-navy-900 p-6 shadow-soft transition-all duration-300 hover:border-primary/40">
+                <div className="group flex h-full gap-4 rounded-2xl bg-white dark:bg-navy-800 p-6 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-950 text-white transition-colors duration-300 group-hover:bg-primary">
                     <Icon className="h-5 w-5" />
                   </div>
@@ -211,7 +211,7 @@ export const TrustSafetyPage: React.FC = () => {
       </section>
 
       {/* ============ REPORT A CONCERN ============ */}
-      <section className="container-lh section-pad pt-0">
+      <section className="container-lh section-pad pt-0 border-y border-navy-100/60 dark:border-white/10">
         <div className="relative overflow-hidden rounded-[2rem] bg-navy-950 p-8 sm:p-12 md:p-16">
           <div className="grid-fade absolute inset-0" />
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[420px] h-[220px] rounded-full bg-primary/20 blur-[120px] pointer-events-none" />

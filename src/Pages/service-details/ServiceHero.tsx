@@ -39,7 +39,7 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
       </div>
 
       {/* 2. Top Navigation Bar (Back Button) */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+      <div className="container-lh relative z-10 pt-6">
         <button
           onClick={() => navigate('/services')}
           className="flex items-center gap-2 bg-navy-950/60 backdrop-blur-md border border-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-950/90 hover:scale-105"
@@ -50,7 +50,7 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
       </div>
 
       {/* 3. Content Layer with Max-Width & Proper Padding */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 md:pt-24 md:pb-16 flex-1 flex items-end">
+      <div className="container-lh relative z-10 pt-16 pb-12 md:pt-24 md:pb-16 flex-1 flex items-end">
         <div className="w-full space-y-4">
           <div className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-1.5 bg-primary/90 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-white shadow-lg">

@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
     >
      
 
-      <div className="container-lh h-14 sm:h-16 md:h-20 flex items-center justify-between gap-5 sm:gap-4 px-3 sm:px-4 md:px-6">
+      <div className="container-lh h-14 sm:h-16 md:h-20 flex items-center justify-between gap-5 sm:gap-4">
 
         <Logo atTop={atTop} />
         <DesktopNav

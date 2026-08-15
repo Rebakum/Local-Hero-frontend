@@ -18,13 +18,13 @@ export const FAQItem: React.FC<FAQItemProps> = ({
     <div>
       <button
         onClick={onToggle}
-        className="w-full py-5 flex items-center justify-between gap-4 text-left"
+        className="group w-full py-5 px-3 -mx-3 rounded-xl flex items-center justify-between gap-4 text-left transition-colors duration-200 hover:bg-navy-50 dark:hover:bg-white/5"
       >
-        <span className="font-heading font-bold text-[15px] leading-snug text-navy-950 dark:text-white">
+        <span className="font-heading font-bold text-[15px] leading-snug text-navy-950 transition-colors duration-200 group-hover:text-primary dark:text-white">
           {question}
         </span>
         <span
-          className={`shrink-0 w-8 h-8 rounded-full border border-navy-200 dark:border-white/15 flex items-center justify-center transition-transform duration-300 ${
+          className={`shrink-0 w-8 h-8 rounded-full border border-navy-200 dark:border-white/15 flex items-center justify-center transition-all duration-300 group-hover:border-primary/40 group-hover:bg-primary/5 ${
             isOpen ? 'rotate-180' : ''
           }`}
         >

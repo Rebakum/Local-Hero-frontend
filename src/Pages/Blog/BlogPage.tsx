@@ -166,7 +166,7 @@ export const BlogPage: React.FC = () => {
   }, [activeCategory, searchTerm, remaining]);
 
   return (
-    <div className="mt-24">
+    <div className="page-top">
       {/* ============ HERO ============ */}
       <section className="relative overflow-hidden bg-black text-white">
         <div
@@ -181,7 +181,7 @@ export const BlogPage: React.FC = () => {
         <div className="absolute -top-32 -right-24 w-[480px] h-[480px] rounded-full bg-primary/25 blur-[140px] pointer-events-none" />
         <div className="absolute -bottom-40 -left-24 w-[420px] h-[420px] rounded-full bg-primary/10 blur-[140px] pointer-events-none" />
 
-        <div className="container-lh relative z-10 py-20 md:py-28 text-center">
+        <div className="container-lh relative z-10 section-pad text-center">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               <PenLine className="w-3.5 h-3.5" />
@@ -213,7 +213,7 @@ export const BlogPage: React.FC = () => {
       </section>
 
       {/* ============ CATEGORY FILTER ============ */}
-      <section className="container-lh pt-10 pb-2">
+      <section className="container-lh pt-10 pb-2 border-y border-navy-100/60 dark:border-white/10">
         <div className="flex flex-wrap justify-center gap-2.5">
           {CATEGORIES.map((cat) => {
             const active = activeCategory === cat;
@@ -236,9 +236,9 @@ export const BlogPage: React.FC = () => {
 
       {/* ============ FEATURED POST ============ */}
       {featured && (
-        <section className="container-lh section-pad pb-10">
+        <section className="container-lh section-pad pb-10 border-y border-navy-100/60 dark:border-white/10">
           <Reveal>
-            <article className="group grid lg:grid-cols-2 overflow-hidden rounded-[1.75rem] border border-navy-100 dark:border-white/10 bg-white dark:bg-navy-900 shadow-card transition-shadow duration-300 hover:shadow-lift">
+            <article className="group grid lg:grid-cols-2 overflow-hidden rounded-[1.75rem] bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
               <div className="relative h-64 sm:h-80 lg:h-full overflow-hidden">
                 <img
                   src={featured.image}
@@ -289,7 +289,7 @@ export const BlogPage: React.FC = () => {
       )}
 
       {/* ============ POSTS GRID ============ */}
-      <section className="container-lh section-pad pt-8">
+      <section className="container-lh section-pad pt-8 border-y border-navy-100/60 dark:border-white/10">
         <SectionTitle
           eyebrow="Latest Articles"
           badge={true}
@@ -316,7 +316,7 @@ export const BlogPage: React.FC = () => {
                     delay: i * 0.05,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-navy-100 dark:border-white/10 bg-white dark:bg-navy-900 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift"
+                  className="group flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
                 >
                   <div className="relative h-52 overflow-hidden">
                     <img
@@ -378,7 +378,7 @@ export const BlogPage: React.FC = () => {
       </section>
 
       {/* ============ NEWSLETTER ============ */}
-      <section className="relative overflow-hidden bg-navy-950 border-y border-white/10 py-16 md:py-24">
+      <section className="relative overflow-hidden bg-navy-950 section-pad border-y border-navy-100/60 dark:border-white/10">
         <div
           className="absolute inset-0 opacity-25 pointer-events-none"
           style={{

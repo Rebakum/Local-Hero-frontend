@@ -251,6 +251,8 @@ const TradesManagement: React.FC = () => {
         data={filtered}
         rowKey={(t) => t.id}
         sortable
+        searchable
+        searchPlaceholder="Search trades..."
         emptyTitle="No trades found"
         emptyDescription="Create your first trade to get started."
         emptyIcon={<Layers className="w-12 h-12 text-navy-300 dark:text-navy-600" />}

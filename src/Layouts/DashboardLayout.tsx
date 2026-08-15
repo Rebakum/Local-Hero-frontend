@@ -33,69 +33,91 @@ import type { UserRole } from '../types/auth';
 import { Badge } from '../Components/ui/shared/Badge';
 import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
 import { NotificationBell } from '../Components/Shaerd/Navbar/NotificationBell';
+import { ThemeToggle } from '../Components/Shaerd/ThemeToggle';
 
 interface SidebarLink {
   to: string;
   label: string;
   icon: React.FC<{ className?: string }>;
   exact?: boolean;
+  color: string;
 }
+
+const ICON_COLORS: Record<string, string> = {
+  red: 'bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400',
+  sky: 'bg-sky-100 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400',
+  amber: 'bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+  emerald: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
+  violet: 'bg-violet-100 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400',
+  pink: 'bg-pink-100 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400',
+  indigo: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
+  orange: 'bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400',
+  slate: 'bg-slate-200 text-slate-600 dark:bg-white/10 dark:text-navy-300',
+  teal: 'bg-teal-100 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400',
+  cyan: 'bg-cyan-100 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400',
+  blue: 'bg-blue-100 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+  green: 'bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400',
+  fuchsia: 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-500/10 dark:text-fuchsia-400',
+  purple: 'bg-purple-100 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400',
+};
 
 const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
   user: [
-    { to: '/dashboard/user', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-    { to: '/dashboard/user/bookings', label: 'My Bookings', icon: FileText },
-    { to: '/dashboard/user/quotes', label: 'Quotes', icon: Tag },
-    { to: '/dashboard/user/messages', label: 'Messages', icon: MessageSquareText },
-    { to: '/dashboard/user/notifications', label: 'Notifications', icon: Bell },
-    { to: '/dashboard/user/saved', label: 'Saved Pros', icon: Star },
-    { to: '/dashboard/user/apply-provider', label: 'Become a Provider', icon: Briefcase },
-    { to: '/dashboard/user/reviews', label: 'Review', icon: Briefcase },
-    { to: '/dashboard/profile', label: 'Profile', icon: User },
+    { to: '/dashboard/user', label: 'Dashboard', icon: LayoutDashboard, exact: true, color: 'red' },
+    { to: '/dashboard/user/bookings', label: 'My Bookings', icon: FileText, color: 'sky' },
+    { to: '/dashboard/user/quotes', label: 'Quotes', icon: Tag, color: 'amber' },
+    { to: '/dashboard/user/messages', label: 'Messages', icon: MessageSquareText, color: 'emerald' },
+    { to: '/dashboard/user/notifications', label: 'Notifications', icon: Bell, color: 'violet' },
+    { to: '/dashboard/user/saved', label: 'Saved Pros', icon: Star, color: 'pink' },
+    { to: '/dashboard/user/apply-provider', label: 'Become a Provider', icon: Briefcase, color: 'indigo' },
+    { to: '/dashboard/user/reviews', label: 'Review', icon: Briefcase, color: 'orange' },
+    { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
   serviceProvider: [
-    { to: '/dashboard/provider', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-    { to: '/dashboard/provider/leads', label: 'Leads', icon: Users },
-    { to: '/dashboard/provider/quotes', label: 'Quotes', icon: Tag },
-    { to: '/dashboard/provider/appointments', label: 'Appointments', icon: CalendarDays },
-    { to: '/dashboard/provider/jobs', label: 'My Jobs', icon: Briefcase },
-    { to: '/dashboard/provider/providerPBooking', label: 'Bookings', icon: FileText },
-    { to: '/dashboard/provider/messages', label: 'Messages', icon: MessageSquare },
-    { to: '/dashboard/provider/notifications', label: 'Notifications', icon: Bell },
-    { to: '/dashboard/provider/reviews', label: 'Reviews', icon: Star },
-    { to: '/dashboard/provider/payments', label: 'Payments', icon: CreditCard },
-    { to: '/dashboard/provider/subscription', label: 'Subscription', icon: Briefcase },
-    { to: '/dashboard/profile', label: 'Profile', icon: User },
+    { to: '/dashboard/provider', label: 'Dashboard', icon: LayoutDashboard, exact: true, color: 'red' },
+    { to: '/dashboard/provider/leads', label: 'Leads', icon: Users, color: 'teal' },
+    { to: '/dashboard/provider/quotes', label: 'Quotes', icon: Tag, color: 'amber' },
+    { to: '/dashboard/provider/appointments', label: 'Appointments', icon: CalendarDays, color: 'cyan' },
+    { to: '/dashboard/provider/jobs', label: 'My Jobs', icon: Briefcase, color: 'blue' },
+    { to: '/dashboard/provider/providerPBooking', label: 'Bookings', icon: FileText, color: 'sky' },
+    { to: '/dashboard/provider/messages', label: 'Messages', icon: MessageSquare, color: 'emerald' },
+    { to: '/dashboard/provider/notifications', label: 'Notifications', icon: Bell, color: 'violet' },
+    { to: '/dashboard/provider/reviews', label: 'Reviews', icon: Star, color: 'orange' },
+    { to: '/dashboard/provider/payments', label: 'Payments', icon: CreditCard, color: 'green' },
+    { to: '/dashboard/provider/subscription', label: 'Subscription', icon: Briefcase, color: 'fuchsia' },
+    { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
   ADMIN: [
-    { to: '/dashboard/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-    { to: '/dashboard/admin/approvals', label: 'Approvals', icon: UserCheck },
-    { to: '/dashboard/admin/moderation', label: 'Moderation', icon: Shield },
-    { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays },
-    { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard },
-    { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star },
-    { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench },
-    { to: '/dashboard/admin/manage/professions', label: 'Professions', icon: Tag },
-    { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound },
-    { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images },
-    { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare },
-    { to: '/dashboard/profile', label: 'Profile', icon: User },
+    { to: '/dashboard/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true, color: 'red' },
+    { to: '/dashboard/admin/notifications', label: 'Notifications', icon: Bell, color: 'violet' },
+    { to: '/dashboard/admin/approvals', label: 'Approvals', icon: UserCheck, color: 'amber' },
+    { to: '/dashboard/admin/moderation', label: 'Moderation', icon: Shield, color: 'orange' },
+    { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays, color: 'sky' },
+    { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard, color: 'green' },
+    { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star, color: 'fuchsia' },
+    { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench, color: 'red' },
+    { to: '/dashboard/admin/manage/professions', label: 'Professions', icon: Tag, color: 'purple' },
+    { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
+    { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
+    { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare, color: 'pink' },
+    { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
   SUPER_ADMIN: [
-    { to: '/dashboard/super-admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-    { to: '/dashboard/super-admin/admin-approvals', label: 'Admin Approvals', icon: Shield },
-    { to: '/dashboard/super-admin/user-approvals', label: 'Provider Approvals', icon: Users },
-    { to: '/dashboard/super-admin/users', label: 'User Management', icon: UserCheck },
-    { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench },
-    { to: '/dashboard/admin/manage/professions', label: 'Professions', icon: Tag },
-    { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound },
-    { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images },
-    { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare },
-    { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays },
-    { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard },
-    { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star },
-    { to: '/dashboard/super-admin/system', label: 'System', icon: Settings },
-    { to: '/dashboard/profile', label: 'Profile', icon: User },
+    { to: '/dashboard/super-admin', label: 'Dashboard', icon: LayoutDashboard, exact: true, color: 'red' },
+    { to: '/dashboard/super-admin/notifications', label: 'Notifications', icon: Bell, color: 'violet' },
+    { to: '/dashboard/super-admin/admin-approvals', label: 'Admin Approvals', icon: Shield, color: 'amber' },
+    { to: '/dashboard/super-admin/user-approvals', label: 'Provider Approvals', icon: Users, color: 'teal' },
+    { to: '/dashboard/super-admin/users', label: 'User Management', icon: UserCheck, color: 'indigo' },
+    { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench, color: 'red' },
+    { to: '/dashboard/admin/manage/professions', label: 'Professions', icon: Tag, color: 'purple' },
+    { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
+    { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
+    { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare, color: 'pink' },
+    { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays, color: 'sky' },
+    { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard, color: 'green' },
+    { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star, color: 'fuchsia' },
+    { to: '/dashboard/super-admin/system', label: 'System', icon: Settings, color: 'slate' },
+    { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
 };
 
@@ -163,40 +185,62 @@ const DashboardLayout: React.FC = () => {
             </Badge>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* User Info */}
-            <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-navy-50 dark:bg-white/5 border border-navy-100 dark:border-white/10">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <NotificationBell atTop={false} variant="chip" />
+
+            <ThemeToggle atTop={false} variant="chip" />
+
+            {/* Home */}
+            <RouterLink
+              to="/"
+              aria-label="Home"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600 transition-all duration-200 hover:bg-sky-200 dark:bg-sky-500/10 dark:text-sky-400 dark:hover:bg-sky-500/20"
+            >
+              <Home className="w-5 h-5" />
+            </RouterLink>
+
+            {/* Profile — hover to reveal name & email */}
+            <div className="relative group">
+              <button
+                type="button"
+                aria-label="Account"
+                className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-red-100 text-xs font-bold text-red-600 transition-all duration-200 hover:bg-red-200 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
+              >
                 {user?.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                  <img src={user.avatar} alt={user?.name} className="h-full w-full rounded-full object-cover" />
                 ) : (
                   initials
                 )}
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-medium text-navy-700 dark:text-navy-200 max-w-[120px] truncate leading-tight">
-                  {user?.name || 'User'}
-                </p>
-                <p className="text-[10px] text-navy-400 dark:text-navy-500 leading-tight">{user?.email}</p>
+              </button>
+
+              {/* Hover tooltip with name + email */}
+              <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-60 translate-y-1 rounded-2xl border border-neutral-200 bg-white p-4 opacity-0 shadow-lg transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 dark:border-white/10 dark:bg-navy-800">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/10 text-sm font-bold text-primary">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt={user?.name} className="h-full w-full object-cover" />
+                    ) : (
+                      initials
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-navy-950 dark:text-white">
+                      {user?.name || 'User'}
+                    </p>
+                    <p className="truncate text-xs text-navy-500 dark:text-navy-400">{user?.email}</p>
+                  </div>
+                </div>
+                
               </div>
             </div>
 
-            <NotificationBell atTop={false} />
-
-            <RouterLink
-              to="/"
-              className="btn btn-ghost text-xs sm:text-sm h-9 px-3"
-            >
-              <Home className="w-4 h-4" />
-              <span className="hidden sm:inline">Home</span>
-            </RouterLink>
-
+            {/* Logout */}
             <button
               onClick={handleLogout}
-              className="btn btn-ghost text-xs sm:text-sm h-9 px-3 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
+              aria-label="Logout"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 text-red-600 transition-all duration-200 hover:bg-red-200 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
             >
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">Logout</span>
+              <LogOut className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -217,14 +261,18 @@ const DashboardLayout: React.FC = () => {
                 end={link.exact}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all duration-200 ${
+                  `group flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-200 ${
                     isActive
                       ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 border border-red-200 dark:border-red-500/20'
                       : 'text-navy-600 dark:text-navy-400 hover:bg-navy-100 dark:hover:bg-white/5 border border-transparent'
                   }`
                 }
               >
-                <link.icon className="w-4.5 h-4.5" />
+                <span
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105 ${ICON_COLORS[link.color]}`}
+                >
+                  <link.icon className="w-4 h-4" />
+                </span>
                 {link.label}
               </NavLink>
             ))}

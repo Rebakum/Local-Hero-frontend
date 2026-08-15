@@ -161,7 +161,7 @@ export const AdminManagementDashboard: React.FC = () => {
                 </thead>
                 <tbody>
                   {payments.map((p) => (
-                    <tr key={p.id} className="border-b border-gray-100 dark:border-white/5">
+                    <tr key={p.id} className="border-b border-gray-100 dark:border-white/5 bg-white odd:bg-gray-50/60 dark:bg-gray-800/20 dark:odd:bg-gray-800/40 hover:bg-gray-100 dark:hover:bg-gray-700/40 transition-colors">
                       <td className="p-3 font-semibold">{p.id}</td>
                       <td className="p-3">{p.user}</td>
                       <td className="p-3 font-bold text-emerald-600">{p.amount}</td>
@@ -204,7 +204,7 @@ export const AdminManagementDashboard: React.FC = () => {
                 </thead>
                 <tbody>
                   {bookings.map((b) => (
-                    <tr key={b.id} className="border-b border-gray-100 dark:border-white/5">
+                    <tr key={b.id} className="border-b border-gray-100 dark:border-white/5 bg-white odd:bg-gray-50/60 dark:bg-gray-800/20 dark:odd:bg-gray-800/40 hover:bg-gray-100 dark:hover:bg-gray-700/40 transition-colors">
                       <td className="p-3 font-semibold">{b.id}</td>
                       <td className="p-3">{b.customer}</td>
                       <td className="p-3">{b.provider}</td>

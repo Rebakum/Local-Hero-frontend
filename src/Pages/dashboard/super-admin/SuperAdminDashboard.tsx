@@ -94,9 +94,9 @@ const SuperAdminDashboard: React.FC = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative overflow-hidden rounded-3xl bg-white dark:bg-navy-900 p-6 sm:p-8 text-navy-950 dark:text-white shadow-xl shadow-primary/20"
       >
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm" />
+        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm pointer-events-none" />
         
-        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full" />
+        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
         <div className="relative z-10 flex items-start justify-between">
           <div>
@@ -129,7 +129,7 @@ const SuperAdminDashboard: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.5, type: 'spring', stiffness: 200 }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="hidden sm:flex flex-col items-end gap-2"
           >
             <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-navy-100/60 dark:bg-white/10 backdrop-blur-sm border border-navy-100 dark:border-white/20">
@@ -381,7 +381,7 @@ const SuperAdminDashboard: React.FC = () => {
               { label: 'New Signups', value: '47', change: '+23%', color: 'from-primary/10 to-primary/5' },
               { label: 'Conversion Rate', value: '12.4%', change: '+2.1%', color: 'from-amber-500/10 to-orange-500/10' },
             ].map((item) => (
-              <div key={item.label} className="text-center p-4 rounded-2xl bg-gradient-to-br border border-navy-100 dark:border-white/5 hover:border-primary/20 transition-all duration-300 group" style={{}}>
+              <div key={item.label} className="group relative overflow-hidden text-center p-4 rounded-2xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 shadow-lg hover:border-primary/50 hover:shadow-2xl transition-all duration-300">
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                 <div className="relative">
                   <p className="text-2xl font-bold text-navy-900 dark:text-white">{item.value}</p>

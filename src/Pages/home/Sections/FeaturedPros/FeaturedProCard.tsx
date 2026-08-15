@@ -14,9 +14,9 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
 
   return (
     <article
-      className="group relative rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-navy-900
-        overflow-hidden flex flex-col w-full transition-all duration-500
-        hover:-translate-y-1 hover:shadow-[0_20px_45px_-15px_rgba(220,38,38,0.35)] hover:border-red-500/50 dark:hover:border-red-500/40"
+      className="group relative rounded-2xl bg-white dark:bg-navy-800
+        overflow-hidden flex flex-col w-full shadow-lg border border-neutral-200 transition-all duration-300
+        hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
     >
       {/* Image Stage — photo fills the frame, no empty gaps */}
       <div className="relative w-full h-56 sm:h-60 overflow-hidden bg-slate-950">

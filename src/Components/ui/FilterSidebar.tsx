@@ -69,7 +69,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   return (
     <aside className={`lg:sticky lg:top-[88px] lg:self-start ${className}`}>
-      <div className="rounded-3xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-navy-900">
+      <div className="rounded-3xl border border-neutral-200 bg-white p-5 shadow-lg dark:border-white/10 dark:bg-navy-800">
         <div className="flex items-center justify-between">
           <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-navy-900 dark:text-white">
             <SlidersHorizontal size={15} className="text-primary" />

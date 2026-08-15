@@ -170,7 +170,7 @@ export const ServicesGrid: React.FC = () => {
   };
 
   return (
-    <section className="bg-white py-12 dark:bg-black">
+    <section className="bg-white section-pad dark:bg-black border-y border-navy-100/60 dark:border-white/10">
       <div className="container-lh grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
         <FilterSidebar
           options={categories}

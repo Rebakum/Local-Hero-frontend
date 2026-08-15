@@ -3,7 +3,7 @@ import SubscriptionPlans from '../home/Sections/SubscriptionPlans/SubscriptionPl
 
 export default function pricingPage() {
   return (
-    <div>
+    <div className="page-top">
       <SubscriptionPlans />
     </div>
   )

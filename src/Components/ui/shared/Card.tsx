@@ -20,7 +20,7 @@ export const Card: React.FC<CardProps> = ({
   padding = 'md',
 }) => (
   <div
-    className={`bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-3xl ${PADDING_MAP[padding]} ${hover ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-xl' : ''} ${className}`}
+    className={`bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-lg ${PADDING_MAP[padding]} ${hover ? 'transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl' : ''} ${className}`}
   >
     {children}
   </div>

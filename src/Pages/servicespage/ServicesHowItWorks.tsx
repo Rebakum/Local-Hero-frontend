@@ -13,7 +13,7 @@ const STEPS = [
 
 export const ServicesHowItWorks: React.FC = () => {
   return (
-    <section className="bg-cream-100 dark:bg-navy-950 py-12">
+    <section className="bg-cream-100 dark:bg-navy-950 section-pad border-y border-navy-100/60 dark:border-white/10">
       <div className="container-lh">
         <Reveal>
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -32,7 +32,7 @@ export const ServicesHowItWorks: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {STEPS.map((item) => (
             <Reveal key={item.step} delay={0.1}>
-              <div className="bg-white dark:bg-navy-900 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 text-center h-full">
+              <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 text-center h-full shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
                 <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
                   <item.icon size={24} className="text-primary" />
                 </div>

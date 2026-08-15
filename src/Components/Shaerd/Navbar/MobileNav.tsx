@@ -21,12 +21,12 @@ export const MobileNavToggle: React.FC<MobileNavToggleProps> = ({
 }) => {
   return (
     <div className="flex lg:hidden items-center gap-2 sm:gap-4">
-      <NotificationBell atTop={atTop} />
-      <ThemeToggle atTop={atTop} isScrolled={isScrolled} />
+      <NotificationBell atTop={atTop} variant="chip" />
+      <ThemeToggle atTop={atTop} isScrolled={isScrolled} variant="chip" />
 
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="p-2.5 rounded-full transition-all duration-300 bg-navy-100 dark:bg-navy-800/80 text-navy-800 dark:text-navy-100"
+        className="p-2.5 rounded-full transition-all duration-300 bg-primary/10 text-primary hover:bg-primary hover:text-white active:scale-95"
       >
         {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>

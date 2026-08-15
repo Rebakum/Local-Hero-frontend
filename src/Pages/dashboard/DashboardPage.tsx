@@ -116,7 +116,7 @@ const DashboardPage: React.FC = () => {
                 { icon: Mail, label: 'Email', value: user?.email || 'N/A' },
                 { icon: Phone, label: 'Phone', value: user?.phone || 'Not provided' },
                 { icon: Shield, label: 'Role', value: user?.role || 'N/A' },
-                { icon: MapPin, label: 'Location', value: 'London, UK' },
+                { icon: MapPin, label: 'Location', value: 'London' },
                 { icon: Calendar, label: 'Joined', value: memberSince },
               ].map((item) => (
                 <div

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  CreditCard,
-  Search,
   CheckCircle2,
   Clock,
   XCircle,
@@ -17,31 +15,21 @@ import {
   type PaymentStats,
 } from "../../../../services/payment.service";
 import { PageHeader } from "../../../../Components/ui";
-import { Pagination } from "../../../../Components/ui/Pagination";
+import { DataTable } from "../../../../Components/ui/DataTable";
 
 export const AdminPaymentHistory: React.FC = () => {
   const [payments, setPayments] = useState<PaymentRecord[]>([]);
   const [stats, setStats] = useState<PaymentStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
 
   // 1. Fetch Payments History from Backend API
   const fetchPayments = async () => {
     setLoading(true);
     setError("");
     try {
-      const result = await getPaymentHistory({
-        page,
-        limit: 10,
-        search: searchTerm || undefined,
-        status: statusFilter || undefined,
-      });
-      setPayments(result.payments);
-      setTotalPages(Math.max(1, Math.ceil(result.total / result.limit)));
+      const result = await getPaymentHistory({ limit: 500 });
+      setPayments(result.payments || []);
     } catch (err: unknown) {
       const apiError = err as { response?: { data?: { message?: string } }; message?: string };
       setError(apiError.response?.data?.message || apiError.message || "Failed to fetch payments");
@@ -63,13 +51,7 @@ export const AdminPaymentHistory: React.FC = () => {
   useEffect(() => {
     fetchPayments();
     fetchStats();
-  }, [page, statusFilter]);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPage(1);
-    fetchPayments();
-  };
+  }, []);
 
   // Helper function to format GBP Currency
   const formatGBP = (amountInPence: number) => {
@@ -79,18 +61,46 @@ export const AdminPaymentHistory: React.FC = () => {
     }).format(amountInPence / 100);
   };
 
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "PAID":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+            <CheckCircle2 className="w-3 h-3" /> Paid
+          </span>
+        );
+      case "PENDING":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
+            <Clock className="w-3 h-3" /> Pending
+          </span>
+        );
+      case "FAILED":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400">
+            <XCircle className="w-3 h-3" /> Failed
+          </span>
+        );
+      case "REFUNDED":
+        return (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-50 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400">
+            <RefreshCw className="w-3 h-3" /> Refunded
+          </span>
+        );
+      default:
+        return <span className="text-xs text-gray-400">{status}</span>;
+    }
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <PageHeader
-                eyebrow="Admin Panel"
-                title="Payment History"
-                description="Monitor all transaction logs, payment statuses, and revenue details."
-               
-                
-              />
-        
+          eyebrow="Admin Panel"
+          title="Payment History"
+          description="Monitor all transaction logs, payment statuses, and revenue details."
+        />
 
         <button
           onClick={() => {
@@ -162,159 +172,115 @@ export const AdminPaymentHistory: React.FC = () => {
         </div>
       )}
 
-      {/* Filter and Search Bar */}
-      <div className="p-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
-        <form onSubmit={handleSearchSubmit} className="relative w-full md:w-96">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by customer name, email or session ID..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </form>
-
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <select
-            value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value);
-              setPage(1);
-            }}
-            className="w-full md:w-44 py-2 px-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option value="">All Statuses</option>
-            <option value="PAID">PAID</option>
-            <option value="PENDING">PENDING</option>
-            <option value="FAILED">FAILED</option>
-            <option value="REFUNDED">REFUNDED</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Payments Table */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-600 dark:text-gray-300">
-            <thead className="bg-gray-50 dark:bg-gray-800/50 text-xs uppercase font-semibold text-gray-500 border-b border-gray-100 dark:border-gray-800">
-              <tr>
-                <th className="py-3.5 px-4">Customer Details</th>
-                <th className="py-3.5 px-4">Service Trade</th>
-                <th className="py-3.5 px-4">Amount</th>
-                <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4">Stripe Ref</th>
-                <th className="py-3.5 px-4">Date</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-              {loading ? (
-                <tr>
-                  <td colSpan={6} className="py-12 text-center text-gray-400">
-                    Loading payment records...
-                  </td>
-                </tr>
-              ) : payments.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="py-12 text-center text-gray-400">
-                    No payment history records found.
-                  </td>
-                </tr>
+      {/* Payments Table — search / filter / sort / pagination built in */}
+      <DataTable<PaymentRecord>
+        isLoading={loading}
+        loadingText="Loading payment records..."
+        data={payments}
+        rowKey={(p) => p.id}
+        searchable
+        searchPlaceholder="Search by customer name, email, trade or Stripe ref..."
+        searchKeys={(p) => [
+          p.booking?.fullName ?? '',
+          p.booking?.email ?? '',
+          p.booking?.trade ?? '',
+          p.stripePaymentIntentId ?? '',
+        ]}
+        sortable
+        filters={[
+          {
+            key: 'status',
+            label: 'Status',
+            options: [
+              { value: 'PAID', label: 'Paid' },
+              { value: 'PENDING', label: 'Pending' },
+              { value: 'FAILED', label: 'Failed' },
+              { value: 'REFUNDED', label: 'Refunded' },
+            ],
+          },
+        ]}
+        emptyTitle="No payment history records found"
+        emptyDescription="Try a different search or filter."
+        columns={[
+          {
+            key: 'customer',
+            header: 'Customer Details',
+            sortValue: (p) => p.booking?.fullName ?? '',
+            render: (p) => (
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+                  <User className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white">
+                    {p.booking?.fullName || "Unknown"}
+                  </p>
+                  <p className="text-xs text-gray-400">{p.booking?.email || "—"}</p>
+                </div>
+              </div>
+            ),
+          },
+          {
+            key: 'trade',
+            header: 'Service Trade',
+            sortValue: (p) => p.booking?.trade ?? '',
+            render: (p) => (
+              <div className="flex items-center gap-1.5">
+                <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
+                <span className="font-medium text-gray-800 dark:text-gray-200">
+                  {p.booking?.trade || "—"}
+                </span>
+              </div>
+            ),
+          },
+          {
+            key: 'amount',
+            header: 'Amount',
+            sortValue: (p) => p.amountInPence,
+            render: (p) => (
+              <span className="font-bold text-gray-900 dark:text-white">
+                {formatGBP(p.amountInPence)}
+              </span>
+            ),
+          },
+          {
+            key: 'status',
+            header: 'Status',
+            sortValue: (p) => p.status,
+            render: (p) => getStatusBadge(p.status),
+          },
+          {
+            key: 'stripeRef',
+            header: 'Stripe Ref',
+            hideOn: 'md',
+            sortValue: (p) => p.stripePaymentIntentId ?? '',
+            render: (p) =>
+              p.stripePaymentIntentId ? (
+                <span className="text-xs font-mono text-gray-500 truncate max-w-[120px] block" title={p.stripePaymentIntentId}>
+                  {p.stripePaymentIntentId}
+                </span>
               ) : (
-                payments.map((payment) => (
-                  <tr
-                    key={payment.id}
-                    className="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition"
-                  >
-                    <td className="py-3.5 px-4">
-                      <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
-                          <User className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {payment.booking?.fullName || "Unknown"}
-                          </p>
-                          <p className="text-xs text-gray-400">{payment.booking?.email || "—"}</p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="py-3.5 px-4">
-                      <div className="flex items-center gap-1.5">
-                        <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
-                        <span className="font-medium text-gray-800 dark:text-gray-200">
-                          {payment.booking?.trade || "—"}
-                        </span>
-                      </div>
-                    </td>
-
-                    <td className="py-3.5 px-4">
-                      <span className="font-bold text-gray-900 dark:text-white">
-                        {formatGBP(payment.amountInPence)}
-                      </span>
-                    </td>
-
-                    <td className="py-3.5 px-4">
-                      {payment.status === "PAID" && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
-                          <CheckCircle2 className="w-3 h-3" /> Paid
-                        </span>
-                      )}
-                      {payment.status === "PENDING" && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
-                          <Clock className="w-3 h-3" /> Pending
-                        </span>
-                      )}
-                      {payment.status === "FAILED" && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-600 dark:bg-red-950/50 dark:text-red-400">
-                          <XCircle className="w-3 h-3" /> Failed
-                        </span>
-                      )}
-                      {payment.status === "REFUNDED" && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-violet-50 text-violet-600 dark:bg-violet-950/50 dark:text-violet-400">
-                          <RefreshCw className="w-3 h-3" /> Refunded
-                        </span>
-                      )}
-                    </td>
-
-                    <td className="py-3.5 px-4 text-xs font-mono text-gray-500">
-                      {payment.stripePaymentIntentId ? (
-                        <span className="truncate max-w-[120px] block" title={payment.stripePaymentIntentId}>
-                          {payment.stripePaymentIntentId}
-                        </span>
-                      ) : (
-                        <span className="text-gray-400">N/A</span>
-                      )}
-                    </td>
-
-                    <td className="py-3.5 px-4 text-xs text-gray-500">
-                      {payment.createdAt
-                        ? new Date(payment.createdAt).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })
-                        : "—"}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <Pagination
-            page={page}
-            pageSize={10}
-            total={totalPages * 10}
-            onPageChange={(p) => setPage(p)}
-            showRange={false}
-          />
-        )}
-      </div>
+                <span className="text-xs text-gray-400">N/A</span>
+              ),
+          },
+          {
+            key: 'date',
+            header: 'Date',
+            sortValue: (p) => new Date(p.createdAt).getTime(),
+            render: (p) => (
+              <span className="text-xs text-gray-500">
+                {p.createdAt
+                  ? new Date(p.createdAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "—"}
+              </span>
+            ),
+          },
+        ]}
+      />
     </div>
   );
 };

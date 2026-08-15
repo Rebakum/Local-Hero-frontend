@@ -180,6 +180,7 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
                   type="button"
                   key={star}
                   onClick={() => setFormData({ ...formData, rating: star })}
+                  className="cursor-pointer transition-transform duration-200 hover:scale-125 active:scale-90"
                 >
                   <Star
                     className={`w-6 h-6 ${
@@ -243,7 +244,7 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full"
+              className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full transition-colors hover:bg-gray-200 hover:text-gray-900 dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
             >
               Cancel
             </button>

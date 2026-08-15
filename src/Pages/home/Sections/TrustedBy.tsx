@@ -164,7 +164,7 @@ const TRUST_PARTNERS: TrustPartner[] = [
 
 export const TrustedBy: React.FC = () => {
   return (
-    <section className="bg-white py-8 md:py-14 dark:bg-black">
+    <section className="bg-white section-pad dark:bg-black border-y border-navy-100/60 dark:border-white/10">
       <div className="container-lh">
         <SectionTitle
           badge
@@ -188,7 +188,7 @@ export const TrustedBy: React.FC = () => {
                   {TRUST_PARTNERS.map((partner) => (
                     <div
                       key={`${dup}-${partner.id}`}
-                      className="group flex h-24 w-44 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-navy-100 bg-cream-50 px-4 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lift dark:border-white/10 dark:bg-navy-900"
+                      className="group flex h-24 w-44 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-cream-50 px-4 text-center shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10 dark:bg-navy-800"
                     >
                       <div className="flex h-8 w-8 sm:h-8 sm:w-8 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
                         {partner.logo}

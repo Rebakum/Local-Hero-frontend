@@ -215,6 +215,8 @@ const ProfessionalsManagement: React.FC = () => {
         data={filtered}
         rowKey={(p) => String(p.id ?? '')}
         sortable
+        searchable
+        searchPlaceholder="Search professionals..."
         emptyTitle="No professionals found"
         emptyDescription="Add your first professional to get started."
         emptyIcon={<Users className="w-12 h-12 text-navy-300 dark:text-navy-600" />}

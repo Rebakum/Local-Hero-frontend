@@ -17,7 +17,7 @@ export const ServiceOverview: React.FC<ServiceOverviewProps> = ({
 }) => {
   return (
     <Reveal>
-      <div className="bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
+      <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
             <Award size={20} />

@@ -5,7 +5,7 @@ import { CTA } from '../home/Sections/CTA';
 
 export const FaqPage: React.FC = () => {
   return (
-    <div className='mt-24'>
+    <div className='page-top'>
       
       <FAQ />
      

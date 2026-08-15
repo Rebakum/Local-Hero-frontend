@@ -35,7 +35,7 @@ const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
   };
 
   return (
-    <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-navy-100/70 bg-white/90 p-4 shadow-soft backdrop-blur-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-[0_18px_40px_-12px_rgba(37,99,235,0.28)] dark:border-white/10 dark:bg-navy-900/90">
+    <div className="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800/90 p-4 backdrop-blur-sm shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
       {/* Gradient top accent */}
       <span className="pointer-events-none absolute inset-x-0 top-0 h-0.5 scale-x-0 bg-gradient-to-r from-primary via-secondary to-primary/40 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 

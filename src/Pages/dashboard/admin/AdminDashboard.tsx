@@ -24,6 +24,7 @@ import {
   Images,
   ArrowRight,
   CreditCard,
+  Activity,
 } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -106,9 +107,9 @@ const AdminDashboard: React.FC = () => {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative overflow-hidden rounded-3xl bg-white dark:bg-navy-900 p-6 sm:p-8 text-navy-950 dark:text-white shadow-xl shadow-primary/20"
       >
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm" />
-        <div className="absolute -right-4 bottom-0 w-28 h-28 rounded-full bg-primary/5" />
-        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full" />
+        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-sm pointer-events-none" />
+        <div className="absolute -right-4 bottom-0 w-28 h-28 rounded-full bg-primary/5 pointer-events-none" />
+        <div className="absolute left-1/3 top-0 w-64 h-32 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
 
         <div className="relative z-10 flex items-start justify-between">
           <div>
@@ -142,7 +143,7 @@ const AdminDashboard: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.5, type: 'spring', stiffness: 200 }}
+              transition={{ delay: 0.5, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-navy-100/60 dark:bg-white/10 backdrop-blur-sm border border-navy-100 dark:border-white/20"
             >
               <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
@@ -159,6 +160,35 @@ const AdminDashboard: React.FC = () => {
           {errorMsg}
         </div>
       )}
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { icon: UserCheck, label: 'Pending Providers', value: String(pendingApplications.length), color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: 'awaiting review' },
+          { icon: Star, label: 'Flagged Reviews', value: String(reviews.filter((r) => r.flagged).length), color: 'from-red-500 to-red-600', lightColor: 'bg-red-50 dark:bg-red-500/10', textColor: 'text-red-600 dark:text-red-400', change: 'need attention' },
+          { icon: Images, label: 'Content Modules', value: '6', color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: 'fully managed' },
+          { icon: Activity, label: 'Platform Status', value: 'Live', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'all systems ok' },
+        ].map((stat, i) => (
+          <motion.div
+            key={stat.label}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Card hover padding="md" className="h-full group relative overflow-hidden">
+              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              <div className="flex items-start justify-between mb-4">
+                <div className={`w-11 h-11 rounded-2xl ${stat.lightColor} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
+                  <stat.icon className={`w-5 h-5 ${stat.textColor}`} />
+                </div>
+                <span className="text-[10px] font-semibold text-navy-400 dark:text-navy-500">{stat.change}</span>
+              </div>
+              <p className="text-3xl font-bold text-navy-900 dark:text-white tracking-tight">{stat.value}</p>
+              <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1.5">{stat.label}</p>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
 
       {/* Pending Provider Section */}
       <Card padding="sm" className="overflow-hidden">

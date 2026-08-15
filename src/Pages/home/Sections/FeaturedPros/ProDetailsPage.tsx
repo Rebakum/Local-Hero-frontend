@@ -105,7 +105,7 @@ export const ProDetailsPage: React.FC = () => {
   if (!pro) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-navy-950 flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center bg-white dark:bg-navy-900 border border-slate-200 dark:border-white/10 rounded-3xl shadow-xl p-8">
+        <div className="max-w-md w-full text-center bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-lg p-8">
           <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
             <ShieldCheck className="w-8 h-8 text-slate-400 dark:text-navy-400" />
           </div>
@@ -129,11 +129,11 @@ export const ProDetailsPage: React.FC = () => {
   const reviews = (pro as any).reviews || [];
 
   return (
-    <div className="min-h-screen bg-slate-50/60 dark:bg-navy-950 text-slate-800 dark:text-slate-100 pb-28 sm:pb-16 transition-colors">
+    <div className="min-h-screen bg-slate-50/60 dark:bg-navy-950 text-slate-800 dark:text-slate-100 page-top pb-28 sm:pb-16 transition-colors">
       
       {/* Top Navigation */}
       <div className="border-b border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-navy-900/50 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+        <div className="container-lh py-3.5">
           <Link
             to="/professionals"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-600 dark:text-navy-300 hover:text-red-600 transition-colors"
@@ -144,10 +144,10 @@ export const ProDetailsPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      <div className="container-lh mt-6">
         
         {/* Main Header Card without Banner */}
-        <div className="bg-white dark:bg-navy-900 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm p-6 sm:p-8 mb-8">
+        <div className="bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg p-6 sm:p-8 mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             
             {/* Avatar & Info */}
@@ -296,7 +296,7 @@ export const ProDetailsPage: React.FC = () => {
         {activeTab === 'about' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white dark:bg-navy-900 p-6 sm:p-7 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+              <div className="bg-white dark:bg-navy-800 p-6 sm:p-7 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
                 <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3">About the Professional</h3>
                 <p className="text-slate-600 dark:text-navy-200 leading-relaxed text-sm sm:text-base break-words whitespace-pre-wrap">
                   {pro.bio || (pro as any).description || 'No detailed biography provided yet.'}
@@ -304,7 +304,7 @@ export const ProDetailsPage: React.FC = () => {
               </div>
 
               {specialties.length > 0 && (
-                <div className="bg-white dark:bg-navy-900 p-6 sm:p-7 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+                <div className="bg-white dark:bg-navy-800 p-6 sm:p-7 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                     <Award className="w-4 h-4 text-red-600" /> Services & Specialties
                   </h3>
@@ -323,7 +323,7 @@ export const ProDetailsPage: React.FC = () => {
             </div>
 
             <div>
-              <div className="bg-white dark:bg-navy-900 p-6 rounded-3xl border border-slate-200/80 dark:border-white/10 shadow-sm sticky top-6">
+              <div className="bg-white dark:bg-navy-800 p-6 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg sticky top-6">
                 <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Service Guarantee</h4>
                 <ul className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-navy-300">
                   <li className="flex items-center gap-2.5">
@@ -368,7 +368,7 @@ export const ProDetailsPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-white dark:bg-navy-900 rounded-3xl border border-slate-200 dark:border-white/10">
+              <div className="text-center py-12 bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
                 <p className="text-xs sm:text-sm text-slate-400">No portfolio images uploaded.</p>
               </div>
             )}
@@ -379,7 +379,7 @@ export const ProDetailsPage: React.FC = () => {
           <div className="space-y-4">
             {reviews.length > 0 ? (
               reviews.map((rev: any, idx: number) => (
-                <div key={idx} className="bg-white dark:bg-navy-900 p-5 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-sm">
+                <div key={idx} className="bg-white dark:bg-navy-800 p-5 rounded-2xl border border-neutral-200 dark:border-white/10 shadow-lg">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500">
@@ -401,7 +401,7 @@ export const ProDetailsPage: React.FC = () => {
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 bg-white dark:bg-navy-900 rounded-3xl border border-slate-200 dark:border-white/10">
+              <div className="text-center py-12 bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
                 <p className="text-xs sm:text-sm text-slate-400">No client reviews submitted yet.</p>
               </div>
             )}

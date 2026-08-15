@@ -249,6 +249,8 @@ const UserManagement: React.FC = () => {
         data={filteredUsers}
         rowKey={(u) => u.id}
         sortable
+        searchable
+        searchPlaceholder="Search users..."
         emptyTitle="No users found"
         emptyDescription={
           activeFilter === 'ALL'

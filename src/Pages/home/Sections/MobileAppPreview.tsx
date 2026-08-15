@@ -35,7 +35,7 @@ export const MobileAppPreview: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white dark:bg-black py-8 md:py-12">
+    <section ref={sectionRef} className="bg-white dark:bg-black section-pad border-y border-navy-100/60 dark:border-white/10">
       <div className="container-lh">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
@@ -127,7 +127,7 @@ export const MobileAppPreview: React.FC = () => {
                 const Icon = feature.icon;
                 return (
                   <StaggerItem key={feature.title}>
-                    <div className="bg-white dark:bg-navy-900 border border-navy-100 dark:border-white/10 rounded-2xl p-4 sm:p-5">
+                    <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-2xl p-4 sm:p-5 shadow-lg">
                       <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                         <Icon className="w-5 h-5" />
                       </div>

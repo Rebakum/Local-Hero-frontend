@@ -63,6 +63,10 @@ export interface DataTableProps<T> {
   defaultPageSize?: number;
   /** Show the "rows per page" selector. */
   pageSizeOptions?: number[];
+  /** Extra classes applied to each row. */
+  rowClassName?: (row: T) => string;
+  /** Initial client-side page (1-based). Useful for deep-linking to a row. */
+  initialPage?: number;
 }
 
 const HIDE_CLASS: Record<'sm' | 'md' | 'lg', string> = {
@@ -91,8 +95,10 @@ export function DataTable<T>({
   searchKeys,
   sortable = false,
   filters = [],
-  defaultPageSize = 10,
-  pageSizeOptions = [10, 20, 50, 100],
+  defaultPageSize = 5,
+  pageSizeOptions = [5, 10, 20, 50],
+  rowClassName,
+  initialPage = 1,
 }: DataTableProps<T>) {
   const isServerPaginated = onPageChange !== undefined;
 
@@ -100,7 +106,7 @@ export function DataTable<T>({
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [activeFilters, setActiveFilters] = useState<Record<string, string>>({});
-  const [clientPage, setClientPage] = useState(1);
+  const [clientPage, setClientPage] = useState(initialPage);
   const [clientPageSize, setClientPageSize] = useState(defaultPageSize);
 
   const page = isServerPaginated ? (serverPage ?? 1) : clientPage;
@@ -243,7 +249,7 @@ export function DataTable<T>({
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-navy-100 dark:border-white/10 bg-navy-50/50 dark:bg-white/[0.02]">
+              <tr className="border-b border-navy-100 dark:border-white/10 bg-navy-50 dark:bg-navy-800/40">
                 {columns.map((col) => (
                   <th
                     key={col.key}
@@ -282,7 +288,7 @@ export function DataTable<T>({
               {visibleRows.map((row, i) => (
                 <tr
                   key={rowKey(row)}
-                  className="border-b border-navy-50 dark:border-white/5 last:border-0 hover:bg-navy-50 dark:hover:bg-white/[0.02] transition-colors"
+                  className={`border-b border-navy-100/60 dark:border-white/5 last:border-0 bg-white odd:bg-navy-50/50 dark:bg-navy-800/40 dark:odd:bg-white/[0.02] hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors ${rowClassName ? rowClassName(row) : ''}`}
                 >
                   {columns.map((col) => (
                     <td

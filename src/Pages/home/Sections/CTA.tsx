@@ -12,7 +12,7 @@ export const CTA: React.FC = () => {
   const isDarkMode = theme === 'dark';
 
   return (
-    <section className="relative overflow-hidden bg-navy-950  py-16 md:py-24 border-y border-white/10 dark:border-navy-900/10">
+    <section className="relative overflow-hidden bg-navy-950 section-pad border-y border-navy-100/60 dark:border-white/10">
       
       {/* Front Dotted Grid Backdrop */}
       <div 

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Bell,
   CheckCheck,
@@ -34,6 +34,14 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
 }) => {
   const { socket } = useSocket();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const openId = searchParams.get('open');
+  const openInitialPage = openId
+    ? (() => {
+        const idx = notifications.findIndex((n) => n.id === openId);
+        return idx >= 0 ? Math.floor(idx / 5) + 1 : 1;
+      })()
+    : 1;
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,6 +105,23 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
       setUpdating(null);
     }
   };
+
+  // When arriving via the bell (e.g. /notifications?open=<id>), mark that
+  // notification as read, highlight its row and scroll it into view.
+  const scrolledRef = useRef(false);
+  useEffect(() => {
+    if (!openId) return;
+    const target = notifications.find((n) => n.id === openId);
+    if (!target) return;
+    if (!target.isRead) void handleMarkRead(target);
+    if (scrolledRef.current) return;
+    scrolledRef.current = true;
+    const t = window.setTimeout(() => {
+      document.querySelector('.notification-open')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openId, notifications]);
 
   // Opening a "your service is complete, leave a review" notification takes
   // the customer to the review page for that booking (and marks it read).
@@ -163,6 +188,12 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
         emptyTitle="No notifications"
         emptyDescription="You're all caught up."
         emptyIcon={<Inbox className="w-12 h-12 text-navy-300 dark:text-navy-600" />}
+        rowClassName={(n) =>
+          n.id === openId ? 'notification-open !bg-primary/5 dark:!bg-primary/10' : ''
+        }
+        initialPage={openInitialPage}
+        key={openId ? `open-${openInitialPage}` : 'notifications'}
+        defaultPageSize={5}
         columns={[
           {
             key: 'type',
