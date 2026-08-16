@@ -1,5 +1,4 @@
 export { AnimatedNumber } from './AnimatedNumber';
-export { DashboardLoading } from './DashboardLoading';
 export { LoadingSplash } from './LoadingSplash';
 export { ModalShell } from './ModalShell';
 export { PageHero } from './PageHero';

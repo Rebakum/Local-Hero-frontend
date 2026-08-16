@@ -20,12 +20,10 @@ export const ThemeLogo: React.FC<ThemeLogoProps> = ({
 }) => {
   const { theme } = useTheme();
 
-  
   const isDark = isTransparent ? isDarkHero : theme === "dark";
 
- 
   if (variant === "modal") {
-    const modalSrc = isDark ? "/logoBlack/logo4.png " : "/logoWhite/logo2.png";
+    const modalSrc = isDark ? "/logoBlack/logo4.png" : "/logoWhite/logo2.png";
     return (
       <img
         src={modalSrc}
@@ -37,16 +35,20 @@ export const ThemeLogo: React.FC<ThemeLogoProps> = ({
     );
   }
 
- 
-  const mobileSrc = isDark ? "/logoWhite/logo.png " : "/logoBlack/logo5.png";
-  const desktopSrc = isDark ? "/logoWhite/logo1.png" : "/logoBlack/logo3.png";
+  // Dark theme -> logoBlack/ folder, Light theme -> logoWhite/ folder
+  const mobileSrc = isDark ? "/logoBlack/logo4.png" : "/logoWhite/logo.png";
+  const tabletSrc = isDark ? "/logoBlack/logo5.png" : "/logoWhite/logo2.png";
+  const desktopSrc = isDark ? "/logoBlack/logo3.png" : "/logoWhite/logo1.png";
 
   return (
     <picture>
-      {/* Desktop View (min-width: 768px) */}
-      <source media="(min-width: 768px)" srcSet={desktopSrc} />
-      
-      {/* Mobile View (Default Fallback) */}
+      {/* Desktop (min-width: 1024px) */}
+      <source media="(min-width: 1024px)" srcSet={desktopSrc} />
+
+      {/* Tablet (min-width: 768px) */}
+      <source media="(min-width: 768px)" srcSet={tabletSrc} />
+
+      {/* Mobile (default fallback) */}
       <img
         src={mobileSrc}
         alt={alt}

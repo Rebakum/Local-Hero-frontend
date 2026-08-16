@@ -28,9 +28,8 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { logoutUser } from '../services/auth.service';
-import { useTheme } from '../Context/ThemeContext';
 import { Link as RouterLink } from 'react-router-dom';
-import { DashboardLoading } from '../Components/ui/DashboardLoading';
+import { ThemeLogo } from '../Components/ui/ThemeLogo';
 import type { UserRole } from '../types/auth';
 import { Badge } from '../Components/ui/shared/Badge';
 import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
@@ -139,19 +138,9 @@ const ROLE_LABELS: Record<UserRole, string> = {
 
 const DashboardLayout: React.FC = () => {
   const { user, logout, isApproved } = useAuth();
-  const { theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
-
-  // Full-screen splash — ONLY on the very first mount of the dashboard shell
-  // (e.g. first load / hard refresh). Sidebar-to-sidebar navigation never
-  // remounts this layout, so this never fires again after that.
-  const [initialLoading, setInitialLoading] = React.useState(true);
-  React.useEffect(() => {
-    const t = setTimeout(() => setInitialLoading(false), 500);
-    return () => clearTimeout(t);
-  }, []);
 
   // Lightweight, MAIN-CONTENT-ONLY loader for link-to-link navigation
   // (e.g. Trades -> Notifications). Sidebar + header stay fully visible
@@ -203,8 +192,6 @@ const DashboardLayout: React.FC = () => {
     }
   };
 
-  const logoSrc = theme === 'dark' ? '/logoBlack/logo4.png' : '/logoWhite/logo.png';
-
   const initials = user?.name
     ? user.name
         .trim()
@@ -218,7 +205,6 @@ const DashboardLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-cream-50 dark:bg-navy-950 font-body text-navy-800 dark:text-navy-200 transition-colors duration-300">
-      {initialLoading && <DashboardLoading />}
       {/* Top Navbar */}
       <motion.header
         initial={{ y: -60, opacity: 0 }}
@@ -237,7 +223,7 @@ const DashboardLayout: React.FC = () => {
               <ChevronLeft className={`w-5 h-5 transition-transform ${sidebarOpen ? 'rotate-180' : ''}`} />
             </button>
             <RouterLink to="/" className="flex items-center shrink-0">
-              <img src={logoSrc} alt="LocalHero" className="h-8 w-auto select-none" draggable={false} />
+              <ThemeLogo className="h-8 w-auto select-none" />
             </RouterLink>
             <Badge variant={ROLE_BADGE_VARIANT[user?.role || 'user']} className="hidden sm:inline-flex">
               {ROLE_LABELS[user?.role || 'user']}
