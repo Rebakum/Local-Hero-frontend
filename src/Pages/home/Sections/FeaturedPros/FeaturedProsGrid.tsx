@@ -104,7 +104,8 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
 
   if (displayed.length === 0) {
     return (
-      <div className="mt-8 md:mt-12 rounded-3xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 px-6 py-14 text-center shadow-lg">
+      <div className="mt-8 md:mt-12 group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white px-6 py-14 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 text-center">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <SearchX size={28} className="mx-auto text-primary" />
         <p className="mt-4 font-heading text-lg font-bold text-navy-950 dark:text-white">
           No professionals found

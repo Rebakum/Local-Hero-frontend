@@ -31,8 +31,9 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
                     navigate(`/services/${t.id}`);
                     window.scrollTo(0, 0);
                   }}
-                  className="group flex h-full flex-col overflow-hidden rounded-3xl bg-white dark:bg-navy-800 cursor-pointer shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
+                  className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-col cursor-pointer"
                 >
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={rs.image}

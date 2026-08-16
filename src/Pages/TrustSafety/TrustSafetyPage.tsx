@@ -127,22 +127,13 @@ export const TrustSafetyPage: React.FC = () => {
 
 
       {/* ============ SAFETY PILLARS ============ */}
-      <section className="relative overflow-hidden bg-navy-950 section-pad border-y border-navy-100/60 dark:border-white/10">
-        <div
-          className="absolute inset-0 opacity-20 pointer-events-none"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
-            backgroundSize: '26px 26px',
-          }}
-        />
+      <section className="relative overflow-hidden bg-white section-pad border-y border-navy-100/60 dark:border-white/10 dark:bg-navy-950">
         <div className="absolute top-1/2 right-0 translate-y-[-50%] w-[420px] h-[420px] rounded-full bg-primary/15 blur-[140px] pointer-events-none" />
 
         <div className="container-lh relative z-10">
           <SectionTitle
             eyebrow="The LocalHero Promise"
             badge={true}
-            dark
             title="Protection in every layer"
             subtitle="Six safeguards that hold across every single booking, from first message to final payment."
           />
@@ -150,14 +141,15 @@ export const TrustSafetyPage: React.FC = () => {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {PILLARS.map(({ icon: Icon, title, text }, i) => (
               <Reveal key={title} delay={i * 0.06}>
-                <div className="group h-full rounded-2xl border border-white/10 bg-white/5 p-7 backdrop-blur-md transition-all duration-300 hover:border-primary/40 hover:bg-white/10">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="mt-5 font-heading text-lg font-bold text-white">
+                  <h3 className="mt-5 font-heading text-lg font-bold text-navy-950 dark:text-white">
                     {title}
                   </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-white/55">
+                  <p className="mt-2.5 text-sm leading-relaxed text-navy-500 dark:text-navy-300">
                     {text}
                   </p>
                 </div>
@@ -173,7 +165,7 @@ export const TrustSafetyPage: React.FC = () => {
           <Reveal>
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                <FileCheck className="w-3.5 h-3.5" />
+                <FileCheck className="w-3.5 3" />
                 Our Standards
               </span>
               <h2 className="mt-5 font-heading text-3xl sm:text-4xl font-extrabold leading-tight text-navy-950 dark:text-white">
@@ -191,8 +183,9 @@ export const TrustSafetyPage: React.FC = () => {
           <div className="grid gap-5 sm:grid-cols-2">
             {STANDARDS.map(({ icon: Icon, title, text }, i) => (
               <Reveal key={title} delay={i * 0.08}>
-                <div className="group flex h-full gap-4 rounded-2xl bg-white dark:bg-navy-800 p-6 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-950 text-white transition-colors duration-300 group-hover:bg-primary">
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex gap-4">
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-navy-950 text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:shadow-glow">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>
@@ -210,44 +203,7 @@ export const TrustSafetyPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ============ REPORT A CONCERN ============ */}
-      <section className="container-lh section-pad pt-0 border-y border-navy-100/60 dark:border-white/10">
-        <div className="relative overflow-hidden rounded-[2rem] bg-navy-950 p-8 sm:p-12 md:p-16">
-          <div className="grid-fade absolute inset-0" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[420px] h-[220px] rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col items-center gap-8 text-center lg:flex-row lg:justify-between lg:text-left">
-            <div className="max-w-xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-                <AlertTriangle className="w-3.5 h-3.5" />
-                See something off?
-              </span>
-              <h2 className="mt-5 font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-                Report it in two taps.
-              </h2>
-              <p className="mt-4 text-sm sm:text-base text-white/60 leading-relaxed">
-                Whether it’s a poor job, suspicious behaviour or a safety
-                concern, our trust &amp; safety team reviews every report within
-                hours — and takes action.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center gap-4 sm:flex-row">
-              <button className="btn btn-primary px-8 py-3.5 text-sm font-semibold">
-                Report a concern
-              </button>
-              <a
-                href="tel:08001234567"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-primary transition-colors"
-              >
-                <PhoneCall className="w-4 h-4" />
-                0800 123 4567
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
+     
       {/* ============ CTA ============ */}
       
     </div>

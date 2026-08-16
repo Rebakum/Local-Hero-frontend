@@ -14,7 +14,7 @@ export const Rating: React.FC<RatingProps> = ({
   size = 'sm',
   className = '',
 }) => {
-  const starSize = size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4';
+  const starSize = size === 'sm' ? 'w-3.5 3' : 'w-4 h-4';
   const textSize = size === 'sm' ? 'text-xs' : 'text-sm';
 
   return (

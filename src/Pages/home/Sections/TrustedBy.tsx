@@ -188,9 +188,10 @@ export const TrustedBy: React.FC = () => {
                   {TRUST_PARTNERS.map((partner) => (
                     <div
                       key={`${dup}-${partner.id}`}
-                      className="group flex h-24 w-44 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-cream-50 px-4 text-center shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10 dark:bg-navy-800"
+                      className="group relative flex h-24 w-44 shrink-0 flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-neutral-200 bg-white px-4 text-center shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800"
                     >
-                      <div className="flex h-8 w-8 sm:h-8 sm:w-8 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <div className="flex h-8 w-8 sm:h-8 sm:w-8 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
                         {partner.logo}
                       </div>
                       <p className="w-full truncate text-sm font-semibold text-navy-900 transition-colors duration-300 group-hover:text-primary dark:text-white">

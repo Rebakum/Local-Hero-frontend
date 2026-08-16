@@ -30,9 +30,10 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) =
     <button
       type="button"
       onClick={() => onSelect(trade)}
-      className="group flex h-full w-full flex-col   items-center rounded-3xl border border-neutral-200 bg-white p-4 sm:p-5 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50  hover:shadow-2xl dark:border-white/10 dark:bg-navy-800"
+      className="group flex h-full w-full flex-col items-center overflow-hidden rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800"
     >
-      <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
         <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
       </div>
 
@@ -46,7 +47,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) =
       <div className="mt-auto pt-4 sm:pt-5">
         <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary transition-all duration-300 group-hover:translate-x-1">
           Explore Details
-          <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="3 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
         </span>
       </div>
     </button>

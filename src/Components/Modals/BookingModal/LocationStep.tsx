@@ -69,7 +69,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
           onClick={onBack}
           className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-500 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white"
         >
-          <ArrowLeft className="w-3.5 h-3.5" /> Back
+          <ArrowLeft className="w-3.5 3" /> Back
         </button>
         <button type="submit" className="btn btn-primary px-6 py-3.5 text-base">
           Continue to schedule <ArrowRight className="w-4 h-4" />

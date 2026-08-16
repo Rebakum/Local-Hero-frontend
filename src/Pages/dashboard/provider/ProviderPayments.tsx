@@ -140,7 +140,7 @@ const ProviderPayments: React.FC = () => {
               header: 'Amount',
               render: (b) => (
                 <span className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
-                  <PoundSterling className="w-3.5 h-3.5" />
+                  <PoundSterling className="w-3.5 3" />
                   {formatPrice(b.payment?.amountInPence ?? b.priceInPence)}
                 </span>
               ),

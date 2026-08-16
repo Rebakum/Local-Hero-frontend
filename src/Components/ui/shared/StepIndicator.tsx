@@ -33,7 +33,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep
                     : 'bg-navy-100 text-navy-400 dark:bg-white/10 dark:text-navy-300'
               }`}
             >
-              {done ? <CheckCircle2 className="w-3.5 h-3.5" /> : n}
+              {done ? <CheckCircle2 className="w-3.5 3" /> : n}
             </span>
             <span
               className={`hidden sm:inline text-[11px] font-heading font-bold uppercase tracking-wider ${

@@ -36,7 +36,7 @@ export const PopularServices: React.FC = () => {
           <div className="mt-8 md:mt-12 flex justify-center">
             <button
               onClick={() => navigate('/services')}
-               className="btn btn-primary test-white px-7 py-4 transition-all duration-300 hover:scale-[1.02]"
+               className="btn btn-primary test-white px-7 py-3 transition-all duration-300 hover:scale-[1.02]"
             >
               View More
               <ArrowRight size={16} />

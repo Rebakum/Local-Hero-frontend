@@ -38,9 +38,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
       {...props}
     >
       {isLoading ? (
-        <Loader2 className="w-3.5 h-3.5 animate-spin"/>
+        <Loader2 className="w-3.5 3 animate-spin"/>
       ) : Icon ? (
-        <Icon className="w-3.5 h-3.5"/>
+        <Icon className="w-3.5 3"/>
       ) : null}
       <span>{children}</span>
     </button>

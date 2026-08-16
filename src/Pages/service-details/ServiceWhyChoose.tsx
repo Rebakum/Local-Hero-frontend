@@ -4,7 +4,8 @@ import { Reveal } from '../../Components/ui/Reveal';
 export const ServiceWhyChoose: React.FC = () => {
   return (
     <Reveal delay={0.15}>
-      <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl">
+      <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <h2 className="text-xl font-heading font-extrabold text-navy-950 dark:text-white mb-6">
           Why Choose LocalHero?
         </h2>

@@ -243,7 +243,7 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
                   title="Leave a review for this completed service"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold hover:bg-amber-200 dark:hover:bg-amber-500/20 transition-colors"
                 >
-                  <Star className="w-3.5 h-3.5" />
+                  <Star className="w-3.5 3" />
                   Leave a review
                 </button>
               )}
@@ -255,9 +255,9 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors disabled:opacity-50"
                 >
                   {updating === notification.id ? (
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <Loader2 className="w-3.5 3 animate-spin" />
                   ) : (
-                    <CheckCheck className="w-3.5 h-3.5" />
+                    <CheckCheck className="w-3.5 3" />
                   )}
                   Mark read
                 </button>

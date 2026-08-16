@@ -131,9 +131,9 @@ const LoginPage: React.FC = () => {
                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
                 >
                   {isResending ? (
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <Loader2 className="w-3.5 3 animate-spin" />
                   ) : (
-                    <RefreshCw className="w-3.5 h-3.5" />
+                    <RefreshCw className="w-3.5 3" />
                   )}
                   Resend email
                 </button>

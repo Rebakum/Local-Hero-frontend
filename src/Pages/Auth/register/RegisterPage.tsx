@@ -286,7 +286,7 @@ const RegisterPage: React.FC = () => {
                   {passwordChecks.map((check) => (
                     <div key={check.label} className="flex items-center gap-2 text-xs">
                       <CheckCircle
-                        className={`w-3.5 h-3.5 shrink-0 transition-colors ${
+                        className={`w-3.5 3 shrink-0 transition-colors ${
                           check.met ? 'text-emerald-500' : 'text-navy-300 dark:text-navy-600'
                         }`}
                       />

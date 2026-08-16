@@ -140,7 +140,7 @@ const ProfilePage: React.FC = () => {
                   htmlFor="profile-avatar-file"
                   className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors cursor-pointer"
                 >
-                  <Camera className="w-3.5 h-3.5" />
+                  <Camera className="w-3.5 3" />
                 </label>
                 <input
                   id="profile-avatar-file"

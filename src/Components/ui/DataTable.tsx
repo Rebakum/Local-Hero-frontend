@@ -264,12 +264,12 @@ export function DataTable<T>({
                         {col.header}
                         {sortKey === col.key ? (
                           sortDir === 'asc' ? (
-                            <ChevronUp className="w-3.5 h-3.5 text-primary" />
+                            <ChevronUp className="w-3.5 3 text-primary" />
                           ) : (
-                            <ChevronDown className="w-3.5 h-3.5 text-primary" />
+                            <ChevronDown className="w-3.5 3 text-primary" />
                           )
                         ) : (
-                          <ChevronsUpDown className="w-3.5 h-3.5 opacity-40" />
+                          <ChevronsUpDown className="w-3.5 3 opacity-40" />
                         )}
                       </button>
                     ) : (

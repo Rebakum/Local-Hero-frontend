@@ -145,7 +145,7 @@ const UserDashboard: React.FC = () => {
                   <stat.icon className={`w-5 h-5 ${stat.textColor}`} />
                 </div>
                 <div className="flex items-center gap-1 text-emerald-500">
-                  <TrendingUp className="w-3.5 h-3.5" />
+                  <TrendingUp className="w-3.5 3" />
                   <span className="text-[10px] font-semibold">{stat.change}</span>
                 </div>
               </div>

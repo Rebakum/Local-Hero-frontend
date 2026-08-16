@@ -380,9 +380,9 @@ const MyBookings: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-white text-xs font-semibold hover:bg-primary/90 disabled:opacity-50 transition-colors"
                   >
                     {payingId === booking.id ? (
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <Loader2 className="w-3.5 3 animate-spin" />
                     ) : (
-                      <CreditCard className="w-3.5 h-3.5" />
+                      <CreditCard className="w-3.5 3" />
                     )}
 
                     Pay now
@@ -397,9 +397,9 @@ const MyBookings: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
                   >
                     {cancellingId === booking.id ? (
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <Loader2 className="w-3.5 3 animate-spin" />
                     ) : (
-                      <Ban className="w-3.5 h-3.5" />
+                      <Ban className="w-3.5 3" />
                     )}
 
                     Cancel

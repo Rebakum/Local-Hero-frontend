@@ -184,7 +184,7 @@ export const BlogPage: React.FC = () => {
         <div className="container-lh relative z-10 section-pad text-center">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              <PenLine className="w-3.5 h-3.5" />
+              <PenLine className="w-3.5 3" />
               The LocalHero Journal
             </span>
             <h1 className="mt-5 font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.05]">
@@ -238,7 +238,8 @@ export const BlogPage: React.FC = () => {
       {featured && (
         <section className="container-lh section-pad pb-10 border-y border-navy-100/60 dark:border-white/10">
           <Reveal>
-            <article className="group grid lg:grid-cols-2 overflow-hidden rounded-[1.75rem] bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
+            <article className="group relative grid lg:grid-cols-2 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <div className="relative h-64 sm:h-80 lg:h-full overflow-hidden">
                 <img
                   src={featured.image}
@@ -247,7 +248,7 @@ export const BlogPage: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 <span className="absolute top-5 left-5 inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-glow">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3.5 3" />
                   Featured
                 </span>
               </div>
@@ -265,15 +266,15 @@ export const BlogPage: React.FC = () => {
 
                 <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-navy-400 dark:text-navy-300">
                   <span className="inline-flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-primary" />
+                    <User className="w-3.5 3 text-primary" />
                     {featured.author}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-primary" />
+                    <Calendar className="w-3.5 3 text-primary" />
                     {featured.date}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-primary" />
+                    <Clock className="w-3.5 3 text-primary" />
                     {featured.readTime}
                   </span>
                 </div>
@@ -316,8 +317,9 @@ export const BlogPage: React.FC = () => {
                     delay: i * 0.05,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="group flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
+                  className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-col"
                 >
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="relative h-52 overflow-hidden">
                     <img
                       src={post.image}
@@ -342,11 +344,11 @@ export const BlogPage: React.FC = () => {
 
                     <div className="mt-5 flex items-center justify-between border-t border-navy-100 dark:border-white/10 pt-4 text-xs font-semibold text-navy-400 dark:text-navy-300">
                       <span className="inline-flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-primary" />
+                        <User className="w-3.5 3 text-primary" />
                         {post.author}
                       </span>
                       <span className="inline-flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-primary" />
+                        <Clock className="w-3.5 3 text-primary" />
                         {post.readTime}
                       </span>
                     </div>
@@ -392,7 +394,7 @@ export const BlogPage: React.FC = () => {
         <div className="container-lh relative z-10 max-w-2xl mx-auto text-center">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              <Mail className="w-3.5 h-3.5" />
+              <Mail className="w-3.5 3" />
               The Weekly Brief
             </span>
             <h2 className="mt-5 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-white">

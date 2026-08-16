@@ -10,7 +10,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({ itemVariant }) => {
   return (
    <>
   <motion.div variants={itemVariant} className="eyebrow text-white/90">
-    <ShieldCheck className="w-3.5 h-3.5" />
+    <ShieldCheck className="w-3.5 3" />
     Your Trusted Local Experts
   </motion.div>
 

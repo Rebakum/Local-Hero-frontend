@@ -96,7 +96,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                 aria-label="Remove image"
                 className="absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
               >
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-3.5 3" />
               </button>
             </div>
           ))}
@@ -160,7 +160,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
           onClick={() => inputRef.current?.click()}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
         >
-          <ImagePlus className="w-3.5 h-3.5" />
+          <ImagePlus className="w-3.5 3" />
           Add more
         </button>
       )}

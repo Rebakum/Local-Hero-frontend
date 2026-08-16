@@ -11,7 +11,8 @@ const stats = [
 export const ServiceStatsBar: React.FC = () => {
   return (
     <Reveal delay={0.15}>
-      <div className="mt-16 bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl p-8 sm:p-10 shadow-lg">
+      <div className="mt-16 group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-8 sm:p-10 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x-0 lg:divide-x divide-slate-100 dark:divide-white/5">
           {stats.map((stat) => (
             <div key={stat.label} className="p-2">

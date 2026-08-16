@@ -21,9 +21,9 @@ interface PopularServicesGridProps {
 
 export const PopularServicesGrid: React.FC<PopularServicesGridProps> = ({ trades }) => {
   return (
-    <Stagger className="mt-8 md:mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {trades.map((trade) => (
-        <StaggerItem key={trade.id} className="h-full">
+    <Stagger className="mt-8 md:mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+      {trades.map((trade, i) => (
+        <StaggerItem key={trade.id} className={`h-full ${i >= 4 ? 'hidden md:block' : ''}`}>
           <PopularServiceCard trade={trade} />
         </StaggerItem>
       ))}

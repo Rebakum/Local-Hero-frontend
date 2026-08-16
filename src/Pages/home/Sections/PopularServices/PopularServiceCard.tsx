@@ -24,7 +24,8 @@ export const PopularServiceCard: React.FC<PopularServiceCardProps> = ({ trade })
   if (!s) return null;
 
   return (
-    <article className="group rounded-2xl bg-white dark:bg-navy-800 overflow-hidden flex flex-col justify-between w-full h-full shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
+    <article className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-col justify-between w-full">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       
       {/* Top Image Container - object-top ব্যবহার করা হয়েছে যেন ওপরের অংশ না কাটে */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 dark:bg-navy-950">
@@ -49,7 +50,7 @@ export const PopularServiceCard: React.FC<PopularServiceCardProps> = ({ trade })
           </h3>
 
           <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-            <Clock className="w-3.5 h-3.5 text-primary shrink-0" />
+            <Clock className="w-3.5 3 text-primary shrink-0" />
             <span>{s.timeEstimate}</span>
           </div>
         </div>
@@ -60,7 +61,7 @@ export const PopularServiceCard: React.FC<PopularServiceCardProps> = ({ trade })
           className="mt-4 btn btn-primary text-white w-full py-2.5 px-4 rounded-full font-semibold text-xs flex items-center justify-center gap-2 group/btn transition-all"
         >
           <span>View Service</span>
-          <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+          <ArrowRight className="w-3.5 3 group-hover/btn:translate-x-1 transition-transform" />
         </button>
       </div>
 

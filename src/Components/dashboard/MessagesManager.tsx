@@ -184,7 +184,7 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
                 Conversations
               </p>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-navy-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 3 text-navy-400" />
                 <input
                   type="text"
                   value={searchQuery}

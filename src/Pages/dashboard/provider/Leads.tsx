@@ -211,7 +211,7 @@ const Leads: React.FC = () => {
               render: (b) => (
                 <div className="text-navy-500 dark:text-navy-400">
                   <p className="inline-flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5" />
+                    <Calendar className="w-3.5 3" />
                     {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
                   <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5 inline-flex items-center gap-1">
@@ -254,7 +254,7 @@ const Leads: React.FC = () => {
                 disabled={actionLoading === booking.id}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
-                <Check className="w-3.5 h-3.5" />
+                <Check className="w-3.5 3" />
                 Accept
               </button>
               <button
@@ -262,7 +262,7 @@ const Leads: React.FC = () => {
                 disabled={actionLoading === booking.id}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
               >
-                <XCircle className="w-3.5 h-3.5" />
+                <XCircle className="w-3.5 3" />
                 Reject
               </button>
               <button
@@ -270,7 +270,7 @@ const Leads: React.FC = () => {
                 disabled={actionLoading === booking.id}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
               >
-                <Calendar className="w-3.5 h-3.5" />
+                <Calendar className="w-3.5 3" />
                 Reschedule
               </button>
             </>

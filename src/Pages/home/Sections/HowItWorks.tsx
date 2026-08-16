@@ -42,12 +42,13 @@ export const HowItWorks: React.FC = () => {
             return (
               <StaggerItem key={step.title}>
                 <div
-                  className="rounded-3xl p-6 sm:p-8 relative bg-white dark:bg-navy-800 shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
+                  className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800"
                 >
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <span className="absolute top-6 right-7 font-heading text-6xl font-extrabold leading-none text-navy-100 dark:text-white/5 select-none">
                     {step.number}
                   </span>
-                  <div className=" bg-primary  text-white rounded-2xl w-14 h-14 flex items-center justify-center shadow-card">
+                  <div className=" bg-primary  text-white rounded-2xl w-14 h-14 flex items-center justify-center shadow-card transition-all duration-300 group-hover:scale-110 group-hover:shadow-glow">
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="mt-6 font-heading text-xl font-extrabold text-navy-950 dark:text-white">

@@ -104,31 +104,31 @@ export const ProviderBookingDashboard: React.FC = () => {
       case "PENDING":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-            <Clock className="w-3.5 h-3.5" /> Pending
+            <Clock className="w-3.5 3" /> Pending
           </span>
         );
       case "ACCEPTED":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Assigned / Scheduled
+            <CheckCircle2 className="w-3.5 3" /> Assigned / Scheduled
           </span>
         );
       case "IN_PROGRESS":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
-            <RefreshCw className="w-3.5 h-3.5 animate-spin" /> In Progress
+            <RefreshCw className="w-3.5 3 animate-spin" /> In Progress
           </span>
         );
       case "COMPLETED":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Completed
+            <CheckCircle2 className="w-3.5 3" /> Completed
           </span>
         );
       case "CANCELLED":
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-            <XCircle className="w-3.5 h-3.5" /> Cancelled
+            <XCircle className="w-3.5 3" /> Cancelled
           </span>
         );
       default:
@@ -228,7 +228,7 @@ export const ProviderBookingDashboard: React.FC = () => {
               {/* Customer Info Box */}
               <div className="bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-900/40 p-3.5 rounded-xl space-y-1">
                 <p className="text-xs font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-indigo-600" /> Customer: {booking.fullName}
+                  <User className="w-3.5 3 text-indigo-600" /> Customer: {booking.fullName}
                 </p>
                 <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600 dark:text-gray-300 pt-1">
                   <span className="flex items-center gap-1">
@@ -288,7 +288,7 @@ export const ProviderBookingDashboard: React.FC = () => {
                   }}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition shadow-sm"
                 >
-                  <Edit3 className="w-3.5 h-3.5" /> Update Status & Quote
+                  <Edit3 className="w-3.5 3" /> Update Status & Quote
                 </button>
               </div>
             </div>

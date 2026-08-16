@@ -170,7 +170,7 @@ const SuperAdminDashboard: React.FC = () => {
                   <stat.icon className={`w-5 h-5 ${stat.textColor}`} />
                 </div>
                 <div className="flex items-center gap-1 text-emerald-500">
-                  <TrendingUp className="w-3.5 h-3.5" />
+                  <TrendingUp className="w-3.5 3" />
                   <span className="text-[10px] font-semibold">{stat.change}</span>
                 </div>
               </div>
@@ -236,7 +236,7 @@ const SuperAdminDashboard: React.FC = () => {
                   sortValue: (a) => a.email,
                   render: (a) => (
                     <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400">
-                      <Mail className="w-3.5 h-3.5" />
+                      <Mail className="w-3.5 3" />
                       <span className="truncate max-w-[180px]">{a.email}</span>
                     </div>
                   ),
@@ -248,7 +248,7 @@ const SuperAdminDashboard: React.FC = () => {
                   sortValue: (a) => new Date(a.createdAt).getTime(),
                   render: (a) => (
                     <div className="flex items-center gap-1.5 text-navy-400 dark:text-navy-500 text-xs">
-                      <Calendar className="w-3.5 h-3.5" />
+                      <Calendar className="w-3.5 3" />
                       {new Date(a.createdAt).toLocaleDateString('en-GB')}
                     </div>
                   ),
@@ -305,7 +305,7 @@ const SuperAdminDashboard: React.FC = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2.5">
                       <div className="w-7 h-7 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center">
-                        <item.icon className="w-3.5 h-3.5 text-navy-500 dark:text-navy-400" />
+                        <item.icon className="w-3.5 3 text-navy-500 dark:text-navy-400" />
                       </div>
                       <span className="text-xs font-semibold text-navy-600 dark:text-navy-300">{item.label}</span>
                     </div>

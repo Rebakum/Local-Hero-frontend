@@ -158,7 +158,7 @@ const SavedPros: React.FC = () => {
             onClick={load}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-500/20 transition-colors shrink-0"
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            <RefreshCw className="w-3.5 3" />
             Retry
           </button>
         </motion.div>
@@ -244,7 +244,7 @@ const SavedPros: React.FC = () => {
 
                 <div className="flex items-center gap-3 mb-3">
                   <div className="flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                    <Star className="w-3.5 3 text-amber-400 fill-amber-400" />
                     <span className="text-sm font-bold text-navy-900 dark:text-white">{pro.rating.toFixed(1)}</span>
                   </div>
                   <span className="text-xs text-navy-400 dark:text-navy-500">({pro.reviewCount} reviews)</span>
@@ -276,7 +276,7 @@ const SavedPros: React.FC = () => {
                     }
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 shadow-sm shadow-primary/25"
                   >
-                    <Calendar className="w-3.5 h-3.5" />
+                    <Calendar className="w-3.5 3" />
                     Book Now
                   </button>
                 </div>

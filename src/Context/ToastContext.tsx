@@ -70,7 +70,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 onClick={() => dismiss(toast.id)}
                 className="w-6 h-6 rounded-lg flex items-center justify-center text-navy-400 hover:text-navy-600 dark:hover:text-navy-200 hover:bg-navy-100 dark:hover:bg-white/5 transition-colors shrink-0"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-3.5 3" />
               </button>
             </div>
           );

@@ -193,7 +193,7 @@ export const Hero: React.FC = () => {
 
           {/* (b) Sharp portrait — sized by height with auto width, kept on
               the right, so the face is never cropped/distorted. */}
-          <div className="absolute inset-y-0 right-0 flex items-end justify-end">
+          <div className="absolute inset-y-0 right-0  hidden md:flex items-end justify-end">
             <img
               key={`portrait-${activePro?.id || activePro?._id || activePro?.name || 'default'}`}
               src={activePro?.avatar || '/images/hero.png'}

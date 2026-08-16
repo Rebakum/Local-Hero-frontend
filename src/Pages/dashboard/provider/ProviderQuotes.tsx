@@ -173,7 +173,7 @@ const ProviderQuotes: React.FC = () => {
               }}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary/90 transition-colors"
             >
-              <PoundSterling className="w-3.5 h-3.5" />
+              <PoundSterling className="w-3.5 3" />
               Send quote
             </button>
           )}

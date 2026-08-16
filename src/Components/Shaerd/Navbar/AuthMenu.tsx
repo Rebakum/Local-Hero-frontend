@@ -38,9 +38,9 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
     return (
       <Link
         to="/login"
-        className="btn btn-outline px-7 py-4 dark:border-white/40 border-primary dark:text-white hover:bg-white hover:text-navy-950"
+        className="btn btn-outline px-7 py-3 dark:border-white/40 border-primary dark:text-white hover:bg-white hover:text-navy-950"
       >
-        <LogIn className="w-4 h-4" />
+        <LogIn className="w-3 h-3" />
         Login
       </Link>
     );
@@ -83,7 +83,7 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
           {/* Role status indicator */}
           <span
             title={role.label}
-            className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-navy-900 ${role.dotClass}`}
+            className={`absolute -bottom-0.5 -right-0.5 w-3.5 3 rounded-full border-2 border-white dark:border-navy-900 ${role.dotClass}`}
           />
         </span>
         {/* <ChevronDown

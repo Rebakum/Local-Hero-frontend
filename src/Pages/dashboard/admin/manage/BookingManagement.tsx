@@ -242,11 +242,11 @@ export const BookingManagement: React.FC = () => {
             render: (b) => (
               <div className="text-xs space-y-1">
                 <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
-                  <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                  <Calendar className="w-3.5 3 text-gray-400" />
                   {new Date(b.bookingDate).toLocaleDateString("en-GB")} ({b.timeSlot})
                 </div>
                 <div className="flex items-center gap-1 text-gray-500">
-                  <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                  <MapPin className="w-3.5 3 text-gray-400" />
                   {b.postcode}, {b.address}
                 </div>
               </div>

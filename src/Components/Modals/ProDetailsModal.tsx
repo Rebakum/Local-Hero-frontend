@@ -56,10 +56,10 @@ export const ProDetailsModal: React.FC = () => {
               <p className="text-sm font-bold text-primary mt-0.5">{selectedPro.companyName}</p>
               <div className="flex items-center gap-3 text-xs font-medium text-navy-500 dark:text-navy-300 mt-1.5">
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5" /> {selectedPro.location} ({selectedPro.postcodeArea})
+                  <MapPin className="w-3.5 3" /> {selectedPro.location} ({selectedPro.postcodeArea})
                 </span>
                 <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" /> {selectedPro.responseMinutes} min avg reply
+                  <Clock className="w-3.5 3" /> {selectedPro.responseMinutes} min avg reply
                 </span>
               </div>
             </div>

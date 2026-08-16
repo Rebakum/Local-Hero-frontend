@@ -81,7 +81,7 @@ export const DashboardPreview: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="chip">
-                    <Bell className="w-3.5 h-3.5 text-primary" /> 3 alerts
+                    <Bell className="w-3.5 3 text-primary" /> 3 alerts
                   </span>
                   <span className="chip !border-primary/25 !bg-primary/10 text-primary">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> Available

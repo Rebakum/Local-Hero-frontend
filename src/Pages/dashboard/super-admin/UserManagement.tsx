@@ -278,7 +278,7 @@ const UserManagement: React.FC = () => {
             header: 'Email',
             render: (u) => (
               <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400">
-                <Mail className="w-3.5 h-3.5 shrink-0" />
+                <Mail className="w-3.5 3 shrink-0" />
                 <span className="truncate max-w-[180px]">{u.email}</span>
               </div>
             ),
@@ -289,7 +289,7 @@ const UserManagement: React.FC = () => {
             hideOn: 'md',
             render: (u) => (
               <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400 text-xs">
-                <Phone className="w-3.5 h-3.5 shrink-0" />
+                <Phone className="w-3.5 3 shrink-0" />
                 {u.phone || '—'}
               </div>
             ),
@@ -323,9 +323,9 @@ const UserManagement: React.FC = () => {
                   title="Approve"
                 >
                   {actionLoading === u.id ? (
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <Loader2 className="w-3.5 3 animate-spin" />
                   ) : (
-                    <Check className="w-3.5 h-3.5" />
+                    <Check className="w-3.5 3" />
                   )}
                   Approve
                 </button>
@@ -335,7 +335,7 @@ const UserManagement: React.FC = () => {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
                   title="Reject"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-3.5 3" />
                   Reject
                 </button>
               </>
@@ -349,7 +349,7 @@ const UserManagement: React.FC = () => {
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
                   title="Change role"
                 >
-                  <Shield className="w-3.5 h-3.5" />
+                  <Shield className="w-3.5 3" />
                   Role
                   <ChevronDown className="w-3 h-3" />
                 </button>

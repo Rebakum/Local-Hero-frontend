@@ -66,7 +66,7 @@ export const MobileAppPreview: React.FC = () => {
                   </div>
 
                   {/* Pro card */}
-                  <div className="mt-3 rounded-2xl bg-white dark:bg-navy-800 border border-navy-100 dark:border-white/10 p-3 sm:p-3.5">
+                  <div className="mt-3 rounded-2xl border border-neutral-200 bg-white p-3 sm:p-3.5 shadow-soft dark:border-white/10 dark:bg-navy-900">
                     <div className="flex items-center gap-3">
                       <img
                         src="/images/service2.png"
@@ -127,8 +127,9 @@ export const MobileAppPreview: React.FC = () => {
                 const Icon = feature.icon;
                 return (
                   <StaggerItem key={feature.title}>
-                    <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-2xl p-4 sm:p-5 shadow-lg">
-                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                    <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+                      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
                         <Icon className="w-5 h-5" />
                       </div>
                       <h3 className="mt-3 sm:mt-4 font-heading text-[14px] sm:text-[15px] font-extrabold text-navy-950 dark:text-white">{feature.title}</h3>
@@ -169,7 +170,7 @@ export const MobileAppPreview: React.FC = () => {
             <div className="mt-5 md:mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-navy-500 dark:text-navy-300">
               <span className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-primary text-primary" />
+                  <Star key={i} className="w-3.5 3 fill-primary text-primary" />
                 ))}
               </span>
               <span>4.9 • 25,000+ reviews</span>

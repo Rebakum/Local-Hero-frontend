@@ -177,7 +177,7 @@ const MyJobs: React.FC = () => {
               render: (b) => (
                 <div className="text-navy-500 dark:text-navy-400">
                   <p className="inline-flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5" />
+                    <Calendar className="w-3.5 3" />
                     {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
                   <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">{b.timeSlot}</p>
@@ -200,7 +200,7 @@ const MyJobs: React.FC = () => {
               header: 'Price',
               render: (b) => (
                 <span className="inline-flex items-center gap-1 font-semibold text-navy-800 dark:text-navy-200">
-                  <PoundSterling className="w-3.5 h-3.5 text-navy-400" />
+                  <PoundSterling className="w-3.5 3 text-navy-400" />
                   {formatPrice(b.priceInPence)}
                 </span>
               ),
@@ -243,9 +243,9 @@ const MyJobs: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
                   >
                     {actionLoading === booking.id ? (
-                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <Loader2 className="w-3.5 3 animate-spin" />
                     ) : (
-                      <config.icon className="w-3.5 h-3.5" />
+                      <config.icon className="w-3.5 3" />
                     )}
                     {config.label}
                   </button>
@@ -256,7 +256,7 @@ const MyJobs: React.FC = () => {
                     disabled={actionLoading === booking.id}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
                   >
-                    <Ban className="w-3.5 h-3.5" />
+                    <Ban className="w-3.5 3" />
                     Cancel
                   </button>
                 )}

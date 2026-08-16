@@ -137,7 +137,7 @@ export const BeforeAfter: React.FC = () => {
           <Reveal className="lg:col-span-5 space-y-4 md:space-y-6" delay={0.16}>
             <div className="space-y-3">
               <span className="inline-flex items-center gap-1.5 chip">
-                <MapPin className="w-3.5 h-3.5 text-primary" />
+                <MapPin className="w-3.5 3 text-primary" />
                 {project.location} • {project.trade}
               </span>
               <h3 className="font-heading text-2xl font-extrabold tracking-tight text-navy-950 dark:text-white leading-tight">
@@ -149,18 +149,20 @@ export const BeforeAfter: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <div className="rounded-2xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 p-3.5 sm:p-5 space-y-1 shadow-lg">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-3.5 sm:p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 space-y-1">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300 flex items-center gap-1">
-                  <PoundSterling className="w-3.5 h-3.5 text-primary" /> Project cost
+                  <PoundSterling className="w-3.5 3 text-primary" /> Project cost
                 </div>
                 <div className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
                   {project.cost}
                 </div>
                 <div className="text-[11px] font-semibold text-primary">Fixed upfront quote</div>
               </div>
-              <div className="rounded-2xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 p-3.5 sm:p-5 space-y-1 shadow-lg">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-3.5 sm:p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 space-y-1">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300 flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-primary" /> Time to complete
+                  <Clock className="w-3.5 3 text-primary" /> Time to complete
                 </div>
                 <div className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
                   {project.completionDays}

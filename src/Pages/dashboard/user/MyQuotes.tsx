@@ -258,7 +258,7 @@ const MyQuotes: React.FC = () => {
             onClick={() => setViewing(quote)}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors"
           >
-            <Eye className="w-3.5 h-3.5" />
+            <Eye className="w-3.5 3" />
             View quotes
           </button>
         )}
@@ -421,7 +421,7 @@ const MyQuotes: React.FC = () => {
                           disabled={acting === response.id}
                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
                         >
-                          <Check className="w-3.5 h-3.5" />
+                          <Check className="w-3.5 3" />
                           Accept
                         </button>
                         <button
@@ -429,19 +429,19 @@ const MyQuotes: React.FC = () => {
                           disabled={acting === response.id}
                           className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
                         >
-                          <XCircle className="w-3.5 h-3.5" />
+                          <XCircle className="w-3.5 3" />
                           Reject
                         </button>
                       </>
                     )}
                     {response.status === 'ACCEPTED' && (
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                        <Check className="w-3.5 h-3.5" /> Accepted
+                        <Check className="w-3.5 3" /> Accepted
                       </span>
                     )}
                     {response.status === 'REJECTED' && (
                       <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-500">
-                        <XCircle className="w-3.5 h-3.5" /> Rejected
+                        <XCircle className="w-3.5 3" /> Rejected
                       </span>
                     )}
                   </div>

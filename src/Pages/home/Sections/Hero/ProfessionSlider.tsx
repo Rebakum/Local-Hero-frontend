@@ -42,7 +42,7 @@ const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
   return (
    <div
   onClick={onSelect}
-  className={`group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-white/90 dark:bg-navy-800/90 p-4 backdrop-blur-sm shadow-lg border transition-all duration-300 hover:-translate-y-2 hover:scale-[1.05] hover:shadow-2xl dark:border-white/10 ${
+  className={`group relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:scale-[1.05] hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 ${
     active
       ? 'z-20 -translate-y-3 scale-[1.05] shadow-2xl border-primary ring-2 ring-primary/40'
       : 'z-0 border-neutral-200 hover:border-primary/50 hover:shadow-2xl'
@@ -50,8 +50,8 @@ const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
 >
       {/* Gradient top accent — solid once active, animates in on hover otherwise */}
       <span
-        className={`pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-primary/40 transition-transform duration-300 origin-left ${
-          active ? 'scale-y-105 hover:shadow-3xl' : 'scale-x-0 group-hover:scale-y-105 hover:shadow-3xl'
+        className={`pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
+          active ? 'opacity-100' : ''
         }`}
       />
 
@@ -74,7 +74,7 @@ const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
               </span>
             )}
           </div>
-          <span className="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white dark:ring-navy-900">
+          <span className="absolute -bottom-0.5 -right-0.5 flex 3 w-3.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white dark:ring-navy-900">
             <span className="h-1.5 w-1.5 rounded-full bg-white" />
           </span>
         </div>

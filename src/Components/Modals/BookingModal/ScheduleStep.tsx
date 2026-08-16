@@ -53,7 +53,7 @@ export const ScheduleStep: React.FC<ScheduleStepProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="flex items-center gap-1.5 text-xs font-heading font-bold text-navy-700 dark:text-navy-200 uppercase tracking-wider mb-2">
-            <Calendar className="w-3.5 h-3.5 text-primary" /> Preferred date
+            <Calendar className="w-3.5 3 text-primary" /> Preferred date
           </label>
           <div className="relative">
             <input
@@ -95,7 +95,7 @@ export const ScheduleStep: React.FC<ScheduleStepProps> = ({
           onClick={onBack}
           className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-500 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white"
         >
-          <ArrowLeft className="w-3.5 h-3.5" /> Back
+          <ArrowLeft className="w-3.5 3" /> Back
         </button>
         <button type="submit" className="btn btn-primary px-6 py-3.5 text-base">
           Continue to confirm <ArrowRight className="w-4 h-4" />

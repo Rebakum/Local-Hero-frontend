@@ -226,7 +226,7 @@ export const AdminPaymentHistory: React.FC = () => {
             sortValue: (p) => p.booking?.trade ?? '',
             render: (p) => (
               <div className="flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-indigo-500" />
+                <Briefcase className="w-3.5 3 text-indigo-500" />
                 <span className="font-medium text-gray-800 dark:text-gray-200">
                   {p.booking?.trade || "—"}
                 </span>

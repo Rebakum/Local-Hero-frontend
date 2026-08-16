@@ -207,13 +207,13 @@ const SystemPage: React.FC = () => {
                       onClick={() => toggleKeyVisibility(apiKey.id)}
                       className="w-8 h-8 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
                     >
-                      {visibleKeys.includes(apiKey.id) ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      {visibleKeys.includes(apiKey.id) ? <EyeOff className="w-3.5 3" /> : <Eye className="w-3.5 3" />}
                     </button>
                     <button
                       onClick={() => copyKey(apiKey.id, apiKey.key)}
                       className="w-8 h-8 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
                     >
-                      {copiedId === apiKey.id ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedId === apiKey.id ? <Check className="w-3.5 3 text-emerald-500" /> : <Copy className="w-3.5 3" />}
                     </button>
                   </div>
                   <p className="text-[10px] text-navy-400 dark:text-navy-500 mt-2">
@@ -243,7 +243,7 @@ const SystemPage: React.FC = () => {
                 </div>
               </div>
               <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors">
-                <RefreshCw className="w-3.5 h-3.5" />
+                <RefreshCw className="w-3.5 3" />
                 Refresh
               </button>
             </div>

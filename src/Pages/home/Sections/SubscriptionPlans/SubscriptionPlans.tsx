@@ -81,12 +81,13 @@ export const SubscriptionPlans: React.FC = () => {
               <StaggerItem key={plan.id} className="h-full">
                 <Reveal className="h-full">
                   <div
-                    className={`relative flex flex-col h-full rounded-3xl border border-neutral-200 dark:border-white/10 p-7 sm:p-8 transition-all duration-300 shadow-lg ${
+                    className={`group relative flex flex-col h-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-white/10 p-7 sm:p-8 transition-all duration-300 shadow-soft ${
                       plan.highlight
-                        ? 'bg-white dark:bg-navy-800 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)] md:-translate-y-2 hover:shadow-2xl'
-                        : 'bg-white dark:bg-navy-800 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl'
+                        ? 'bg-white dark:bg-navy-900 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)] md:-translate-y-2 hover:border-primary/40 hover:shadow-card'
+                        : 'bg-white dark:bg-navy-900 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:hover:border-primary/40 dark:hover:bg-navy-800'
                     }`}
                   >
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                     {plan.highlight && (
                       <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-heading font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-primary/30">
                         Most Popular
@@ -95,10 +96,10 @@ export const SubscriptionPlans: React.FC = () => {
 
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                        className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-glow ${
                           plan.highlight
                             ? 'bg-primary text-white'
-                            : 'bg-primary/10 text-primary'
+                            : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white'
                         }`}
                       >
                         <Icon className="w-6 h-6" />

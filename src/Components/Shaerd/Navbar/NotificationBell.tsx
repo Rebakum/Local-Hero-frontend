@@ -200,7 +200,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, varia
                   onClick={handleMarkAll}
                   className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline"
                 >
-                  <CheckCheck className="w-3.5 h-3.5" />
+                  <CheckCheck className="w-3.5 3" />
                   Mark all read
                 </button>
               )}

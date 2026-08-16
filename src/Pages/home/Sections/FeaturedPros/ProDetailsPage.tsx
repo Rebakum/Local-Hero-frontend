@@ -105,7 +105,8 @@ export const ProDetailsPage: React.FC = () => {
   if (!pro) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-navy-950 flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-lg p-8">
+        <div className="max-w-md w-full group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-8 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 text-center">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center mx-auto mb-4">
             <ShieldCheck className="w-8 h-8 text-slate-400 dark:text-navy-400" />
           </div>
@@ -147,7 +148,8 @@ export const ProDetailsPage: React.FC = () => {
       <div className="container-lh mt-6">
         
         {/* Main Header Card without Banner */}
-        <div className="bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg p-6 sm:p-8 mb-8">
+        <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 mb-8">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             
             {/* Avatar & Info */}
@@ -174,7 +176,7 @@ export const ProDetailsPage: React.FC = () => {
                   {tradeName} {pro.companyName && <span>• {pro.companyName}</span>}
                 </p>
                 <p className="text-xs sm:text-sm text-slate-500 dark:text-navy-300 flex items-center justify-center sm:justify-start gap-1 pt-0.5 break-words">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <MapPin className="w-3.5 3 text-slate-400 shrink-0" />
                   {pro.location || (pro as any).address || 'Location Not Specified'}
                 </p>
               </div>
@@ -290,7 +292,8 @@ export const ProDetailsPage: React.FC = () => {
         {activeTab === 'about' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-white dark:bg-navy-800 p-6 sm:p-7 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3">About the Professional</h3>
                 <p className="text-slate-600 dark:text-navy-200 leading-relaxed text-sm sm:text-base break-words whitespace-pre-wrap">
                   {pro.bio || (pro as any).description || 'No detailed biography provided yet.'}
@@ -298,7 +301,8 @@ export const ProDetailsPage: React.FC = () => {
               </div>
 
               {specialties.length > 0 && (
-                <div className="bg-white dark:bg-navy-800 p-6 sm:p-7 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                     <Award className="w-4 h-4 text-red-600" /> Services & Specialties
                   </h3>
@@ -317,7 +321,8 @@ export const ProDetailsPage: React.FC = () => {
             </div>
 
             <div>
-              <div className="bg-white dark:bg-navy-800 p-6 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg lg:sticky lg:top-24">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 lg:sticky lg:top-24">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <h4 className="font-bold text-slate-900 dark:text-white text-sm mb-4">Service Guarantee</h4>
                 <ul className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-navy-300">
                   <li className="flex items-center gap-2.5">
@@ -362,7 +367,8 @@ export const ProDetailsPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white px-6 py-12 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 text-center">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <p className="text-xs sm:text-sm text-slate-400">No portfolio images uploaded.</p>
               </div>
             )}
@@ -373,7 +379,8 @@ export const ProDetailsPage: React.FC = () => {
           <div className="space-y-4">
             {reviews.length > 0 ? (
               reviews.map((rev: any, idx: number) => (
-                <div key={idx} className="bg-white dark:bg-navy-800 p-5 rounded-2xl border border-neutral-200 dark:border-white/10 shadow-lg">
+                <div key={idx} className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2.5">
                       <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500">
@@ -387,7 +394,7 @@ export const ProDetailsPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
-                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star className="w-3.5 3 fill-amber-400" />
                       {rev.rating || '5.0'}
                     </div>
                   </div>
@@ -395,7 +402,8 @@ export const ProDetailsPage: React.FC = () => {
                 </div>
               ))
             ) : (
-              <div className="text-center py-12 bg-white dark:bg-navy-800 rounded-3xl border border-neutral-200 dark:border-white/10 shadow-lg">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white px-6 py-12 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 text-center">
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <p className="text-xs sm:text-sm text-slate-400">No client reviews submitted yet.</p>
               </div>
             )}

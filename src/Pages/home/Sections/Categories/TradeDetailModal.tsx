@@ -68,13 +68,13 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
                 {tradeName}
               </h3>
               <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800">
-                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <Star className="w-3.5 3 fill-amber-400 text-amber-400" />
                 {rating} ({reviewsCount})
               </span>
             </div>
             <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 flex items-center gap-3">
-              <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5 text-primary" /> {prosCount}+ Verified Pros</span>
-              <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5 text-primary" /> ~45 min ETA</span>
+              <span className="flex items-center gap-1"><Users className="w-3.5 3 text-primary" /> {prosCount}+ Verified Pros</span>
+              <span className="flex items-center gap-1"><Clock className="w-3.5 3 text-primary" /> ~45 min ETA</span>
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
           </div>
           <div className="text-right">
             <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
-              <ShieldCheck className="w-3.5 h-3.5" /> Fixed Pricing
+              <ShieldCheck className="w-3.5 3" /> Fixed Pricing
             </span>
           </div>
         </div>

@@ -115,7 +115,7 @@ const SuperAdminApprovals: React.FC = () => {
               sortValue: (u) => u.email,
               render: (u) => (
                 <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400">
-                  <Mail className="w-3.5 h-3.5" />
+                  <Mail className="w-3.5 3" />
                   <span className="truncate max-w-[200px]">{u.email}</span>
                 </div>
               ),
@@ -133,7 +133,7 @@ const SuperAdminApprovals: React.FC = () => {
               sortValue: (u) => new Date(u.createdAt).getTime(),
               render: (u) => (
                 <div className="flex items-center gap-1.5 text-navy-400 dark:text-navy-500 text-xs">
-                  <Calendar className="w-3.5 h-3.5" />
+                  <Calendar className="w-3.5 3" />
                   {new Date(u.createdAt).toLocaleDateString('en-GB')}
                 </div>
               ),
@@ -147,9 +147,9 @@ const SuperAdminApprovals: React.FC = () => {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500 text-white text-xs font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
               >
                 {actionLoading === user.id ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-3.5 3 animate-spin" />
                 ) : (
-                  <Check className="w-3.5 h-3.5" />
+                  <Check className="w-3.5 3" />
                 )}
                 Approve
               </button>
@@ -158,7 +158,7 @@ const SuperAdminApprovals: React.FC = () => {
                 disabled={actionLoading === user.id}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors disabled:opacity-50"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-3.5 3" />
                 Reject
               </button>
             </>

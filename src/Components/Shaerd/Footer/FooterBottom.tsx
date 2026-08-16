@@ -10,10 +10,10 @@ export const FooterBottom: React.FC = () => {
 
       <div className="flex items-center gap-4 text-[11px] text-white/50">
         <span className="flex items-center gap-1">
-          <ShieldCheck className="w-3.5 h-3.5 text-primary" /> TrustMark Accredited
+          <ShieldCheck className="w-3.5 3 text-primary" /> TrustMark Accredited
         </span>
         <span className="flex items-center gap-1">
-          <ShieldCheck className="w-3.5 h-3.5 text-primary" /> Which? Trusted Trader
+          <ShieldCheck className="w-3.5 3 text-primary" /> Which? Trusted Trader
         </span>
       </div>
     </div>

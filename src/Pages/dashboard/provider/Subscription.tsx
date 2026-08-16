@@ -92,7 +92,7 @@ const Subscription: React.FC = () => {
                 <p className="text-sm text-navy-500 dark:text-navy-400 mt-1">{meta.description}</p>
                 <div className="flex flex-wrap items-center gap-3 mt-4 text-xs text-navy-500 dark:text-navy-400">
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy-100 dark:bg-white/5">
-                    <BadgeCheck className="w-3.5 h-3.5 text-primary" />
+                    <BadgeCheck className="w-3.5 3 text-primary" />
                     Status: {subscription?.status ?? 'ACTIVE'}
                   </span>
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy-100 dark:bg-white/5">

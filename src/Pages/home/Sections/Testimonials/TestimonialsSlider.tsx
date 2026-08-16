@@ -46,35 +46,46 @@ export const TestimonialsSlider: React.FC = () => {
         title="Loved by homeowners"
         subtitle="Real reviews from verified LocalHero bookings — every one tied to a completed job."
       />
-      <Swiper
-        className="mt-8 md:mt-14"
-        modules={[Autoplay, Pagination]}
-        slidesPerView={1}
-        slidesPerGroup={1}
-        spaceBetween={24}
-        loop={false}
-        speed={700}
-        autoplay={{
-          delay: 1000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        }}
-        pagination={{ clickable: true, el: '.testimonials-pagination' }}
-        breakpoints={{
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 },
-        }}
-        wrapperClass="!items-stretch"
-      >
-        {!isLoading &&
-          testimonials.map((t) => (
+
+      {isLoading ? (
+        <div className="mt-8 md:mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="h-64 animate-pulse rounded-2xl border border-neutral-200 bg-neutral-200/60 dark:border-white/10 dark:bg-white/5"
+            />
+          ))}
+        </div>
+      ) : (
+        <Swiper
+          className="mt-8 md:mt-14"
+          modules={[Autoplay, Pagination]}
+          slidesPerView={1}
+          slidesPerGroup={1}
+          spaceBetween={24}
+          loop={testimonials.length > 3}
+          speed={600}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          pagination={{ clickable: true, el: '.testimonials-pagination' }}
+          breakpoints={{
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          wrapperClass="!items-stretch"
+        >
+          {testimonials.map((t) => (
             <SwiperSlide key={t.id} className="!h-auto">
               <TestimonialCard t={t} />
             </SwiperSlide>
           ))}
-      </Swiper>
+        </Swiper>
+      )}
 
-      <div className="testimonials-pagination  flex items-center justify-center gap-2 mt-6 md:mt-8" />
+      <div className="testimonials-pagination flex items-center justify-center gap-2 mt-6 md:mt-8" />
     </section>
   );
 };

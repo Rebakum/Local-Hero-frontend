@@ -121,9 +121,10 @@ export const ServiceDetailsPage: React.FC = () => {
 
       {/* Trade context bar */}
       <div className="container-lh -mt-8 relative z-10">
-        <div className="bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 rounded-3xl shadow-lg px-6 py-5 flex flex-wrap items-center gap-x-8 gap-y-3">
+        <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white px-6 py-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-wrap items-center gap-x-8 gap-y-3">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+            <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
               <Wrench size={20} />
             </div>
             <div>

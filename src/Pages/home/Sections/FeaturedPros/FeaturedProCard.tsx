@@ -14,10 +14,11 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
 
   return (
     <article
-      className="group relative rounded-2xl bg-white dark:bg-navy-800
-        overflow-hidden flex flex-col w-full shadow-lg border border-neutral-200 transition-all duration-300
-        hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10"
+      className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-soft transition-all duration-300
+        hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900
+        dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-col w-full"
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
      
       <div className="relative w-full h-64 sm:h-72 overflow-hidden bg-slate-950">
         <img
@@ -38,7 +39,7 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
         {/* Rating — floating glass badge, top-left */}
         <div className="absolute top-3 left-3 z-20 flex items-center gap-1 rounded-full
           bg-black/50 backdrop-blur-md border border-white/10 px-2.5 py-1">
-          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
+          <Star className="w-3.5 3 fill-amber-400 text-amber-400 shrink-0" />
           <span className="text-xs font-bold text-white">{rating}</span>
         </div>
 
@@ -64,7 +65,7 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
 
       {/* Location strip */}
       <div className="px-4 pt-3 pb-1 flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
-        <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+        <MapPin className="w-3.5 3 text-slate-400 dark:text-slate-500 shrink-0" />
         <span className="truncate">{pro.location || 'N/A'}</span>
       </div>
 
@@ -77,7 +78,7 @@ export const ProCard: React.FC<{ pro: Professional }> = ({ pro }) => {
             hover:shadow-lg hover:shadow-red-600/30 hover:bg-red-700"
         >
           <span>Visit Profile</span>
-          <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+          <ArrowRight className="w-3.5 3 group-hover/btn:translate-x-1 transition-transform" />
         </Link>
       </div>
     </article>

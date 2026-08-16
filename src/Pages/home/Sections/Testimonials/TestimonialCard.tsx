@@ -13,7 +13,8 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
   const isDemo = isDemoTestimonial(t);
 
   return (
-    <figure className="group relative h-full rounded-3xl bg-white dark:bg-navy-800 p-5 sm:p-7 flex flex-col overflow-hidden shadow-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl dark:border-white/10">
+    <figure className="group relative h-full mt-5 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-col">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <Quote className="absolute -top-2 right-5 w-16 h-16 text-primary/[0.06] dark:text-primary/10 rotate-180" />
 
       {isDemo && (
@@ -36,7 +37,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
         <img
           src={avatar}
           alt={t.author}
-          className="w-11 h-11 rounded-full object-cover ring-2 ring-white dark:ring-navy-900 shadow-sm"
+          className="w-11 h-11 rounded-full object-cover ring-2 ring-white dark:ring-navy-900 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:ring-primary/40 group-hover:shadow-glow"
         />
         <div className="min-w-0">
           <div className="font-heading text-sm font-extrabold text-navy-950 dark:text-white truncate">

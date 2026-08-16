@@ -258,7 +258,7 @@ const Moderation: React.FC = () => {
                             disabled={actionLoading === item.id}
                             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500 text-white text-xs font-bold hover:bg-emerald-600 transition-all duration-200 disabled:opacity-50 shadow-sm shadow-emerald-500/25"
                           >
-                            {actionLoading === item.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
+                            {actionLoading === item.id ? <Loader2 className="w-3.5 3 animate-spin" /> : <Check className="w-3.5 3" />}
                             Approve
                           </button>
                           <button
@@ -266,7 +266,7 @@ const Moderation: React.FC = () => {
                             disabled={actionLoading === item.id}
                             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-200 disabled:opacity-50"
                           >
-                            <X className="w-3.5 h-3.5" />
+                            <X className="w-3.5 3" />
                             Remove
                           </button>
                         </div>

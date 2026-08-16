@@ -102,7 +102,7 @@ export const ConfirmStep: React.FC<ConfirmStepProps> = ({
         <div className="flex justify-between text-navy-500 dark:text-navy-300">
           <span>Protection</span>
           <span className="font-bold text-primary flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5" /> £2M insurance included
+            <ShieldCheck className="w-3.5 3" /> £2M insurance included
           </span>
         </div>
       </div>
@@ -120,7 +120,7 @@ export const ConfirmStep: React.FC<ConfirmStepProps> = ({
           disabled={isSubmitting}
           className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-500 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white disabled:opacity-50"
         >
-          <ArrowLeft className="w-3.5 h-3.5" /> Back
+          <ArrowLeft className="w-3.5 3" /> Back
         </button>
         <button type="submit" disabled={isSubmitting} className="btn btn-primary px-8 py-4 text-base disabled:opacity-60">
           <Wrench className="w-4 h-4" />

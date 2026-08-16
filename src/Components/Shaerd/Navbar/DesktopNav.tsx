@@ -31,9 +31,9 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
         <NotificationBell atTop={atTop} variant="chip" />
         <button
           onClick={() => openBooking()}
-         className="btn btn-primary px-8 py-3.5 text-base "
+         className="btn btn-primary px-7 py-3 text-base "
         >
-          <Wrench className="w-4 h-4" />
+          <Wrench className="w-3 h-3" />
           <span>Post a Job</span>
         </button>
 
