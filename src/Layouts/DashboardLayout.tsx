@@ -1,6 +1,6 @@
 import React from 'react';
-import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { Outlet, useNavigate, useLocation, NavLink } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   LogOut,
   LayoutDashboard,
@@ -24,6 +24,7 @@ import {
   Bell,
   MessageSquareText,
   Tag,
+  Loader2,
 } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { logoutUser } from '../services/auth.service';
@@ -142,13 +143,52 @@ const DashboardLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
 
+  // Full-screen splash — ONLY on the very first mount of the dashboard shell
+  // (e.g. first load / hard refresh). Sidebar-to-sidebar navigation never
+  // remounts this layout, so this never fires again after that.
+  const [initialLoading, setInitialLoading] = React.useState(true);
   React.useEffect(() => {
-    setLoading(true);
-    const t = setTimeout(() => setLoading(false), 500);
+    const t = setTimeout(() => setInitialLoading(false), 500);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Lightweight, MAIN-CONTENT-ONLY loader for link-to-link navigation
+  // (e.g. Trades -> Notifications). Sidebar + header stay fully visible
+  // and interactive; only the content area shows a brief spinner while
+  // the new page mounts.
+  const isFirstRender = React.useRef(true);
+  const [contentLoading, setContentLoading] = React.useState(false);
+  React.useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setContentLoading(true);
+    const t = setTimeout(() => setContentLoading(false), 300);
     return () => clearTimeout(t);
   }, [location.pathname]);
+
+  // Close the mobile sidebar automatically once the viewport crosses into
+  // the desktop breakpoint, so it doesn't stay "open" in state.
+  React.useEffect(() => {
+    const mql = window.matchMedia('(min-width: 1024px)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setSidebarOpen(false);
+    };
+    mql.addEventListener('change', handleChange);
+    return () => mql.removeEventListener('change', handleChange);
+  }, []);
+
+  // Close the mobile sidebar on Escape.
+  React.useEffect(() => {
+    if (!sidebarOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSidebarOpen(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [sidebarOpen]);
 
   const links = user ? ROLE_SIDEBAR_LINKS[user.role] : ROLE_SIDEBAR_LINKS.user;
 
@@ -163,16 +203,22 @@ const DashboardLayout: React.FC = () => {
     }
   };
 
-
   const logoSrc = theme === 'dark' ? '/logoBlack/logo4.png' : '/logoWhite/logo.png';
 
   const initials = user?.name
-    ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+    ? user.name
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((n) => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2) || 'U'
     : 'U';
 
   return (
     <div className="min-h-screen bg-cream-50 dark:bg-navy-950 font-body text-navy-800 dark:text-navy-200 transition-colors duration-300">
-      {loading && <DashboardLoading />}
+      {initialLoading && <DashboardLoading />}
       {/* Top Navbar */}
       <motion.header
         initial={{ y: -60, opacity: 0 }}
@@ -184,6 +230,8 @@ const DashboardLayout: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
+              aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+              aria-expanded={sidebarOpen}
               className="lg:hidden p-2 rounded-lg hover:bg-navy-100 dark:hover:bg-white/10 transition-colors"
             >
               <ChevronLeft className={`w-5 h-5 transition-transform ${sidebarOpen ? 'rotate-180' : ''}`} />
@@ -241,7 +289,6 @@ const DashboardLayout: React.FC = () => {
                     <p className="truncate text-xs text-navy-500 dark:text-navy-400">{user?.email}</p>
                   </div>
                 </div>
-                
               </div>
             </div>
 
@@ -257,14 +304,31 @@ const DashboardLayout: React.FC = () => {
         </div>
       </motion.header>
 
-      <div className="container-lh flex gap-6 py-6 sm:py-8 md:py-10">
-        {/* Sidebar */}
+      <div className="container-lh flex gap-6 py-6 sm:py-8 md:py-10 relative">
+        {/* Mobile backdrop — click to close sidebar */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+              aria-hidden="true"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Sidebar — never shows a loading state, always stays interactive */}
         <aside
-          className={`w-64 shrink-0 space-y-2 ${
-            sidebarOpen ? 'block' : 'hidden'
+          className={`w-64 shrink-0 space-y-2 z-40 ${
+            sidebarOpen
+              ? 'fixed inset-y-0 left-0 overflow-y-auto bg-cream-50 dark:bg-navy-950 p-4 shadow-2xl lg:static lg:p-0 lg:shadow-none'
+              : 'hidden'
           } lg:block`}
         >
-          <nav className="sticky top-24 space-y-1">
+          <nav className="lg:sticky lg:top-24 space-y-1">
             {links.map((link) => (
               <NavLink
                 key={link.to}
@@ -272,7 +336,7 @@ const DashboardLayout: React.FC = () => {
                 end={link.exact}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `group flex items-center gap-3 px-3 py-2.5   rounded-2xl text-sm font-medium transition-all duration-200 ${
+                  `group flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-200 ${
                     isActive
                       ? 'bg-primary/10 text-primary dark:bg-white/10 dark:text-white border border-red-200 dark:border-white/10'
                       : 'text-navy-600 dark:text-navy-400 hover:bg-primary/10 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white border border-transparent'
@@ -290,8 +354,14 @@ const DashboardLayout: React.FC = () => {
           </nav>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 min-w-0">
+        {/* Main Content — the ONLY area that shows a loader on route change */}
+        <main className="flex-1 min-w-0 relative">
+          {contentLoading && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-cream-50/70 dark:bg-navy-950/70 backdrop-blur-sm">
+              <Loader2 className="w-7 h-7 animate-spin text-primary" />
+            </div>
+          )}
+
           {user?.role === 'serviceProvider' && !isApproved && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
