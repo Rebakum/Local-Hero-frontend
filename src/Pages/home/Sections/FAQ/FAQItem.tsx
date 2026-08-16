@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 interface FAQItemProps {
   question: string;
@@ -15,24 +15,34 @@ export const FAQItem: React.FC<FAQItemProps> = ({
   onToggle,
 }) => {
   return (
-    <div>
+    <div
+      className={`group relative w-full overflow-hidden rounded-2xl border transition-all duration-300 ${
+        isOpen
+          ? 'border-primary/40 bg-white shadow-card dark:border-primary/40 dark:bg-navy-900'
+          : 'border-neutral-200 bg-white shadow-soft hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/30'
+      }`}
+    >
+      <div
+        className={`pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-500 ${
+          isOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+        }`}
+      />
       <button
         onClick={onToggle}
-        className="group w-full py-5 px-3 -mx-3 rounded-xl flex items-center justify-between gap-4 text-left transition-colors duration-200 hover:bg-navy-50 dark:hover:bg-white/5"
+        aria-expanded={isOpen}
+        className="flex w-full items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5"
       >
-        <span className="font-heading font-bold text-[15px] leading-snug text-navy-950 transition-colors duration-200 group-hover:text-primary dark:text-white">
-          {question}
-        </span>
         <span
-          className={`shrink-0 w-8 h-8 rounded-full border border-navy-200 dark:border-white/15 flex items-center justify-center transition-all duration-300 group-hover:border-primary/40 group-hover:bg-primary/5 ${
-            isOpen ? 'rotate-180' : ''
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+            isOpen
+              ? 'rotate-45 bg-primary text-white shadow-glow'
+              : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white'
           }`}
         >
-          <ChevronDown
-            className={`w-4 h-4 transition-colors duration-300 ${
-              isOpen ? 'text-primary' : 'text-navy-400 dark:text-navy-300'
-            }`}
-          />
+          <Plus className="h-4 w-4" />
+        </span>
+        <span className="flex-1 font-heading text-lg font-bold leading-snug text-navy-950 transition-colors duration-200 group-hover:text-primary sm:text-xl dark:text-white dark:group-hover:text-primary">
+          {question}
         </span>
       </button>
       <div
@@ -41,7 +51,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({
         }`}
       >
         <div className="overflow-hidden">
-          <p className="pb-5 text-sm leading-relaxed text-navy-600 dark:text-navy-300">
+          <p className="px-5 pb-5 pl-[4.25rem] pr-6 text-lg leading-relaxed text-navy-800 sm:px-6 sm:pl-[4.25rem] sm:text-base dark:text-navy-300">
             {answer}
           </p>
         </div>

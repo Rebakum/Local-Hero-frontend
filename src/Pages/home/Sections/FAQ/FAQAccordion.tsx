@@ -1,4 +1,5 @@
 import React from 'react';
+import { SearchX } from 'lucide-react';
 import { FAQItem } from './FAQItem';
 
 interface FAQEntry {
@@ -23,12 +24,12 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
   onClearSearch,
 }) => {
   return (
-    <div className="mt-8 group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white px-6 md:px-8 divide-y divide-navy-100 dark:divide-white/10 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+    <div className="mt-8 space-y-3 md:mt-10">
       {items.length === 0 && (
-        <div className="py-14 text-center">
-          <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">
-            No results for &quot;{query}&quot;  try another search term.
+        <div className="rounded-2xl border border-neutral-200 bg-white px-6 py-12 text-center shadow-soft dark:border-white/10 dark:bg-navy-900">
+          <SearchX size={28} className="mx-auto text-primary" />
+          <p className="mt-4 text-sm font-semibold text-navy-500 dark:text-navy-300">
+            No results for &quot;{query}&quot; — try another search term.
           </p>
           <button
             onClick={onClearSearch}

@@ -45,7 +45,7 @@ export const FAQ: React.FC = () => {
         />
 
         <Reveal delay={0.1}>
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto ">
             {/* Search */}
             <div className="relative mx-auto mt-8 md:mt-10 max-w-lg">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navy-400" />

@@ -22,7 +22,7 @@ export const RootLayout: React.FC = () => {
     <ThemeProvider>
       <BookingProvider>
         <SmoothScroll>
-          <div className="min-h-screen bg-cream-100 dark:bg-navy-950 font-body text-navy-800 dark:text-navy-200 overflow-x-hidden transition-colors duration-300">
+          <div className="min-h-screen bg-cream-100 dark:bg-navy-950 font-body text-navy-800 dark:text-navy-200 overflow-x-clip transition-colors duration-300">
             <LoadingSplash />
             <Navbar />
             <main>
