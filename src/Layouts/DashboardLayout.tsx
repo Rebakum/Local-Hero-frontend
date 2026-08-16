@@ -225,9 +225,7 @@ const DashboardLayout: React.FC = () => {
             <RouterLink to="/" className="flex items-center shrink-0">
               <ThemeLogo className="h-8 w-auto select-none" />
             </RouterLink>
-            <Badge variant={ROLE_BADGE_VARIANT[user?.role || 'user']} className="hidden sm:inline-flex">
-              {ROLE_LABELS[user?.role || 'user']}
-            </Badge>
+           
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -273,6 +271,7 @@ const DashboardLayout: React.FC = () => {
                       {user?.name || 'User'}
                     </p>
                     <p className="truncate text-xs text-navy-500 dark:text-navy-400">{user?.email}</p>
+                  <p className="text-xs text-navy-500 dark:text-navy-400">{user?.role}</p>
                   </div>
                 </div>
               </div>
