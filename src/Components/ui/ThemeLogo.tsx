@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTheme } from "../../Context/ThemeContext";
 
 type LogoVariant = "default" | "modal";
+
+type Device = "mobile" | "tablet" | "desktop";
 
 interface ThemeLogoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   variant?: LogoVariant;
   isTransparent?: boolean;
   isDarkHero?: boolean;
   alt?: string;
+}
+
+function getDevice(): Device {
+  if (typeof window === "undefined") return "desktop";
+  const w = window.innerWidth;
+  if (w < 768) return "mobile";
+  if (w < 1024) return "tablet";
+  return "desktop";
 }
 
 export const ThemeLogo: React.FC<ThemeLogoProps> = ({
@@ -19,6 +29,13 @@ export const ThemeLogo: React.FC<ThemeLogoProps> = ({
   ...props
 }) => {
   const { theme } = useTheme();
+  const [device, setDevice] = useState<Device>(getDevice);
+
+  useEffect(() => {
+    const onResize = () => setDevice(getDevice());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   const isDark = isTransparent ? isDarkHero : theme === "dark";
 
@@ -35,27 +52,25 @@ export const ThemeLogo: React.FC<ThemeLogoProps> = ({
     );
   }
 
-  // Dark theme -> logoBlack/ folder, Light theme -> logoWhite/ folder
-  const mobileSrc = isDark ? "/logoBlack/logo4.png" : "/logoWhite/logo.png";
-  const tabletSrc = isDark ? "/logoBlack/logo5.png" : "/logoWhite/logo2.png";
-  const desktopSrc = isDark ? "/logoBlack/logo3.png" : "/logoWhite/logo1.png";
+  // Same device-aware mapping as the dashboard/navbar logo.
+  const logoSrc = (() => {
+    if (isDark) {
+      if (device === "mobile") return "/logoBlack/logo4.png";
+      if (device === "tablet") return "/logoBlack/logo5.png";
+      return "/logoBlack/logo3.png";
+    }
+    if (device === "mobile") return "/logoWhite/logo.png";
+    if (device === "tablet") return "/logoWhite/logo2.png";
+    return "/logoWhite/logo1.png";
+  })();
 
   return (
-    <picture>
-      {/* Desktop (min-width: 1024px) */}
-      <source media="(min-width: 1024px)" srcSet={desktopSrc} />
-
-      {/* Tablet (min-width: 768px) */}
-      <source media="(min-width: 768px)" srcSet={tabletSrc} />
-
-      {/* Mobile (default fallback) */}
-      <img
-        src={mobileSrc}
-        alt={alt}
-        className={className}
-        draggable={false}
-        {...props}
-      />
-    </picture>
+    <img
+      src={logoSrc}
+      alt={alt}
+      className={className}
+      draggable={false}
+      {...props}
+    />
   );
 };
