@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useNavigate, NavLink } from 'react-router-dom';
+import { Outlet, useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   LogOut,
@@ -29,6 +29,7 @@ import { useAuth } from '../Context/AuthContext';
 import { logoutUser } from '../services/auth.service';
 import { useTheme } from '../Context/ThemeContext';
 import { Link as RouterLink } from 'react-router-dom';
+import { DashboardLoading } from '../Components/ui/DashboardLoading';
 import type { UserRole } from '../types/auth';
 import { Badge } from '../Components/ui/shared/Badge';
 import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
@@ -139,7 +140,15 @@ const DashboardLayout: React.FC = () => {
   const { user, logout, isApproved } = useAuth();
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(t);
+  }, [location.pathname]);
 
   const links = user ? ROLE_SIDEBAR_LINKS[user.role] : ROLE_SIDEBAR_LINKS.user;
 
@@ -154,7 +163,8 @@ const DashboardLayout: React.FC = () => {
     }
   };
 
-  const logoSrc = theme === 'dark' ? '/logoBlack/logo3.png' : '/logoWhite/logo1.png';
+
+  const logoSrc = theme === 'dark' ? '/logoBlack/logo4.png' : '/logoWhite/logo.png';
 
   const initials = user?.name
     ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
@@ -162,6 +172,7 @@ const DashboardLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-cream-50 dark:bg-navy-950 font-body text-navy-800 dark:text-navy-200 transition-colors duration-300">
+      {loading && <DashboardLoading />}
       {/* Top Navbar */}
       <motion.header
         initial={{ y: -60, opacity: 0 }}
@@ -261,10 +272,10 @@ const DashboardLayout: React.FC = () => {
                 end={link.exact}
                 onClick={() => setSidebarOpen(false)}
                 className={({ isActive }) =>
-                  `group flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-200 ${
+                  `group flex items-center gap-3 px-3 py-2.5   rounded-2xl text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 border border-red-200 dark:border-red-500/20'
-                      : 'text-navy-600 dark:text-navy-400 hover:bg-navy-100 dark:hover:bg-white/5 border border-transparent'
+                      ? 'bg-primary/10 text-primary dark:bg-white/10 dark:text-white border border-red-200 dark:border-white/10'
+                      : 'text-navy-600 dark:text-navy-400 hover:bg-primary/10 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white border border-transparent'
                   }`
                 }
               >

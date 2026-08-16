@@ -3,6 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import { Loader2 } from 'lucide-react';
 import type { UserRole } from '../types/auth';
+import { LoadingSplash } from '../Components/ui';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -22,9 +23,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-cream-50 dark:bg-navy-950 flex items-center justify-center">
+      <div className="min-h-screen bg-cream-50 dark:bg-n
+      avy-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          <LoadingSplash
+          />
+          {/* <Loader2 className="w-8 h-8 text-primary animate-spin" /> */}
           <p className="text-sm text-navy-500 dark:text-navy-400">Loading...</p>
         </div>
       </div>

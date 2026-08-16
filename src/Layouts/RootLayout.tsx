@@ -20,8 +20,8 @@ export const RootLayout: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <BookingProvider>
         <SmoothScroll>
+          <BookingProvider>
           <div className="min-h-screen bg-cream-100 dark:bg-navy-950 font-body text-navy-800 dark:text-navy-200 overflow-x-clip transition-colors duration-300">
             <LoadingSplash />
             <Navbar />
@@ -33,8 +33,8 @@ export const RootLayout: React.FC = () => {
             <EmergencyModal />
             <ProDetailsModal />
           </div>
+          </BookingProvider>
         </SmoothScroll>
-      </BookingProvider>
     </ThemeProvider>
   );
 };
