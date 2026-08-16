@@ -74,22 +74,23 @@ export const SubscriptionPlans: React.FC = () => {
           maxWidth="max-w-2xl"
         />
 
-        <Stagger className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+        <Stagger className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           {PLANS.map((plan) => {
             const Icon = plan.icon;
             return (
               <StaggerItem key={plan.id} className="h-full">
                 <Reveal className="h-full">
                   <div
-                    className={`group relative flex flex-col h-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-white/10 p-7 sm:p-8 transition-all duration-300 shadow-soft ${
+                    className={`group relative flex flex-col h-full rounded-2xl border border-neutral-200 dark:border-white/10 px-7 sm:px-8 pb-7 sm:pb-8 transition-all duration-300 shadow-soft ${
                       plan.highlight
-                        ? 'bg-white dark:bg-navy-900 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)] md:-translate-y-2 hover:border-primary/40 hover:shadow-card'
-                        : 'bg-white dark:bg-navy-900 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:hover:border-primary/40 dark:hover:bg-navy-800'
+                        ? 'pt-14 sm:pt-16 bg-white dark:bg-navy-900 shadow-[0_20px_50px_-20px_rgba(220,38,38,0.35)] md:-translate-y-2 hover:border-primary/40 hover:shadow-card'
+                        : 'pt-7 sm:pt-8 bg-white dark:bg-navy-900 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:hover:border-primary/40 dark:hover:bg-navy-800'
                     }`}
                   >
-                    <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 rounded-t-2xl" />
+                    
                     {plan.highlight && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-heading font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-primary/30">
+                      <span className="absolute top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-heading font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg shadow-primary/30 whitespace-nowrap z-10">
                         Most Popular
                       </span>
                     )}

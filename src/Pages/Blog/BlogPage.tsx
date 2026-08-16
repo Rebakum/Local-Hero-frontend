@@ -167,49 +167,29 @@ export const BlogPage: React.FC = () => {
 
   return (
     <div className="page-top">
-      {/* ============ HERO ============ */}
-      <section className="relative overflow-hidden bg-black text-white">
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)',
-            backgroundSize: '26px 26px',
-          }}
+      {/* ============ PAGE HEADER ============ */}
+      <section className="container-lh section-pad pt-12 pb-4">
+        <SectionTitle
+          eyebrow="The LocalHero Blog"
+          badge={true}
+          title="Advice you can actually use"
+          subtitle="Practical guides, honest how-tos and news from the tradespeople you book — no jargon, no fluff."
+          align="center"
         />
-        <div className="grid-fade absolute inset-0" />
-        <div className="absolute -top-32 -right-24 w-[480px] h-[480px] rounded-full bg-primary/25 blur-[140px] pointer-events-none" />
-        <div className="absolute -bottom-40 -left-24 w-[420px] h-[420px] rounded-full bg-primary/10 blur-[140px] pointer-events-none" />
 
-        <div className="container-lh relative z-10 section-pad text-center">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
-              <PenLine className="w-3.5 3" />
-              The LocalHero Journal
-            </span>
-            <h1 className="mt-5 font-heading text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-[1.05]">
-              Home tips, pro advice &
-              <span className="block text-shimmer mt-1">trusted local trades</span>
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-sm sm:text-base text-white/60 font-medium leading-relaxed">
-              Practical guides written with vetted UK tradespeople — so you can
-              fix, maintain and upgrade your home with confidence.
-            </p>
-
-            {/* Search */}
-            <div className="mx-auto mt-8 max-w-md">
-              <div className="flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-5 py-3 backdrop-blur-md focus-within:border-primary/60 transition-colors">
-                <Search className="w-5 h-5 text-white/40" />
-                <input
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search articles…"
-                  className="flex-1 bg-transparent text-sm font-medium text-white placeholder:text-white/40 focus:outline-none"
-                />
-              </div>
-            </div>
-          </Reveal>
-        </div>
+        {/* Search */}
+        <Reveal delay={0.1}>
+          <div className="relative mx-auto mt-8 md:mt-10 max-w-lg">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navy-400" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search articles (e.g. boiler, plumbing, quotes)..."
+              className="input-lh pl-11! py-3.5"
+            />
+          </div>
+        </Reveal>
       </section>
 
       {/* ============ CATEGORY FILTER ============ */}
