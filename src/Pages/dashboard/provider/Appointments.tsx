@@ -1,11 +1,26 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
-import { Calendar, CalendarCheck, MapPin, PoundSterling, Loader2, AlertCircle } from 'lucide-react';
+import { Calendar, CalendarCheck, MapPin, PoundSterling, Loader2, AlertCircle, Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home, type LucideIcon } from 'lucide-react';
+import { TableCellText } from '../../../Components/ui/DataTable';
 import { DataTable, PageHeader, StatusBadge } from '../../../Components/ui';
 import { getProviderBookings, type BookingRecord } from '../../../services/booking.service';
 
 const formatPrice = (pence: number | null) =>
   pence == null ? '—' : `£${(pence / 100).toLocaleString('en-GB', { minimumFractionDigits: 2 })}`;
+
+const getTradeIcon = (trade: string): { icon: LucideIcon; tint: string } => {
+  const normalized = trade.toLowerCase();
+
+  if (normalized.includes('elect')) return { icon: Zap, tint: 'bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400' };
+  if (normalized.includes('clean')) return { icon: Sparkles, tint: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' };
+  if (normalized.includes('paint')) return { icon: Paintbrush, tint: 'bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400' };
+  if (normalized.includes('garden') || normalized.includes('land')) return { icon: Trees, tint: 'bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400' };
+  if (normalized.includes('carp') || normalized.includes('wood')) return { icon: Hammer, tint: 'bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400' };
+  if (normalized.includes('lock')) return { icon: Key, tint: 'bg-sky-100 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400' };
+  if (normalized.includes('roof')) return { icon: Home, tint: 'bg-violet-100 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400' };
+
+  return { icon: Wrench, tint: 'bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400' };
+};
 
 const Appointments: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
@@ -92,9 +107,19 @@ const Appointments: React.FC = () => {
             {
               key: 'booking',
               header: 'Service',
-              render: (b) => (
-                <p className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{b.trade}</p>
-              ),
+              render: (b) => {
+                const tradeIcon = getTradeIcon(b.trade);
+                const TradeIcon = tradeIcon.icon;
+
+                return (
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${tradeIcon.tint}`}>
+                      <TradeIcon className="h-4 w-4" />
+                    </div>
+                    <TableCellText className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{b.trade}</TableCellText>
+                  </div>
+                );
+              },
             },
             {
               key: 'customer',
@@ -107,14 +132,20 @@ const Appointments: React.FC = () => {
               ),
             },
             {
-              key: 'schedule',
-              header: 'Date & Time',
+              key: 'date',
+              header: 'Date',
+              render: (b) => (
+                <div className="text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                  {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </div>
+              ),
+            },
+            {
+              key: 'time',
+              header: 'Time',
               render: (b) => (
                 <div className="text-navy-500 dark:text-navy-400">
-                  <p>
-                    {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                  </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500">{b.timeSlot}</p>
+                  <p className="font-medium text-navy-700 dark:text-navy-200 whitespace-nowrap">{b.timeSlot}</p>
                 </div>
               ),
             },

@@ -108,7 +108,7 @@ const RegisterPage: React.FC = () => {
                 <img src="/logoBlack/logo3.png" alt="LocalHero" className="h-10 w-auto mx-auto hidden dark:block" />
               </RouterLink>
               <h1 className="text-2xl font-bold text-navy-900 dark:text-white">
-                Almost there!
+                Check your email
               </h1>
             </div>
 
@@ -117,13 +117,21 @@ const RegisterPage: React.FC = () => {
                 <MailCheck className="w-9 h-9 text-primary" />
               </div>
               <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
-                We've sent a verification link to{' '}
+                We sent a verification link to{' '}
                 <span className="font-semibold text-navy-700 dark:text-navy-200">{registeredEmail}</span>.
-                Check your inbox (and spam folder) and click the button to verify your email address.
+                Open the link to verify your email address.
               </p>
               <p className="text-xs text-navy-400 dark:text-navy-500">
-                This link expires in 30 minutes.
+                This link expires in 1 hour.
               </p>
+
+              <a
+                href={`mailto:${registeredEmail}`}
+                className="btn btn-primary w-full h-12 text-sm mt-3 inline-flex items-center justify-center"
+              >
+                <MailCheck className="w-4 h-4" />
+                Open Email
+              </a>
 
               <button
                 type="button"

@@ -103,11 +103,10 @@ const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
         <button
           type="button"
           onClick={handleBook}
-          className="group/btn flex shrink-0 items-center gap-1 rounded-full bg-primary px-5 py-2 text-[11px] font-semibold text-white transition-all duration-300 hover:gap-1.5 hover:bg-primary/90"
+          className="btn py-1 px-2 text-white text-[10px] bg-primary rounded-sm shrink-0"
         >
           Book Now
-          <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover/btn:translate-x-0.5" />
-        </button>
+                 </button>
       </div>
     </div>
   );
@@ -142,7 +141,7 @@ export default function ProfessionSlider({ pros, activePro, setActivePro }: Prof
   if (pros.length === 0) return null;
 
   return (
-    <div className="relative z-30 mb-2 md:mb-4">
+    <div className="relative z-30 ">
 
       <div className="container-lh relative">
       

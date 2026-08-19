@@ -1,19 +1,5 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
-import {
-  Wrench,
-  Zap,
-  Sparkles,
-  Paintbrush,
-  Trees,
-  Hammer,
-  Key,
-  Home,
-} from "lucide-react";
-
-const ICON_MAP: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
-  Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home,
-};
+import { ArrowRight, Wrench } from "lucide-react";
 
 interface CategoryCardProps {
   trade: any;
@@ -23,8 +9,7 @@ interface CategoryCardProps {
 export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) => {
   const tradeName = trade.category || '';
   const subtitle = trade.subtitle || 'Expert Home Service';
-  const iconKey = trade.iconName || 'Wrench';
-  const Icon = ICON_MAP[iconKey] || Wrench;
+  const iconUrl = trade.iconUrl || '';
 
   return (
     <button
@@ -34,7 +19,11 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) =
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
-        <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+        {iconUrl ? (
+          <img src={iconUrl} alt="" className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover" />
+        ) : (
+          <Wrench className="h-5 w-5 sm:h-6 sm:w-6" />
+        )}
       </div>
 
       <h3 className="mt-4 sm:mt-5 font-heading text-sm sm:text-base font-bold leading-snug text-navy-950 transition-colors duration-300 group-hover:text-primary dark:text-white text-center">

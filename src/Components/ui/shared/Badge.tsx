@@ -8,8 +8,8 @@ interface BadgeProps {
 }
 
 const VARIANT_CLASSES = {
-  primary: 'bg-primary/10 text-primary border-primary/20',
-  emergency: 'bg-red-600 text-white',
+  primary: 'bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/20',
+  emergency: 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20',
   success: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
   warning: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20',
   neutral: 'bg-navy-100 text-navy-600 dark:bg-white/10 dark:text-navy-300',

@@ -1,5 +1,5 @@
 import axiosInstance from '../lib/axiosInstance';
-import type { Professional, Trade, Profession, BeforeAfterPair, Testimonial, TradeCategory } from '../types';
+import type { Professional, Trade, Profession, BeforeAfterPair, Testimonial, TradeCategory, FeaturedService } from '../types';
 
 
 interface ApiEnvelope<T> {
@@ -64,25 +64,27 @@ export function normalizeProfessional(raw: Record<string, unknown>): Professiona
 
 export interface TradeInput {
   category: string;
-  subtitle?: string;
-  iconName?: string;
+  subtitle?: string | null;
+  iconUrl?: string | null;
   description?: string;
   avgHourlyRate?: string;
-  startingPrice?: string;
-  activeProsCount?: number;
+  startingPrice?: string | null;
   popularTasks?: string[];
-  badge?: string;
-  featuredService?: {
-    title: string;
-    estimatedPrice?: string;
-    timeEstimate?: string;
-    popularFor?: string;
-    description?: string;
-    included?: string[];
-    icon?: string;
-    image?: string;
-    isEmergency?: boolean;
-  };
+  badge?: string | null;
+  sortOrder?: number;
+  isActive?: boolean;
+}
+
+export interface FeaturedServiceInput {
+  tradeId: string;
+  title: string;
+  estimatedPrice?: string | null;
+  timeEstimate?: string | null;
+  popularFor?: string[];
+  description: string;
+  imageUrl?: string | null;
+  sortOrder?: number;
+  isActive?: boolean;
 }
 
 export interface ProfessionalInput {
@@ -133,6 +135,18 @@ export interface TestimonialInput {
   source?: string;
   professionalId?: string;
   bookingId?: string;
+  isApproved?: boolean;
+  isFeatured?: boolean;
+  moderationNote?: string | null;
+}
+
+export interface TestimonialQueryParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  isApproved?: 'true' | 'false';
+  isFeatured?: 'true' | 'false';
+  trade?: string;
 }
 
 // ---------- Trades ----------
@@ -154,6 +168,38 @@ export async function updateTrade(id: string, payload: TradeInput): Promise<Trad
 
 export async function deleteTrade(id: string): Promise<void> {
   await axiosInstance.delete(`/trades/${id}`);
+}
+
+// ---------- Featured Services ----------
+
+export async function getFeaturedServices(params?: {
+  page?: number;
+  limit?: number;
+  tradeId?: string;
+  search?: string;
+  isActive?: string;
+}): Promise<FeaturedService[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<FeaturedService[]>>('/featured-services', { params });
+  return data.data ?? [];
+}
+
+export async function getFeaturedServiceById(id: string): Promise<FeaturedService> {
+  const { data } = await axiosInstance.get<ApiEnvelope<FeaturedService>>(`/featured-services/${id}`);
+  return data.data;
+}
+
+export async function createFeaturedService(payload: FeaturedServiceInput): Promise<FeaturedService> {
+  const { data } = await axiosInstance.post<ApiEnvelope<FeaturedService>>('/featured-services', payload);
+  return data.data;
+}
+
+export async function updateFeaturedService(id: string, payload: FeaturedServiceInput): Promise<FeaturedService> {
+  const { data } = await axiosInstance.patch<ApiEnvelope<FeaturedService>>(`/featured-services/${id}`, payload);
+  return data.data;
+}
+
+export async function deleteFeaturedService(id: string): Promise<void> {
+  await axiosInstance.delete(`/featured-services/${id}`);
 }
 
 // ---------- Professions (Trade -> Profession) ----------
@@ -254,8 +300,8 @@ export async function deleteBeforeAfter(id: string): Promise<void> {
 
 // ---------- Testimonials ----------
 
-export async function getTestimonialsAdmin(): Promise<Testimonial[]> {
-  const { data } = await axiosInstance.get<ApiEnvelope<Testimonial[]>>('/testimonials');
+export async function getTestimonialsAdmin(params?: TestimonialQueryParams): Promise<Testimonial[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<Testimonial[]>>('/testimonials', { params });
   return data.data ?? [];
 }
 
@@ -269,7 +315,7 @@ export async function createTestimonial(payload: TestimonialInput): Promise<Test
   return data.data;
 }
 
-export async function updateTestimonial(id: string, payload: TestimonialInput): Promise<Testimonial> {
+export async function updateTestimonial(id: string, payload: Partial<TestimonialInput>): Promise<Testimonial> {
   const { data } = await axiosInstance.patch<ApiEnvelope<Testimonial>>(`/testimonials/${id}`, payload);
   return data.data;
 }

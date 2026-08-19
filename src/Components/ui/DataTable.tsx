@@ -75,6 +75,29 @@ const HIDE_CLASS: Record<'sm' | 'md' | 'lg', string> = {
   lg: 'hidden lg:table-cell',
 };
 
+export function TableCellText({
+  children,
+  className = '',
+  title,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  title?: string;
+}) {
+  const resolvedTitle = title ?? (typeof children === 'string' || typeof children === 'number' ? String(children) : undefined);
+
+  return (
+    <div className="min-w-0 max-w-full overflow-hidden">
+      <span
+        title={resolvedTitle}
+        className={`block max-w-full truncate whitespace-nowrap ${className}`}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
+
 export function DataTable<T>({
   columns,
   data,
@@ -247,38 +270,38 @@ export function DataTable<T>({
         />
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full table-auto text-sm">
             <thead>
-              <tr className="border-b border-navy-100 dark:border-white/10 bg-navy-50 dark:bg-navy-800/40">
+              <tr className="border-b border-navy-200/70 dark:border-white/10 bg-navy-50/60 dark:bg-navy-800/20">
                 {columns.map((col) => (
                   <th
                     key={col.key}
-                    className={`text-left py-3 px-5 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider ${col.hideOn ? HIDE_CLASS[col.hideOn] : ''} ${col.headerClassName ?? ''}`}
+                    className={`text-left py-3.5 px-5 font-semibold text-navy-600 dark:text-navy-300 text-[11px] uppercase tracking-[0.12em] whitespace-nowrap ${col.hideOn ? HIDE_CLASS[col.hideOn] : ''} ${col.headerClassName ?? ''}`}
                   >
                     {sortable ? (
                       <button
                         type="button"
                         onClick={() => handleSort(col.key)}
-                        className="inline-flex items-center gap-1 uppercase tracking-wider hover:text-navy-900 dark:hover:text-white transition-colors"
+                        className="group inline-flex items-center gap-1.5 hover:text-navy-900 dark:hover:text-white transition-colors"
                       >
-                        {col.header}
+                        <span>{col.header}</span>
                         {sortKey === col.key ? (
                           sortDir === 'asc' ? (
-                            <ChevronUp className="w-3.5 3 text-primary" />
+                            <ChevronUp className="w-3.5 h-3.5 text-primary" />
                           ) : (
-                            <ChevronDown className="w-3.5 3 text-primary" />
+                            <ChevronDown className="w-3.5 h-3.5 text-primary" />
                           )
                         ) : (
-                          <ChevronsUpDown className="w-3.5 3 opacity-40" />
+                          <ChevronsUpDown className="w-3.5 h-3.5 text-navy-300 dark:text-navy-600 opacity-0 transition-opacity group-hover:opacity-40" />
                         )}
                       </button>
                     ) : (
-                      col.header
+                      <span className="inline-block">{col.header}</span>
                     )}
                   </th>
                 ))}
                 {actions && (
-                  <th className="text-right py-3 px-5 font-semibold text-navy-600 dark:text-navy-300 text-xs uppercase tracking-wider">
+                  <th className="text-right py-3.5 px-5 font-semibold text-navy-600 dark:text-navy-300 text-[11px] uppercase tracking-[0.12em]">
                     Actions
                   </th>
                 )}
@@ -288,19 +311,29 @@ export function DataTable<T>({
               {visibleRows.map((row, i) => (
                 <tr
                   key={rowKey(row)}
-                  className={`border-b border-navy-100/60 dark:border-white/5 last:border-0 bg-white odd:bg-navy-50/50 dark:bg-navy-800/40 dark:odd:bg-white/[0.02] hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors ${rowClassName ? rowClassName(row) : ''}`}
+                  className={`group border-b border-navy-100/80 dark:border-white/5 last:border-0 bg-white odd:bg-navy-50/30 dark:bg-navy-800/30 dark:odd:bg-white/[0.02] hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-200 transform-gpu hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(15,23,42,0.06)] ${rowClassName ? rowClassName(row) : ''}`}
                 >
                   {columns.map((col) => (
                     <td
                       key={col.key}
-                      className={`py-3.5 px-5 ${col.hideOn ? HIDE_CLASS[col.hideOn] : ''} ${col.className ?? ''}`}
+                      className={`py-5 px-5 align-middle whitespace-nowrap min-w-0 max-w-full ${col.hideOn ? HIDE_CLASS[col.hideOn] : ''} ${col.className ?? ''}`}
                     >
-                      {col.render ? col.render(row, i) : String((row as Record<string, unknown>)[col.key] ?? '—')}
+                      {col.render ? (
+                        <div className="min-w-0 max-w-full overflow-hidden">{col.render(row, i)}</div>
+                      ) : (
+                        <TableCellText>{String((row as Record<string, unknown>)[col.key] ?? '—')}</TableCellText>
+                      )}
                     </td>
                   ))}
                   {actions && (
-                    <td className="py-3.5 px-5">
-                      <div className="flex items-center justify-end gap-2">{actions(row)}</div>
+                    <td className="py-5 px-5 align-middle">
+                      <div className="flex items-center justify-end gap-2">
+                        {(() => {
+                          const actionContent = actions(row);
+                          const childCount = React.Children.count(actionContent);
+                          return childCount > 0 ? actionContent : <span className="text-xs text-navy-400 dark:text-navy-500">—</span>;
+                        })()}
+                      </div>
                     </td>
                   )}
                 </tr>

@@ -42,7 +42,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   if (total === 0) return null;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 border-t border-navy-100 dark:border-white/10">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 border-t border-navy-200/70 dark:border-white/10 bg-navy-50/40 dark:bg-navy-900/20">
       <div className="flex flex-wrap items-center gap-3">
         {onPageSizeChange && (
           <label className="flex items-center gap-2 text-xs text-navy-400 dark:text-navy-500">

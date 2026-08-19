@@ -1,6 +1,5 @@
 import React from 'react';
 import { Star, Quote } from 'lucide-react';
-import { isDemoTestimonial } from '@/src/data/testimonials';
 import type { Testimonial } from '@/src/types';
 
 interface TestimonialCardProps {
@@ -10,18 +9,11 @@ interface TestimonialCardProps {
 export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
   const rating = Math.min(5, Math.max(1, Math.round(t.rating || 5)));
   const avatar = t.avatar || '/images/avatar-placeholder.svg';
-  const isDemo = isDemoTestimonial(t);
 
   return (
     <figure className="group relative h-full mt-5 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 flex flex-col">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <Quote className="absolute -top-2 right-5 w-16 h-16 text-primary/[0.06] dark:text-primary/10 rotate-180" />
-
-      {isDemo && (
-        <span className="absolute top-4 right-4 inline-flex items-center rounded-full bg-navy-100 dark:bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-navy-500 dark:text-navy-300">
-          Demo
-        </span>
-      )}
 
       <div className="relative flex items-center gap-1">
         {[...Array(rating)].map((_, i) => (

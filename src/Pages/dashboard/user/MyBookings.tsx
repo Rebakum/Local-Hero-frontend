@@ -10,7 +10,16 @@ import {
   TrendingUp,
   CreditCard,
   Ban,
+  Zap,
+  Sparkles,
+  Paintbrush,
+  Trees,
+  Hammer,
+  Key,
+  Home,
+  type LucideIcon,
 } from 'lucide-react';
+
 import { DataTable, PageHeader, StatusBadge } from '../../../Components/ui';
 import {
   getMyBookings,
@@ -18,6 +27,7 @@ import {
   type BookingRecord,
 } from '../../../services/booking.service';
 import { payForBooking } from '../../../services/payment.service';
+import { TableCellText } from '../../../Components/ui/DataTable';
 
 const STATUS_FILTERS = [
   { key: 'ALL', label: 'All Bookings' },
@@ -35,6 +45,29 @@ const formatPrice = (pence: number | null | undefined) =>
     : `£${(pence / 100).toLocaleString('en-GB', {
         minimumFractionDigits: 2,
       })}`;
+
+const getLocationLabel = (booking: BookingRecord) => {
+  const address = booking.address?.trim();
+  const firstLine = address ? address.split(',')[0].trim() : '';
+
+  if (firstLine) return firstLine;
+  if (booking.postcode?.trim()) return booking.postcode.trim();
+  return 'Location pending';
+};
+
+const getTradeIcon = (trade: string): { icon: LucideIcon; tint: string } => {
+  const normalized = trade.toLowerCase();
+
+  if (normalized.includes('elect')) return { icon: Zap, tint: 'bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400' };
+  if (normalized.includes('clean')) return { icon: Sparkles, tint: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' };
+  if (normalized.includes('paint')) return { icon: Paintbrush, tint: 'bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400' };
+  if (normalized.includes('garden') || normalized.includes('land')) return { icon: Trees, tint: 'bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400' };
+  if (normalized.includes('carp') || normalized.includes('wood')) return { icon: Hammer, tint: 'bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400' };
+  if (normalized.includes('lock')) return { icon: Key, tint: 'bg-sky-100 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400' };
+  if (normalized.includes('roof')) return { icon: Home, tint: 'bg-violet-100 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400' };
+
+  return { icon: Wrench, tint: 'bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400' };
+};
 
 const MyBookings: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
@@ -256,6 +289,17 @@ const MyBookings: React.FC = () => {
           data={filtered}
           rowKey={(booking) => booking.id}
           sortable
+          rowClassName={(booking) => {
+            if (booking.status === 'CANCELLED' || booking.status === 'REJECTED') {
+              return 'opacity-70 bg-red-50/30 dark:bg-red-500/5';
+            }
+
+            if (booking.status === 'ACCEPTED' || booking.status === 'IN_PROGRESS') {
+              return 'bg-primary/5 dark:bg-primary/10 border-l-4 border-l-primary shadow-[0_10px_18px_rgba(15,23,42,0.06)]';
+            }
+
+            return '';
+          }}
           emptyTitle="No bookings found"
           emptyDescription="Try adjusting your filters — or book a pro from the homepage."
           emptyIcon={
@@ -265,23 +309,28 @@ const MyBookings: React.FC = () => {
             {
               key: 'booking',
               header: 'Booking',
-              render: (booking) => (
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                    <Wrench className="w-4 h-4" />
-                  </div>
+              render: (booking) => {
+                const tradeIcon = getTradeIcon(booking.trade);
+                const TradeIcon = tradeIcon.icon;
 
-                  <div>
-                    <p className="font-semibold text-navy-800 dark:text-navy-200 capitalize">
-                      {booking.trade}
-                    </p>
+                return (
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${tradeIcon.tint}`}>
+                      <TradeIcon className="w-4 h-4" />
+                    </div>
 
-                    <p className="text-[11px] text-navy-400 dark:text-navy-500 font-mono">
-                      {booking.id.slice(0, 8).toUpperCase()}
-                    </p>
+                    <div className="min-w-0">
+                      <TableCellText className="font-semibold text-navy-800 dark:text-navy-200 capitalize">
+                        {booking.trade}
+                      </TableCellText>
+
+                      <TableCellText className="text-[11px] text-navy-400 dark:text-navy-500 font-mono">
+                        {booking.id.slice(0, 8).toUpperCase()}
+                      </TableCellText>
+                    </div>
                   </div>
-                </div>
-              ),
+                );
+              },
             },
 
             {
@@ -296,24 +345,27 @@ const MyBookings: React.FC = () => {
             },
 
             {
-              key: 'schedule',
-              header: 'Date & Time',
+              key: 'date',
+              header: 'Date',
               hideOn: 'sm',
               render: (booking) => (
-                <div className="text-navy-500 dark:text-navy-400">
-                  <p>
-                    {new Date(
-                      booking.bookingDate
-                    ).toLocaleDateString('en-GB', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </p>
+                <div className="text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                  {new Date(booking.bookingDate).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </div>
+              ),
+            },
 
-                  <p className="text-xs text-navy-400 dark:text-navy-500">
-                    {booking.timeSlot}
-                  </p>
+            {
+              key: 'time',
+              header: 'Time',
+              hideOn: 'md',
+              render: (booking) => (
+                <div className="text-navy-500 dark:text-navy-400">
+                  <p className="font-medium text-navy-700 dark:text-navy-200">{booking.timeSlot}</p>
                 </div>
               ),
             },
@@ -323,30 +375,23 @@ const MyBookings: React.FC = () => {
               header: 'Location',
               hideOn: 'lg',
               render: (booking) => (
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
-                  <MapPin className="w-3 h-3" />
-                  {booking.postcode}
+                <span className="inline-flex max-w-[11rem] items-center gap-1.5 rounded-lg bg-navy-100 dark:bg-white/5 px-2 py-1 text-xs text-navy-600 dark:text-navy-300">
+                  <MapPin className="w-3 h-3 shrink-0" />
+                  <span className="truncate">{getLocationLabel(booking)}</span>
                 </span>
               ),
             },
 
             {
-              key: 'price',
-              header: 'Price',
+              key: 'priceAndPayment',
+              header: 'Price & Payment',
               render: (booking) => (
-                <p className="font-semibold text-navy-800 dark:text-navy-200">
-                  {formatPrice(booking.priceInPence)}
-                </p>
-              ),
-            },
-
-            {
-              key: 'payment',
-              header: 'Payment',
-              render: (booking) => (
-                <StatusBadge
-                  status={booking.payment?.status ?? 'PENDING'}
-                />
+                <div className="space-y-2">
+                  <p className="font-semibold text-navy-800 dark:text-navy-200">
+                    {formatPrice(booking.priceInPence)}
+                  </p>
+                  <StatusBadge status={booking.payment?.status ?? 'PENDING'} />
+                </div>
               ),
             },
 
@@ -359,16 +404,17 @@ const MyBookings: React.FC = () => {
             },
           ]}
           actions={(booking) => {
-          
             const canPay =
               booking.status === 'ACCEPTED' &&
               booking.priceInPence != null &&
               booking.payment?.status !== 'PAID';
 
-           
             const canCancel =
-              booking.status === 'PENDING' ||
-              booking.status === 'ACCEPTED';
+              booking.status === 'PENDING' || booking.status === 'ACCEPTED';
+
+            if (!canPay && !canCancel) {
+              return <span className="text-xs text-navy-400 dark:text-navy-500">—</span>;
+            }
 
             return (
               <>
@@ -380,9 +426,9 @@ const MyBookings: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-white text-xs font-semibold hover:bg-primary/90 disabled:opacity-50 transition-colors"
                   >
                     {payingId === booking.id ? (
-                      <Loader2 className="w-3.5 3 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
-                      <CreditCard className="w-3.5 3" />
+                      <CreditCard className="w-3.5 h-3.5" />
                     )}
 
                     Pay now
@@ -397,9 +443,9 @@ const MyBookings: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
                   >
                     {cancellingId === booking.id ? (
-                      <Loader2 className="w-3.5 3 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
-                      <Ban className="w-3.5 3" />
+                      <Ban className="w-3.5 h-3.5" />
                     )}
 
                     Cancel

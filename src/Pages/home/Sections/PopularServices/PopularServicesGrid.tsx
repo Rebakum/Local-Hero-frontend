@@ -1,19 +1,7 @@
 import React from 'react';
 import { Stagger, StaggerItem } from '@/src/Components/ui/Reveal';
 import { PopularServiceCard } from './PopularServiceCard';
-
-interface Trade {
-  id: string;
-  featuredService?: {
-    image: string;
-    title: string;
-    description: string;
-    estimatedPrice: string;
-    timeEstimate: string;
-    included: string[];
-    isEmergency?: boolean;
-  };
-}
+import type { Trade } from '@/src/types';
 
 interface PopularServicesGridProps {
   trades: Trade[];

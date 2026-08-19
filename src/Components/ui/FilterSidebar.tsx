@@ -2,32 +2,13 @@ import React from 'react';
 import {
   LayoutGrid,
   SlidersHorizontal,
-  Wrench,
-  Zap,
-  Sparkles,
-  Paintbrush,
-  Trees,
-  Hammer,
-  Key,
-  Home,
 } from 'lucide-react';
-
-const TRADE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  Wrench,
-  Zap,
-  Sparkles,
-  Paintbrush,
-  Trees,
-  Hammer,
-  Key,
-  Home,
-};
 
 export interface FilterOption {
   value: string;
   label: string;
   count?: number;
-  iconName?: string;
+  iconUrl?: string;
 }
 
 interface FilterSidebarProps {
@@ -55,10 +36,15 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onClear,
   className = '',
 }) => {
-  const renderIcon = (iconName?: string, size = 15) => {
-    if (!iconName) return null;
-    const Icon = TRADE_ICONS[iconName] || Wrench;
-    return <Icon size={size} className="shrink-0" />;
+  const renderIcon = (iconUrl?: string) => {
+    if (!iconUrl) return <LayoutGrid size={15} className="shrink-0" />;
+    return (
+      <img
+        src={iconUrl}
+        alt=""
+        className="w-5 h-5 rounded-full object-cover shrink-0"
+      />
+    );
   };
 
   const buttonBase =
@@ -115,7 +101,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 className={`${buttonBase} ${isActive ? activeClass : idleClass}`}
               >
                 <span className="flex items-center gap-2.5">
-                  {renderIcon(opt.iconName)}
+                  {renderIcon(opt.iconUrl)}
                   {opt.label}
                 </span>
                 {opt.count !== undefined && (

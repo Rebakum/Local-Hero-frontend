@@ -171,16 +171,25 @@ const MyJobs: React.FC = () => {
               ),
             },
             {
-              key: 'schedule',
-              header: 'Date & Time',
+              key: 'date',
+              header: 'Date',
               hideOn: 'md',
               render: (b) => (
-                <div className="text-navy-500 dark:text-navy-400">
-                  <p className="inline-flex items-center gap-1.5">
-                    <Calendar className="w-3.5 3" />
+                <div className="text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5" />
                     {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                  </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">{b.timeSlot}</p>
+                  </span>
+                </div>
+              ),
+            },
+            {
+              key: 'time',
+              header: 'Time',
+              hideOn: 'lg',
+              render: (b) => (
+                <div className="text-navy-500 dark:text-navy-400">
+                  <p className="font-medium text-navy-700 dark:text-navy-200 whitespace-nowrap">{b.timeSlot}</p>
                 </div>
               ),
             },

@@ -26,15 +26,12 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
       className={`relative w-full mb-16 md:mb-32 min-h-[85vh] md:min-h-screen bg-navy-950 overflow-hidden flex flex-col justify-between ${className}`}
     >
       {/* 1. Background Image Layer — fills the ENTIRE section, no width/height constraint */}
-      <div className="absolute inset-0 pointer-events-none select-none z-0">
+      <div className="absolute pointer-events-none select-none z-0">
         <img
           src={image}
           alt={title}
           className={`w-full h-full ${objectFit === 'cover' ? 'object-cover' : 'object-contain'} object-top`}
-        />
-
-        {/* Multi-layer Overlays for perfect contrast & readability */}
-        <div className="absolute inset-0 bg-black/40" />
+        />      
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent" />
       </div>
 
@@ -54,7 +51,7 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
         <div className="w-full space-y-4">
           <div className="flex flex-wrap items-center gap-3">
             <span className="inline-flex items-center gap-1.5 bg-primary/90 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-white shadow-lg">
-              <Sparkles size={12} /> {tradeName}
+               {tradeName}
             </span>
             {isEmergency && (
               <span className="inline-flex items-center gap-1.5 bg-red-600/90 backdrop-blur-md px-3.5 py-1 text-xs font-bold text-white shadow-lg animate-pulse">

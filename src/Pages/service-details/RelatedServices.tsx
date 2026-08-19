@@ -21,7 +21,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
         </h2>
         <Stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {related.map((t) => {
-            const rs = t.featuredService;
+            const rs = t.featuredServices?.[0];
             if (!rs) return null;
 
             return (
@@ -36,15 +36,10 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
                   <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={rs.image}
+                      src={rs.imageUrl ?? ''}
                       alt={rs.title}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    {rs.isEmergency && (
-                      <span className="absolute left-3 top-3 rounded-full bg-red-600 px-3 py-1 text-[10px] font-bold text-white shadow-md">
-                        24/7 Emergency
-                      </span>
-                    )}
                   </div>
 
                   <div className="flex flex-1 flex-col p-6">
@@ -65,7 +60,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
                     </div>
 
                     <div className="mt-4 pt-2">
-                      <span className="flex items-center justify-center gap-2 text-xs font-bold text-white bg-primary hover:bg-primary/90 rounded-full px-4 py-2.5 transition group-hover:bg-primary">
+                      <span className="btn-primary w-full">
                         View Details <ArrowRight size={14} />
                       </span>
                     </div>

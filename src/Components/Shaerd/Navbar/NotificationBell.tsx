@@ -219,7 +219,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, varia
                   <Link
                     to="/login"
                     onClick={() => setOpen(false)}
-                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-xs font-semibold text-white shadow-glow transition-all duration-300 hover:bg-primary/90"
+                    className="btn-secondary mt-4"
                   >
                     Sign in
                   </Link>

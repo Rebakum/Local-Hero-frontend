@@ -118,7 +118,7 @@ export const ProDetailsModal: React.FC = () => {
         {selectedPro.portfolioImages && selectedPro.portfolioImages.length > 0 && (
           <div>
             <h4 className="text-xs font-heading font-bold text-navy-400 dark:text-navy-300 uppercase tracking-wider mb-2">
-              Recent completed UK jobs
+              Recent completed jobs
             </h4>
             <div className="grid grid-cols-2 gap-3">
               {selectedPro.portfolioImages.map((img, i) => (

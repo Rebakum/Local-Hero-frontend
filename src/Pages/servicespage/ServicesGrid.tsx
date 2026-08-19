@@ -23,19 +23,18 @@ const parseRate = (value: string): number => {
 };
 
 const tradeName = (trade: Trade): string =>
-  (trade.featuredService?.title as string | undefined) ?? trade.category;
+  (trade.featuredServices?.[0]?.title as string | undefined) ?? trade.category;
 
 const matchesSearch = (trade: Trade, search: string): boolean => {
-  const fs = (trade.featuredService ?? {}) as Partial<typeof trade.featuredService>;
+  const fs = (trade.featuredServices ?? [])[0];
   const haystack = [
     trade.category,
     trade.subtitle,
     trade.description,
     ...(trade.popularTasks ?? []),
-    fs.title,
-    fs.description,
-    fs.popularFor,
-    ...((fs.included as string[] | undefined) ?? []),
+    fs?.title,
+    fs?.description,
+    ...(fs?.popularFor ?? []),
   ]
     .filter(Boolean)
     .join(' ')
@@ -115,7 +114,7 @@ export const ServicesGrid: React.FC = () => {
         map.set(key, {
           value: key,
           label: trade.category || key,
-          iconName: trade.iconName,
+          iconUrl: trade.iconUrl ?? undefined,
           count: 1,
         });
       }

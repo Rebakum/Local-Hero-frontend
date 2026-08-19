@@ -20,7 +20,7 @@ export const Footer: React.FC = () => {
           />
           <a
             href="tel:+448009178020"
-            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity shrink-0 shadow-sm md:self-center"
+            className="btn-primary shrink-0 md:self-center"
           >
             <PhoneCall className="w-4 h-4 fill-current" />
             <span>0800 917 8020</span>

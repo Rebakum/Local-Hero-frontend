@@ -54,6 +54,7 @@ export interface Professional {
   insuranceInfo?: string;
   serviceAreas?: string[];
   yearsOfExperience?: number;
+  reviews?: ITestimonial[];
 }
 
 export interface ServiceItem {
@@ -95,6 +96,16 @@ export interface ITestimonial {
   avatar: string | null;
   source: string;
   sortOrder?: number;
+  isApproved?: boolean;
+  isFeatured?: boolean;
+  moderationNote?: string | null;
+  userId?: string | null;
+  professionalId?: string | null;
+  professional?: {
+    id: string;
+    name: string;
+    companyName: string;
+  } | null;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -138,36 +149,37 @@ export interface FAQItem {
   answer: string;
 }
 
-export interface TradeService {
+export interface FeaturedService {
   id: string;
+  tradeId: string;
   title: string;
-  estimatedPrice: string;
-  timeEstimate: string;
-  popularFor: string;
+  estimatedPrice?: string | null;
+  timeEstimate?: string | null;
+  popularFor: string[];
   description: string;
-  included: string[];
-  icon: string;
-  image: string;
-  isEmergency?: boolean;
+  imageUrl?: string | null;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Trade {
   id: string;
   category: string;
-  subtitle?: string;
-  iconName: string;
+  subtitle?: string | null;
+  iconUrl?: string | null;
   description: string;
   avgHourlyRate: string;
-  startingPrice?: string;
+  startingPrice?: string | null;
   activeProsCount: number;
   popularTasks: string[];
-  badge?: string;
-  featuredService?: TradeService;
-  rating?: number | string;
-  reviewsCount?: number;
-  features?: string[];
-  isActive?: boolean;
-  sortOrder?: number;
+  badge?: string | null;
+  featuredServices?: FeaturedService[];
+  sortOrder: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Profession {

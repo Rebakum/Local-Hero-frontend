@@ -38,10 +38,10 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
     return (
       <Link
         to="/login"
-        className="btn btn-outline px-7 py-3 dark:border-white/40 border-primary dark:text-white hover:bg-white hover:text-navy-950"
+        className="btn-secondary  "
       >
-        <LogIn className="w-3 h-3" />
-        Login
+        <LogIn  />
+        LOGIN
       </Link>
     );
   }

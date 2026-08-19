@@ -87,7 +87,6 @@ const UserDashboard: React.FC = () => {
               className="flex items-center gap-2 mb-2"
             >
             
-              <span className="text-sm font-medium text-navy-950">Welcome back,</span>
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, x: -12 }}
@@ -101,7 +100,7 @@ const UserDashboard: React.FC = () => {
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-2 text-sm text-navy-950 max-w-md leading-relaxed"
+              className="mt-2 text-sm text-navy-950 dark:text-white max-w-md leading-relaxed"
             >
               Manage your bookings, get quotes from trusted professionals, and track your service history all in one place.
             </motion.p>

@@ -1,13 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  ArrowUpRight, Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home,
-} from 'lucide-react';
+import { ArrowUpRight, Wrench } from 'lucide-react';
 import type { Trade } from '../../types';
-
-const TRADE_ICONS: Record<string, React.FC<any>> = {
-  Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home,
-};
 
 interface ServiceListRowProps {
   trade: Trade;
@@ -16,9 +10,9 @@ interface ServiceListRowProps {
 
 export const ServiceListRow: React.FC<ServiceListRowProps> = ({ trade, style }) => {
   const navigate = useNavigate();
-  const s = trade.featuredService;
-  if (!s) return null;
-  const Icon = TRADE_ICONS[trade.iconName] || Wrench;
+  const s = (trade.featuredServices ?? [])[0];
+  const title = s?.title ?? trade.category;
+  const image = s?.imageUrl ?? trade.iconUrl ?? '';
 
   return (
     <article
@@ -29,21 +23,24 @@ export const ServiceListRow: React.FC<ServiceListRowProps> = ({ trade, style }) 
       {/* Thumbnail */}
       <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-2xl sm:h-24 sm:w-32">
         <img
-          src={s.image}
+          src={s.imageUrl ?? ''}
           alt={s.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        {s.isEmergency && (
-          <span className="absolute left-2 top-2 rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-semibold text-white">
-            24/7
-          </span>
-        )}
       </div>
 
       {/* Content */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">
-          <Icon size={12} />
+          {trade.iconUrl ? (
+            <img
+              src={trade.iconUrl}
+              alt=""
+              className="w-4 h-4 rounded-full object-cover"
+            />
+          ) : (
+            <Wrench size={12} />
+          )}
           {trade.category}
         </div>
         <h3 className="mt-1 truncate text-lg font-bold text-navy-900 dark:text-white">
@@ -53,7 +50,7 @@ export const ServiceListRow: React.FC<ServiceListRowProps> = ({ trade, style }) 
           {s.description}
         </p>
         <div className="mt-2.5 flex flex-wrap gap-1.5">
-          {s.included.slice(0, 2).map((item) => (
+          {(s.popularFor ?? []).slice(0, 2).map((item) => (
             <span
               key={item}
               className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-navy-500 dark:bg-white/10 dark:text-navy-300"

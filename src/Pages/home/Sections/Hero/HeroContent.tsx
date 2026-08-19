@@ -18,7 +18,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({ itemVariant }) => {
     variants={itemVariant}
     className="font-heading text-[2rem]  sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.08] tracking-tight text-white"
   >
-    Trusted Local<span className="text-primary"> Pros </span><br/><span>Instantly.</span>
+    Trusted Local<span className="text-primary"> Pros </span><span>Instantly.</span>
   </motion.h1>
 
   <motion.p

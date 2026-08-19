@@ -69,7 +69,8 @@ export interface PendingUser {
 }
 
 export interface ProviderApplicationPayload {
-  trade: string;
+  tradeId: string;
+  professionId: string;
   companyName: string;
   bio: string;
   hourlyRate: number;

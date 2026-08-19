@@ -24,23 +24,20 @@ const parsePrice = (value?: string): number => {
 };
 
 const searchableText = (trade: Trade): string => {
-  const fs = trade.featuredService;
+  const fs = trade.featuredServices?.[0];
   return [
     trade.id,
     trade.category,
     trade.subtitle,
-    trade.iconName,
+    trade.iconUrl,
     trade.description,
     trade.avgHourlyRate,
-    trade.startingPrice,
     trade.badge,
     ...(trade.popularTasks ?? []),
-    ...(trade.features ?? []),
     fs?.title,
     fs?.description,
-    fs?.popularFor,
+    ...((fs?.popularFor as string[] | undefined) ?? []),
     fs?.estimatedPrice,
-    ...((fs?.included as string[] | undefined) ?? []),
   ]
     .filter(Boolean)
     .join(" ")
@@ -89,16 +86,12 @@ export const AllCategoriesPage: React.FC = () => {
         break;
       case "price-asc":
         list.sort(
-          (a, b) =>
-            parsePrice(a.startingPrice ?? a.avgHourlyRate) -
-            parsePrice(b.startingPrice ?? b.avgHourlyRate)
+          (a, b) => parsePrice(a.avgHourlyRate) - parsePrice(b.avgHourlyRate)
         );
         break;
       case "price-desc":
         list.sort(
-          (a, b) =>
-            parsePrice(b.startingPrice ?? b.avgHourlyRate) -
-            parsePrice(a.startingPrice ?? a.avgHourlyRate)
+          (a, b) => parsePrice(b.avgHourlyRate) - parsePrice(a.avgHourlyRate)
         );
         break;
       default:

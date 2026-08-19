@@ -25,6 +25,7 @@ import {
   MessageSquareText,
   Tag,
   Loader2,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { logoutUser } from '../services/auth.service';
@@ -97,6 +98,7 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard, color: 'green' },
     { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star, color: 'fuchsia' },
     { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench, color: 'red' },
+    { to: '/dashboard/admin/manage/services', label: 'Services', icon: Sparkles, color: 'teal' },
     { to: '/dashboard/admin/manage/professions', label: 'Professions', icon: Tag, color: 'purple' },
     { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
     { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
@@ -110,6 +112,7 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/super-admin/user-approvals', label: 'Provider Approvals', icon: Users, color: 'teal' },
     { to: '/dashboard/super-admin/users', label: 'User Management', icon: UserCheck, color: 'indigo' },
     { to: '/dashboard/admin/manage/trades', label: 'Trades', icon: Wrench, color: 'red' },
+    { to: '/dashboard/admin/manage/services', label: 'Services', icon: Sparkles, color: 'teal' },
     { to: '/dashboard/admin/manage/professions', label: 'Professions', icon: Tag, color: 'purple' },
     { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
     { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
@@ -180,6 +183,29 @@ const DashboardLayout: React.FC = () => {
   }, [sidebarOpen]);
 
   const links = user ? ROLE_SIDEBAR_LINKS[user.role] : ROLE_SIDEBAR_LINKS.user;
+  const allowedDashboardPaths = React.useMemo(() => new Set(links.map((link) => link.to)), [links]);
+
+  React.useEffect(() => {
+    if (!user) return;
+
+    const matchesAllowedDashboardPath =
+      location.pathname === '/dashboard' ||
+      [...allowedDashboardPaths].some((allowedPath) => location.pathname === allowedPath || location.pathname.startsWith(`${allowedPath}/`));
+
+    if (!matchesAllowedDashboardPath) {
+      const fallbackPath = user.role === 'ADMIN'
+        ? '/dashboard/admin'
+        : user.role === 'SUPER_ADMIN'
+          ? '/dashboard/super-admin'
+          : user.role === 'serviceProvider'
+            ? '/dashboard/provider'
+            : '/dashboard/user';
+
+      if (location.pathname !== fallbackPath) {
+        navigate(fallbackPath, { replace: true });
+      }
+    }
+  }, [allowedDashboardPaths, location.pathname, navigate, user]);
 
   const handleLogout = async () => {
     try {

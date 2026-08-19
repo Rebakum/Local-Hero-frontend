@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
 
       if (apiError.response?.status === 403) {
         setNeedsVerification(true);
-        setError('Please verify your email address before logging in.');
+        setError('Please verify your email address before signing in.');
       } else {
         setError(
           apiError.response?.data?.message || apiError.message || 'Login failed. Please try again.'

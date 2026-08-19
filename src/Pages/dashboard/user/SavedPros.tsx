@@ -96,29 +96,24 @@ const SavedPros: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 via-amber-400 to-orange-400 p-6 sm:p-8 text-white shadow-xl shadow-amber-500/20"
+        className="flex items-start justify-between gap-4"
       >
-        <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-white/10 blur-sm" />
-        <div className="absolute left-1/3 top-0 w-64 h-32 bg-white/5 blur-3xl rounded-full" />
-        <div className="relative z-10 flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <Bookmark className="w-4 h-4" />
-              </div>
-              <span className="text-sm font-medium text-white/80">Your Saved Pros</span>
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Bookmark className="w-4 h-4 text-primary" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Saved Professionals</h1>
-            <p className="mt-2 text-sm text-white/70 max-w-md leading-relaxed">
-              Quick access to your favourite service providers for fast rebooking.
-            </p>
+            <span className="text-sm font-medium text-navy-500 dark:text-navy-400">Your Saved Pros</span>
           </div>
-          <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
-            <Heart className="w-4 h-4 fill-white" />
-            <span className="text-sm font-medium">{professionals.length} Saved</span>
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Saved Professionals</h1>
+          <p className="mt-2 text-sm text-navy-500 dark:text-navy-400 max-w-md leading-relaxed">
+            Quick access to your favourite service providers for fast rebooking.
+          </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-white/0 via-white/30 to-white/0" />
+        <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-primary/10 text-primary border border-primary/20">
+          <Heart className="w-4 h-4 fill-primary" />
+          <span className="text-sm font-medium">{professionals.length} Saved</span>
+        </div>
       </motion.div>
 
       {/* Search */}
@@ -207,7 +202,7 @@ const SavedPros: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.3 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
             >
               <Card hover padding="md" className="h-full group relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -274,9 +269,9 @@ const SavedPros: React.FC = () => {
                         professionalId: pro.id,
                       })
                     }
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all duration-200 shadow-sm shadow-primary/25"
+                    className="btn-primary"
                   >
-                    <Calendar className="w-3.5 3" />
+                    <Calendar className="w-3.5 h-3.5" />
                     Book Now
                   </button>
                 </div>

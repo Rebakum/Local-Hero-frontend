@@ -35,12 +35,24 @@ export async function registerUser(credentials: RegisterCredentials): Promise<Au
   return data;
 }
 
-export async function verifyEmail(token: string): Promise<AuthUser> {
+export async function validateEmailToken(token: string): Promise<AuthUser> {
   const { data } = await axiosInstance.get<ApiEnvelope<{ user: AuthUser }>>(
     '/auth/verify-email',
     { params: { token } },
   );
   return data.data.user;
+}
+
+export async function confirmEmailVerification(token: string): Promise<AuthUser> {
+  const { data } = await axiosInstance.post<ApiEnvelope<{ user: AuthUser }>>(
+    '/auth/verify-email',
+    { token },
+  );
+  return data.data.user;
+}
+
+export async function verifyEmail(token: string): Promise<AuthUser> {
+  return confirmEmailVerification(token);
 }
 
 export async function resendVerificationEmail(email: string): Promise<void> {

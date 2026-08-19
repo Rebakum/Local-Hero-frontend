@@ -246,7 +246,13 @@ export const ProviderBookingDashboard: React.FC = () => {
                   <Calendar className="w-4 h-4 text-indigo-500" />
                   <span>
                     <strong>Scheduled:</strong>{" "}
-                    {new Date(booking.bookingDate).toLocaleDateString("en-GB")} ({booking.timeSlot})
+                    {new Date(booking.bookingDate).toLocaleDateString("en-GB")}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-indigo-500" />
+                  <span>
+                    <strong>Time:</strong> {booking.timeSlot}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">

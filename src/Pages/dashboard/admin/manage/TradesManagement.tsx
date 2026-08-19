@@ -19,87 +19,41 @@ import {
   type TradeInput,
 } from '../../../../services/content.service';
 import type { Trade } from '../../../../types';
-
-interface TradeFormValues {
-  category: string;
-  subtitle: string;
-  iconName: string;
-  description: string;
-  avgHourlyRate: string;
-  startingPrice: string;
-  activeProsCount: string;
-  popularTasks: string;
-  badge: string;
-  featuredTitle: string;
-  featuredPrice: string;
-  featuredTime: string;
-  featuredDescription: string;
-  featuredImage: string;
-}
-
-const defaultFormValues: TradeFormValues = {
-  category: '',
-  subtitle: '',
-  iconName: '',
-  description: '',
-  avgHourlyRate: '',
-  startingPrice: '',
-  activeProsCount: '',
-  popularTasks: '',
-  badge: '',
-  featuredTitle: '',
-  featuredPrice: '',
-  featuredTime: '',
-  featuredDescription: '',
-  featuredImage: '',
-};
+import {
+  defaultTradeFormValues as defaultFormValues,
+  parseCsvList,
+  tradeFormResolver,
+  type TradeFormValues,
+} from '../../../../lib/tradeSchema';
 
 const toFormValues = (trade: Trade): TradeFormValues => ({
   category: trade.category ?? trade.id ?? '',
   subtitle: trade.subtitle ?? '',
-  iconName: trade.iconName ?? '',
+  iconUrl: trade.iconUrl ?? '',
   description: trade.description ?? '',
   avgHourlyRate: trade.avgHourlyRate ?? '',
   startingPrice: trade.startingPrice ?? '',
-  activeProsCount: trade.activeProsCount != null ? String(trade.activeProsCount) : '',
   popularTasks: (trade.popularTasks ?? []).join(', '),
   badge: trade.badge ?? '',
-  featuredTitle: trade.featuredService?.title ?? '',
-  featuredPrice: trade.featuredService?.estimatedPrice ?? '',
-  featuredTime: trade.featuredService?.timeEstimate ?? '',
-  featuredDescription: trade.featuredService?.description ?? '',
-  featuredImage: trade.featuredService?.image ?? '',
+  sortOrder: String(trade.sortOrder ?? 0),
+  isActive: trade.isActive,
 });
 
 const toPayload = (values: TradeFormValues, original: Trade | null): TradeInput => {
-  const featuredTitle = values.featuredTitle.trim() || original?.featuredService?.title || values.category.trim();
-
-  return {
+  const base: TradeInput = {
     category: values.category.trim(),
     subtitle: values.subtitle.trim() || undefined,
-    iconName: values.iconName.trim() || undefined,
+    iconUrl: values.iconUrl || null,
     description: values.description.trim() || undefined,
     avgHourlyRate: values.avgHourlyRate.trim() || undefined,
     startingPrice: values.startingPrice.trim() || undefined,
-    activeProsCount: values.activeProsCount ? Number(values.activeProsCount) : undefined,
-    popularTasks: values.popularTasks
-      ? values.popularTasks
-          .split(',')
-          .map((t) => t.trim())
-          .filter(Boolean)
-      : [],
+    popularTasks: parseCsvList(values.popularTasks),
     badge: values.badge.trim() || undefined,
-    featuredService: {
-      title: featuredTitle,
-      estimatedPrice: values.featuredPrice.trim() || undefined,
-      timeEstimate: values.featuredTime.trim() || undefined,
-      description: values.featuredDescription.trim() || undefined,
-      included: original?.featuredService?.included ?? [],
-      icon: original?.featuredService?.icon ?? undefined,
-      image: values.featuredImage || original?.featuredService?.image || undefined,
-      isEmergency: original?.featuredService?.isEmergency ?? false,
-    },
+    sortOrder: values.sortOrder.trim() ? Number(values.sortOrder) : (original?.sortOrder ?? 0),
+    isActive: values.isActive,
   };
+
+  return base;
 };
 
 const TradesManagement: React.FC = () => {
@@ -124,9 +78,10 @@ const TradesManagement: React.FC = () => {
     formState: { errors },
   } = useForm<TradeFormValues>({
     defaultValues: defaultFormValues,
+    resolver: tradeFormResolver,
   });
 
-  const featuredImage = watch('featuredImage');
+  const tradeIcon = watch('iconUrl');
 
   const loadTrades = useCallback(async () => {
     setIsLoading(true);
@@ -391,13 +346,10 @@ const TradesManagement: React.FC = () => {
               {...register('subtitle')}
             />
             <Input
-              label="Icon name"
-              hint="lucide icon name, e.g. Wrench"
-              {...register('iconName')}
-            />
-            <Input
               label="Avg hourly rate"
+              required
               placeholder="e.g. £45 - £75/hr"
+              error={errors.avgHourlyRate?.message}
               {...register('avgHourlyRate')}
             />
             <Input
@@ -405,69 +357,65 @@ const TradesManagement: React.FC = () => {
               placeholder="e.g. From £85"
               {...register('startingPrice')}
             />
-            <Input
-              label="Active pros count"
-              type="number"
-              placeholder="e.g. 1420"
-              {...register('activeProsCount')}
-            />
+            <div>
+              <span className="block text-xs font-semibold text-navy-700 dark:text-navy-300">
+                Active pros count
+              </span>
+              <div className="mt-1.5 h-10 px-3.5 rounded-xl bg-navy-50 dark:bg-white/5 border border-navy-100 dark:border-white/10 text-sm font-semibold text-navy-500 dark:text-navy-400 flex items-center">
+                {editing ? (editing.activeProsCount ?? 0).toLocaleString() : 0}
+              </div>
+              <p className="text-xs text-navy-400 dark:text-navy-500 mt-1.5">
+                Read-only — auto-synced from approved professionals.
+              </p>
+            </div>
             <Input label="Badge" placeholder="e.g. 24/7 Emergency" {...register('badge')} />
+            <Input
+              label="Sort order"
+              type="number"
+              placeholder="e.g. 0"
+              error={errors.sortOrder?.message}
+              {...register('sortOrder')}
+            />
+            <label className="flex items-center gap-2.5 text-sm font-semibold text-navy-700 dark:text-navy-300">
+              <input
+                type="checkbox"
+                className="w-4 h-4 rounded border-navy-300 text-primary focus:ring-primary/30"
+                {...register('isActive')}
+              />
+              Active
+            </label>
+          </div>
+
+          <div className="mt-4">
+            <ImageUpload
+              label="Trade icon / image"
+              value={tradeIcon}
+              onChange={(v) => {
+                const url = Array.isArray(v) ? v[0] ?? '' : v;
+                setValue('iconUrl', url, { shouldValidate: true, shouldDirty: true });
+              }}
+              folder="trades"
+            />
           </div>
 
           <Textarea
             label="Description"
+            required
             placeholder="Short description of this trade"
+            error={errors.description?.message}
             className="mt-4"
             {...register('description')}
           />
 
           <Input
             label="Popular tasks"
+            required
             hint="Comma separated, e.g. Boiler Servicing, Leak Repair"
             placeholder="Boiler Servicing, Leak Repair"
+            error={errors.popularTasks?.message}
             className="mt-4"
             {...register('popularTasks')}
           />
-
-          <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10">
-            <p className="text-xs font-semibold text-navy-700 dark:text-navy-300 uppercase tracking-wider mb-3">
-              Featured service
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Service title"
-                placeholder="e.g. Emergency Boiler Repair"
-                {...register('featuredTitle')}
-              />
-              <Input
-                label="Estimated price"
-                placeholder="e.g. From £85"
-                {...register('featuredPrice')}
-              />
-              <Input
-                label="Time estimate"
-                placeholder="e.g. 1 - 2 Hours"
-                {...register('featuredTime')}
-              />
-            </div>
-            <Textarea
-              label="Service description"
-              placeholder="Describe this featured service"
-              className="mt-4"
-              {...register('featuredDescription')}
-            />
-            <div className="mt-4">
-              <ImageUpload
-                label="Service image"
-                value={featuredImage}
-                onChange={(v) => {
-                  const url = Array.isArray(v) ? v[0] ?? '' : v;
-                  setValue('featuredImage', url, { shouldValidate: true, shouldDirty: true });
-                }}
-                folder="trades"
-              />
-            </div>
-          </div>
         </form>
       </Modal>
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Plus, Pencil, Trash2, Search, Loader2, AlertCircle, MessageSquareQuote, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Loader2, AlertCircle, MessageSquareQuote, Star, EyeOff } from 'lucide-react';
 import {
   DataTable,
   Modal,
@@ -252,6 +252,17 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
         </div>
       )}
 
+      {!isLoading && testimonials.some((t) => t.isApproved === false) && (
+        <div className="flex items-start gap-2 px-4 py-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 text-sm text-amber-800 dark:text-amber-400">
+          <EyeOff className="w-4 h-4 shrink-0 mt-0.5" />
+          <p>
+            Some of your reviews are currently hidden by our moderation team. They will not be visible to
+            other users. If you have any questions, please{' '}
+            <a href="/contact" className="font-semibold underline underline-offset-2">contact support</a>.
+          </p>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
         <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
           {filtered.length} {filtered.length === 1 ? 'review' : 'reviews'}
@@ -318,6 +329,20 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
                 &ldquo;{t.comment}&rdquo;
               </span>
             ),
+          },
+          {
+            key: 'status',
+            header: 'Status',
+            hideOn: 'md',
+            render: (t) =>
+              t.isApproved === false ? (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400 text-[11px] font-semibold">
+                  <EyeOff className="w-3 h-3" />
+                  Hidden by moderation
+                </span>
+              ) : (
+                <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">Live</span>
+              ),
           },
           {
             key: 'verifiedJob',

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion } from 'motion/react';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../../Context/AuthContext';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
@@ -342,16 +343,16 @@ const SuperAdminDashboard: React.FC = () => {
                 { label: 'User Management', href: '/dashboard/super-admin/users', icon: Settings, color: 'text-primary' },
                 { label: 'Edit Profile', href: '/dashboard/profile', icon: Settings, color: 'text-navy-500' },
               ].map((action) => (
-                <a
+                <RouterLink
                   key={action.label}
-                  href={action.href}
+                  to={action.href}
                   className="flex items-center gap-3 p-3 rounded-xl text-sm font-semibold text-navy-600 dark:text-navy-400 hover:bg-navy-100 dark:hover:bg-white/5 hover:text-navy-900 dark:hover:text-white transition-all duration-200 group"
                 >
                   <div className="w-8 h-8 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <action.icon className={`w-4 h-4 ${action.color}`} />
                   </div>
                   {action.label}
-                </a>
+                </RouterLink>
               ))}
             </div>
           </Card>

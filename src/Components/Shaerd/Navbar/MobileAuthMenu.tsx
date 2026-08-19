@@ -31,7 +31,7 @@ export const MobileAuthMenu: React.FC<MobileAuthMenuProps> = ({ close }) => {
         <Link
           to="/login"
           onClick={close}
-          className="btn btn-primary w-full py-3 text-sm"
+          className="btn-secondary w-full"
         >
           <LogIn className="w-4 h-4" />
           Login to your account

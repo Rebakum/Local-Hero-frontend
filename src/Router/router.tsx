@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, type RouteObject } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import type { UserRole } from '../types/auth';
 import { RootLayout } from '../Layouts/RootLayout';
@@ -42,6 +42,7 @@ import Reviews from '../Pages/dashboard/provider/Reviews';
 import ProviderPayments from '../Pages/dashboard/provider/ProviderPayments';
 import Moderation from '../Pages/dashboard/admin/Moderation';
 import TradesManagement from '../Pages/dashboard/admin/manage/TradesManagement';
+import ServicesManagement from '../Pages/dashboard/admin/manage/ServicesManagement';
 import ProfessionsManagement from '../Pages/dashboard/admin/manage/ProfessionsManagement';
 import ProfessionalsManagement from '../Pages/dashboard/admin/manage/ProfessionalsManagement';
 import SubscriptionsManagement from '../Pages/dashboard/admin/manage/SubscriptionsManagement';
@@ -67,10 +68,9 @@ const USER_ROLES: UserRole[] = ['user'];
 const PROVIDER_ROLES: UserRole[] = ['serviceProvider'];
 const SUPER_ADMIN_ROLES: UserRole[] = ['SUPER_ADMIN'];
 
-interface ProtectedRouteEntry {
+interface DashboardRoleRoute {
   path: string;
-  roles: UserRole[];
-  element: ReactNode;
+  children: RouteObject[];
 }
 
 const publicRoutes = [
@@ -95,55 +95,72 @@ const authRoutes = [
   { path: '/reset-password', element: <ResetPasswordPage /> },
 ];
 
-const protectedRouteEntries: ProtectedRouteEntry[] = [
-  { path: 'user', roles: USER_ROLES, element: <UserDashboard /> },
-  { path: 'user/bookings', roles: USER_ROLES, element: <MyBookings /> },
-  { path: 'user/saved', roles: USER_ROLES, element: <SavedPros /> },
-  { path: 'user/reviews', roles: USER_ROLES, element: <UserReviews /> },
-  { path: 'user/quotes', roles: USER_ROLES, element: <MyQuotes /> },
-  { path: 'user/messages', roles: USER_ROLES, element: <UserMessages /> },
-  { path: 'user/notifications', roles: USER_ROLES, element: <UserNotifications /> },
-  { path: 'user/apply-provider', roles: USER_ROLES, element: <ProviderApplicationForm /> },
-
-  { path: 'provider', roles: PROVIDER_ROLES, element: <ProviderDashboard /> },
-  { path: 'provider/leads', roles: PROVIDER_ROLES, element: <Leads /> },
-  { path: 'provider/jobs', roles: PROVIDER_ROLES, element: <MyJobs /> },
-  { path: 'provider/appointments', roles: PROVIDER_ROLES, element: <Appointments /> },
-  { path: 'provider/messages', roles: PROVIDER_ROLES, element: <Messages /> },
-  { path: 'provider/reviews', roles: PROVIDER_ROLES, element: <Reviews /> },
-  { path: 'provider/quotes', roles: PROVIDER_ROLES, element: <ProviderQuotes /> },
-  { path: 'provider/notifications', roles: PROVIDER_ROLES, element: <ProviderNotifications /> },
-  { path: 'provider/subscription', roles: PROVIDER_ROLES, element: <ProviderSubscription /> },
-  { path: 'provider/payments', roles: PROVIDER_ROLES, element: <ProviderPayments /> },
-  { path: 'provider/providerPBooking', roles: PROVIDER_ROLES, element: <ProviderBookingDashboard /> },
-
-  { path: 'admin', roles: ADMIN_ROLES, element: <AdminDashboard /> },
-  { path: 'admin/approvals', roles: ADMIN_ROLES, element: <AdminApprovals /> },
-  { path: 'admin/notifications', roles: ADMIN_ROLES, element: <AdminNotifications /> },
-  { path: 'admin/moderation', roles: ADMIN_ROLES, element: <Moderation /> },
-  { path: 'admin/manage/trades', roles: ADMIN_ROLES, element: <TradesManagement /> },
-  { path: 'admin/manage/subscriptions', roles: ADMIN_ROLES, element: <SubscriptionsManagement /> },
-  { path: 'admin/manage/professions', roles: ADMIN_ROLES, element: <ProfessionsManagement /> },
-  { path: 'admin/manage/professionals', roles: ADMIN_ROLES, element: <ProfessionalsManagement /> },
-  { path: 'admin/manage/before-after', roles: ADMIN_ROLES, element: <BeforeAfterManagement /> },
-  { path: 'admin/manage/testimonials', roles: ADMIN_ROLES, element: <TestimonialsManagement /> },
-  { path: 'admin/manage/bookings', roles: ADMIN_ROLES, element: <BookingManagement /> },
-  { path: 'admin/manage/payments', roles: ADMIN_ROLES, element: <AdminPaymentHistory /> },
-
-  { path: 'super-admin', roles: SUPER_ADMIN_ROLES, element: <SuperAdminDashboard /> },
-  { path: 'super-admin/admin-approvals', roles: SUPER_ADMIN_ROLES, element: <SuperAdminApprovals /> },
-  { path: 'super-admin/user-approvals', roles: SUPER_ADMIN_ROLES, element: <SuperAdminProviderApprovals /> },
-  { path: 'super-admin/notifications', roles: SUPER_ADMIN_ROLES, element: <SuperAdminNotifications /> },
-  { path: 'super-admin/users', roles: SUPER_ADMIN_ROLES, element: <UserManagement /> },
-  { path: 'super-admin/system', roles: SUPER_ADMIN_ROLES, element: <SystemPage /> },
+const dashboardRoleRoutes: DashboardRoleRoute[] = [
+  {
+    path: 'user',
+    children: [
+      { index: true, element: <UserDashboard /> },
+      { path: 'bookings', element: <MyBookings /> },
+      { path: 'saved', element: <SavedPros /> },
+      { path: 'reviews', element: <UserReviews /> },
+      { path: 'quotes', element: <MyQuotes /> },
+      { path: 'messages', element: <UserMessages /> },
+      { path: 'notifications', element: <UserNotifications /> },
+      { path: 'apply-provider', element: <ProviderApplicationForm /> },
+    ],
+  },
+  {
+    path: 'provider',
+    children: [
+      { index: true, element: <ProviderDashboard /> },
+      { path: 'leads', element: <Leads /> },
+      { path: 'jobs', element: <MyJobs /> },
+      { path: 'appointments', element: <Appointments /> },
+      { path: 'messages', element: <Messages /> },
+      { path: 'reviews', element: <Reviews /> },
+      { path: 'quotes', element: <ProviderQuotes /> },
+      { path: 'notifications', element: <ProviderNotifications /> },
+      { path: 'subscription', element: <ProviderSubscription /> },
+      { path: 'payments', element: <ProviderPayments /> },
+      { path: 'providerPBooking', element: <ProviderBookingDashboard /> },
+    ],
+  },
+  {
+    path: 'admin',
+    children: [
+      { index: true, element: <AdminDashboard /> },
+      { path: 'approvals', element: <AdminApprovals /> },
+      { path: 'notifications', element: <AdminNotifications /> },
+      { path: 'moderation', element: <Moderation /> },
+      { path: 'manage/trades', element: <TradesManagement /> },
+      { path: 'manage/services', element: <ServicesManagement /> },
+      { path: 'manage/subscriptions', element: <SubscriptionsManagement /> },
+      { path: 'manage/professions', element: <ProfessionsManagement /> },
+      { path: 'manage/professionals', element: <ProfessionalsManagement /> },
+      { path: 'manage/before-after', element: <BeforeAfterManagement /> },
+      { path: 'manage/testimonials', element: <TestimonialsManagement /> },
+      { path: 'manage/bookings', element: <BookingManagement /> },
+      { path: 'manage/payments', element: <AdminPaymentHistory /> },
+    ],
+  },
+  {
+    path: 'super-admin',
+    children: [
+      { index: true, element: <SuperAdminDashboard /> },
+      { path: 'admin-approvals', element: <SuperAdminApprovals /> },
+      { path: 'user-approvals', element: <SuperAdminProviderApprovals /> },
+      { path: 'notifications', element: <SuperAdminNotifications /> },
+      { path: 'users', element: <UserManagement /> },
+      { path: 'system', element: <SystemPage /> },
+    ],
+  },
 ];
 
-const protectedRoutes: RouteObject[] = protectedRouteEntries.map(
-  ({ path, roles, element }) => ({
-    path,
-    element: <ProtectedRoute allowedRoles={roles}>{element}</ProtectedRoute>,
-  })
-);
+const protectedRoutes: RouteObject[] = dashboardRoleRoutes.map(({ path, children }) => ({
+  path,
+  element: <Outlet />,
+  children,
+}));
 
 export const router = createBrowserRouter([
   {

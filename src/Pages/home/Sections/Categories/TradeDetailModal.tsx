@@ -7,22 +7,9 @@ import {
   ShieldCheck,
   Star,
   Users,
+  Wrench,
   X,
 } from "lucide-react";
-import {
-  Wrench,
-  Zap,
-  Sparkles,
-  Paintbrush,
-  Trees,
-  Hammer,
-  Key,
-  Home,
-} from "lucide-react";
-
-const ICONS: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
-  Wrench, Zap, Sparkles, Paintbrush, Trees, Hammer, Key, Home,
-};
 
 interface TradeDetailModalProps {
   trade: any;
@@ -40,14 +27,13 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
   if (!trade) return null;
 
   const tradeName = trade.category || '';
-  const iconKey = trade.iconName || 'Wrench';
-  const Icon = ICONS[iconKey] || Wrench;
-  const rating = trade.rating || '4.9';
-  const reviewsCount = trade.reviewsCount || 240;
-  const startingPrice = trade.startingPrice || trade.avgHourlyRate || '£45/hr';
+  const iconUrl = trade.iconUrl || '';
+  const rating = '4.9';
+  const reviewsCount = 240;
+  const startingPrice = trade.avgHourlyRate || '£45/hr';
   const prosCount = trade.activeProsCount ?? 120;
   const description = trade.description || `Get matched with background-checked ${tradeName} experts in your area. Guaranteed fixed quotes with no hidden fees.`;
-  const features = trade.features || [
+  const features = [
     "DBS-checked & verified professionals",
     "Public liability insurance up to £2M",
     "Same-day emergency & scheduled options",
@@ -60,7 +46,11 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
       <div className="relative p-6 border-b border-navy-100 dark:border-white/10 flex items-start justify-between">
         <div className="flex items-center gap-4">
           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <Icon className="h-7 w-7" />
+            {iconUrl ? (
+              <img src={iconUrl} alt="" className="h-9 w-9 rounded-full object-cover" />
+            ) : (
+              <Wrench className="h-7 w-7" />
+            )}
           </div>
           <div>
             <div className="flex items-center gap-2">

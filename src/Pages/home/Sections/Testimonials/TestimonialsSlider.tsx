@@ -6,7 +6,6 @@ import 'swiper/css/pagination';
 import { getAllTestimonials } from '@/src/services/api';
 import { TestimonialCard } from './TestimonialCard';
 import { SectionTitle } from '@/src/Components/ui/SectionTitle';
-import { STATIC_TESTIMONIALS } from '@/src/data/testimonials';
 import type { Testimonial } from '@/src/types';
 
 export const TestimonialsSlider: React.FC = () => {
@@ -17,17 +16,14 @@ export const TestimonialsSlider: React.FC = () => {
     let cancelled = false;
     setIsLoading(true);
 
-    // Real approved customer reviews come from the API. Only when there are
-    // none (fresh deployment / empty database) do we fall back to clearly
-    // badged demo testimonials so the section is never empty. The two are
-    // never mixed together.
+    // Only real approved customer reviews from the API are shown. An empty
+    // database simply renders an empty (or hidden) section — no dummy reviews.
     getAllTestimonials()
       .then((data) => {
-        if (cancelled) return;
-        setTestimonials(data.length > 0 ? data : STATIC_TESTIMONIALS);
+        if (!cancelled) setTestimonials(data);
       })
       .catch(() => {
-        if (!cancelled) setTestimonials(STATIC_TESTIMONIALS);
+        if (!cancelled) setTestimonials([]);
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);

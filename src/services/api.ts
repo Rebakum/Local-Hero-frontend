@@ -6,7 +6,7 @@ import type {
   FAQItem,
 } from "../types";
 
-import { FEATURED_PROS, FAQS } from "../data/mockData";
+import { FAQS } from "../data/mockData";
 
 /* =========================================================
    TYPES
@@ -236,7 +236,8 @@ export async function getAllTrades(): Promise<
 
 /* =========================================================
    2. PROFESSIONALS
-   Currently using mock data
+   Backed by the real /professionals API. No mock fallback data —
+   an empty database returns an empty list.
 ========================================================= */
 
 export async function getProfessionals(params?: {
@@ -249,92 +250,46 @@ export async function getProfessionals(params?: {
   professionals: Professional[];
   meta?: PageMeta;
 }> {
-  await delay(100);
+  const queryParams = new URLSearchParams();
 
-  let filtered = [...FEATURED_PROS];
+  if (params?.page) queryParams.set("page", String(params.page));
+  if (params?.limit) queryParams.set("limit", String(params.limit));
+  if (params?.trade?.trim()) queryParams.set("trade", params.trade.trim());
+  if (params?.featured) queryParams.set("featured", "true");
+  if (params?.search?.trim()) queryParams.set("search", params.search.trim());
 
+  const query = queryParams.toString();
 
-
-  if (params?.featured) {
-    filtered = [...FEATURED_PROS];
-  }
-
-  /* =======================================================
-     TRADE FILTER
-  ======================================================= */
-
-  if (params?.trade?.trim()) {
-    const tradeQuery =
-      params.trade.trim().toLowerCase();
-
-    filtered = filtered.filter(
-      (professional) =>
-        professional.trade
-          .toLowerCase() === tradeQuery,
-    );
-  }
-
-  /* =======================================================
-     SEARCH FILTER
-  ======================================================= */
-
-  if (params?.search?.trim()) {
-    const query =
-      params.search.trim().toLowerCase();
-
-    filtered = filtered.filter(
-      (professional) =>
-        [
-          professional.name,
-          professional.trade,
-          professional.companyName,
-          professional.location,
-          professional.postcodeArea,
-          ...(professional.specialties ?? []),
-        ].some((value) =>
-          String(value ?? "")
-            .toLowerCase()
-            .includes(query),
-        ),
-    );
-  }
-
-  /* =======================================================
-     PAGINATION
-  ======================================================= */
-
-  const { items, meta } = paginate(
-    filtered,
-    params?.page,
-    params?.limit,
+  const response = await fetch(
+    `${API_BASE_URL}/professionals${query ? `?${query}` : ""}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
   );
+
+  const result = await parseResponse<Professional[]>(response);
 
   return {
-    professionals: items,
-    meta,
+    professionals: result.data ?? [],
+    meta: result.meta,
   };
 }
-export async function getProfessionalById(
-  id: string,
-): Promise<Professional> {
-  await delay(100);
 
-  const professional = FEATURED_PROS.find(
-    (item) => item.id === id,
-  );
+export async function getProfessionalById(id: string): Promise<Professional> {
+  const response = await fetch(`${API_BASE_URL}/professionals/${id}`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    credentials: "include",
+  });
 
-  if (!professional) {
-    throw new Error(
-      `Professional ${id} not found`,
-    );
-  }
+  const result = await parseResponse<Professional>(response);
 
-  return professional;
+  return result.data;
 }
 
-export async function getFeaturedProfessionals(): Promise<
-  Professional[]
-> {
+export async function getFeaturedProfessionals(): Promise<Professional[]> {
   const result = await getProfessionals({
     featured: true,
     page: 1,

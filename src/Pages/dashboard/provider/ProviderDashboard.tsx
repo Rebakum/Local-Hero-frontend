@@ -266,15 +266,25 @@ const ProviderDashboard: React.FC = () => {
             },
             {
               key: 'date',
-              header: 'Date & Time',
+              header: 'Date',
               hideOn: 'md',
               sortValue: (b) => new Date(b.bookingDate).getTime(),
               render: (lead) => (
-                <div className="text-xs text-navy-500 dark:text-navy-400">
+                <div className="text-xs text-navy-500 dark:text-navy-400 whitespace-nowrap">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="w-3 h-3" />
-                    {new Date(lead.bookingDate).toLocaleDateString('en-GB')} · {lead.timeSlot}
+                    {new Date(lead.bookingDate).toLocaleDateString('en-GB')}
                   </span>
+                </div>
+              ),
+            },
+            {
+              key: 'time',
+              header: 'Time',
+              hideOn: 'lg',
+              render: (lead) => (
+                <div className="text-xs text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                  {lead.timeSlot}
                 </div>
               ),
             },

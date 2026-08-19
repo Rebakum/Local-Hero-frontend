@@ -20,7 +20,7 @@ import {
   type BookingRecord,
   type BookingStatus,
 } from "../../../../services/booking.service";
-import { DataTable } from "../../../../Components/ui/DataTable";
+import { DataTable, StatusBadge } from "../../../../Components/ui";
 
 export const BookingManagement: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
@@ -103,43 +103,6 @@ export const BookingManagement: React.FC = () => {
     }
   };
 
-  const getStatusBadge = (status: BookingStatus) => {
-    switch (status) {
-      case "PENDING":
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-600 border border-amber-200">
-            <Clock className="w-3 h-3" /> Pending
-          </span>
-        );
-      case "ACCEPTED":
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600 border border-blue-200">
-            <CheckCircle2 className="w-3 h-3" /> Accepted
-          </span>
-        );
-      case "IN_PROGRESS":
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-600 border border-indigo-200">
-            <RefreshCw className="w-3 h-3 animate-spin" /> In Progress
-          </span>
-        );
-      case "COMPLETED":
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200">
-            <CheckCircle2 className="w-3 h-3" /> Completed
-          </span>
-        );
-      case "CANCELLED":
-      case "REJECTED":
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-600 border border-red-200">
-            <XCircle className="w-3 h-3" /> {status === "CANCELLED" ? "Cancelled" : "Rejected"}
-          </span>
-        );
-      default:
-        return null;
-    }
-  };
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
@@ -292,7 +255,7 @@ export const BookingManagement: React.FC = () => {
             key: 'status',
             header: 'Status',
             sortValue: (b) => b.status,
-            render: (b) => getStatusBadge(b.status),
+            render: (b) => <StatusBadge status={b.status} />,
           },
         ]}
         actions={(b) => (

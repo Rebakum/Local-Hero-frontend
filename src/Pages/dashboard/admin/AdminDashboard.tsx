@@ -16,8 +16,6 @@ import {
   X,
   Shield,
   MessageSquare,
-  Flag,
-  Star,
   AlertCircle,
   Wrench,
   UserRound,
@@ -25,6 +23,7 @@ import {
   ArrowRight,
   CreditCard,
   Activity,
+  Sparkles,
 } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -34,25 +33,12 @@ import {
 } from '../../../services/auth.service';
 import type { ProviderApplicationRecord } from '../../../types/auth';
 
-const MOCK_REVIEWS = [
-  { id: '1', author: 'John D.', service: 'Plumbing', rating: 5, comment: 'Excellent work, very professional.', flagged: false },
-  { id: '2', author: 'Lisa M.', service: 'Cleaning', rating: 2, comment: 'Late arrival and missed spots.', flagged: true },
-  { id: '3', author: 'Peter K.', service: 'Electrical', rating: 5, comment: 'Fast and reliable service.', flagged: false },
-];
-
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const [pendingApplications, setPendingApplications] = useState<ProviderApplicationRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
-  const [reviews, setReviews] = useState(MOCK_REVIEWS);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const handleReviewAction = (id: string, action: 'approve' | 'remove') => {
-    setReviews((prev) =>
-      action === 'remove' ? prev.filter((r) => r.id !== id) : prev.map((r) => (r.id === id ? { ...r, flagged: false } : r))
-    );
-  };
 
   const fetchPending = useCallback(async () => {
     try {
@@ -165,7 +151,7 @@ const AdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { icon: UserCheck, label: 'Pending Providers', value: String(pendingApplications.length), color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: 'awaiting review' },
-          { icon: Star, label: 'Flagged Reviews', value: String(reviews.filter((r) => r.flagged).length), color: 'from-red-500 to-red-600', lightColor: 'bg-red-50 dark:bg-red-500/10', textColor: 'text-red-600 dark:text-red-400', change: 'need attention' },
+          { icon: MessageSquare, label: 'Review Moderation', value: 'Open', color: 'from-violet-500 to-purple-500', lightColor: 'bg-violet-50 dark:bg-violet-500/10', textColor: 'text-violet-600 dark:text-violet-400', change: 'manage reviews' },
           { icon: Images, label: 'Content Modules', value: '6', color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: 'fully managed' },
           { icon: Activity, label: 'Platform Status', value: 'Live', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'all systems ok' },
         ].map((stat, i) => (
@@ -272,6 +258,7 @@ const AdminDashboard: React.FC = () => {
             { label: 'Bookings', desc: 'Booking requests', href: '/dashboard/admin/manage/bookings', icon: Calendar, color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
             { label: 'Payments', desc: 'Payment history', href: '/dashboard/admin/manage/payments', icon: CreditCard, color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
             { label: 'Trades', desc: 'Service categories', href: '/dashboard/admin/manage/trades', icon: Wrench, color: 'bg-primary/10 text-primary' },
+            { label: 'Services', desc: 'Featured services', href: '/dashboard/admin/manage/services', icon: Sparkles, color: 'bg-pink-500/10 text-pink-600 dark:text-pink-400' },
             { label: 'Professionals', desc: 'Tradesperson directory', href: '/dashboard/admin/manage/professionals', icon: UserRound, color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
             { label: 'Before & After', desc: 'Transformation projects', href: '/dashboard/admin/manage/before-after', icon: Images, color: 'bg-violet-500/10 text-violet-600 dark:text-violet-400' },
             { label: 'Testimonials', desc: 'Customer reviews', href: '/dashboard/admin/manage/testimonials', icon: MessageSquare, color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },

@@ -36,16 +36,17 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const openId = searchParams.get('open');
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [updating, setUpdating] = useState<string | null>(null);
+
   const openInitialPage = openId
     ? (() => {
         const idx = notifications.findIndex((n) => n.id === openId);
         return idx >= 0 ? Math.floor(idx / 5) + 1 : 1;
       })()
     : 1;
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [updating, setUpdating] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setIsLoading(true);

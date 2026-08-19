@@ -23,10 +23,7 @@ const Logo = ({ children }: { children: React.ReactNode }) => (
   </svg>
 );
 
-// Each icon is deliberately shaped around what that badge actually certifies
-// (gas -> flame, electrical -> bolt/plug, build quality -> trowel/crane,
-// trust/reviews -> shield/star) so the row doesn't read as one shield
-// template with swapped decorations.
+
 const TRUST_PARTNERS: TrustPartner[] = [
   {
     id: "gas-safe",
@@ -138,25 +135,23 @@ const TRUST_PARTNERS: TrustPartner[] = [
     ),
   },
   {
-    id: "trustpilot",
-    name: "Trustpilot",
+    id: "fensa",
+    name: "FENSA Registered",
     logo: (
       <Logo>
-        <path
-          d="M20 5l3.8 8.6 9.2.7-7 6.4 2.2 9.3-8.2-5-8.2 5 2.2-9.3-7-6.4 9.2-.7L20 5z"
-          fill="currentColor"
-          stroke="none"
-        />
+        <rect x="7" y="7" width="26" height="26" rx="3" />
+        <path d="M7 16h26M16 7v26" />
+        <path d="M22 22l3 3" />
       </Logo>
     ),
   },
   {
-    id: "british-gas",
-    name: "British Gas",
+    id: "watersafe",
+    name: "WaterSafe",
     logo: (
       <Logo>
-        <rect x="5" y="5" width="30" height="30" rx="8" />
-        <path d="M20 11c-3 4-6 7-6 10.5a6 6 0 0012 0c0-1.5-.5-3-1.4-4.5-.3 2.3-1.4 3.8-2.9 4.5-.1-1.6.3-3.6-.5-5.6-.8-1.5-1.6-3.2-2.2-4.9z" fill="currentColor" stroke="none" />
+        <path d="M20 6c5 6 9 11 9 16a9 9 0 01-18 0c0-5 4-10 9-16z" />
+        <path d="M15 24a5 5 0 005 5" />
       </Logo>
     ),
   },

@@ -78,12 +78,6 @@ export const DASHBOARD_SIDEBAR = [
   { label: 'Reviews' },
 ];
 
-export const DASHBOARD_BOOKINGS = [
-  { id: 'LH-2918', name: 'Boiler service — Islington', pro: 'James S.', time: 'Today 9:00', location: 'N1 1AA', status: 'In progress', iconName: 'Wrench' },
-  { id: 'LH-2914', name: 'EV charger install — London', pro: 'Sarah J.', time: 'Tomorrow 11:00', location: 'SE1 2DU', status: 'Confirmed', iconName: 'Zap' },
-  { id: 'LH-2901', name: 'End of tenancy clean — Hackney', pro: 'Elena R.', time: 'Sat 14:00', location: 'E2 8QA', status: 'Completed', iconName: 'Sparkles' },
-];
-
 export const DASHBOARD_STATS = [
   { label: 'This month', value: '£4,280', delta: '+18%', iconName: 'PoundSterling' },
   { label: 'Jobs completed', value: '36', delta: '+6', iconName: 'Check' },

@@ -18,7 +18,7 @@ const DEFAULT_TONES: Record<string, StatusTone> = {
   REJECTED: 'danger',
   // Bookings / Jobs
   ACCEPTED: 'info',
-  IN_PROGRESS: 'info',
+  IN_PROGRESS: 'warning',
   COMPLETED: 'success',
   CANCELLED: 'danger',
   // Payments

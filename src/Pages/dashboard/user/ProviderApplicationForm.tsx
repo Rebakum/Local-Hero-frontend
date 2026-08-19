@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
@@ -13,36 +13,78 @@ import {
   DollarSign,
   MapPin,
   Tag,
+  Layers,
 } from 'lucide-react';
 import { applyProvider } from '../../../services/auth.service';
+import { getProfessionsAdmin } from '../../../services/content.service';
+import { getAllTrades } from '../../../services/api';
+import { uploadImage, uploadImages } from '../../../services/upload.service';
 import { useAuth } from '../../../Context/AuthContext';
 import { useToast } from '../../../Context/ToastContext';
 import { Card } from '../../../Components/ui/shared/Card';
-import { SERVICE_CATEGORIES, type ServiceCategory } from '../../../types/auth';
+import type { Trade, Profession } from '../../../types';
 
 const ProviderApplicationForm: React.FC = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, refreshProfile } = useAuth();
   const { success: toastSuccess, error: toastError } = useToast();
 
- 
+  const [trades, setTrades] = useState<Trade[]>([]);
+  const [professions, setProfessions] = useState<Profession[]>([]);
+
   const [form, setForm] = useState({
-    trade: '' as ServiceCategory | '',
+    tradeId: '',
+    professionId: '',
     companyName: '',
     bio: '',
     hourlyRate: '',
     location: '',
     postcodeArea: '',
-    specialties: '', 
+    specialties: '',
     experienceYears: '',
     phone: user?.phone || '',
     avatar: '',
-    portfolioImages: '', 
+    portfolioImages: [] as string[],
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [isUploadingPortfolio, setIsUploadingPortfolio] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    getAllTrades()
+      .then((data) => {
+        if (!cancelled) setTrades(data);
+      })
+      .catch(() => {
+        if (!cancelled) setTrades([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Load professions that belong to the selected trade (database records only).
+  useEffect(() => {
+    if (!form.tradeId) {
+      setProfessions([]);
+      return;
+    }
+    let cancelled = false;
+    getProfessionsAdmin({ tradeId: form.tradeId, limit: 200 })
+      .then((data) => {
+        if (!cancelled) setProfessions(data);
+      })
+      .catch(() => {
+        if (!cancelled) setProfessions([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [form.tradeId]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -89,16 +131,74 @@ const ProviderApplicationForm: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const next = { ...form, [e.target.name]: e.target.value };
+    // Changing the trade invalidates the previously selected profession.
+    if (e.target.name === 'tradeId') {
+      next.professionId = '';
+    }
+    setForm(next);
     if (error) setError('');
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setError('');
+    setIsUploadingAvatar(true);
+
+    try {
+      const uploaded = await uploadImage(file, 'avatars');
+      setForm((current) => ({ ...current, avatar: uploaded.url }));
+    } catch (err: unknown) {
+      const apiError = err as { response?: { data?: { message?: string } }; message?: string };
+      const msg = apiError.response?.data?.message || apiError.message || 'Failed to upload profile photo.';
+      setError(msg);
+      toastError(msg);
+    } finally {
+      setIsUploadingAvatar(false);
+      event.target.value = '';
+    }
+  };
+
+  const handlePortfolioUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length === 0) return;
+
+    setError('');
+    setIsUploadingPortfolio(true);
+
+    try {
+      const uploaded = await uploadImages(files, 'portfolios');
+      setForm((current) => ({
+        ...current,
+        portfolioImages: [...current.portfolioImages, ...uploaded.map((image) => image.url)],
+      }));
+    } catch (err: unknown) {
+      const apiError = err as { response?: { data?: { message?: string } }; message?: string };
+      const msg = apiError.response?.data?.message || apiError.message || 'Failed to upload portfolio images.';
+      setError(msg);
+      toastError(msg);
+    } finally {
+      setIsUploadingPortfolio(false);
+      event.target.value = '';
+    }
+  };
+
+  const removePortfolioImage = (url: string) => {
+    setForm((current) => ({
+      ...current,
+      portfolioImages: current.portfolioImages.filter((item) => item !== url),
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Form Client-side Validation
-    if (!form.trade) return setError('Please select a trade category.');
+    // Client-side validation (defense-in-depth only — the backend re-validates).
+    if (!form.tradeId) return setError('Please select a trade.');
+    if (!form.professionId) return setError('Please select a profession.');
     if (!form.companyName.trim()) return setError('Company name is required.');
     if (!form.bio.trim()) return setError('Bio is required.');
     if (!form.hourlyRate || Number(form.hourlyRate) < 1) return setError('Hourly rate must be at least 1.');
@@ -106,6 +206,7 @@ const ProviderApplicationForm: React.FC = () => {
     if (!form.postcodeArea.trim()) return setError('Postcode area is required.');
     if (!form.phone.trim()) return setError('Phone number is required.');
     if (!form.experienceYears || Number(form.experienceYears) < 0) return setError('Please enter valid experience years.');
+    if (!form.avatar.trim()) return setError('Please upload a profile photo.');
 
     const formattedSpecialties = form.specialties
       .split(',')
@@ -116,16 +217,12 @@ const ProviderApplicationForm: React.FC = () => {
       return setError('At least one specialty is required (separated by comma).');
     }
 
-    const formattedPortfolioImages = form.portfolioImages
-      ? form.portfolioImages.split(',').map((img) => img.trim()).filter((img) => img.length > 0)
-      : [];
-
     setIsSubmitting(true);
 
     try {
-      // Backend Payload Mapping
       const payload = {
-        trade: form.trade,
+        tradeId: form.tradeId,
+        professionId: form.professionId,
         companyName: form.companyName.trim(),
         bio: form.bio.trim(),
         hourlyRate: Number(form.hourlyRate),
@@ -134,8 +231,8 @@ const ProviderApplicationForm: React.FC = () => {
         specialties: formattedSpecialties,
         experienceYears: Number(form.experienceYears),
         phone: form.phone.trim(),
-        avatar: form.avatar.trim() || null,
-        portfolioImages: formattedPortfolioImages,
+        avatar: form.avatar.trim(),
+        portfolioImages: form.portfolioImages,
       };
 
       await applyProvider(payload);
@@ -199,24 +296,24 @@ const ProviderApplicationForm: React.FC = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Trade & Company Name */}
+            {/* Trade & Profession */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
-                  Trade Category *
+                  Trade *
                 </label>
                 <div className="relative">
                   <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400 pointer-events-none" />
                   <select
-                    name="trade"
+                    name="tradeId"
                     required
-                    value={form.trade}
+                    value={form.tradeId}
                     onChange={handleChange}
                     className="input-lh pl-10 pr-10 appearance-none"
                   >
                     <option value="" disabled>Select trade...</option>
-                    {SERVICE_CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                    {trades.map((trade) => (
+                      <option key={trade.id} value={trade.id}>{trade.category}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400 pointer-events-none" />
@@ -225,20 +322,46 @@ const ProviderApplicationForm: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
-                  Company Name *
+                  Profession *
                 </label>
                 <div className="relative">
-                  <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
-                  <input
-                    name="companyName"
-                    type="text"
+                  <Layers className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400 pointer-events-none" />
+                  <select
+                    name="professionId"
                     required
-                    value={form.companyName}
+                    value={form.professionId}
                     onChange={handleChange}
-                    placeholder="e.g. Acme Plumbing Ltd"
-                    className="input-lh pl-10"
-                  />
+                    disabled={!form.tradeId}
+                    className="input-lh pl-10 pr-10 appearance-none disabled:opacity-50"
+                  >
+                    <option value="" disabled>
+                      {form.tradeId ? 'Select profession...' : 'Select a trade first'}
+                    </option>
+                    {professions.map((profession) => (
+                      <option key={profession.id} value={profession.id}>{profession.name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400 pointer-events-none" />
                 </div>
+              </div>
+            </div>
+
+            {/* Company Name */}
+            <div>
+              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                Company Name *
+              </label>
+              <div className="relative">
+                <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
+                <input
+                  name="companyName"
+                  type="text"
+                  required
+                  value={form.companyName}
+                  onChange={handleChange}
+                  placeholder="e.g. Acme Plumbing Ltd"
+                  className="input-lh pl-10"
+                />
               </div>
             </div>
 
@@ -370,10 +493,87 @@ const ProviderApplicationForm: React.FC = () => {
               />
             </div>
 
+            {/* Profile Photo */}
+            <div>
+              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                Profile Photo *
+              </label>
+              <div className="flex flex-col gap-3 rounded-2xl border border-navy-200 dark:border-white/10 bg-navy-50/60 dark:bg-navy-900/40 p-3">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarUpload}
+                    disabled={isUploadingAvatar || isSubmitting}
+                    className="block w-full text-sm file:mr-4 file:py-2 file:px-3 file:rounded-full file:border-0 file:bg-primary file:text-white file:font-medium file:cursor-pointer file:hover:bg-primary/90 disabled:opacity-60"
+                  />
+                </div>
+
+                {isUploadingAvatar && (
+                  <div className="flex items-center gap-2 text-sm text-navy-500 dark:text-navy-400">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Uploading profile photo...
+                  </div>
+                )}
+
+                {form.avatar && (
+                  <div className="flex items-center gap-3 rounded-xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 p-2">
+                    <img src={form.avatar} alt="Profile preview" className="h-14 w-14 rounded-full object-cover" />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Profile photo ready</p>
+                      <p className="truncate text-[11px] text-navy-500 dark:text-navy-400">{form.avatar}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Portfolio images */}
+            <div>
+              <label className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
+                Portfolio Photos
+              </label>
+              <div className="rounded-2xl border border-navy-200 dark:border-white/10 bg-navy-50/60 dark:bg-navy-900/40 p-3 space-y-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handlePortfolioUpload}
+                  disabled={isUploadingPortfolio || isSubmitting}
+                  className="block w-full text-sm file:mr-4 file:py-2 file:px-3 file:rounded-full file:border-0 file:bg-primary file:text-white file:font-medium file:cursor-pointer file:hover:bg-primary/90 disabled:opacity-60"
+                />
+
+                {isUploadingPortfolio && (
+                  <div className="flex items-center gap-2 text-sm text-navy-500 dark:text-navy-400">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Uploading portfolio images...
+                  </div>
+                )}
+
+                {form.portfolioImages.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2">
+                    {form.portfolioImages.map((image, index) => (
+                      <div key={`${image}-${index}`} className="relative group">
+                        <img src={image} alt={`Portfolio ${index + 1}`} className="h-20 w-full rounded-xl object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removePortfolioImage(image)}
+                          className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white shadow-md opacity-90 hover:opacity-100"
+                          aria-label="Remove portfolio image"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isUploadingAvatar || isUploadingPortfolio}
               className="btn btn-primary w-full h-12 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
