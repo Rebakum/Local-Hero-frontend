@@ -4,7 +4,7 @@ import { ArrowLeft, SearchX } from 'lucide-react';
 
 export const NotFoundPage: React.FC = () => {
   return (
-    <section className="relative pt-44 lg:pt-56 pb-24 overflow-hidden bg-black min-h-screen flex items-start justify-center">
+    <section className="page-top relative pb-24 overflow-hidden bg-black min-h-screen flex items-start justify-center">
       <div className="absolute inset-0 grid-fade pointer-events-none" />
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[640px] h-[400px] rounded-full bg-primary/15 blur-3xl pointer-events-none" />
 

@@ -61,19 +61,19 @@ export const Hero: React.FC = () => {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
   const fadeOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0.25]);
 
-  // বর্তমান সক্রিয় ছবির জন্য ব্যাকগ্রাউন্ড কালার
+
   const currentBgGradient = getBgForPro(activePro);
 
   return (
     <div className="relative w-full">
       <section
         ref={sectionRef}
-        className={`relative z-0 w-full min-h-[580px] md:min-h-[680px] lg:min-h-[700px] bg-gradient-to-br ${currentBgGradient} transition-all duration-700 ease-in-out overflow-x-hidden overflow-y-visible flex flex-col justify-between pb-16 md:pb-24`}
+        className={`relative z-0 w-full min-h-[580px] md:min-h-[780px] lg:min-h-[800px] bg-gradient-to-br ${currentBgGradient} transition-all duration-700 ease-in-out overflow-x-hidden overflow-y-visible flex flex-col justify-between pb-16 md:pb-24`}
       >
         {/* Dynamic Portrait Image Section */}
         <div className="absolute inset-0 pointer-events-none select-none z-10 overflow-hidden">
           {/* Right Side Portrait Image */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden md:block w-1/2 max-w-[500px] pr-6 lg:pr-12">
+          <div className="absolute right-20 top-1/2 -translate-y-1/2 hidden md:block w-1/2 max-w-[600px] pr-6 lg:pr-12">
             <img
               key={`portrait-${activePro?.id || (activePro as any)?._id || activePro?.name || 'default'}`}
               src={activePro?.avatar || '/images/hero.png'}

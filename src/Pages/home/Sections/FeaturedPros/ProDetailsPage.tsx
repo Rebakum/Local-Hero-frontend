@@ -9,9 +9,9 @@ import {
   Maximize2,
   X
 } from 'lucide-react';
-import { getProfessionalById } from '@/src/services/content.service';
+import { getProfessionalById, getBeforeAfterByProfessional } from '@/src/services/content.service';
 import { getOrCreateConversation } from '@/src/services/messaging.service';
-import type { Professional } from '@/src/types';
+import type { Professional, BeforeAfterPair } from '@/src/types';
 import { useBooking } from '@/src/Context/BookingContext';
 import { useAuth } from '@/src/Context/AuthContext';
 import { SaveFavouriteButton } from '@/src/Components/ui/SaveFavouriteButton';
@@ -21,7 +21,9 @@ export const ProDetailsPage: React.FC = () => {
   const [pro, setPro] = useState<Professional | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'about' | 'portfolio' | 'reviews'>('about');
+  const [activeTab, setActiveTab] = useState<'about' | 'portfolio' | 'reviews' | 'beforeAfter'>('about');
+  const [beforeAfter, setBeforeAfter] = useState<BeforeAfterPair[]>([]);
+  const [beforeAfterLoading, setBeforeAfterLoading] = useState(true);
 
   // Form states matching screenshot
   const [fuelType, setFuelType] = useState('');
@@ -89,9 +91,18 @@ export const ProDetailsPage: React.FC = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
+  useEffect(() => {
+    if (!proId) return;
+    setBeforeAfterLoading(true);
+    getBeforeAfterByProfessional(proId)
+      .then((data) => setBeforeAfter(data || []))
+      .catch(() => setBeforeAfter([]))
+      .finally(() => setBeforeAfterLoading(false));
+  }, [proId]);
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-4">
+      <div className="page-top min-h-screen bg-white flex flex-col items-center justify-center p-4">
         <div className="w-10 h-10 border-4 border-red-200 border-t-red-600 rounded-full animate-spin mb-3" />
         <p className="text-xs font-semibold text-slate-500 animate-pulse">Loading profile details...</p>
       </div>
@@ -100,7 +111,7 @@ export const ProDetailsPage: React.FC = () => {
 
   if (!pro) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+      <div className="page-top min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="max-w-md w-full border border-slate-200 bg-white p-8 shadow-sm text-center rounded-lg">
           <h2 className="text-lg font-bold text-slate-900">Professional Not Found</h2>
           <p className="text-xs text-slate-500 mt-2">
@@ -119,17 +130,17 @@ export const ProDetailsPage: React.FC = () => {
   const reviews = pro.reviews || (pro as any).reviews || [];
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-20">
+    <div className="page-top min-h-screen bg-slate-50 font-sans text-slate-800 pb-20">
       {/* Top Back Navigation Bar */}
       <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-5xl px-4 py-3">
+        <div className="container-lh py-3">
           <Link to="/professionals" className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-red-600">
             <ArrowLeft className="w-4 h-4" /> Back to Search
           </Link>
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="container-lh py-8 sm:py-10 md:py-12">
         {/* HERO SECTION */}
         <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12">
           {/* Left Text & Action Column */}
@@ -278,6 +289,12 @@ export const ProDetailsPage: React.FC = () => {
             >
               Reviews ({reviews.length})
             </button>
+            <button
+              onClick={() => setActiveTab('beforeAfter')}
+              className={`px-4 py-2 text-xs font-bold rounded ${activeTab === 'beforeAfter' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-700'}`}
+            >
+              Before & After ({beforeAfter.length})
+            </button>
           </div>
 
           <div className="mt-4">
@@ -310,6 +327,43 @@ export const ProDetailsPage: React.FC = () => {
                 </div>
               ) : (
                 <p className="text-xs text-slate-500 py-4">No reviews submitted yet.</p>
+              )
+            )}
+
+            {activeTab === 'beforeAfter' && (
+              beforeAfterLoading ? (
+                <p className="text-xs text-slate-500 py-4">Loading verified before & after work…</p>
+              ) : beforeAfter.length > 0 ? (
+                <div className="space-y-4">
+                  {beforeAfter.map((project) => (
+                    <div key={project.id} className="rounded border border-slate-200 bg-white overflow-hidden">
+                      <div className="grid grid-cols-2">
+                        <button type="button" onClick={() => setSelectedImage(project.beforeImage)} className="relative h-44 cursor-pointer overflow-hidden">
+                          <img src={project.beforeImage} alt="Before" className="h-full w-full object-cover" />
+                          <span className="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Before</span>
+                        </button>
+                        <button type="button" onClick={() => setSelectedImage(project.afterImage)} className="relative h-44 cursor-pointer overflow-hidden">
+                          <img src={project.afterImage} alt="After" className="h-full w-full object-cover" />
+                          <span className="absolute top-2 right-2 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">After</span>
+                        </button>
+                      </div>
+                      <div className="p-4">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500">
+                          <span className="uppercase tracking-wide">{project.trade}</span>
+                          <span>{project.location}</span>
+                        </div>
+                        <p className="mt-1 text-xs text-slate-600 leading-relaxed">{project.description}</p>
+                        <div className="mt-2 flex items-center gap-3 text-[11px] font-bold text-slate-700">
+                          <span>Cost: {project.cost}</span>
+                          <span>·</span>
+                          <span>Completed in {project.completionDays}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-slate-500 py-4">No verified before & after work available yet.</p>
               )
             )}
           </div>

@@ -309,6 +309,7 @@ export async function getBeforeAfterProjects(
     limit?: number;
     trade?: string;
     search?: string;
+    isFeatured?: boolean;
   },
 ): Promise<{
   projects: BeforeAfterPair[];
@@ -343,6 +344,13 @@ export async function getBeforeAfterProjects(
       queryParams.set(
         "trade",
         params.trade.trim(),
+      );
+    }
+
+    if (params?.isFeatured) {
+      queryParams.set(
+        "isFeatured",
+        "true",
       );
     }
 
@@ -408,6 +416,19 @@ export async function getAllBeforeAfterProjects(): Promise<
     await getBeforeAfterProjects({
       page: 1,
       limit: 50,
+    });
+
+  return result.projects;
+}
+
+export async function getFeaturedBeforeAfterProjects(): Promise<
+  BeforeAfterPair[]
+> {
+  const result =
+    await getBeforeAfterProjects({
+      page: 1,
+      limit: 50,
+      isFeatured: true,
     });
 
   return result.projects;

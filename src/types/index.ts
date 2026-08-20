@@ -81,6 +81,21 @@ export interface BeforeAfterPair {
   description: string;
   cost: string;
   completionDays: string;
+  // Verified real-job workflow fields.
+  bookingId?: string;
+  professionalId?: string;
+  status?: 'PENDING' | 'APPROVED' | 'REJECTED';
+  isFeatured?: boolean;
+  rejectionReason?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  professional?: {
+    id: string;
+    name: string;
+    companyName?: string | null;
+    avatar?: string | null;
+    trade?: string;
+  } | null;
 }
 
 export interface ITestimonial {

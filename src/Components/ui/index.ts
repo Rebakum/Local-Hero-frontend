@@ -4,6 +4,7 @@ export { ModalShell } from './ModalShell';
 export { PageHero } from './PageHero';
 export { Reveal, Stagger, StaggerItem } from './Reveal';
 export { SectionTitle } from './SectionTitle';
+export { SectionWave } from './SectionWave';
 export { SmoothScroll } from './SmoothScroll';
 export { ThemeLogo } from './ThemeLogo';
 

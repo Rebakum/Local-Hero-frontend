@@ -26,7 +26,7 @@ export const DesktopNav: React.FC<DesktopNavProps> = ({
         atTop={atTop}
       />
 
-      <div className="flex items-center gap-2 pl-4 border-l border-navy-100 dark:border-white/10">
+      <div className="flex items-center gap-2 pl-4   dark:border-white/10">
         <ThemeToggle atTop={atTop} isScrolled={isScrolled} variant="chip" />
         <NotificationBell atTop={atTop} variant="chip" />
         <button

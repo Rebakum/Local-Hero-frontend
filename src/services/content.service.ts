@@ -122,6 +122,45 @@ export interface BeforeAfterInput {
   completionDays?: string;
 }
 
+export interface BeforeAfterSubmissionInput {
+  bookingId: string;
+  beforeImage: string;
+  afterImage: string;
+  description: string;
+  cost: string;
+  completionDays: string;
+}
+
+// Fields a professional may edit on their own submission. `trade` is
+// auto-derived from the booking server-side and is never editable.
+export interface BeforeAfterUpdateInput {
+  title?: string;
+  location?: string;
+  beforeImage?: string;
+  afterImage?: string;
+  description?: string;
+  cost?: string;
+  completionDays?: string;
+}
+
+export interface EligibleBeforeAfterBooking {
+  id: string;
+  trade: string;
+  postcode: string;
+  address: string;
+  bookingDate: string;
+  fullName: string;
+  createdAt: string;
+}
+
+export interface BeforeAfterAdminQuery {
+  page?: number;
+  limit?: number;
+  status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'ALL';
+  search?: string;
+  trade?: string;
+}
+
 export interface TestimonialInput {
   author: string;
   role?: string;
@@ -279,9 +318,43 @@ export async function deleteProfessional(id: string): Promise<void> {
 
 // ---------- Before / After ----------
 
-export async function getBeforeAfterAdmin(): Promise<BeforeAfterPair[]> {
-  const { data } = await axiosInstance.get<ApiEnvelope<BeforeAfterPair[]>>('/before-after');
+export async function getBeforeAfterAdmin(
+  params?: BeforeAfterAdminQuery,
+): Promise<BeforeAfterPair[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<BeforeAfterPair[]>>('/before-after/admin', {
+    params,
+  });
   return data.data ?? [];
+}
+
+// Public: approved showcases for a specific professional (profile page).
+export async function getBeforeAfterByProfessional(
+  professionalId: string,
+): Promise<BeforeAfterPair[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<BeforeAfterPair[]>>('/before-after', {
+    params: { professionalId, limit: 50 },
+  });
+  return data.data ?? [];
+}
+
+// Admin: approve/reject a submission.
+export async function updateBeforeAfterStatus(
+  id: string,
+  payload: { status: 'APPROVED' | 'REJECTED'; rejectionReason?: string },
+): Promise<BeforeAfterPair> {
+  const { data } = await axiosInstance.patch<ApiEnvelope<BeforeAfterPair>>(
+    `/before-after/${id}/status`,
+    payload,
+  );
+  return data.data;
+}
+
+// Admin: toggle homepage feature (approved only).
+export async function toggleBeforeAfterFeature(id: string): Promise<BeforeAfterPair> {
+  const { data } = await axiosInstance.patch<ApiEnvelope<BeforeAfterPair>>(
+    `/before-after/${id}/feature`,
+  );
+  return data.data;
 }
 
 export async function createBeforeAfter(payload: BeforeAfterInput): Promise<BeforeAfterPair> {
@@ -296,6 +369,38 @@ export async function updateBeforeAfter(id: string, payload: BeforeAfterInput): 
 
 export async function deleteBeforeAfter(id: string): Promise<void> {
   await axiosInstance.delete(`/before-after/${id}`);
+}
+
+// ---------- Provider: Before / After submissions ----------
+
+export async function getEligibleBeforeAfterBookings(): Promise<EligibleBeforeAfterBooking[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<EligibleBeforeAfterBooking[]>>(
+    '/before-after/my/eligible-bookings',
+  );
+  return data.data ?? [];
+}
+
+export async function getMyBeforeAfterSubmissions(): Promise<BeforeAfterPair[]> {
+  const { data } = await axiosInstance.get<ApiEnvelope<BeforeAfterPair[]>>(
+    '/before-after/my/submissions',
+  );
+  return data.data ?? [];
+}
+
+export async function createBeforeAfterSubmission(
+  payload: BeforeAfterSubmissionInput,
+): Promise<BeforeAfterPair> {
+  const { data } = await axiosInstance.post<ApiEnvelope<BeforeAfterPair>>('/before-after', payload);
+  return data.data;
+}
+
+// Provider edits/resubmits one of their own submissions (PENDING/REJECTED).
+export async function updateBeforeAfterSubmission(
+  id: string,
+  payload: BeforeAfterUpdateInput,
+): Promise<BeforeAfterPair> {
+  const { data } = await axiosInstance.patch<ApiEnvelope<BeforeAfterPair>>(`/before-after/${id}`, payload);
+  return data.data;
 }
 
 // ---------- Testimonials ----------

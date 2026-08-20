@@ -50,6 +50,7 @@ import BeforeAfterManagement from '../Pages/dashboard/admin/manage/BeforeAfterMa
 import TestimonialsManagement from '../Pages/dashboard/admin/manage/TestimonialsManagement';
 import BookingManagement from '../Pages/dashboard/admin/manage/BookingManagement';
 import AdminPaymentHistory from '../Pages/dashboard/admin/manage/AdminPaymentHistory';
+import SupportTicketsManagement from '../Pages/dashboard/admin/manage/SupportTicketsManagement';
 import ProfilePage from '../Pages/dashboard/profile/ProfilePage';
 import { ProviderBookingDashboard } from '../Pages/dashboard/provider/ProviderBookingDashboard';
 import UserReviews from '../Pages/dashboard/user/UserReviews';
@@ -59,6 +60,9 @@ import UserNotifications from '../Pages/dashboard/user/Notifications';
 import ProviderQuotes from '../Pages/dashboard/provider/ProviderQuotes';
 import ProviderNotifications from '../Pages/dashboard/provider/Notifications';
 import ProviderSubscription from '../Pages/dashboard/provider/Subscription';
+import SubscriptionSuccess from '../Pages/dashboard/provider/SubscriptionSuccess';
+import SubscriptionCancel from '../Pages/dashboard/provider/SubscriptionCancel';
+import BeforeAfterSubmissions from '../Pages/dashboard/provider/BeforeAfterSubmissions';
 import PricingPage from '../Pages/Pricing/PricingPage';
 import { BlogPage } from '../Pages/Blog/BlogPage';
 import { TrustSafetyPage } from '../Pages/TrustSafety/TrustSafetyPage';
@@ -121,7 +125,10 @@ const dashboardRoleRoutes: DashboardRoleRoute[] = [
       { path: 'quotes', element: <ProviderQuotes /> },
       { path: 'notifications', element: <ProviderNotifications /> },
       { path: 'subscription', element: <ProviderSubscription /> },
+      { path: 'subscription/success', element: <SubscriptionSuccess /> },
+      { path: 'subscription/cancel', element: <SubscriptionCancel /> },
       { path: 'payments', element: <ProviderPayments /> },
+      { path: 'before-after', element: <BeforeAfterSubmissions /> },
       { path: 'providerPBooking', element: <ProviderBookingDashboard /> },
     ],
   },
@@ -141,6 +148,7 @@ const dashboardRoleRoutes: DashboardRoleRoute[] = [
       { path: 'manage/testimonials', element: <TestimonialsManagement /> },
       { path: 'manage/bookings', element: <BookingManagement /> },
       { path: 'manage/payments', element: <AdminPaymentHistory /> },
+      { path: 'manage/support-tickets', element: <SupportTicketsManagement /> },
     ],
   },
   {

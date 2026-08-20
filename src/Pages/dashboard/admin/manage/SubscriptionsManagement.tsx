@@ -14,7 +14,7 @@ import {
   createSubscription,
   updateSubscription,
   type ProviderSubscription,
-  type SubscriptionPlan,
+  type LegacyPlan,
   type SubscriptionStatus,
 } from '../../../../services/subscription.service';
 import { getProfessionalsAdmin } from '../../../../services/content.service';
@@ -22,7 +22,7 @@ import type { Professional } from '../../../../types';
 
 interface SubscriptionFormValues {
   professionalId: string;
-  plan: SubscriptionPlan;
+  plan: LegacyPlan;
   status: SubscriptionStatus;
   price: string;
   expiresAt: string;
@@ -31,7 +31,7 @@ interface SubscriptionFormValues {
   featureEndAt: string;
 }
 
-const PLAN_OPTIONS: { value: SubscriptionPlan; label: string }[] = [
+const PLAN_OPTIONS: { value: LegacyPlan; label: string }[] = [
   { value: 'FREE', label: 'Free' },
   { value: 'PREMIUM', label: 'Premium' },
   { value: 'FEATURED', label: 'Featured' },
@@ -124,7 +124,7 @@ const SubscriptionsManagement: React.FC = () => {
     setEditing(sub);
     reset({
       professionalId: sub.professionalId,
-      plan: sub.plan,
+      plan: sub.plan as LegacyPlan,
       status: sub.status,
       price: sub.priceInPence ? String(sub.priceInPence / 100) : '',
       expiresAt: toDateInput(sub.expiresAt),

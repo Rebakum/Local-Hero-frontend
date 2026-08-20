@@ -137,7 +137,7 @@ export const ServiceDetailsPage: React.FC = () => {
     <div className="bg-slate-50/50 dark:bg-navy-950 min-h-screen page-top pb-24 transition-colors">
       
       {/* Dynamic Floating Back Button & Breadcrumb Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 flex items-center justify-between">
+      <div className="container-lh pt-4 pb-2 flex items-center justify-between">
       
 
         <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
@@ -148,7 +148,7 @@ export const ServiceDetailsPage: React.FC = () => {
       </div>
 
       {/* Hero Banner Container with Rounded Frame */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container-lh">
         <div className="relative h-[380px] sm:h-[480px] md:h-[540px] rounded-3xl overflow-hidden shadow-2xl border border-slate-200/50 dark:border-white/10">
           <ServiceHero
             image={s.imageUrl ?? ''}
@@ -161,7 +161,7 @@ export const ServiceDetailsPage: React.FC = () => {
       </div>
 
       {/* Floating Trade Feature Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
+      <div className="container-lh -mt-10 relative z-20">
         <div className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl px-6 py-5 shadow-xl transition-all duration-300 dark:border-white/10">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
@@ -235,7 +235,7 @@ export const ServiceDetailsPage: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      <main className="container-lh mt-10">
         
         {/* All Services Tabs Pill Bar */}
         {services.length > 1 && (

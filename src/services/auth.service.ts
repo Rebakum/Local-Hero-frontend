@@ -179,3 +179,28 @@ export async function getAllUsers(): Promise<AdminUser[]> {
 export async function changeUserRole(userId: string, payload: ChangeRolePayload): Promise<void> {
   await axiosInstance.patch(`/super-admin/users/${userId}/role`, payload);
 }
+
+// ---------- Dashboard statistics (ADMIN / SUPER_ADMIN) ----------
+// Consolidated real stats for the admin/super-admin dashboard, calculated
+// server-side from the database. No client-side fake numbers.
+export interface AdminDashboardStats {
+  platformRevenuePence: number;
+  revenueChange: number;
+  activeAdmins: number;
+  pendingApprovals: number;
+  totalUsers: number;
+  weeklyUserGrowth: number;
+  systemHealth: number;
+  systemStatus: string;
+  bookingsToday: number;
+  revenueThisWeekPence: number;
+  totalBookings: number;
+  conversionRate: number;
+}
+
+export async function getAdminDashboardStats(): Promise<AdminDashboardStats> {
+  const { data } = await axiosInstance.get<ApiEnvelope<AdminDashboardStats>>(
+    '/admin/dashboard/stats',
+  );
+  return data.data;
+}

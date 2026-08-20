@@ -7,7 +7,7 @@ import { ServicesGrid } from './ServicesGrid';
 export const ServicesPage: React.FC = () => {
   return (
     <div className='page-top'>
-      <section className="section-pad border-y border-navy-100/60 dark:border-white/10">
+      <section className="container-lh pt-12 md:pt-16 pb-8">
         <SectionTitle
           eyebrow="Our Services"
           badge={true}
@@ -15,16 +15,9 @@ export const ServicesPage: React.FC = () => {
           subtitle="Explore our range of expert services designed to help you scale, innovate, and achieve your goals effortlessly."
           align="center"
         />
-
-        <ServicesGrid />
-      
       </section>
-      
-        
-      
-      </div>
-    
 
-    
+      <ServicesGrid />
+    </div>
   );
 };

@@ -1,9 +1,10 @@
 ﻿import React, { useEffect, useRef, useState } from 'react';
-import { getAllBeforeAfterProjects } from '@/src/services/api';
+import { getFeaturedBeforeAfterProjects, getAllBeforeAfterProjects } from '@/src/services/api';
 import { useBooking } from '@/src/Context/BookingContext';
 import { useTheme } from '@/src/Context/ThemeContext';
 import { SectionTitle } from '@/src/Components/ui/SectionTitle';
 import { Reveal } from '@/src/Components/ui/Reveal';
+import { SectionWave } from '@/src/Components/ui/SectionWave';
 import {
   MapPin, Clock, ArrowRight, CheckCircle2, PoundSterling, SlidersHorizontal, Loader2
 } from 'lucide-react';
@@ -25,10 +26,24 @@ export const BeforeAfter: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    getAllBeforeAfterProjects()
-      .then((data) => setProjects(data || []))
-      .catch(() => setProjects([]))
-      .finally(() => setLoading(false));
+    (async () => {
+      try {
+        // Show admin-curated featured showcases first.
+        const featured = await getFeaturedBeforeAfterProjects();
+        if (featured && featured.length > 0) {
+          setProjects(featured);
+        } else {
+          // No curated picks yet — fall back to approved showcases so the
+          // section is never hidden when there's verified work to show.
+          const approved = await getAllBeforeAfterProjects();
+          setProjects(approved || []);
+        }
+      } catch {
+        setProjects([]);
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
   const project = projects[activeIndex];
@@ -47,8 +62,9 @@ export const BeforeAfter: React.FC = () => {
   }
 
   return (
-    <section ref={sectionRef} className="bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad">
-      <div className="container-lh">
+    <section ref={sectionRef} className="relative overflow-hidden bg-cream-100 dark:bg-black border-y border-navy-100/60 dark:border-white/10 section-pad">
+      <SectionWave />
+      <div className="container-lh relative z-10">
         <SectionTitle
           badge
           eyebrow="Real transformations"

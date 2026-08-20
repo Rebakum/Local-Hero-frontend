@@ -20,6 +20,8 @@ import {
   Cpu,
   HardDrive,
   ArrowUpRight,
+  TrendingUp,
+  TrendingDown,
   Settings,
   BarChart3,
   AlertCircle,
@@ -27,17 +29,36 @@ import {
   Images,
   MessageSquare,
   CreditCard,
-  TrendingUp,
 } from 'lucide-react';
-import { getPendingAdmins, approveAdmin, rejectAdmin } from '../../../services/auth.service';
+import {
+  getPendingAdmins,
+  approveAdmin,
+  rejectAdmin,
+  getAdminDashboardStats,
+} from '../../../services/auth.service';
+import type { AdminDashboardStats } from '../../../services/auth.service';
 import type { PendingUser } from '../../../types/auth';
 import { AnimatedCounter } from '../../../Components/dashboard/AnimatedCounter';
 
-const MOCK_SYSTEM = {
-  uptime: '99.98%',
-  responseTime: '142ms',
-  errorRate: '0.02%',
-  activeConnections: '1,847',
+// Real number formatting helpers (values come from the backend — never mocked).
+// All are defensive against missing/undefined fields so a partial response
+// can never crash the dashboard.
+const formatCurrency = (pence: number | null | undefined): string =>
+  new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+    maximumFractionDigits: 0,
+  }).format((Number(pence) || 0) / 100);
+
+const formatNumber = (n: number | null | undefined): string =>
+  new Intl.NumberFormat('en-GB').format(Number(n) || 0);
+
+const formatPercentChange = (v: number | null | undefined): string => {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return '0%';
+  const sign = n >= 0 ? '+' : '';
+  const value = n.toFixed(1).replace(/\.0$/, '');
+  return `${sign}${value}%`;
 };
 
 const SuperAdminDashboard: React.FC = () => {
@@ -45,6 +66,27 @@ const SuperAdminDashboard: React.FC = () => {
   const [pendingAdmins, setPendingAdmins] = useState<PendingUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  const [stats, setStats] = useState<AdminDashboardStats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState(false);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      setStatsLoading(true);
+      setStatsError(false);
+      const data = await getAdminDashboardStats();
+      setStats(data);
+    } catch {
+      setStatsError(true);
+    } finally {
+      setStatsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   const fetchPending = useCallback(async () => {
     try {
@@ -85,6 +127,33 @@ const SuperAdminDashboard: React.FC = () => {
       setActionLoading(null);
     }
   };
+
+  // Normalize every statistic so a missing/null/NaN value can NEVER render as
+  // "undefined" — numbers default to 0 and the status text gets a fallback.
+  const safeStats = {
+    platformRevenuePence: Number(stats?.platformRevenuePence ?? 0) || 0,
+    revenueChange: Number.isFinite(Number(stats?.revenueChange))
+      ? Number(stats?.revenueChange)
+      : 0,
+    activeAdmins: Number(stats?.activeAdmins ?? 0) || 0,
+    pendingApprovals: Number(stats?.pendingApprovals ?? 0) || 0,
+    totalUsers: Number(stats?.totalUsers ?? 0) || 0,
+    weeklyUserGrowth: Number(stats?.weeklyUserGrowth ?? 0) || 0,
+    systemHealth: Number.isFinite(Number(stats?.systemHealth))
+      ? Number(stats?.systemHealth)
+      : 0,
+    systemStatus: (stats?.systemStatus ?? '').trim() || 'System status unavailable',
+    bookingsToday: Number(stats?.bookingsToday ?? 0) || 0,
+    revenueThisWeekPence: Number(stats?.revenueThisWeekPence ?? 0) || 0,
+    totalBookings: Number(stats?.totalBookings ?? 0) || 0,
+    conversionRate: Number.isFinite(Number(stats?.conversionRate))
+      ? Number(stats?.conversionRate)
+      : 0,
+  };
+
+  const pendingLabel = `${safeStats.pendingApprovals} pending approval${
+    safeStats.pendingApprovals === 1 ? '' : 's'
+  }`;
 
   return (
     <div className="space-y-8">
@@ -134,8 +203,8 @@ const SuperAdminDashboard: React.FC = () => {
             className="hidden sm:flex flex-col items-end gap-2"
           >
             <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-navy-100/60 dark:bg-white/10 backdrop-blur-sm border border-navy-100 dark:border-white/20">
-              <Activity className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span className="text-sm font-medium">All Systems Operational</span>
+              <Activity className={`w-4 h-4 ${safeStats.systemHealth < 100 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`} />
+              <span className="text-sm font-medium">{statsLoading ? 'Loading...' : safeStats.systemStatus}</span>
             </div>
             {pendingAdmins.length > 0 && (
               <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-navy-100/60 dark:bg-white/10 backdrop-blur-sm border border-navy-100 dark:border-white/20">
@@ -149,13 +218,55 @@ const SuperAdminDashboard: React.FC = () => {
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       </motion.div>
 
+      {statsError && (
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm">
+          Unable to load dashboard statistics. Please refresh the page.
+        </div>
+      )}
+
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { icon: PoundSterling, label: 'Platform Revenue', value: '£48,250', change: '+8.3% this month', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400' },
-          { icon: Shield, label: 'Active Admins', value: '6', change: '2 pending approval', color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400' },
-          { icon: Users, label: 'Total Users', value: '1,284', change: '+47 this week', color: 'from-primary to-primary/80', lightColor: 'bg-primary/10', textColor: 'text-primary' },
-          { icon: Activity, label: 'System Health', value: MOCK_SYSTEM.uptime, change: 'All systems operational', color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400' },
+          {
+            icon: PoundSterling,
+            label: 'Platform Revenue',
+            value: statsLoading ? '—' : formatCurrency(safeStats.platformRevenuePence),
+            change: statsLoading ? '—' : `${formatPercentChange(safeStats.revenueChange)} this month`,
+            positive: safeStats.revenueChange >= 0,
+            color: 'from-emerald-500 to-emerald-600',
+            lightColor: 'bg-emerald-50 dark:bg-emerald-500/10',
+            textColor: 'text-emerald-600 dark:text-emerald-400',
+          },
+          {
+            icon: Shield,
+            label: 'Active Admins',
+            value: statsLoading ? '—' : formatNumber(safeStats.activeAdmins),
+            change: statsLoading ? '—' : pendingLabel,
+            positive: true,
+            color: 'from-blue-500 to-blue-600',
+            lightColor: 'bg-blue-50 dark:bg-blue-500/10',
+            textColor: 'text-blue-600 dark:text-blue-400',
+          },
+          {
+            icon: Users,
+            label: 'Total Users',
+            value: statsLoading ? '—' : formatNumber(safeStats.totalUsers),
+            change: statsLoading ? '—' : `+${safeStats.weeklyUserGrowth} this week`,
+            positive: true,
+            color: 'from-primary to-primary/80',
+            lightColor: 'bg-primary/10',
+            textColor: 'text-primary',
+          },
+          {
+            icon: Activity,
+            label: 'System Health',
+            value: statsLoading ? '—' : `${safeStats.systemHealth}%`,
+            change: statsLoading ? '—' : safeStats.systemStatus,
+            positive: safeStats.systemHealth >= 100,
+            color: 'from-amber-500 to-orange-500',
+            lightColor: 'bg-amber-50 dark:bg-amber-500/10',
+            textColor: 'text-amber-600 dark:text-amber-400',
+          },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -170,8 +281,8 @@ const SuperAdminDashboard: React.FC = () => {
                 <div className={`w-11 h-11 rounded-2xl ${stat.lightColor} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
                   <stat.icon className={`w-5 h-5 ${stat.textColor}`} />
                 </div>
-                <div className="flex items-center gap-1 text-emerald-500">
-                  <TrendingUp className="w-3.5 3" />
+                <div className={`flex items-center gap-1 ${stat.positive ? 'text-emerald-500' : 'text-red-500'}`}>
+                  {stat.positive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                   <span className="text-[10px] font-semibold">{stat.change}</span>
                 </div>
               </div>
@@ -297,10 +408,8 @@ const SuperAdminDashboard: React.FC = () => {
             </div>
             <div className="space-y-3">
               {[
-                { icon: Server, label: 'Uptime', value: MOCK_SYSTEM.uptime, status: 'success' as const, bar: '99.98%' },
-                { icon: Cpu, label: 'Response Time', value: MOCK_SYSTEM.responseTime, status: 'success' as const, bar: '85%' },
-                { icon: HardDrive, label: 'Error Rate', value: MOCK_SYSTEM.errorRate, status: 'success' as const, bar: '2%' },
-                { icon: Users, label: 'Active Connections', value: MOCK_SYSTEM.activeConnections, status: 'primary' as const, bar: '72%' },
+                { icon: Server, label: 'Database', value: safeStats.systemHealth >= 100 ? 'Online' : 'Offline', status: (safeStats.systemHealth >= 100 ? 'success' : 'warning') as 'success' | 'warning', bar: safeStats.systemHealth >= 100 ? '100%' : '0%' },
+                { icon: Activity, label: 'System Status', value: safeStats.systemStatus, status: (safeStats.systemHealth >= 100 ? 'success' : 'warning') as 'success' | 'warning', bar: safeStats.systemHealth >= 100 ? '100%' : '0%' },
               ].map((item) => (
                 <div key={item.label} className="p-3 rounded-xl bg-cream-50 dark:bg-navy-800/50 border border-navy-100 dark:border-white/5 hover:border-primary/20 transition-colors duration-200">
                   <div className="flex items-center justify-between mb-2">
@@ -377,10 +486,10 @@ const SuperAdminDashboard: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              { label: 'Bookings Today', value: '34', change: '+12%', color: 'from-blue-500/10 to-blue-600/10' },
-              { label: 'Revenue This Week', value: '£8,420', change: '+8.3%', color: 'from-emerald-500/10 to-emerald-600/10' },
-              { label: 'New Signups', value: '47', change: '+23%', color: 'from-primary/10 to-primary/5' },
-              { label: 'Conversion Rate', value: '12.4%', change: '+2.1%', color: 'from-amber-500/10 to-orange-500/10' },
+              { label: 'Bookings Today', value: statsLoading ? '—' : formatNumber(safeStats.bookingsToday), change: statsLoading ? '—' : `${formatNumber(safeStats.totalBookings)} total`, color: 'from-blue-500/10 to-blue-600/10' },
+              { label: 'Revenue This Week', value: statsLoading ? '—' : formatCurrency(safeStats.revenueThisWeekPence), change: statsLoading ? '—' : `${formatPercentChange(safeStats.revenueChange)} this month`, color: 'from-emerald-500/10 to-emerald-600/10' },
+              { label: 'New Signups', value: statsLoading ? '—' : formatNumber(safeStats.weeklyUserGrowth), change: 'this week', color: 'from-primary/10 to-primary/5' },
+              { label: 'Paid Conversion', value: statsLoading ? '—' : `${safeStats.conversionRate.toFixed(1)}%`, change: 'of bookings paid', color: 'from-amber-500/10 to-orange-500/10' },
             ].map((item) => (
               <div key={item.label} className="group relative overflow-hidden text-center p-4 rounded-2xl bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 shadow-lg hover:border-primary/50 hover:shadow-2xl transition-all duration-300">
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />

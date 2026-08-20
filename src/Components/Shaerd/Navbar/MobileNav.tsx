@@ -26,7 +26,7 @@ export const MobileNavToggle: React.FC<MobileNavToggleProps> = ({
 
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="p-2.5 rounded-full transition-all duration-300 bg-primary/10 text-primary hover:bg-primary hover:text-white active:scale-95"
+        className="p-2.5 rounded-full transition-all duration-300 text-primary hover:bg-navy-100 dark:hover:bg-white/10 active:scale-95"
       >
         {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>

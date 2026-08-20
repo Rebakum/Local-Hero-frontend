@@ -162,15 +162,9 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, varia
         onClick={handleToggle}
         aria-label="Notifications"
         className={`relative p-2 rounded-full transition-all duration-200 ${
-          variant === 'chip'
-            ? open
-              ? 'bg-amber-200 text-amber-700 dark:bg-amber-500/25 dark:text-amber-300'
-              : 'bg-amber-100 text-amber-600 hover:bg-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:hover:bg-amber-500/20'
-            : open
-              ? 'bg-primary/10 text-primary'
-              : atTop
-                ? 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
-                : 'text-navy-800 hover:bg-navy-100 dark:text-white dark:hover:bg-white/10'
+          open
+            ? 'text-amber-600 dark:text-amber-400'
+            : 'text-amber-600 hover:bg-navy-100 dark:text-amber-400 dark:hover:bg-white/10'
         }`}
       >
         <Bell className="w-5 h-5" />

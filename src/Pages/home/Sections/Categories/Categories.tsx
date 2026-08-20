@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SectionTitle } from "@/src/Components/ui/SectionTitle";
+import { SectionWave } from "@/src/Components/ui/SectionWave";
 import { useBooking } from "@/src/Context/BookingContext";
 import { getAllTrades } from "@/src/services/api";
 import { TradeCategory, Trade } from "@/src/types";
@@ -41,9 +42,10 @@ export const Categories: React.FC = () => {
   return (
     <section
       id="services"
-      className="bg-cream-100 dark:bg-black section-pad border-y border-navy-100/60 dark:border-white/10"
+      className="relative overflow-hidden bg-cream-100 dark:bg-black section-pad border-y border-navy-100/60 dark:border-white/10"
     >
-      <div className="container-lh">
+      <SectionWave />
+      <div className="container-lh relative z-10">
         <SectionTitle
           badge
           eyebrow={`Trade Categories`}

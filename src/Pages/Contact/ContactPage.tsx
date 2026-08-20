@@ -7,10 +7,13 @@ import {
   Send,
   CheckCircle2,
   ShieldCheck,
-  HelpCircle
+  HelpCircle,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
 import { PageHero } from '../../Components/ui/PageHero';
 import { SectionTitle } from '../../Components/ui/SectionTitle';
+import { createSupportTicket } from '../../services/support.service';
 
 export const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,11 +25,28 @@ export const ContactPage: React.FC = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // API Call logic can be added here
-    setIsSubmitted(true);
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await createSupportTicket({
+        name: formData.name.trim() || undefined,
+        email: formData.email.trim() || undefined,
+        phone: formData.phone.trim() || undefined,
+        subject: formData.subject,
+        message: formData.message.trim(),
+      });
+      setIsSubmitted(true);
+    } catch (err: unknown) {
+      const apiError = err as { response?: { data?: { message?: string } }; message?: string };
+      setError(apiError.response?.data?.message || apiError.message || 'Could not send your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -139,6 +159,13 @@ export const ContactPage: React.FC = () => {
                   </p>
                 </div>
 
+                {error && (
+                  <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-sm font-semibold text-red-600 dark:text-red-400">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    {error}
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-heading font-bold uppercase text-navy-700 dark:text-navy-200 mb-1.5">
@@ -215,8 +242,13 @@ export const ContactPage: React.FC = () => {
                   />
                 </div>
 
-                <button type="submit" className="btn btn-primary px-8 py-4 text-base w-full sm:w-auto flex items-center justify-center">
-                  <Send className="w-4 h-4 mr-2" /> Send Message
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn btn-primary px-8 py-4 text-base w-full sm:w-auto flex items-center justify-center disabled:opacity-60"
+                >
+                  {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Send className="w-4 h-4 mr-2" />}
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             )}

@@ -1,10 +1,12 @@
 import React from 'react';
 import { FeaturedProsGrid } from './FeaturedProsGrid';
+import { SectionWave } from '@/src/Components/ui/SectionWave';
 
 export const FeaturedPros: React.FC = () => {
   return (
-    <section className="section-pad border-y border-navy-100/60 dark:border-white/10">
-      <div className="container-lh">
+    <section className="relative overflow-hidden section-pad border-y border-navy-100/60 dark:border-white/10">
+      <SectionWave />
+      <div className="container-lh relative z-10">
         <div className="max-w-2xl mx-auto text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Featured pros</p>
           <h2 className="mt-3 text-3xl sm:text-4xl font-heading font-bold text-navy-950 dark:text-white">

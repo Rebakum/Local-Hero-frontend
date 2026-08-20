@@ -26,6 +26,7 @@ import {
   Tag,
   Loader2,
   Sparkles,
+  LifeBuoy,
 } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { logoutUser } from '../services/auth.service';
@@ -46,21 +47,21 @@ interface SidebarLink {
 }
 
 const ICON_COLORS: Record<string, string> = {
-  red: 'bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400',
-  sky: 'bg-sky-100 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400',
-  amber: 'bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-  emerald: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
-  violet: 'bg-violet-100 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400',
-  pink: 'bg-pink-100 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400',
-  indigo: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-  orange: 'bg-orange-100 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400',
-  slate: 'bg-slate-200 text-slate-600 dark:bg-white/10 dark:text-navy-300',
-  teal: 'bg-teal-100 text-teal-600 dark:bg-teal-500/10 dark:text-teal-400',
-  cyan: 'bg-cyan-100 text-cyan-600 dark:bg-cyan-500/10 dark:text-cyan-400',
-  blue: 'bg-blue-100 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
-  green: 'bg-green-100 text-green-600 dark:bg-green-500/10 dark:text-green-400',
-  fuchsia: 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-500/10 dark:text-fuchsia-400',
-  purple: 'bg-purple-100 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400',
+  red: 'text-red-600 dark:text-red-400',
+  sky: 'text-sky-600 dark:text-sky-400',
+  amber: 'text-amber-600 dark:text-amber-400',
+  emerald: 'text-emerald-600 dark:text-emerald-400',
+  violet: 'text-violet-600 dark:text-violet-400',
+  pink: 'text-pink-600 dark:text-pink-400',
+  indigo: 'text-indigo-600 dark:text-indigo-400',
+  orange: 'text-orange-600 dark:text-orange-400',
+  slate: 'text-slate-600 dark:text-navy-300',
+  teal: 'text-teal-600 dark:text-teal-400',
+  cyan: 'text-cyan-600 dark:text-cyan-400',
+  blue: 'text-blue-600 dark:text-blue-400',
+  green: 'text-green-600 dark:text-green-400',
+  fuchsia: 'text-fuchsia-600 dark:text-fuchsia-400',
+  purple: 'text-purple-600 dark:text-purple-400',
 };
 
 const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
@@ -87,6 +88,7 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/provider/reviews', label: 'Reviews', icon: Star, color: 'orange' },
     { to: '/dashboard/provider/payments', label: 'Payments', icon: CreditCard, color: 'green' },
     { to: '/dashboard/provider/subscription', label: 'Subscription', icon: Briefcase, color: 'fuchsia' },
+    { to: '/dashboard/provider/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
     { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
   ADMIN: [
@@ -103,6 +105,7 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
     { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
     { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare, color: 'pink' },
+    { to: '/dashboard/admin/manage/support-tickets', label: 'Support Tickets', icon: LifeBuoy, color: 'violet' },
     { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
   SUPER_ADMIN: [
@@ -117,6 +120,7 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
     { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
     { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare, color: 'pink' },
+    { to: '/dashboard/admin/manage/support-tickets', label: 'Support Tickets', icon: LifeBuoy, color: 'violet' },
     { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays, color: 'sky' },
     { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard, color: 'green' },
     { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star, color: 'fuchsia' },
@@ -263,7 +267,7 @@ const DashboardLayout: React.FC = () => {
             <RouterLink
               to="/"
               aria-label="Home"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-sky-600 transition-all duration-200 hover:bg-sky-200 dark:bg-sky-500/10 dark:text-sky-400 dark:hover:bg-sky-500/20"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-sky-600 transition-all duration-200 hover:bg-navy-100 dark:text-sky-400 dark:hover:bg-white/10"
             >
               <Home className="w-5 h-5" />
             </RouterLink>
@@ -307,7 +311,7 @@ const DashboardLayout: React.FC = () => {
             <button
               onClick={handleLogout}
               aria-label="Logout"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 text-red-600 transition-all duration-200 hover:bg-red-200 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-red-600 transition-all duration-200 hover:bg-navy-100 dark:text-red-400 dark:hover:bg-white/10"
             >
               <LogOut className="w-5 h-5" />
             </button>
