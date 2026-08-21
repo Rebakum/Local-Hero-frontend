@@ -1,92 +1,93 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
 import {
   Settings,
   Server,
-  Cpu,
-  HardDrive,
+  Database,
   Activity,
-  Key,
-  Eye,
-  EyeOff,
-  Copy,
-  Check,
-  Clock,
   AlertTriangle,
   Shield,
   Globe,
   RefreshCw,
-  Database,
   Wifi,
   Lock,
-  FileText,
+  Users,
+  CalendarDays,
   TrendingUp,
+  CreditCard,
+  Clock,
+  FileText,
 } from 'lucide-react';
+import { getAdminDashboardStats, type AdminDashboardStats } from '../../../services/auth.service';
+import { getAdminBookings, type BookingRecord } from '../../../services/booking.service';
+import { getPaymentHistory, type PaymentRecord } from '../../../services/payment.service';
 
-interface ApiKey {
-  id: string;
-  name: string;
-  key: string;
-  status: 'active' | 'revoked';
-  createdAt: string;
-  lastUsed: string;
-}
+const formatPence = (pence: number): string =>
+  new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(pence / 100);
 
-interface LogEntry {
-  id: string;
-  timestamp: string;
-  level: 'info' | 'warning' | 'error';
-  message: string;
-  source: string;
-}
-
-const MOCK_API_KEYS: ApiKey[] = [
-  { id: '1', name: 'Production API Key', key: 'lh_prod_••••••••••••k8f2', status: 'active', createdAt: '2026-01-15', lastUsed: '2 mins ago' },
-  { id: '2', name: 'Staging API Key', key: 'lh_stag_••••••••••••m3j7', status: 'active', createdAt: '2026-03-20', lastUsed: '1 hour ago' },
-  { id: '3', name: 'Webhook Key', key: 'lh_whk_••••••••••••p9x1', status: 'active', createdAt: '2026-06-01', lastUsed: '5 mins ago' },
-  { id: '4', name: 'Legacy Integration', key: 'lh_leg_••••••••••••q2w4', status: 'revoked', createdAt: '2025-08-10', lastUsed: '3 months ago' },
-];
-
-const MOCK_LOGS: LogEntry[] = [
-  { id: '1', timestamp: '14:32:05', level: 'info', message: 'User authentication successful', source: 'auth-service' },
-  { id: '2', timestamp: '14:31:42', level: 'warning', message: 'Rate limit approaching for IP 192.168.1.45', source: 'api-gateway' },
-  { id: '3', timestamp: '14:30:18', level: 'error', message: 'Payment webhook timeout after 30s', source: 'payment-service' },
-  { id: '4', timestamp: '14:29:55', level: 'info', message: 'New provider application received', source: 'user-service' },
-  { id: '5', timestamp: '14:28:30', level: 'info', message: 'Database backup completed successfully', source: 'scheduler' },
-  { id: '6', timestamp: '14:27:12', level: 'warning', message: 'Email service latency above threshold (2.3s)', source: 'notification-service' },
-  { id: '7', timestamp: '14:25:48', level: 'info', message: 'Cache invalidation triggered for /services', source: 'cache-service' },
-  { id: '8', timestamp: '14:24:01', level: 'error', message: 'Failed to connect to external mapping API', source: 'geolocation-service' },
-];
-
-const SYSTEM_HEALTH = [
-  { icon: Server, label: 'API Server', value: 'Operational', status: 'success' as const, bar: '99.99%' },
-  { icon: Database, label: 'Database', value: 'Operational', status: 'success' as const, bar: '99.98%' },
-  { icon: Wifi, label: 'CDN', value: 'Operational', status: 'success' as const, bar: '100%' },
-  { icon: Lock, label: 'Auth Service', value: 'Operational', status: 'success' as const, bar: '99.97%' },
-  { icon: Globe, label: 'Payment Gateway', value: 'Degraded', status: 'warning' as const, bar: '98.5%' },
-];
-
-const LOG_LEVEL_CONFIG: Record<string, { color: string; badge: 'success' | 'warning' | 'emergency' }> = {
-  info: { color: 'text-emerald-500', badge: 'success' },
-  warning: { color: 'text-amber-500', badge: 'warning' },
-  error: { color: 'text-red-500', badge: 'emergency' },
+const relative = (iso?: string | null): string => {
+  if (!iso) return '—';
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
 };
 
 const SystemPage: React.FC = () => {
-  const [visibleKeys, setVisibleKeys] = useState<string[]>([]);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [stats, setStats] = useState<AdminDashboardStats | null>(null);
+  const [bookings, setBookings] = useState<BookingRecord[]>([]);
+  const [payments, setPayments] = useState<PaymentRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleKeyVisibility = (id: string) => {
-    setVisibleKeys((prev) => (prev.includes(id) ? prev.filter((k) => k !== id) : [...prev, id]));
-  };
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [statsData, bookingData, paymentData] = await Promise.all([
+        getAdminDashboardStats(),
+        getAdminBookings({ page: 1, limit: 8 }),
+        getPaymentHistory({ page: 1, limit: 8 }),
+      ]);
+      setStats(statsData);
+      setBookings(bookingData.bookings ?? []);
+      setPayments(paymentData.payments ?? []);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load system data.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const copyKey = (id: string, key: string) => {
-    navigator.clipboard.writeText(key);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const healthy = (stats?.systemHealth ?? 0) >= 100;
+  const systemStatus = stats?.systemStatus ?? 'Checking...';
+
+  const healthCards = [
+    { icon: Server, label: 'API Server', value: systemStatus, status: healthy ? 'success' as const : 'warning' as const, bar: stats ? `${stats.systemHealth}%` : '—' },
+    { icon: Database, label: 'Database', value: healthy ? 'Operational' : 'Unavailable', status: healthy ? 'success' as const : 'warning' as const, bar: healthy ? '99.99%' : '0%' },
+    { icon: Wifi, label: 'Platform', value: 'Live', status: 'success' as const, bar: '100%' },
+    { icon: Lock, label: 'Auth Service', value: 'Operational', status: 'success' as const, bar: '99.97%' },
+    { icon: Globe, label: 'Payment Gateway', value: 'Operational', status: 'success' as const, bar: '99.9%' },
+  ];
+
+  const kpis = stats
+    ? [
+        { icon: Users, label: 'Total Users', value: stats.totalUsers.toLocaleString(), sub: `+${stats.weeklyUserGrowth} this week` },
+        { icon: CalendarDays, label: 'Total Bookings', value: stats.totalBookings.toLocaleString(), sub: `${stats.bookingsToday} today` },
+        { icon: CreditCard, label: 'Platform Revenue', value: formatPence(stats.platformRevenuePence), sub: `${stats.revenueChange >= 0 ? '+' : ''}${stats.revenueChange}% this month` },
+        { icon: Shield, label: 'Active Admins', value: stats.activeAdmins.toLocaleString(), sub: `${stats.pendingApprovals} pending approvals` },
+      ]
+    : [];
 
   return (
     <div className="space-y-8">
@@ -109,16 +110,56 @@ const SystemPage: React.FC = () => {
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Platform Control</h1>
             <p className="mt-2 text-sm text-white/70 max-w-md leading-relaxed">
-              Manage API keys, monitor system health, and review audit logs.
+              Monitor system health and review live platform activity.
             </p>
           </div>
           <div className="hidden sm:flex items-center gap-2 px-4 py-2 shadow-2xl hover:shadow-red-300 rounded-2xl border border-primary bg-white/15 backdrop-blur-sm ">
             <Activity className="w-4 h-4 text-emerald-300" />
-            <span className="text-sm font-medium">All Systems Operational</span>
+            <span className="text-sm font-medium">{healthy ? 'All Systems Operational' : 'Degraded'}</span>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-white/0 via-white/30 to-white/0" />
       </motion.div>
+
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2.5 p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-sm"
+        >
+          <AlertTriangle className="w-4 h-4 shrink-0" />
+          {error}
+        </motion.div>
+      )}
+
+      {/* Platform KPIs */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {loading
+          ? [1, 2, 3, 4].map((n) => (
+              <Card key={n} padding="md" className="animate-pulse">
+                <div className="h-10 w-10 rounded-2xl bg-navy-100 dark:bg-white/5 mb-3" />
+                <div className="h-6 w-20 bg-navy-100 dark:bg-white/5 rounded mb-2" />
+                <div className="h-3 w-28 bg-navy-100 dark:bg-white/5 rounded" />
+              </Card>
+            ))
+          : kpis.map((kpi, i) => (
+              <motion.div
+                key={kpi.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.06, duration: 0.4 }}
+              >
+                <Card padding="md" className="h-full">
+                  <div className="w-10 h-10 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-3">
+                    <kpi.icon className="w-5 h-5" />
+                  </div>
+                  <p className="text-2xl font-black text-navy-900 dark:text-white">{kpi.value}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-navy-400 dark:text-navy-500 mt-1">{kpi.label}</p>
+                  <p className="text-[11px] text-navy-400/80 dark:text-navy-500/80 mt-0.5">{kpi.sub}</p>
+                </Card>
+              </motion.div>
+            ))}
+      </div>
 
       {/* System Health */}
       <motion.div
@@ -127,14 +168,24 @@ const SystemPage: React.FC = () => {
         transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
       >
         <Card padding="lg">
-          <div className="flex items-center gap-2 mb-5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-emerald-500" />
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                <Activity className="w-4 h-4 text-emerald-500" />
+              </div>
+              <h2 className="text-lg font-bold text-navy-900 dark:text-white">System Health</h2>
             </div>
-            <h2 className="text-lg font-bold text-navy-900 dark:text-white">System Health</h2>
+            <button
+              onClick={() => void load()}
+              disabled={loading}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 3 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {SYSTEM_HEALTH.map((item, i) => (
+            {healthCards.map((item, i) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 12 }}
@@ -153,7 +204,7 @@ const SystemPage: React.FC = () => {
                 <div className="w-full h-1.5 rounded-full bg-navy-100 dark:bg-white/5 overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: item.bar }}
+                    animate={{ width: item.status === 'success' ? '100%' : '40%' }}
                     transition={{ duration: 1, delay: 0.5 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                     className={`h-full rounded-full ${item.status === 'success' ? 'bg-emerald-500' : 'bg-amber-500'}`}
                   />
@@ -165,7 +216,7 @@ const SystemPage: React.FC = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* API Keys */}
+        {/* Recent Bookings */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -175,57 +226,50 @@ const SystemPage: React.FC = () => {
             <div className="px-6 py-4 border-b border-navy-100 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Key className="w-4.5 h-4.5 text-primary" />
+                  <CalendarDays className="w-4.5 h-4.5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-navy-900 dark:text-white">API Keys</h2>
-                  <p className="text-xs text-navy-400 dark:text-navy-500">Manage platform API credentials</p>
+                  <h2 className="text-lg font-bold text-navy-900 dark:text-white">Recent Bookings</h2>
+                  <p className="text-xs text-navy-400 dark:text-navy-500">Latest booking requests</p>
                 </div>
               </div>
-              <Badge variant="primary">{MOCK_API_KEYS.filter((k) => k.status === 'active').length} Active</Badge>
+              <Badge variant="primary">{bookings.length}</Badge>
             </div>
-            <div className="divide-y divide-navy-50 dark:divide-white/5">
-              {MOCK_API_KEYS.map((apiKey, i) => (
-                <motion.div
-                  key={apiKey.id}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + i * 0.06, duration: 0.4 }}
-                  className="px-6 py-4 hover:bg-navy-50 dark:hover:bg-white/[0.02] transition-all duration-200"
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-bold text-navy-800 dark:text-navy-200">{apiKey.name}</h3>
-                      <Badge variant={apiKey.status === 'active' ? 'success' : 'neutral'}>{apiKey.status}</Badge>
+            <div className="divide-y divide-navy-50 dark:divide-white/5 max-h-[480px] overflow-y-auto">
+              {loading ? (
+                <div className="flex items-center justify-center py-16"><Activity className="w-6 h-6 animate-pulse text-primary" /></div>
+              ) : bookings.length === 0 ? (
+                <p className="py-16 text-center text-sm text-navy-400">No bookings yet.</p>
+              ) : (
+                bookings.map((b) => (
+                  <motion.div
+                    key={b.id}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
+                    className="px-6 py-3 hover:bg-navy-50 dark:hover:bg-white/[0.02] transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-xs font-semibold text-navy-800 dark:text-navy-200">{b.fullName}</p>
+                      <Badge variant={b.status === 'COMPLETED' ? 'success' : b.status === 'PENDING' ? 'warning' : 'neutral'}>
+                        {b.status}
+                      </Badge>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <code className="flex-1 px-3 py-1.5 rounded-lg bg-navy-100 dark:bg-white/5 text-xs font-mono text-navy-600 dark:text-navy-400">
-                      {visibleKeys.includes(apiKey.id) ? apiKey.key.replace(/•/g, 'a') : apiKey.key}
-                    </code>
-                    <button
-                      onClick={() => toggleKeyVisibility(apiKey.id)}
-                      className="w-8 h-8 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
-                    >
-                      {visibleKeys.includes(apiKey.id) ? <EyeOff className="w-3.5 3" /> : <Eye className="w-3.5 3" />}
-                    </button>
-                    <button
-                      onClick={() => copyKey(apiKey.id, apiKey.key)}
-                      className="w-8 h-8 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center text-navy-500 hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
-                    >
-                      {copiedId === apiKey.id ? <Check className="w-3.5 3 text-emerald-500" /> : <Copy className="w-3.5 3" />}
-                    </button>
-                  </div>
-                  <p className="text-[10px] text-navy-400 dark:text-navy-500 mt-2">
-                    Created {apiKey.createdAt} · Last used {apiKey.lastUsed}
-                  </p>
-                </motion.div>
-              ))}
+                    <div className="flex items-center gap-2 text-[10px] text-navy-400 dark:text-navy-500">
+                      <FileText className="w-3 h-3" />
+                      {b.trade}
+                      <span className="text-navy-300 dark:text-navy-600">·</span>
+                      <Clock className="w-3 h-3" />
+                      {relative(b.createdAt)}
+                    </div>
+                  </motion.div>
+                ))
+              )}
             </div>
           </Card>
         </motion.div>
 
-        {/* Audit Logs */}
+        {/* Recent Payments */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -235,93 +279,49 @@ const SystemPage: React.FC = () => {
             <div className="px-6 py-4 border-b border-navy-100 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <FileText className="w-4.5 h-4.5 text-primary" />
+                  <CreditCard className="w-4.5 h-4.5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-navy-900 dark:text-white">Audit Logs</h2>
-                  <p className="text-xs text-navy-400 dark:text-navy-500">Recent system activity</p>
+                  <h2 className="text-lg font-bold text-navy-900 dark:text-white">Recent Payments</h2>
+                  <p className="text-xs text-navy-400 dark:text-navy-500">Latest transaction activity</p>
                 </div>
               </div>
-              <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors">
-                <RefreshCw className="w-3.5 3" />
-                Refresh
-              </button>
+              <Badge variant="primary">{payments.length}</Badge>
             </div>
             <div className="divide-y divide-navy-50 dark:divide-white/5 max-h-[480px] overflow-y-auto">
-              {MOCK_LOGS.map((log, i) => {
-                const config = LOG_LEVEL_CONFIG[log.level];
-                return (
+              {loading ? (
+                <div className="flex items-center justify-center py-16"><Activity className="w-6 h-6 animate-pulse text-primary" /></div>
+              ) : payments.length === 0 ? (
+                <p className="py-16 text-center text-sm text-navy-400">No payments yet.</p>
+              ) : (
+                payments.map((p) => (
                   <motion.div
-                    key={log.id}
+                    key={p.id}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + i * 0.04, duration: 0.4 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
                     className="px-6 py-3 hover:bg-navy-50 dark:hover:bg-white/[0.02] transition-all duration-200"
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="flex items-center gap-2 shrink-0 mt-0.5">
-                        <span className={`w-2 h-2 rounded-full ${config.color.replace('text-', 'bg-')}`} />
-                        <Badge variant={config.badge} className="text-[9px] py-0 px-1.5">
-                          {log.level.toUpperCase()}
-                        </Badge>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-navy-800 dark:text-navy-200">{log.message}</p>
-                        <div className="flex items-center gap-2 mt-1 text-[10px] text-navy-400 dark:text-navy-500">
-                          <Clock className="w-3 h-3" />
-                          {log.timestamp}
-                          <span className="text-navy-300 dark:text-navy-600">·</span>
-                          <span className="font-mono">{log.source}</span>
-                        </div>
-                      </div>
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-xs font-semibold text-navy-800 dark:text-navy-200">
+                        {p.booking?.fullName ?? p.id}
+                      </p>
+                      <span className="text-xs font-bold text-emerald-600">{formatPence(p.amountInPence)}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-[10px] text-navy-400 dark:text-navy-500">
+                      <TrendingUp className="w-3 h-3" />
+                      {p.status}
+                      <span className="text-navy-300 dark:text-navy-600">·</span>
+                      <Clock className="w-3 h-3" />
+                      {relative(p.createdAt)}
                     </div>
                   </motion.div>
-                );
-              })}
+                ))
+              )}
             </div>
           </Card>
         </motion.div>
       </div>
-
-      {/* Platform Config */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Card padding="lg">
-          <div className="flex items-center gap-2 mb-5">
-            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Globe className="w-4 h-4 text-primary" />
-            </div>
-            <h2 className="text-lg font-bold text-navy-900 dark:text-white">Platform Settings</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { label: 'Maintenance Mode', value: 'Off', status: 'success', description: 'Platform is live and accessible' },
-              { label: 'Registration', value: 'Open', status: 'success', description: 'New users can register freely' },
-              { label: 'Auto-Approve Providers', value: 'Disabled', status: 'warning', description: 'Manual review required for all applications' },
-              { label: 'Email Notifications', value: 'Active', status: 'success', description: 'All email services operational' },
-              { label: 'Payment Processing', value: 'Active', status: 'warning', description: 'Minor delays reported with Stripe webhook' },
-              { label: 'Rate Limiting', value: '100 req/min', status: 'success', description: 'Per-user API rate limit enforced' },
-            ].map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.06, duration: 0.4 }}
-                className="p-4 rounded-xl bg-cream-50 dark:bg-navy-800/50 border border-navy-100 dark:border-white/5 hover:border-primary/20 transition-colors"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold text-navy-700 dark:text-navy-300">{item.label}</span>
-                  <Badge variant={item.status as 'success' | 'warning'}>{item.value}</Badge>
-                </div>
-                <p className="text-[11px] text-navy-400 dark:text-navy-500">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-      </motion.div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Loader2, AlertCircle, Images, Check, X, Star, Eye, Trash2 } from 'lucide-react';
+import { Loader2, AlertCircle, Images, Check, X, Star, Eye } from 'lucide-react';
+import { RowActions, deleteAction } from '../../../../Components/dashboard/RowActions';
 import {
   DataTable,
   Modal,
@@ -267,63 +268,48 @@ const BeforeAfterManagement: React.FC = () => {
           },
         ]}
         actions={(p) => (
-          <div className="flex items-center gap-1.5">
-            {p.status === 'PENDING' && (
-              <>
-                <button
-                  onClick={() => handleApprove(p)}
-                  disabled={busyId === p.id}
-                  title="Approve & publish"
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-emerald-600 border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-500/10 transition-colors disabled:opacity-50"
-                >
-                  {busyId === p.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 3" />}
-                </button>
-                <button
-                  onClick={() => {
-                    setRejectTarget(p);
-                    setRejectReason('');
-                  }}
-                  title="Reject"
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-red-500 border border-red-200 dark:border-red-500/30 hover:bg-red-500/10 transition-colors"
-                >
-                  <X className="w-3.5 3" />
-                </button>
-              </>
-            )}
-
-            {p.status === 'APPROVED' && (
-              <button
-                onClick={() => handleToggleFeature(p)}
-                disabled={busyId === p.id}
-                title={p.isFeatured ? 'Unfeature' : 'Feature on homepage'}
-                className={`w-8 h-8 rounded-full flex items-center justify-center border transition-colors disabled:opacity-50 ${
-                  p.isFeatured
-                    ? 'text-amber-500 border-amber-200 dark:border-amber-500/40 bg-amber-500/10'
-                    : 'text-navy-500 dark:text-navy-400 border-navy-200 dark:border-white/10 hover:text-amber-500 hover:border-amber-300'
-                }`}
-              >
-                {busyId === p.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Star className="w-3.5 3" />}
-              </button>
-            )}
-
-            {(p.status === 'APPROVED' || p.status === 'REJECTED') && (
-              <button
-                onClick={() => setPreview(p)}
-                title="View images"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
-              >
-                <Eye className="w-3.5 3" />
-              </button>
-            )}
-
-            <button
-              onClick={() => setDeleteTarget(p)}
-              title="Delete"
-              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
-            >
-              <Trash2 className="w-3.5 3" />
-            </button>
-          </div>
+          <RowActions
+            actions={[
+              {
+                key: 'approve',
+                icon: <Check className="w-3.5 h-3.5" />,
+                label: 'Approve & publish',
+                tone: 'success',
+                loading: busyId === p.id,
+                hidden: p.status !== 'PENDING',
+                onClick: () => handleApprove(p),
+              },
+              {
+                key: 'reject',
+                icon: <X className="w-3.5 h-3.5" />,
+                label: 'Reject',
+                tone: 'danger',
+                hidden: p.status !== 'PENDING',
+                onClick: () => {
+                  setRejectTarget(p);
+                  setRejectReason('');
+                },
+              },
+              {
+                key: 'feature',
+                icon: <Star className="w-3.5 h-3.5" />,
+                label: p.isFeatured ? 'Unfeature' : 'Feature on homepage',
+                tone: 'warning',
+                loading: busyId === p.id,
+                hidden: p.status !== 'APPROVED',
+                onClick: () => handleToggleFeature(p),
+              },
+              {
+                key: 'view',
+                icon: <Eye className="w-3.5 h-3.5" />,
+                label: 'View images',
+                tone: 'info',
+                hidden: p.status !== 'APPROVED' && p.status !== 'REJECTED',
+                onClick: () => setPreview(p),
+              },
+              deleteAction(() => setDeleteTarget(p)),
+            ]}
+          />
         )}
       />
 

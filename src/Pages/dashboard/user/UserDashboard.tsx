@@ -26,6 +26,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { CreateTestimonialModal } from '../../../Pages/home/Sections/Testimonials/CreateTestimonialModal';
 import { getMyBookings } from '../../../services/booking.service';
 import type { BookingRecord } from '../../../services/booking.service';
+import { getUnreadNotificationCount } from '../../../services/notification.service';
+import { getMyFavourites } from '../../../services/favourite.service';
+import { getMyQuotes } from '../../../services/quote.service';
 
 const STATUS_STYLES: Record<string, { badge: 'success' | 'warning' | 'neutral'; icon: React.FC<{ className?: string }>; dot: string }> = {
   ACCEPTED: { badge: 'success', icon: CheckCircle2, dot: 'bg-emerald-500' },
@@ -43,6 +46,9 @@ const UserDashboard: React.FC = () => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [bookingsLoading, setBookingsLoading] = useState(true);
   const [bookingsError, setBookingsError] = useState('');
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [savedCount, setSavedCount] = useState(0);
+  const [pendingQuoteCount, setPendingQuoteCount] = useState(0);
 
   const loadBookings = useCallback(async () => {
     try {
@@ -60,6 +66,30 @@ const UserDashboard: React.FC = () => {
   useEffect(() => {
     loadBookings();
   }, [loadBookings]);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const [notifCount, favourites, quotes] = await Promise.all([
+          getUnreadNotificationCount(),
+          getMyFavourites(),
+          getMyQuotes(),
+        ]);
+        if (!active) return;
+        setUnreadCount(notifCount ?? 0);
+        setSavedCount(favourites?.length ?? 0);
+        setPendingQuoteCount(
+          (quotes ?? []).filter((q) => q.status === 'PENDING' || q.status === 'QUOTED').length,
+        );
+      } catch {
+        /* leave counts at zero on error */
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const activeCount = bookings.filter((b) => ['PENDING', 'ACCEPTED', 'IN_PROGRESS'].includes(b.status)).length;
   const completedCount = bookings.filter((b) => b.status === 'COMPLETED').length;
@@ -113,7 +143,7 @@ const UserDashboard: React.FC = () => {
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20"
           >
             <Bell className="w-4 h-4" />
-            <span className="text-sm font-medium">3 new</span>
+            <span className="text-sm font-medium">{unreadCount} new</span>
           </motion.div>
         </div>
 
@@ -125,9 +155,9 @@ const UserDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { icon: ClipboardList, label: 'Active Bookings', value: String(activeCount), color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: 'in progress', trend: 'up' },
-          { icon: Bookmark, label: 'Saved Pros', value: '5', color: 'from-primary to-primary/80', lightColor: 'bg-primary/10', textColor: 'text-primary', change: '+2 this month', trend: 'up' },
+          { icon: Bookmark, label: 'Saved Pros', value: String(savedCount), color: 'from-primary to-primary/80', lightColor: 'bg-primary/10', textColor: 'text-primary', change: 'favourites', trend: 'up' },
           { icon: Calendar, label: 'Completed', value: String(completedCount), color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'All time', trend: 'up' },
-          { icon: MessageSquare, label: 'Pending Quotes', value: '3', color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: '2 urgent', trend: 'up' },
+          { icon: MessageSquare, label: 'Pending Quotes', value: String(pendingQuoteCount), color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: 'awaiting reply', trend: 'up' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}

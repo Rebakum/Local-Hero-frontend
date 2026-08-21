@@ -2,8 +2,6 @@ import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'motion/react';
 import {
-  Pencil,
-  Trash2,
   UserRound,
   Search,
   Loader2,
@@ -24,6 +22,7 @@ import {
   TrendingUp,
   Command,
   ArrowUpRight,
+  Check,
 } from 'lucide-react';
 import {
   DataTable,
@@ -36,6 +35,7 @@ import {
   Textarea,
 } from '../../../../Components/ui';
 import { StatusBadge } from '../../../../Components/ui/StatusBadge';
+import { RowActions, editAction, deleteAction } from '../../../../Components/dashboard/RowActions';
 import {
   updateProfessional,
   deleteProfessional,
@@ -225,7 +225,7 @@ const ProfessionalsManagement: React.FC = () => {
     setError(null);
     try {
       const payload = toPayload(values);
-      if (!editing) {
+      if (!editing?.id) {
         throw new Error('No professional selected for editing.');
       }
       await updateProfessional(editing.id, payload);
@@ -240,11 +240,12 @@ const ProfessionalsManagement: React.FC = () => {
   });
 
   const handleDelete = async () => {
-    if (!deleteTarget) return;
+    const deleteId = deleteTarget?.id;
+    if (!deleteId) return;
     setDeleting(true);
     setError(null);
     try {
-      await deleteProfessional(deleteTarget.id);
+      await deleteProfessional(deleteId);
       setDeleteTarget(null);
       await refresh();
     } catch (err: unknown) {
@@ -481,22 +482,12 @@ const ProfessionalsManagement: React.FC = () => {
           },
         ]}
         actions={(pro) => (
-          <div className="flex items-center justify-end gap-1.5">
-            <button
-              onClick={() => openEdit(pro)}
-              title="Edit"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 transition-all duration-200 hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
-            >
-              <Pencil className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setDeleteTarget(pro)}
-              title="Delete"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 transition-all duration-200 hover:border-red-400/40 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          <RowActions
+            actions={[
+              editAction(() => openEdit(pro)),
+              deleteAction(() => setDeleteTarget(pro)),
+            ]}
+          />
         )}
       />
 
@@ -522,10 +513,12 @@ const ProfessionalsManagement: React.FC = () => {
               type="button"
               onClick={onSubmit}
               disabled={saving}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+              aria-label="Save changes"
+              title="Save changes"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {saving && <Loader2 className="w-4 h-4 animate-spin" />}
-              'Save changes'
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> :  <Check className="w-4 h-4" />}
+              save changes
             </button>
           </>
         }

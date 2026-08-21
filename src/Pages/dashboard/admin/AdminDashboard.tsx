@@ -30,12 +30,15 @@ import {
   getProviderApplications,
   approveProviderApplication,
   rejectProviderApplication,
+  getAdminDashboardStats,
+  type AdminDashboardStats,
 } from '../../../services/auth.service';
 import type { ProviderApplicationRecord } from '../../../types/auth';
 
 const AdminDashboard: React.FC = () => {
   const { user } = useAuth();
   const [pendingApplications, setPendingApplications] = useState<ProviderApplicationRecord[]>([]);
+  const [adminStats, setAdminStats] = useState<AdminDashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -44,8 +47,12 @@ const AdminDashboard: React.FC = () => {
     try {
       setLoading(true);
       setErrorMsg(null);
-      const applications = await getProviderApplications('PENDING');
+      const [applications, stats] = await Promise.all([
+        getProviderApplications('PENDING'),
+        getAdminDashboardStats(),
+      ]);
       setPendingApplications(applications);
+      setAdminStats(stats);
     } catch (err) {
       setErrorMsg('Data Load please check your internet connection');
     } finally {
@@ -151,9 +158,9 @@ const AdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { icon: UserCheck, label: 'Pending Providers', value: String(pendingApplications.length), color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', change: 'awaiting review' },
-          { icon: MessageSquare, label: 'Review Moderation', value: 'Open', color: 'from-violet-500 to-purple-500', lightColor: 'bg-violet-50 dark:bg-violet-500/10', textColor: 'text-violet-600 dark:text-violet-400', change: 'manage reviews' },
-          { icon: Images, label: 'Content Modules', value: '6', color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: 'fully managed' },
-          { icon: Activity, label: 'Platform Status', value: 'Live', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'all systems ok' },
+          { icon: MessageSquare, label: 'Total Bookings', value: (adminStats?.totalBookings ?? 0).toLocaleString(), color: 'from-violet-500 to-purple-500', lightColor: 'bg-violet-50 dark:bg-violet-500/10', textColor: 'text-violet-600 dark:text-violet-400', change: `${adminStats?.bookingsToday ?? 0} today` },
+          { icon: Images, label: 'Total Users', value: (adminStats?.totalUsers ?? 0).toLocaleString(), color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', change: `+${adminStats?.weeklyUserGrowth ?? 0} this week` },
+          { icon: Activity, label: 'Platform Status', value: adminStats?.systemStatus ?? 'Checking', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50 dark:bg-emerald-500/10', textColor: 'text-emerald-600 dark:text-emerald-400', change: 'all systems ok' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}

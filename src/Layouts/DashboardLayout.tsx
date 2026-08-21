@@ -33,7 +33,6 @@ import { logoutUser } from '../services/auth.service';
 import { Link as RouterLink } from 'react-router-dom';
 import { ThemeLogo } from '../Components/ui/ThemeLogo';
 import type { UserRole } from '../types/auth';
-import { Badge } from '../Components/ui/shared/Badge';
 import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
 import { NotificationBell } from '../Components/Shaerd/Navbar/NotificationBell';
 import { ThemeToggle } from '../Components/Shaerd/ThemeToggle';
@@ -149,10 +148,7 @@ const DashboardLayout: React.FC = () => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
-  // Lightweight, MAIN-CONTENT-ONLY loader for link-to-link navigation
-  // (e.g. Trades -> Notifications). Sidebar + header stay fully visible
-  // and interactive; only the content area shows a brief spinner while
-  // the new page mounts.
+
   const isFirstRender = React.useRef(true);
   const [contentLoading, setContentLoading] = React.useState(false);
   React.useEffect(() => {
@@ -165,8 +161,7 @@ const DashboardLayout: React.FC = () => {
     return () => clearTimeout(t);
   }, [location.pathname]);
 
-  // Close the mobile sidebar automatically once the viewport crosses into
-  // the desktop breakpoint, so it doesn't stay "open" in state.
+  
   React.useEffect(() => {
     const mql = window.matchMedia('(min-width: 1024px)');
     const handleChange = (e: MediaQueryListEvent) => {
@@ -320,7 +315,7 @@ const DashboardLayout: React.FC = () => {
       </motion.header>
 
       <div className="container-lh flex gap-6 py-6 sm:py-8 md:py-10 relative">
-        {/* Mobile backdrop — click to close sidebar */}
+        {/* Mobile backdrop click to close sidebar */}
         <AnimatePresence>
           {sidebarOpen && (
             <motion.div
@@ -335,7 +330,7 @@ const DashboardLayout: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {/* Sidebar — never shows a loading state, always stays interactive */}
+        {/* Sidebar  never shows a loading state, always stays interactive */}
         <aside
           className={`w-64 shrink-0 space-y-2 z-40 ${
             sidebarOpen
@@ -369,7 +364,7 @@ const DashboardLayout: React.FC = () => {
           </nav>
         </aside>
 
-        {/* Main Content — the ONLY area that shows a loader on route change */}
+        {/* Main Content  the ONLY area that shows a loader on route change */}
         <main className="flex-1 min-w-0 relative">
           {contentLoading && (
             <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-cream-50/70 dark:bg-navy-950/70 backdrop-blur-sm">

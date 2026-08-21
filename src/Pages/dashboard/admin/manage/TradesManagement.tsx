@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Plus, Pencil, Trash2, Wrench, Search, Loader2, AlertCircle, Layers } from 'lucide-react';
+import { Plus, Wrench, Search, Loader2, AlertCircle, Layers } from 'lucide-react';
+import { RowActions, editAction, deleteAction } from '../../../../Components/dashboard/RowActions';
 import {
   DataTable,
   Modal,
@@ -282,22 +283,12 @@ const TradesManagement: React.FC = () => {
           },
         ]}
         actions={(trade) => (
-          <>
-            <button
-              onClick={() => openEdit(trade)}
-              title="Edit"
-              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
-            >
-              <Pencil className="w-3.5 3" />
-            </button>
-            <button
-              onClick={() => setDeleteTarget(trade)}
-              title="Delete"
-              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
-            >
-              <Trash2 className="w-3.5 3" />
-            </button>
-          </>
+          <RowActions
+            actions={[
+              editAction(() => openEdit(trade)),
+              deleteAction(() => setDeleteTarget(trade)),
+            ]}
+          />
         )}
       />
 

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Trash2, Edit3, Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import { BeforeAfterPair } from "@/src/types";
 import { deleteBeforeAfterProject, getBeforeAfterProjects } from "@/src/services/api";
 import { DataTable } from "../../../../Components/ui/DataTable";
+import { RowActions, editAction, deleteAction } from "../../../../Components/dashboard/RowActions";
 
 export const AdminBeforeAfterManager: React.FC = () => {
   const [projects, setProjects] = useState<BeforeAfterPair[]>([]);
@@ -85,22 +86,12 @@ export const AdminBeforeAfterManager: React.FC = () => {
           },
         ]}
         actions={(p) => (
-          <>
-            <button
-              onClick={() => alert(`Edit ID: ${p.id}`)}
-              className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-700 rounded transition"
-              title="Edit"
-            >
-              <Edit3 size={16} />
-            </button>
-            <button
-              onClick={() => handleDelete(p.id)}
-              className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-slate-700 rounded transition"
-              title="Delete"
-            >
-              <Trash2 size={16} />
-            </button>
-          </>
+          <RowActions
+            actions={[
+              editAction(() => alert(`Edit ID: ${p.id}`)),
+              deleteAction(() => handleDelete(p.id)),
+            ]}
+          />
         )}
       />
     </div>

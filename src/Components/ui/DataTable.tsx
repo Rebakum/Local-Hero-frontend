@@ -47,25 +47,25 @@ export interface DataTableProps<T> {
   onPageChange?: (page: number) => void;
   className?: string;
 
-  /** Show the search box. Filters rows across every string column value (or `searchKeys`). */
+  
   searchable?: boolean;
   searchPlaceholder?: string;
-  /** Custom searchable text per row. Defaults to all string column values. */
+ 
   searchKeys?: (row: T) => string[];
 
-  /** Enable clickable column headers for client-side sorting. */
+ 
   sortable?: boolean;
 
-  /** Dropdown filters rendered above the table. */
+ 
   filters?: DataTableFilter<T>[];
 
-  /** Client-side page size when server pagination props are not provided. */
+  
   defaultPageSize?: number;
-  /** Show the "rows per page" selector. */
+ 
   pageSizeOptions?: number[];
-  /** Extra classes applied to each row. */
+  
   rowClassName?: (row: T) => string;
-  /** Initial client-side page (1-based). Useful for deep-linking to a row. */
+
   initialPage?: number;
 }
 

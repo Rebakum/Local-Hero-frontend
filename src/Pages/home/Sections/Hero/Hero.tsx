@@ -68,7 +68,7 @@ export const Hero: React.FC = () => {
     <div className="relative w-full">
       <section
         ref={sectionRef}
-        className={`relative z-0 w-full min-h-[580px] md:min-h-[780px] lg:min-h-[800px] bg-gradient-to-br ${currentBgGradient} transition-all duration-700 ease-in-out overflow-x-hidden overflow-y-visible flex flex-col justify-between pb-16 md:pb-24`}
+        className={`relative z-0 w-full min-h-[580px] md:min-h-[720px] lg:min-h-[780px] bg-gradient-to-br ${currentBgGradient} transition-all duration-700 ease-in-out overflow-x-hidden overflow-y-visible flex flex-col justify-between pb-16 md:pb-24`}
       >
         {/* Dynamic Portrait Image Section */}
         <div className="absolute inset-0 pointer-events-none select-none z-10 overflow-hidden">
@@ -79,7 +79,7 @@ export const Hero: React.FC = () => {
               src={activePro?.avatar || '/images/hero.png'}
               alt={activePro?.name || 'Hero Portrait'}
               loading="eager"
-              className="w-full h-auto max-h-[550px] object-cover rounded-2xl shadow-2xl brightness-[0.8] transition-all duration-500 ease-in-out"
+              className="w-full h-auto max-h-[550px] object-cover object-top rounded-2xl shadow-2xl brightness-[0.8] transition-all duration-500 ease-in-out"
             />
           </div>
 

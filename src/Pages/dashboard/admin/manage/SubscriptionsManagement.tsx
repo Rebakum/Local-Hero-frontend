@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Plus, Pencil, Search, Loader2, AlertCircle, CreditCard } from 'lucide-react';
+import { Plus, Search, Loader2, AlertCircle, CreditCard } from 'lucide-react';
+import { RowActions, editAction } from '../../../../Components/dashboard/RowActions';
 import {
   DataTable,
   Modal,
@@ -302,13 +303,11 @@ const SubscriptionsManagement: React.FC = () => {
           },
         ]}
         actions={(sub) => (
-          <button
-            onClick={() => openEdit(sub)}
-            title="Edit"
-            className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
-          >
-            <Pencil className="w-3.5 3" />
-          </button>
+          <RowActions
+            actions={[
+              editAction(() => openEdit(sub)),
+            ]}
+          />
         )}
       />
 

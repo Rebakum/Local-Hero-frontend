@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { Card } from '../../../Components/ui/shared/Card';
 import { Badge } from '../../../Components/ui/shared/Badge';
@@ -10,15 +10,21 @@ import {
   Check,
   X,
   Search,
-  Filter,
   Loader2,
-  TrendingUp,
   UserX,
-  MessageSquare,
+  Images,
 } from 'lucide-react';
 import { Pagination } from '../../../Components/ui/Pagination';
+import {
+  getTestimonialsAdmin,
+  updateTestimonial,
+  deleteTestimonial,
+  getBeforeAfterAdmin,
+  updateBeforeAfterStatus,
+} from '../../../services/content.service';
+import type { Testimonial, BeforeAfterPair } from '../../../types';
 
-type ModerationType = 'review' | 'account';
+type ModerationType = 'review' | 'project';
 
 interface FlaggedItem {
   id: string;
@@ -27,34 +33,95 @@ interface FlaggedItem {
   description: string;
   author: string;
   service?: string;
-  rating?: number;
-  reason: string;
-  reportedAt: string;
   status: 'pending' | 'resolved';
+  source: 'testimonial' | 'beforeAfter';
 }
-
-const MOCK_ITEMS: FlaggedItem[] = [
-  { id: 'M-001', type: 'review', title: 'Inappropriate language in review', description: 'Review contains offensive language and personal attacks against the provider.', author: 'Anonymous', service: 'Plumbing', rating: 1, reason: 'Offensive content', reportedAt: '2 hours ago', status: 'pending' },
-  { id: 'M-002', type: 'account', title: 'Fake business credentials', description: 'Account claims Gas Safe registration but documentation appears forged.', author: 'QuickFix Services', reason: 'Fraudulent credentials', reportedAt: '5 hours ago', status: 'pending' },
-  { id: 'M-003', type: 'review', title: 'Competitor spam review', description: 'Review appears to be from a competing business promoting their own services.', author: 'HomeServices Ltd', service: 'Cleaning', rating: 1, reason: 'Spam / Competitor', reportedAt: '1 day ago', status: 'pending' },
-  { id: 'M-004', type: 'account', title: 'Multiple account abuse', description: 'Same user operating multiple accounts to artificially boost ratings.', author: 'user_2847', reason: 'Multi-account abuse', reportedAt: '2 days ago', status: 'resolved' },
-  { id: 'M-005', type: 'review', title: 'Fake positive review', description: 'Review appears self-generated with generic language and no specific details.', author: 'John Smith', service: 'Electrical', rating: 5, reason: 'Fake review', reportedAt: '3 days ago', status: 'pending' },
-  { id: 'M-006', type: 'account', title: 'Spam messaging', description: 'Account sending unsolicited promotional messages to multiple customers.', author: 'DiscountPlumbing', reason: 'Spam behaviour', reportedAt: '4 days ago', status: 'resolved' },
-];
 
 const TYPE_CONFIG: Record<ModerationType, { badge: 'warning' | 'emergency'; icon: React.FC<{ className?: string }>; label: string }> = {
   review: { badge: 'warning', icon: Star, label: 'Review' },
-  account: { badge: 'emergency', icon: UserX, label: 'Account' },
+  project: { badge: 'emergency', icon: Images, label: 'Showcase' },
 };
 
 const Moderation: React.FC = () => {
-  const [items, setItems] = useState<FlaggedItem[]>(MOCK_ITEMS);
+  const [items, setItems] = useState<FlaggedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<'ALL' | ModerationType>('ALL');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'pending' | 'resolved'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 5;
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [reviews, projects] = await Promise.all([
+        getTestimonialsAdmin({ limit: 100, isApproved: 'false' }),
+        getBeforeAfterAdmin({ limit: 100, status: 'PENDING' }),
+      ]);
+
+      const reviewItems: FlaggedItem[] = (reviews ?? []).map((t: Testimonial) => ({
+        id: t.id,
+        type: 'review',
+        title: t.comment ? `Review from ${t.author}` : `Review from ${t.author}`,
+        description: t.comment ?? '',
+        author: t.author,
+        service: t.trade,
+        status: 'pending',
+        source: 'testimonial',
+      }));
+
+      const projectItems: FlaggedItem[] = (projects ?? []).map((p: BeforeAfterPair) => ({
+        id: p.id,
+        type: 'project',
+        title: p.title || 'Before & After showcase',
+        description: p.description || 'Pending review of submitted before & after images.',
+        author: p.professionalId ?? 'Professional',
+        service: p.trade,
+        status: 'pending',
+        source: 'beforeAfter',
+      }));
+
+      setItems([...reviewItems, ...projectItems]);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load moderation queue.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const handleAction = async (id: string, action: 'approve' | 'remove') => {
+    const item = items.find((i) => i.id === id);
+    if (!item) return;
+    setActionLoading(id);
+    setError(null);
+    try {
+      if (item.source === 'testimonial') {
+        if (action === 'approve') {
+          await updateTestimonial(id, { isApproved: true });
+        } else {
+          await deleteTestimonial(id);
+        }
+      } else {
+        if (action === 'approve') {
+          await updateBeforeAfterStatus(id, { status: 'APPROVED' });
+        } else {
+          await updateBeforeAfterStatus(id, { status: 'REJECTED', rejectionReason: 'Rejected during moderation.' });
+        }
+      }
+      setItems((prev) => prev.map((it) => (it.id === id ? { ...it, status: 'resolved' } : it)));
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : `Failed to ${action} item.`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   const filtered = items.filter((item) => {
     const matchesType = activeFilter === 'ALL' || item.type === activeFilter;
@@ -70,21 +137,15 @@ const Moderation: React.FC = () => {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  const counts = {
-    ALL: items.length,
-    review: items.filter((i) => i.type === 'review').length,
-    account: items.filter((i) => i.type === 'account').length,
-    pending: items.filter((i) => i.status === 'pending').length,
-  };
-
-  const handleAction = async (id: string, action: 'approve' | 'remove') => {
-    setActionLoading(id);
-    await new Promise((r) => setTimeout(r, 600));
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, status: 'resolved' } : item))
-    );
-    setActionLoading(null);
-  };
+  const counts = useMemo(
+    () => ({
+      ALL: items.length,
+      review: items.filter((i) => i.type === 'review').length,
+      project: items.filter((i) => i.type === 'project').length,
+      pending: items.filter((i) => i.status === 'pending').length,
+    }),
+    [items],
+  );
 
   return (
     <div className="space-y-8">
@@ -107,7 +168,7 @@ const Moderation: React.FC = () => {
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Moderation Queue</h1>
             <p className="mt-2 text-sm text-white/70 max-w-md leading-relaxed">
-              Review flagged content and reported accounts to maintain platform quality.
+              Review pending reviews and before &amp; after showcases to maintain platform quality.
             </p>
           </div>
           <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/20">
@@ -118,13 +179,24 @@ const Moderation: React.FC = () => {
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-white/0 via-white/30 to-white/0" />
       </motion.div>
 
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2.5 p-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-sm"
+        >
+          <AlertTriangle className="w-4 h-4 shrink-0" />
+          {error}
+        </motion.div>
+      )}
+
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Total Flagged', value: counts.ALL, color: 'from-red-500 to-red-600', lightColor: 'bg-red-50 dark:bg-red-500/10', textColor: 'text-red-600 dark:text-red-400', icon: Flag },
+          { label: 'Total Pending', value: counts.ALL, color: 'from-red-500 to-red-600', lightColor: 'bg-red-50 dark:bg-red-500/10', textColor: 'text-red-600 dark:text-red-400', icon: Flag },
           { label: 'Pending Review', value: counts.pending, color: 'from-amber-500 to-orange-500', lightColor: 'bg-amber-50 dark:bg-amber-500/10', textColor: 'text-amber-600 dark:text-amber-400', icon: AlertTriangle },
           { label: 'Review Flags', value: counts.review, color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50 dark:bg-blue-500/10', textColor: 'text-blue-600 dark:text-blue-400', icon: Star },
-          { label: 'Account Flags', value: counts.account, color: 'from-violet-500 to-violet-600', lightColor: 'bg-violet-50 dark:bg-violet-500/10', textColor: 'text-violet-600 dark:text-violet-400', icon: UserX },
+          { label: 'Showcase Flags', value: counts.project, color: 'from-violet-500 to-violet-600', lightColor: 'bg-violet-50 dark:bg-violet-500/10', textColor: 'text-violet-600 dark:text-violet-400', icon: Images },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -155,7 +227,7 @@ const Moderation: React.FC = () => {
           {([
             { key: 'ALL', label: 'All' },
             { key: 'review', label: 'Reviews' },
-            { key: 'account', label: 'Accounts' },
+            { key: 'project', label: 'Showcases' },
           ] as const).map((tab) => (
             <button
               key={tab.key}
@@ -196,7 +268,7 @@ const Moderation: React.FC = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400" />
           <input
             type="text"
-            placeholder="Search flagged items..."
+            placeholder="Search moderation queue..."
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
@@ -214,10 +286,14 @@ const Moderation: React.FC = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <Card padding="sm" className="overflow-hidden">
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="w-7 h-7 animate-spin text-primary" />
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
               <Shield className="w-12 h-12 text-navy-300 dark:text-navy-600" />
-              <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">No flagged items found</p>
+              <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">No items in the moderation queue</p>
             </div>
           ) : (
             <div className="divide-y divide-navy-50 dark:divide-white/5">
@@ -243,11 +319,10 @@ const Moderation: React.FC = () => {
                         <p className="text-xs text-navy-400 dark:text-navy-500 mb-2 line-clamp-2">{item.description}</p>
                         <div className="flex flex-wrap items-center gap-3 text-xs text-navy-500 dark:text-navy-400">
                           <span>By: <span className="font-semibold text-navy-700 dark:text-navy-300">{item.author}</span></span>
-                          {item.service && <span>Service: {item.service}</span>}
+                          {item.service && <span>Trade: {item.service}</span>}
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-navy-100 dark:bg-white/5">
-                            <Flag className="w-3 h-3" /> {item.reason}
+                            <Flag className="w-3 h-3" /> Pending approval
                           </span>
-                          <span>{item.reportedAt}</span>
                         </div>
                       </div>
 
@@ -267,7 +342,7 @@ const Moderation: React.FC = () => {
                             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-200 disabled:opacity-50"
                           >
                             <X className="w-3.5 3" />
-                            Remove
+                            Reject
                           </button>
                         </div>
                       )}

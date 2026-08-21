@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Loader2, AlertCircle, LifeBuoy, CheckCircle2, XCircle, Clock, Inbox } from 'lucide-react';
+import { RowActions } from '../../../../Components/dashboard/RowActions';
 import { DataTable, PageHeader, StatusBadge } from '../../../../Components/ui';
 import {
   getAllSupportTickets,
@@ -157,48 +158,45 @@ const SupportTicketsManagement: React.FC = () => {
           },
         ]}
         actions={(t) => (
-          <div className="flex items-center gap-1.5">
-            {t.status === 'OPEN' && (
-              <button
-                onClick={() => changeStatus(t, 'IN_PROGRESS')}
-                disabled={busyId === t.id}
-                title="Mark in progress"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-sky-600 border border-sky-200 dark:border-sky-500/30 hover:bg-sky-500/10 transition-colors disabled:opacity-50"
-              >
-                {busyId === t.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Clock className="w-3.5 3" />}
-              </button>
-            )}
-            {(t.status === 'OPEN' || t.status === 'IN_PROGRESS') && (
-              <button
-                onClick={() => changeStatus(t, 'RESOLVED')}
-                disabled={busyId === t.id}
-                title="Mark resolved"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-emerald-600 border border-emerald-200 dark:border-emerald-500/30 hover:bg-emerald-500/10 transition-colors disabled:opacity-50"
-              >
-                {busyId === t.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 3" />}
-              </button>
-            )}
-            {(t.status === 'OPEN' || t.status === 'IN_PROGRESS' || t.status === 'RESOLVED') && (
-              <button
-                onClick={() => changeStatus(t, 'CLOSED')}
-                disabled={busyId === t.id}
-                title="Close"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-red-500 border border-red-200 dark:border-red-500/30 hover:bg-red-500/10 transition-colors disabled:opacity-50"
-              >
-                {busyId === t.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <XCircle className="w-3.5 3" />}
-              </button>
-            )}
-            {t.status === 'CLOSED' && (
-              <button
-                onClick={() => changeStatus(t, 'OPEN')}
-                disabled={busyId === t.id}
-                title="Reopen"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors disabled:opacity-50"
-              >
-                {busyId === t.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <LifeBuoy className="w-3.5 3" />}
-              </button>
-            )}
-          </div>
+          <RowActions
+            actions={[
+              {
+                key: 'progress',
+                icon: <Clock className="w-3.5 h-3.5" />,
+                label: 'Mark in progress',
+                tone: 'info',
+                loading: busyId === t.id,
+                hidden: t.status !== 'OPEN',
+                onClick: () => changeStatus(t, 'IN_PROGRESS'),
+              },
+              {
+                key: 'resolve',
+                icon: <CheckCircle2 className="w-3.5 h-3.5" />,
+                label: 'Mark resolved',
+                tone: 'success',
+                loading: busyId === t.id,
+                hidden: t.status !== 'OPEN' && t.status !== 'IN_PROGRESS',
+                onClick: () => changeStatus(t, 'RESOLVED'),
+              },
+              {
+                key: 'close',
+                icon: <XCircle className="w-3.5 h-3.5" />,
+                label: 'Close',
+                tone: 'danger',
+                loading: busyId === t.id,
+                hidden: t.status === 'CLOSED',
+                onClick: () => changeStatus(t, 'CLOSED'),
+              },
+              {
+                key: 'reopen',
+                icon: <LifeBuoy className="w-3.5 h-3.5" />,
+                label: 'Reopen',
+                loading: busyId === t.id,
+                hidden: t.status !== 'CLOSED',
+                onClick: () => changeStatus(t, 'OPEN'),
+              },
+            ]}
+          />
         )}
       />
     </div>
