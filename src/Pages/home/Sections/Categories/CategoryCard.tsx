@@ -29,7 +29,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ trade, onSelect }) =
       <h3 className="mt-4 sm:mt-5 font-heading text-sm sm:text-base font-bold leading-snug text-navy-950 transition-colors duration-300 group-hover:text-primary dark:text-white text-center">
         {tradeName}
       </h3>
-      <p className="mt-1 text-[11px] sm:text-xs text-navy-500 dark:text-navy-300 text-center line-clamp-1">
+      <p className="mt-1 text-[11px] sm:text-xs text-navy-800 dark:text-navy-300 text-center line-clamp-1">
         {subtitle}
       </p>
 

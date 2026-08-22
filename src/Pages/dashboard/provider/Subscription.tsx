@@ -240,10 +240,10 @@ const Subscription: React.FC = () => {
                 </h2>
                 <StatusBadge status={status} />
               </div>
-              <p className="text-sm text-navy-500 dark:text-navy-400 mt-1">
+              <p className="text-sm text-navy-800 dark:text-navy-300 mt-1">
                 {subscription?.planDetail?.description ?? 'Basic profile and listings.'}
               </p>
-              <div className="flex flex-wrap items-center gap-3 mt-4 text-xs text-navy-500 dark:text-navy-400">
+              <div className="flex flex-wrap items-center gap-3 mt-4 text-xs text-navy-800 dark:text-navy-300">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy-100 dark:bg-white/5">
                   <BadgeCheck className="w-3.5 3 text-primary" />
                   {formatGBP(subscription?.priceInPence ?? 0)}
@@ -260,7 +260,7 @@ const Subscription: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6 pt-5 border-t border-navy-100 dark:border-white/10 text-xs">
             <div className="flex items-center justify-between">
-              <span className="text-navy-400 dark:text-navy-500">Status</span>
+              <span className="text-navy-800 dark:text-navy-300">Status</span>
               <span className="font-semibold text-navy-700 dark:text-navy-200">
                 {subscription?.cancelAtPeriodEnd && subscription?.status === 'ACTIVE'
                   ? `Ends ${formatDate(subscription.currentPeriodEnd)}`
@@ -268,19 +268,19 @@ const Subscription: React.FC = () => {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-navy-400 dark:text-navy-500">Renews</span>
+              <span className="text-navy-800 dark:text-navy-300">Renews</span>
               <span className="font-semibold text-navy-700 dark:text-navy-200">
                 {formatDate(subscription?.currentPeriodEnd)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-navy-400 dark:text-navy-500">Started</span>
+              <span className="text-navy-800 dark:text-navy-300">Started</span>
               <span className="font-semibold text-navy-700 dark:text-navy-200">
                 {formatDate(subscription?.startedAt)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-navy-400 dark:text-navy-500">Plan</span>
+              <span className="text-navy-800 dark:text-navy-300">Plan</span>
               <span className="font-semibold text-navy-700 dark:text-navy-200">
                 {subscription?.planDetail?.name ?? 'Free'}
               </span>
@@ -321,7 +321,7 @@ const Subscription: React.FC = () => {
         <Card padding="lg" className="relative overflow-hidden">
           <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-amber-500/5 blur-2xl" />
           <h3 className="text-sm font-bold text-navy-900 dark:text-white">Plan features</h3>
-          <ul className="mt-4 space-y-2.5 text-xs text-navy-500 dark:text-navy-400">
+          <ul className="mt-4 space-y-2.5 text-xs text-navy-800 dark:text-navy-300">
             {(subscription?.planDetail?.features?.length
               ? subscription.planDetail.features
               : ['Business profile', 'Receive leads & bookings', 'Public reviews']
@@ -361,20 +361,20 @@ const Subscription: React.FC = () => {
                   </div>
                 </div>
 
-                <p className="text-xs text-navy-500 dark:text-navy-400 mt-3 min-h-[2.5rem]">{plan.description}</p>
+                <p className="text-xs text-navy-800 dark:text-navy-300 mt-3 min-h-[2.5rem]">{plan.description}</p>
 
                 <div className="mt-3">
                   <span className="text-2xl font-black text-navy-900 dark:text-white">
                     {isFree ? 'Free' : formatGBP(plan.priceInPence)}
                   </span>
                   {!isFree && (
-                    <span className="text-xs text-navy-400 dark:text-navy-500">
+<span className="text-xs text-navy-800 dark:text-navy-300">
                       {' '}/ {plan.interval === 'YEARLY' ? 'year' : 'month'}
                     </span>
                   )}
                 </div>
 
-                <ul className="mt-4 space-y-2 text-xs text-navy-500 dark:text-navy-400 flex-1">
+                <ul className="mt-4 space-y-2 text-xs text-navy-800 dark:text-navy-300 flex-1">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2">
                       <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" /> {feature}
@@ -386,14 +386,14 @@ const Subscription: React.FC = () => {
                   {isCurrent ? (
                     <button
                       disabled
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-sm font-semibold cursor-default"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold cursor-default"
                     >
                       Current plan
                     </button>
                   ) : isFree ? (
                     <button
                       disabled
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-sm font-semibold cursor-default"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold cursor-default"
                     >
                       Free
                     </button>
@@ -424,7 +424,7 @@ const Subscription: React.FC = () => {
             </Badge>
           )}
         </div>
-        <p className="text-xs text-navy-500 dark:text-navy-400 mb-4">
+        <p className="text-xs text-navy-800 dark:text-navy-300 mb-4">
           Appear at the top of search results for a set number of days. One-time purchase.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -442,9 +442,9 @@ const Subscription: React.FC = () => {
                   <span className="text-2xl font-black text-navy-900 dark:text-white">
                     {formatGBP(addon.priceInPence)}
                   </span>
-                  <span className="text-xs text-navy-400 dark:text-navy-500"> one-time</span>
+                  <span className="text-xs text-navy-800 dark:text-navy-300"> one-time</span>
                 </div>
-                <p className="text-xs text-navy-500 dark:text-navy-400 mt-3 flex-1">
+                <p className="text-xs text-navy-800 dark:text-navy-300 mt-3 flex-1">
                   Top-of-search featured placement for {addon.durationDays} days.
                 </p>
                 <button

@@ -45,7 +45,7 @@ export const Stats: React.FC = () => {
 
                 {/* Label Section */}
                 <div className="mt-2 flex justify-center items-center gap-1.5">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-navy-600 dark:text-navy-300">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-navy-800 dark:text-navy-300">
                     {stat.label}
                   </p>
                 </div>

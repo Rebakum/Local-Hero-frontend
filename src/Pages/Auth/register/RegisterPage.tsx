@@ -116,12 +116,12 @@ const RegisterPage: React.FC = () => {
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                 <MailCheck className="w-9 h-9 text-primary" />
               </div>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 We sent a verification link to{' '}
                 <span className="font-semibold text-navy-700 dark:text-navy-200">{registeredEmail}</span>.
                 Open the link to verify your email address.
               </p>
-              <p className="text-xs text-navy-400 dark:text-navy-500">
+              <p className="text-xs text-navy-800 dark:text-navy-300">
                 This link expires in 1 hour.
               </p>
 
@@ -153,7 +153,7 @@ const RegisterPage: React.FC = () => {
               </button>
             </div>
 
-            <p className="mt-6 text-center text-sm text-navy-500 dark:text-navy-400">
+            <p className="mt-6 text-center text-sm text-navy-800 dark:text-navy-300">
               Already verified?{' '}
               <RouterLink to="/login" className="font-semibold text-primary hover:underline">
                 Sign in
@@ -182,7 +182,7 @@ const RegisterPage: React.FC = () => {
             <h1 className="text-2xl font-bold text-navy-900 dark:text-white">
               Create your account
             </h1>
-            <p className="mt-2 text-sm text-navy-500 dark:text-navy-400">
+            <p className="mt-2 text-sm text-navy-800 dark:text-navy-300">
               Join LocalHero and find trusted local pros
             </p>
           </div>
@@ -243,7 +243,7 @@ const RegisterPage: React.FC = () => {
 
             <div>
               <label htmlFor="phone" className="block text-sm font-semibold text-navy-700 dark:text-navy-300 mb-1.5">
-                Phone <span className="text-navy-400 dark:text-navy-500 font-normal">(optional)</span>
+                Phone <span className="text-navy-800 dark:text-navy-300 font-normal">(optional)</span>
               </label>
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-navy-400" />
@@ -298,7 +298,7 @@ const RegisterPage: React.FC = () => {
                           check.met ? 'text-emerald-500' : 'text-navy-300 dark:text-navy-600'
                         }`}
                       />
-                      <span className={check.met ? 'text-emerald-600 dark:text-emerald-400' : 'text-navy-400 dark:text-navy-500'}>
+                      <span className={check.met ? 'text-emerald-600 dark:text-emerald-400' : 'text-navy-800 dark:text-navy-300'}>
                         {check.label}
                       </span>
                     </div>
@@ -323,7 +323,7 @@ const RegisterPage: React.FC = () => {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-navy-500 dark:text-navy-400">
+          <p className="mt-6 text-center text-sm text-navy-800 dark:text-navy-300">
             Already have an account?{' '}
             <RouterLink to="/login" className="font-semibold text-primary hover:underline">
               Sign in

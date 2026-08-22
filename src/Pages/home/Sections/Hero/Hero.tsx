@@ -68,18 +68,18 @@ export const Hero: React.FC = () => {
     <div className="relative w-full">
       <section
         ref={sectionRef}
-        className={`relative z-0 w-full min-h-[580px] md:min-h-[720px] lg:min-h-[780px] bg-gradient-to-br ${currentBgGradient} transition-all duration-700 ease-in-out overflow-x-hidden overflow-y-visible flex flex-col justify-between pb-16 md:pb-24`}
+        className={`relative z-0 w-full min-h-[560px] sm:min-h-[620px] md:min-h-[720px] lg:min-h-[780px] bg-gradient-to-br ${currentBgGradient} transition-all duration-700 ease-in-out overflow-x-clip flex flex-col justify-between pb-14 md:pb-24`}
       >
         {/* Dynamic Portrait Image Section */}
         <div className="absolute inset-0 pointer-events-none select-none z-10 overflow-hidden">
           {/* Right Side Portrait Image */}
-          <div className="absolute right-20 top-1/2 -translate-y-1/2 hidden md:block w-1/2 max-w-[600px] pr-6 lg:pr-12">
+          <div className="absolute right-0 lg:right-8 top-1/2 -translate-y-1/2 hidden lg:block w-1/2 max-w-[600px] pr-6 lg:pr-12">
             <img
               key={`portrait-${activePro?.id || (activePro as any)?._id || activePro?.name || 'default'}`}
               src={activePro?.avatar || '/images/hero.png'}
               alt={activePro?.name || 'Hero Portrait'}
               loading="eager"
-              className="w-full h-auto max-h-[550px] object-cover object-top rounded-2xl shadow-2xl brightness-[0.8] transition-all duration-500 ease-in-out"
+              className="w-full h-auto max-h-[520px] lg:max-h-[550px] object-cover object-top rounded-2xl shadow-2xl brightness-[0.8] transition-all duration-500 ease-in-out"
             />
           </div>
 
@@ -88,7 +88,7 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* Main Content Layer */}
-        <div className="container-lh relative z-20 pt-24 md:pt-32 lg:pt-36 pb-8 md:pb-16 flex-1 flex items-center">
+        <div className="container-lh relative z-20 pt-20 md:pt-28 lg:pt-32 pb-8 md:pb-14 flex-1 flex items-center">
           <motion.div
             style={{ opacity: fadeOpacity }}
             className="grid relative grid-cols-1 lg:grid-cols-12 gap-6 items-center w-full max-w-5xl"
@@ -96,7 +96,7 @@ export const Hero: React.FC = () => {
             initial="hidden"
             animate="show"
           >
-            <motion.div className="lg:col-span-7 mt-6 md:mt-12 justify-center items-start space-y-4 md:space-y-5" variants={item}>
+            <motion.div className="lg:col-span-7 mt-2 md:mt-10 justify-center items-start space-y-3 md:space-y-5" variants={item}>
               <HeroContent itemVariant={item} />
               <HeroButtons itemVariant={item} trade={trade} />
             </motion.div>

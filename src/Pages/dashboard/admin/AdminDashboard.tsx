@@ -174,10 +174,10 @@ const AdminDashboard: React.FC = () => {
                 <div className={`w-11 h-11 rounded-2xl ${stat.lightColor} flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
                   <stat.icon className={`w-5 h-5 ${stat.textColor}`} />
                 </div>
-                <span className="text-[10px] font-semibold text-navy-400 dark:text-navy-500">{stat.change}</span>
+                <span className="text-[10px] font-semibold text-navy-800 dark:text-navy-300">{stat.change}</span>
               </div>
               <p className="text-3xl font-bold text-navy-900 dark:text-white tracking-tight">{stat.value}</p>
-              <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1.5">{stat.label}</p>
+              <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest mt-1.5">{stat.label}</p>
             </Card>
           </motion.div>
         ))}
@@ -192,7 +192,7 @@ const AdminDashboard: React.FC = () => {
             </div>
             <div>
               <h2 className="text-lg font-bold text-navy-900 dark:text-white">Provider Approvals</h2>
-              <p className="text-xs text-navy-400 dark:text-navy-500">Applications waiting for review</p>
+              <p className="text-xs text-navy-800 dark:text-navy-300">Applications waiting for review</p>
             </div>
           </div>
           <Badge variant="warning">{pendingApplications.length} Pending</Badge>
@@ -221,7 +221,7 @@ const AdminDashboard: React.FC = () => {
               key: 'email',
               header: 'Email',
               sortValue: (p) => p.user?.email ?? '',
-              render: (p) => <span className="text-navy-500 dark:text-navy-400">{p.user?.email}</span>,
+              render: (p) => <span className="text-navy-800 dark:text-navy-300">{p.user?.email}</span>,
             },
           ]}
           actions={(p) => (
@@ -257,7 +257,7 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-navy-900 dark:text-white">Content Management</h2>
-            <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">Manage platform content</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-0.5">Manage platform content</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -281,7 +281,7 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-navy-800 dark:text-navy-200">{action.label}</p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 truncate">{action.desc}</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300 truncate">{action.desc}</p>
                 </div>
               </div>
               <ArrowRight className="w-4 h-4 text-navy-300 dark:text-navy-600 group-hover:text-primary group-hover:translate-x-1 transition-all duration-200 shrink-0" />

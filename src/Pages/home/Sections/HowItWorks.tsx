@@ -54,7 +54,7 @@ export const HowItWorks: React.FC = () => {
                   <h3 className="mt-6 font-heading text-xl font-extrabold text-navy-950 dark:text-white">
                     {step.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-navy-600 dark:text-navy-300">
+                  <p className="mt-3 text-sm leading-relaxed text-navy-800 dark:text-navy-300">
                     {step.desc}
                   </p>
                   <div className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 border border-primary/25 rounded-full px-3 py-1.5">

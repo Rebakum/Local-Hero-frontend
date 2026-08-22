@@ -43,7 +43,7 @@ const ForgotPasswordPage: React.FC = () => {
               <img src="/logoBlack/logo3.png" alt="LocalHero" className="h-10 w-auto mx-auto hidden dark:block" />
             </RouterLink>
             <h1 className="text-2xl font-bold text-navy-900 dark:text-white">Forgot your password?</h1>
-            <p className="mt-2 text-sm text-navy-500 dark:text-navy-400">
+            <p className="mt-2 text-sm text-navy-800 dark:text-navy-300">
               Enter your email and we&apos;ll send you a link to reset it.
             </p>
           </div>
@@ -54,7 +54,7 @@ const ForgotPasswordPage: React.FC = () => {
                 <CheckCircle2 className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h2 className="text-xl font-bold text-navy-900 dark:text-white">Check your email</h2>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 If an account exists for <span className="font-semibold text-navy-700 dark:text-navy-200">{email}</span>,
                 a password reset link is on its way. It expires in 1 hour.
               </p>
@@ -116,7 +116,7 @@ const ForgotPasswordPage: React.FC = () => {
                 </button>
               </form>
 
-              <p className="mt-6 text-center text-sm text-navy-500 dark:text-navy-400">
+              <p className="mt-6 text-center text-sm text-navy-800 dark:text-navy-300">
                 Remembered it?{' '}
                 <RouterLink to="/login" className="font-semibold text-primary hover:underline">
                   Sign in

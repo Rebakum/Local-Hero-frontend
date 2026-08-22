@@ -203,7 +203,7 @@ export const ServiceDetailsPage: React.FC = () => {
                   <Clock size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 dark:text-navy-400 uppercase tracking-wider">Rate</p>
+                  <p className="text-[10px] font-bold text-navy-800 dark:text-navy-300 uppercase tracking-wider">Rate</p>
                   <p className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
                     {trade.avgHourlyRate || '£40/hr'}/hr
                   </p>
@@ -215,7 +215,7 @@ export const ServiceDetailsPage: React.FC = () => {
                   <Users size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 dark:text-navy-400 uppercase tracking-wider">Experts</p>
+                  <p className="text-[10px] font-bold text-navy-800 dark:text-navy-300 uppercase tracking-wider">Experts</p>
                   <p className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
                     {trade.activeProsCount != null ? trade.activeProsCount.toLocaleString() : 0} Pros
                   </p>
@@ -314,7 +314,7 @@ export const ServiceDetailsPage: React.FC = () => {
         {prosLoading ? (
           <div className="mt-20 flex flex-col items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-red-600 dark:text-red-500 mb-3" />
-            <p className="text-xs font-semibold text-slate-500 dark:text-navy-400">Loading top professionals...</p>
+            <p className="text-xs font-semibold text-navy-800 dark:text-navy-300">Loading top professionals...</p>
           </div>
         ) : professionals.length > 0 ? (
           <section className="mt-24 pt-10 border-t border-slate-200/60 dark:border-white/10">
@@ -337,7 +337,30 @@ export const ServiceDetailsPage: React.FC = () => {
               ))}
             </div>
           </section>
-        ) : null}
+        ) : (
+          <section className="mt-24 pt-10 border-t border-slate-200/60 dark:border-white/10">
+            <div className="max-w-xl mx-auto text-center bg-white dark:bg-navy-900 rounded-3xl p-8 sm:p-10 border border-slate-200/80 dark:border-white/10 shadow-soft">
+              <div className="w-16 h-16 mx-auto rounded-2xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center text-red-600 dark:text-red-500 mb-5">
+                <Users size={28} />
+              </div>
+              <h2 className="font-heading text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-2">
+                No verified professionals yet
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                This service doesn't have any verified professionals yet. Be the first to offer{' '}
+                {tradeName} services on LocalHero — apply as a provider and get approved.
+              </p>
+              <button
+                onClick={() => navigate('/dashboard/user/apply-provider')}
+                className="mt-6 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm px-6 py-3 rounded-full shadow-lg shadow-red-600/30 hover:shadow-red-600/40 transition-all duration-300 group"
+              >
+                <BadgeCheck className="w-4 h-4" />
+                <span>Become a Provider</span>
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </div>
+          </section>
+        )}
 
         {/* Related Services */}
         <div className="mt-20">

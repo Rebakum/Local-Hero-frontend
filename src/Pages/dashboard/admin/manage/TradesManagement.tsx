@@ -186,7 +186,7 @@ const TradesManagement: React.FC = () => {
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+        <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
           {filtered.length} {filtered.length === 1 ? 'trade' : 'trades'}
         </p>
         <div className="relative sm:ml-auto w-full sm:w-72">
@@ -226,7 +226,7 @@ const TradesManagement: React.FC = () => {
                     {t.category ?? t.id}
                   </p>
                   {t.subtitle && (
-                    <p className="text-[11px] text-navy-400 dark:text-navy-500">{t.subtitle}</p>
+                    <p className="text-[11px] text-navy-800 dark:text-navy-300">{t.subtitle}</p>
                   )}
                 </div>
               </div>
@@ -237,7 +237,7 @@ const TradesManagement: React.FC = () => {
             header: 'Rate',
             hideOn: 'sm',
             render: (t) => (
-              <span className="text-navy-600 dark:text-navy-300">{t.avgHourlyRate || '—'}</span>
+              <span className="text-navy-800 dark:text-navy-300">{t.avgHourlyRate || '—'}</span>
             ),
           },
           {
@@ -249,13 +249,13 @@ const TradesManagement: React.FC = () => {
                 {(t.popularTasks ?? []).slice(0, 3).map((task) => (
                   <span
                     key={task}
-                    className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400"
+                    className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300"
                   >
                     {task}
                   </span>
                 ))}
                 {(t.popularTasks ?? []).length > 3 && (
-                  <span className="text-[11px] text-navy-400">+{(t.popularTasks ?? []).length - 3}</span>
+                  <span className="text-[11px] text-navy-800 dark:text-navy-300">+{(t.popularTasks ?? []).length - 3}</span>
                 )}
               </div>
             ),
@@ -265,7 +265,7 @@ const TradesManagement: React.FC = () => {
             header: 'Active Pros',
             hideOn: 'md',
             render: (t) => (
-              <span className="text-navy-600 dark:text-navy-300">
+              <span className="text-navy-800 dark:text-navy-300">
                 {t.activeProsCount != null ? t.activeProsCount.toLocaleString() : '—'}
               </span>
             ),
@@ -306,7 +306,7 @@ const TradesManagement: React.FC = () => {
               type="button"
               onClick={() => setModalOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
@@ -352,10 +352,10 @@ const TradesManagement: React.FC = () => {
               <span className="block text-xs font-semibold text-navy-700 dark:text-navy-300">
                 Active pros count
               </span>
-              <div className="mt-1.5 h-10 px-3.5 rounded-xl bg-navy-50 dark:bg-white/5 border border-navy-100 dark:border-white/10 text-sm font-semibold text-navy-500 dark:text-navy-400 flex items-center">
+              <div className="mt-1.5 h-10 px-3.5 rounded-xl bg-navy-50 dark:bg-white/5 border border-navy-100 dark:border-white/10 text-sm font-semibold text-navy-800 dark:text-navy-300 flex items-center">
                 {editing ? (editing.activeProsCount ?? 0).toLocaleString() : 0}
               </div>
-              <p className="text-xs text-navy-400 dark:text-navy-500 mt-1.5">
+              <p className="text-xs text-navy-800 dark:text-navy-300 mt-1.5">
                 Read-only — auto-synced from approved professionals.
               </p>
             </div>

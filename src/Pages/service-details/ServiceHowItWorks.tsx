@@ -28,7 +28,7 @@ export const ServiceHowItWorks: React.FC = () => {
               </div>
               <div className="text-[11px] font-heading font-black text-primary uppercase tracking-widest mb-1">Step {item.step}</div>
               <h3 className="font-heading font-bold text-navy-950 dark:text-white text-base mb-2">{item.title}</h3>
-              <p className="text-xs text-navy-500 dark:text-navy-300 leading-relaxed">{item.desc}</p>
+              <p className="text-xs text-navy-800 dark:text-navy-300 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>

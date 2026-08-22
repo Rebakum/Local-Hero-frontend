@@ -117,7 +117,7 @@ export const WhyChooseUs: React.FC = () => {
                         <h3 className="font-heading text-base font-extrabold text-navy-950 dark:text-white">
                           {feature.title}
                         </h3>
-                        <p className="mt-1.5 text-[13px] leading-relaxed text-navy-600 dark:text-navy-300">
+                        <p className="mt-1.5 text-[13px] leading-relaxed text-navy-800 dark:text-navy-300">
                           {feature.desc}
                         </p>
                       </div>

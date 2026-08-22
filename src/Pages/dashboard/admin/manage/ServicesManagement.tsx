@@ -221,7 +221,7 @@ const ServicesManagement: React.FC = () => {
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+        <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
           {filtered.length} {filtered.length === 1 ? 'service' : 'services'}
         </p>
         <div className="relative sm:ml-auto w-full sm:w-72">
@@ -281,19 +281,19 @@ const ServicesManagement: React.FC = () => {
           {
             key: 'trade',
             header: 'Trade',
-            render: (s) => <span className="text-navy-600 dark:text-navy-300">{tradeLabel(s.tradeId)}</span>,
+            render: (s) => <span className="text-navy-800 dark:text-navy-300">{tradeLabel(s.tradeId)}</span>,
           },
           {
             key: 'estimatedPrice',
             header: 'Price',
             hideOn: 'sm',
-            render: (s) => <span className="text-navy-600 dark:text-navy-300">{s.estimatedPrice || '—'}</span>,
+            render: (s) => <span className="text-navy-800 dark:text-navy-300">{s.estimatedPrice || '—'}</span>,
           },
           {
             key: 'timeEstimate',
             header: 'Time',
             hideOn: 'md',
-            render: (s) => <span className="text-navy-600 dark:text-navy-300">{s.timeEstimate || '—'}</span>,
+            render: (s) => <span className="text-navy-800 dark:text-navy-300">{s.timeEstimate || '—'}</span>,
           },
           {
             key: 'isActive',
@@ -331,7 +331,7 @@ const ServicesManagement: React.FC = () => {
               type="button"
               onClick={() => setModalOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>

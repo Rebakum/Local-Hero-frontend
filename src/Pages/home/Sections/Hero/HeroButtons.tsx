@@ -14,15 +14,15 @@ export const HeroButtons: React.FC<HeroButtonsProps> = ({ itemVariant, trade }) 
   const [date] = useState<string>(new Date().toISOString().split('T')[0]);
 
   return (
-    <motion.div variants={itemVariant} className="flex flex-col sm:flex-row my-6 md:my-12 flex-wrap items-stretch sm:items-center gap-3">
-      <button onClick={() => openBooking({ trade, postcode: userPostcode, date })} className="btn-primary">
+    <motion.div variants={itemVariant} className="flex flex-col sm:flex-row my-5 md:my-12 flex-wrap items-stretch sm:items-center gap-3">
+      <button onClick={() => openBooking({ trade, postcode: userPostcode, date })} className="btn-primary w-full sm:w-auto">
         <Search  />
         Get a Free Quote
       </button>
       <button
         type="button"
         onClick={() => openEmergencyModal(trade)}
-        className="btn-secondary"
+        className="btn-secondary w-full sm:w-auto"
       >
         <PhoneCall  />
         Emergency 24/7

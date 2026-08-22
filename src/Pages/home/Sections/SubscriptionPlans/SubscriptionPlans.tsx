@@ -109,7 +109,7 @@ export const SubscriptionPlans: React.FC = () => {
                         <h3 className="font-heading text-lg font-extrabold text-navy-950 dark:text-white">
                           {plan.name}
                         </h3>
-                        <p className="text-xs text-navy-500 dark:text-navy-400">{plan.tagline}</p>
+                        <p className="text-xs text-navy-800 dark:text-navy-300">{plan.tagline}</p>
                       </div>
                     </div>
 
@@ -117,7 +117,7 @@ export const SubscriptionPlans: React.FC = () => {
                       <span className="font-heading text-4xl font-black text-navy-950 dark:text-white">
                         {plan.price}
                       </span>
-                      <span className="text-sm font-semibold text-navy-400 dark:text-navy-500">
+                      <span className="text-sm font-semibold text-navy-800 dark:text-navy-300">
                         {plan.period}
                       </span>
                     </div>

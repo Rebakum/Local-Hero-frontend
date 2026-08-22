@@ -249,7 +249,7 @@ const MyBookings: React.FC = () => {
               className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
                 activeFilter === tab.key
                   ? 'bg-primary text-white shadow-md shadow-primary/25'
-                  : 'bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10'
+                  : 'bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 hover:bg-navy-200 dark:hover:bg-white/10'
               }`}
             >
               {tab.label}
@@ -324,7 +324,7 @@ const MyBookings: React.FC = () => {
                         {booking.trade}
                       </TableCellText>
 
-                      <TableCellText className="text-[11px] text-navy-400 dark:text-navy-500 font-mono">
+                      <TableCellText className="text-[11px] text-navy-800 dark:text-navy-300 font-mono">
                         {booking.id.slice(0, 8).toUpperCase()}
                       </TableCellText>
                     </div>
@@ -338,7 +338,7 @@ const MyBookings: React.FC = () => {
               header: 'Provider',
               hideOn: 'md',
               render: (booking) => (
-                <span className="text-navy-500 dark:text-navy-400">
+                <span className="text-navy-800 dark:text-navy-300">
                   {booking.professional?.companyName || 'Not yet assigned'}
                 </span>
               ),
@@ -349,7 +349,7 @@ const MyBookings: React.FC = () => {
               header: 'Date',
               hideOn: 'sm',
               render: (booking) => (
-                <div className="text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                <div className="text-navy-800 dark:text-navy-300 whitespace-nowrap">
                   {new Date(booking.bookingDate).toLocaleDateString('en-GB', {
                     day: 'numeric',
                     month: 'short',
@@ -364,7 +364,7 @@ const MyBookings: React.FC = () => {
               header: 'Time',
               hideOn: 'md',
               render: (booking) => (
-                <div className="text-navy-500 dark:text-navy-400">
+                <div className="text-navy-800 dark:text-navy-300">
                   <p className="font-medium text-navy-700 dark:text-navy-200">{booking.timeSlot}</p>
                 </div>
               ),
@@ -375,7 +375,7 @@ const MyBookings: React.FC = () => {
               header: 'Location',
               hideOn: 'lg',
               render: (booking) => (
-                <span className="inline-flex max-w-[11rem] items-center gap-1.5 rounded-lg bg-navy-100 dark:bg-white/5 px-2 py-1 text-xs text-navy-600 dark:text-navy-300">
+                <span className="inline-flex max-w-[11rem] items-center gap-1.5 rounded-lg bg-navy-100 dark:bg-white/5 px-2 py-1 text-xs text-navy-800 dark:text-navy-300">
                   <MapPin className="w-3 h-3 shrink-0" />
                   <span className="truncate">{getLocationLabel(booking)}</span>
                 </span>
@@ -413,7 +413,7 @@ const MyBookings: React.FC = () => {
               booking.status === 'PENDING' || booking.status === 'ACCEPTED';
 
             if (!canPay && !canCancel) {
-              return <span className="text-xs text-navy-400 dark:text-navy-500">—</span>;
+              return <span className="text-xs text-navy-800 dark:text-navy-300">—</span>;
             }
 
             return (
@@ -440,7 +440,7 @@ const MyBookings: React.FC = () => {
                     type="button"
                     onClick={() => handleCancel(booking.id)}
                     disabled={cancellingId === booking.id}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs font-semibold hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50 transition-colors"
                   >
                     {cancellingId === booking.id ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />

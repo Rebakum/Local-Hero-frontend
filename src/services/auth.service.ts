@@ -204,3 +204,29 @@ export async function getAdminDashboardStats(): Promise<AdminDashboardStats> {
   );
   return data.data;
 }
+
+export interface SystemHealth {
+  platform: {
+    status: 'operational' | 'degraded';
+    uptimeSeconds: number;
+    memoryMb: number;
+  };
+  database: {
+    status: 'operational' | 'degraded';
+    latencyMs: number | null;
+  };
+  authService: {
+    status: 'operational' | 'degraded';
+    latencyMs: number | null;
+  };
+  paymentGateway: {
+    status: 'operational' | 'not_configured';
+  };
+}
+
+export async function getSystemHealth(): Promise<SystemHealth> {
+  const { data } = await axiosInstance.get<ApiEnvelope<SystemHealth>>(
+    '/super-admin/system/health',
+  );
+  return data.data;
+}

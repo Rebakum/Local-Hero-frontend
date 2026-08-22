@@ -23,7 +23,7 @@ export const ServicesHowItWorks: React.FC = () => {
             <h2 className="mt-4 font-heading text-[clamp(1.75rem,4vw,2.75rem)] font-extrabold leading-[1.08] tracking-tight text-navy-950 dark:text-white">
               Book a pro in 4 simple steps
             </h2>
-            <p className="mt-4 text-[15px] sm:text-base leading-relaxed text-navy-500 dark:text-navy-300">
+            <p className="mt-4 text-[15px] sm:text-base leading-relaxed text-navy-800 dark:text-navy-300">
               From posting your job to paying after completion — the entire process takes minutes.
             </p>
           </div>
@@ -39,7 +39,7 @@ export const ServicesHowItWorks: React.FC = () => {
                 </div>
                 <div className="text-[10px] font-heading font-bold text-primary uppercase tracking-widest mb-2">Step {item.step}</div>
                 <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base mb-2">{item.title}</h3>
-                <p className="text-sm text-navy-500 dark:text-navy-300 leading-relaxed">{item.desc}</p>
+                <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">{item.desc}</p>
               </div>
             </Reveal>
           ))}

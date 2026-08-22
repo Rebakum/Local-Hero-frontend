@@ -75,7 +75,7 @@ const SuperAdminProviderApprovals: React.FC = () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 dark:text-white">
           Pending Provider Approvals
         </h1>
-        <p className="mt-2 text-sm text-navy-500 dark:text-navy-400">
+        <p className="mt-2 text-sm text-navy-800 dark:text-navy-300">
           Review and approve service provider registration requests.
         </p>
       </motion.div>
@@ -119,7 +119,7 @@ const SuperAdminProviderApprovals: React.FC = () => {
               header: 'Email',
               sortValue: (u) => u.user?.email ?? '',
               render: (u) => (
-                <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400">
+                <div className="flex items-center gap-1.5 text-navy-800 dark:text-navy-300">
                   <Mail className="w-3.5 3" />
                   <span className="truncate max-w-[200px]">{u.user?.email}</span>
                 </div>
@@ -137,7 +137,7 @@ const SuperAdminProviderApprovals: React.FC = () => {
               hideOn: 'md',
               sortValue: (u) => new Date(u.createdAt).getTime(),
               render: (u) => (
-                <div className="flex items-center gap-1.5 text-navy-400 dark:text-navy-500 text-xs">
+                <div className="flex items-center gap-1.5 text-navy-800 dark:text-navy-300 text-xs">
                   <Calendar className="w-3.5 3" />
                   {new Date(u.createdAt).toLocaleDateString('en-GB')}
                 </div>

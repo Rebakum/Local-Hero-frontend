@@ -11,6 +11,7 @@ import {
   UserCheck,
   AlertTriangle,
   ChevronLeft,
+  ChevronRight,
   Star,
   Settings,
   FileText,
@@ -104,7 +105,9 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
     { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
     { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare, color: 'pink' },
+    { to: '/dashboard/admin/manage/faqs', label: 'FAQs', icon: LifeBuoy, color: 'teal' },
     { to: '/dashboard/admin/manage/support-tickets', label: 'Support Tickets', icon: LifeBuoy, color: 'violet' },
+    { to: '/dashboard/admin/manage/live-chat', label: 'Live Chat', icon: MessageSquareText, color: 'cyan' },
     { to: '/dashboard/profile', label: 'Profile', icon: User, color: 'slate' },
   ],
   SUPER_ADMIN: [
@@ -119,7 +122,9 @@ const ROLE_SIDEBAR_LINKS: Record<UserRole, SidebarLink[]> = {
     { to: '/dashboard/admin/manage/professionals', label: 'Professionals', icon: UserRound, color: 'indigo' },
     { to: '/dashboard/admin/manage/before-after', label: 'Before & After', icon: Images, color: 'cyan' },
     { to: '/dashboard/admin/manage/testimonials', label: 'Testimonials', icon: MessageSquare, color: 'pink' },
+    { to: '/dashboard/admin/manage/faqs', label: 'FAQs', icon: LifeBuoy, color: 'teal' },
     { to: '/dashboard/admin/manage/support-tickets', label: 'Support Tickets', icon: LifeBuoy, color: 'violet' },
+    { to: '/dashboard/admin/manage/live-chat', label: 'Live Chat', icon: MessageSquareText, color: 'cyan' },
     { to: '/dashboard/admin/manage/bookings', label: 'Bookings', icon: CalendarDays, color: 'sky' },
     { to: '/dashboard/admin/manage/payments', label: 'Payments', icon: CreditCard, color: 'green' },
     { to: '/dashboard/admin/manage/subscriptions', label: 'Subscriptions', icon: Star, color: 'fuchsia' },
@@ -147,6 +152,10 @@ const DashboardLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [isCollapsed, setIsCollapsed] = React.useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.localStorage.getItem('localhero-dashboard-sidebar-collapsed') === 'true';
+  });
 
 
   const isFirstRender = React.useRef(true);
@@ -170,6 +179,10 @@ const DashboardLayout: React.FC = () => {
     mql.addEventListener('change', handleChange);
     return () => mql.removeEventListener('change', handleChange);
   }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem('localhero-dashboard-sidebar-collapsed', String(isCollapsed));
+  }, [isCollapsed]);
 
   // Close the mobile sidebar on Escape.
   React.useEffect(() => {
@@ -295,8 +308,8 @@ const DashboardLayout: React.FC = () => {
                     <p className="truncate text-sm font-semibold text-navy-950 dark:text-white">
                       {user?.name || 'User'}
                     </p>
-                    <p className="truncate text-xs text-navy-500 dark:text-navy-400">{user?.email}</p>
-                  <p className="text-xs text-navy-500 dark:text-navy-400">{user?.role}</p>
+<p className="truncate text-xs text-navy-800 dark:text-navy-300">{user?.email}</p>
+                    <p className="text-xs text-navy-800 dark:text-navy-300">{user?.role}</p>
                   </div>
                 </div>
               </div>
@@ -331,38 +344,58 @@ const DashboardLayout: React.FC = () => {
         </AnimatePresence>
 
         {/* Sidebar  never shows a loading state, always stays interactive */}
-        <aside
-          className={`w-64 shrink-0 space-y-2 z-40 ${
+        <motion.aside
+          animate={{ width: isCollapsed ? 80 : 256 }}
+          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          className={`shrink-0 space-y-2 z-40 ${
             sidebarOpen
-              ? 'fixed inset-y-0 left-0 overflow-y-auto bg-cream-50 dark:bg-navy-950 p-4 shadow-2xl lg:static lg:p-0 lg:shadow-none'
+              ? 'fixed inset-y-0 left-0 w-64 overflow-y-auto bg-cream-50 dark:bg-navy-950 p-4 shadow-2xl lg:static lg:p-0 lg:shadow-none'
               : 'hidden'
           } lg:block`}
         >
           <nav className="lg:sticky lg:top-24 space-y-1">
-            {links.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.exact}
-                onClick={() => setSidebarOpen(false)}
-                className={({ isActive }) =>
-                  `group flex items-center gap-3 px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'bg-primary/10 text-primary dark:bg-white/10 dark:text-white border border-red-200 dark:border-white/10'
-                      : 'text-navy-600 dark:text-navy-400 hover:bg-primary/10 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white border border-transparent'
-                  }`
-                }
+            <div className={`mb-3 hidden lg:flex ${isCollapsed ? 'justify-center' : 'justify-end'}`}>
+              <button
+                type="button"
+                onClick={() => setIsCollapsed((value) => !value)}
+                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                aria-pressed={isCollapsed}
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-navy-500 transition-colors hover:bg-primary/10 hover:text-primary dark:text-navy-300 dark:hover:bg-white/10 dark:hover:text-white"
               >
-                <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105 ${ICON_COLORS[link.color]}`}
+                {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+              </button>
+            </div>
+            {links.map((link) => (
+              <div key={link.to} className="group relative">
+                <NavLink
+                  to={link.to}
+                  end={link.exact}
+                  onClick={() => setSidebarOpen(false)}
+                  aria-label={isCollapsed ? link.label : undefined}
+                  className={({ isActive }) =>
+                    `group flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-2xl text-sm font-medium transition-all duration-200 ${
+                      isActive
+                        ? 'bg-primary/10 text-primary dark:bg-white/10 dark:text-white border border-red-200 dark:border-white/10'
+                        : 'text-navy-800 dark:text-navy-300 hover:bg-primary/10 dark:hover:bg-white/10 hover:text-primary dark:hover:text-white border border-transparent'
+                    }`
+                  }
                 >
-                  <link.icon className="w-4 h-4" />
-                </span>
-                {link.label}
-              </NavLink>
+                  <span
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover:scale-105 ${ICON_COLORS[link.color]}`}
+                  >
+                    <link.icon className="w-4 h-4" />
+                  </span>
+                  <span className={isCollapsed ? 'sr-only' : 'truncate'}>{link.label}</span>
+                </NavLink>
+                {isCollapsed && (
+                  <span className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 hidden -translate-y-1/2 whitespace-nowrap rounded-lg bg-navy-900 px-2.5 py-1.5 text-xs font-semibold text-white shadow-lg group-hover:block dark:bg-white dark:text-navy-900">
+                    {link.label}
+                  </span>
+                )}
+              </div>
             ))}
           </nav>
-        </aside>
+        </motion.aside>
 
         {/* Main Content  the ONLY area that shows a loader on route change */}
         <main className="flex-1 min-w-0 relative">

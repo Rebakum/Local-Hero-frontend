@@ -48,6 +48,7 @@ import ProfessionalsManagement from '../Pages/dashboard/admin/manage/Professiona
 import SubscriptionsManagement from '../Pages/dashboard/admin/manage/SubscriptionsManagement';
 import BeforeAfterManagement from '../Pages/dashboard/admin/manage/BeforeAfterManagement';
 import TestimonialsManagement from '../Pages/dashboard/admin/manage/TestimonialsManagement';
+import FAQManagement from '../Pages/dashboard/admin/manage/FAQManagement';
 import BookingManagement from '../Pages/dashboard/admin/manage/BookingManagement';
 import AdminPaymentHistory from '../Pages/dashboard/admin/manage/AdminPaymentHistory';
 import SupportTicketsManagement from '../Pages/dashboard/admin/manage/SupportTicketsManagement';
@@ -66,6 +67,7 @@ import BeforeAfterSubmissions from '../Pages/dashboard/provider/BeforeAfterSubmi
 import PricingPage from '../Pages/Pricing/PricingPage';
 import { BlogPage } from '../Pages/Blog/BlogPage';
 import { TrustSafetyPage } from '../Pages/TrustSafety/TrustSafetyPage';
+import LiveChatManagement from '../Pages/dashboard/admin/manage/LiveChatManagement';
 
 const ADMIN_ROLES: UserRole[] = ['ADMIN', 'SUPER_ADMIN'];
 const USER_ROLES: UserRole[] = ['user'];
@@ -146,9 +148,11 @@ const dashboardRoleRoutes: DashboardRoleRoute[] = [
       { path: 'manage/professionals', element: <ProfessionalsManagement /> },
       { path: 'manage/before-after', element: <BeforeAfterManagement /> },
       { path: 'manage/testimonials', element: <TestimonialsManagement /> },
+      { path: 'manage/faqs', element: <FAQManagement /> },
       { path: 'manage/bookings', element: <BookingManagement /> },
       { path: 'manage/payments', element: <AdminPaymentHistory /> },
       { path: 'manage/support-tickets', element: <SupportTicketsManagement /> },
+      { path: 'manage/live-chat', element: <LiveChatManagement /> },
     ],
   },
   {

@@ -240,11 +240,11 @@ export const BlogPage: React.FC = () => {
                 <h2 className="mt-4 font-heading text-2xl sm:text-3xl font-extrabold leading-snug text-navy-950 dark:text-white">
                   {featured.title}
                 </h2>
-                <p className="mt-4 text-sm sm:text-base leading-relaxed text-navy-500 dark:text-navy-300">
+                <p className="mt-4 text-sm sm:text-base leading-relaxed text-navy-800 dark:text-navy-300">
                   {featured.excerpt}
                 </p>
 
-                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-navy-400 dark:text-navy-300">
+                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-navy-800 dark:text-navy-300">
                   <span className="inline-flex items-center gap-1.5">
                     <User className="w-3.5 3 text-primary" />
                     {featured.author}
@@ -318,11 +318,11 @@ export const BlogPage: React.FC = () => {
                     <h3 className="font-heading text-lg font-bold leading-snug text-navy-950 dark:text-white transition-colors group-hover:text-primary">
                       {post.title}
                     </h3>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-navy-500 dark:text-navy-300 line-clamp-3">
+                    <p className="mt-3 flex-1 text-sm leading-relaxed text-navy-800 dark:text-navy-300 line-clamp-3">
                       {post.excerpt}
                     </p>
 
-                    <div className="mt-5 flex items-center justify-between border-t border-navy-100 dark:border-white/10 pt-4 text-xs font-semibold text-navy-400 dark:text-navy-300">
+                    <div className="mt-5 flex items-center justify-between border-t border-navy-100 dark:border-white/10 pt-4 text-xs font-semibold text-navy-800 dark:text-navy-300">
                       <span className="inline-flex items-center gap-1.5">
                         <User className="w-3.5 3 text-primary" />
                         {post.author}
@@ -351,7 +351,7 @@ export const BlogPage: React.FC = () => {
               <p className="mt-4 font-heading text-lg font-bold text-navy-950 dark:text-white">
                 No articles found
               </p>
-              <p className="mt-1 text-sm text-navy-500 dark:text-navy-300">
+              <p className="mt-1 text-sm text-navy-800 dark:text-navy-300">
                 Try a different category or search term.
               </p>
             </motion.div>

@@ -77,7 +77,7 @@ export const ContactPage: React.FC = () => {
               <Phone className="w-6 h-6" />
             </div>
             <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base">Call Us</h3>
-            <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 mb-3">Mon-Sun, 24/7 Dispatch</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-1 mb-3">Mon-Sun, 24/7 Dispatch</p>
             <a href="tel:08001234567" className="text-sm font-bold text-primary hover:underline mt-auto">
               0800 123 4567
             </a>
@@ -89,7 +89,7 @@ export const ContactPage: React.FC = () => {
               <Mail className="w-6 h-6" />
             </div>
             <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base">Email Us</h3>
-            <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 mb-3">We reply within 2 hours</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-1 mb-3">We reply within 2 hours</p>
             <a href="mailto:support@localhero.com" className="text-sm font-bold text-primary hover:underline mt-auto">
               support@localhero.com
             </a>
@@ -101,7 +101,7 @@ export const ContactPage: React.FC = () => {
               <MapPin className="w-6 h-6" />
             </div>
             <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base">Headquarters</h3>
-            <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 mb-3">London HQ Office</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-1 mb-3">London HQ Office</p>
             <span className="text-xs font-bold text-navy-800 dark:text-navy-200 mt-auto">
               100 Bishopsgate, London, EC2N 4AG
             </span>
@@ -113,7 +113,7 @@ export const ContactPage: React.FC = () => {
               <Clock className="w-6 h-6" />
             </div>
             <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base">Support Hours</h3>
-            <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 mb-3">Emergency Response</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-1 mb-3">Emergency Response</p>
             <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-auto flex items-center gap-1">
               <ShieldCheck className="w-4 h-4" /> 24/7 Active
             </span>
@@ -134,7 +134,7 @@ export const ContactPage: React.FC = () => {
                 <h3 className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
                   Message Received!
                 </h3>
-                <p className="text-sm text-navy-500 dark:text-navy-300 max-w-md mx-auto">
+                <p className="text-sm text-navy-800 dark:text-navy-300 max-w-md mx-auto">
                   Thank you for reaching out to LocalHero. One of our support representatives will review your message and get back to you shortly.
                 </p>
                 <button
@@ -154,7 +154,7 @@ export const ContactPage: React.FC = () => {
                   <h3 className="font-heading text-xl font-extrabold text-navy-950 dark:text-white mb-1">
                     Send Us a Message
                   </h3>
-                  <p className="text-xs text-navy-500 dark:text-navy-300">
+                  <p className="text-xs text-navy-800 dark:text-navy-300">
                     Fill out the form below and we'll reply as soon as possible.
                   </p>
                 </div>
@@ -263,7 +263,7 @@ export const ContactPage: React.FC = () => {
               <h4 className="font-heading font-extrabold text-navy-950 dark:text-white text-base mb-3 flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-primary" /> UK Service Coverage
               </h4>
-              <p className="text-xs text-navy-500 dark:text-navy-300 leading-relaxed mb-4">
+              <p className="text-xs text-navy-800 dark:text-navy-300 leading-relaxed mb-4">
                 Our vetted tradespeople operate across Greater London, Manchester, Birmingham, Leeds, Glasgow, and all major UK postcode sectors.
               </p>
               
@@ -286,11 +286,11 @@ export const ContactPage: React.FC = () => {
               <div className="space-y-3 text-xs">
                 <div>
                   <h5 className="font-bold text-navy-900 dark:text-white">How quickly can a pro arrive?</h5>
-                  <p className="text-navy-500 dark:text-navy-300 mt-0.5">Emergency bookings arrive within ~45 minutes across major UK cities.</p>
+                  <p className="text-navy-800 dark:text-navy-300 mt-0.5">Emergency bookings arrive within ~45 minutes across major UK cities.</p>
                 </div>
                 <div className="border-t border-neutral-200/60 dark:border-white/10 pt-2.5">
                   <h5 className="font-bold text-navy-900 dark:text-white">Are tradespeople insured?</h5>
-                  <p className="text-navy-500 dark:text-navy-300 mt-0.5">Yes, every hero carries up to £2,000,000 public liability insurance.</p>
+                  <p className="text-navy-800 dark:text-navy-300 mt-0.5">Yes, every hero carries up to £2,000,000 public liability insurance.</p>
                 </div>
               </div>
             </div>

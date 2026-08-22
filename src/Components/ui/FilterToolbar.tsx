@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, X, Loader2 } from 'lucide-react';
+import { Search, X, Loader2, SlidersHorizontal } from 'lucide-react';
 import { SortDropdown, type SortOption } from './SortDropdown';
 
 export type { SortOption };
@@ -16,6 +16,9 @@ interface FilterToolbarProps {
   sortOptions: SortOption[];
   loading?: boolean;
   className?: string;
+  activeFilterCount?: number;
+  onClearFilters?: () => void;
+  filterLabel?: string;
 }
 
 export const FilterToolbar: React.FC<FilterToolbarProps> = ({
@@ -30,12 +33,15 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
   sortOptions,
   loading = false,
   className = '',
+  activeFilterCount = 0,
+  onClearFilters,
+  filterLabel = 'filters',
 }) => {
   const label = resultCount === 1 ? singularLabel || resultLabel : resultLabel;
 
   return (
     <div className={className}>
-      <p className="mb-3 text-xs font-medium text-navy-400">
+      <p className="mb-3 text-xs font-medium text-navy-800 dark:text-navy-300">
         {resultCount} {label}
         {loading && <Loader2 size={14} className="ml-2 inline animate-spin text-primary" />}
       </p>
@@ -73,6 +79,24 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
           align="right"
         />
       </div>
+
+      {/* Active smart-filter chips */}
+      {activeFilterCount > 0 && onClearFilters && (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+            <SlidersHorizontal size={12} />
+            {activeFilterCount} {activeFilterCount === 1 ? filterLabel.replace(/s$/, '') : filterLabel} applied
+          </span>
+          <button
+            type="button"
+            onClick={onClearFilters}
+            className="inline-flex items-center gap-1 rounded-full border border-neutral-200 px-3 py-1 text-xs font-semibold text-navy-800 transition-colors hover:border-red-400/40 hover:bg-red-50 hover:text-red-500 dark:border-white/10 dark:text-navy-300 dark:hover:bg-red-500/10"
+          >
+            <X size={12} />
+            Clear filters
+          </button>
+        </div>
+      )}
     </div>
   );
 };

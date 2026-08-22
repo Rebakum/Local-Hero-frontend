@@ -146,7 +146,7 @@ export const CreateBeforeAfterModal: React.FC<CreateBeforeAfterModalProps> = ({
           {(formData.beforeImage || formData.afterImage) && (
             <div className="grid grid-cols-2 gap-2 p-2 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
               <div className="text-center">
-                <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-navy-400 block mb-1">Before Preview</span>
+                <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-navy-300 block mb-1">Before Preview</span>
                 {formData.beforeImage ? (
                   <img src={formData.beforeImage} alt="Before Preview" className="h-20 w-full object-cover rounded" onError={(e) => (e.currentTarget.style.display = 'none')} />
                 ) : (
@@ -154,7 +154,7 @@ export const CreateBeforeAfterModal: React.FC<CreateBeforeAfterModalProps> = ({
                 )}
               </div>
               <div className="text-center">
-                <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-navy-400 block mb-1">After Preview</span>
+                <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-navy-300 block mb-1">After Preview</span>
                 {formData.afterImage ? (
                   <img src={formData.afterImage} alt="After Preview" className="h-20 w-full object-cover rounded" onError={(e) => (e.currentTarget.style.display = 'none')} />
                 ) : (

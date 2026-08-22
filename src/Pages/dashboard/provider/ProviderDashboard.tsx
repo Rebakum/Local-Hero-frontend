@@ -206,7 +206,7 @@ const ProviderDashboard: React.FC = () => {
                 <p className="text-3xl font-bold text-navy-900 dark:text-white tracking-tight">
                   <AnimatedCounter value={stat.value} />
                 </p>
-                <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1.5">{stat.label}</p>
+                <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest mt-1.5">{stat.label}</p>
               </Card>
             </motion.div>
           ))}
@@ -250,7 +250,7 @@ const ProviderDashboard: React.FC = () => {
               render: (lead) => (
                 <div>
                   <p className="text-sm font-bold text-navy-900 dark:text-white capitalize">{lead.trade}</p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 line-clamp-1 max-w-[220px]">
+                  <p className="text-xs text-navy-800 dark:text-navy-300 line-clamp-1 max-w-[220px]">
                     {lead.description}
                   </p>
                 </div>
@@ -261,7 +261,7 @@ const ProviderDashboard: React.FC = () => {
               header: 'Customer',
               sortValue: (b) => b.fullName,
               render: (lead) => (
-                <span className="text-sm text-navy-600 dark:text-navy-300">{lead.fullName}</span>
+                <span className="text-sm text-navy-800 dark:text-navy-300">{lead.fullName}</span>
               ),
             },
             {
@@ -270,7 +270,7 @@ const ProviderDashboard: React.FC = () => {
               hideOn: 'md',
               sortValue: (b) => new Date(b.bookingDate).getTime(),
               render: (lead) => (
-                <div className="text-xs text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                <div className="text-xs text-navy-800 dark:text-navy-300 whitespace-nowrap">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="w-3 h-3" />
                     {new Date(lead.bookingDate).toLocaleDateString('en-GB')}
@@ -283,7 +283,7 @@ const ProviderDashboard: React.FC = () => {
               header: 'Time',
               hideOn: 'lg',
               render: (lead) => (
-                <div className="text-xs text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                <div className="text-xs text-navy-800 dark:text-navy-300 whitespace-nowrap">
                   {lead.timeSlot}
                 </div>
               ),
@@ -294,7 +294,7 @@ const ProviderDashboard: React.FC = () => {
               hideOn: 'lg',
               sortValue: (b) => b.postcode,
               render: (lead) => (
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs">
                   <MapPin className="w-3 h-3" />
                   {lead.postcode}
                 </span>
@@ -346,7 +346,7 @@ const ProviderDashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-navy-800 dark:text-navy-200">{action.label}</p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">{action.desc}</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-0.5">{action.desc}</p>
                 </div>
               </div>
               <div className="w-8 h-8 rounded-full bg-navy-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white text-navy-400 transition-all duration-300">

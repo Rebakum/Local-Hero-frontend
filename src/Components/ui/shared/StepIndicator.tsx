@@ -37,7 +37,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep
             </span>
             <span
               className={`hidden sm:inline text-[11px] font-heading font-bold uppercase tracking-wider ${
-                active || done ? 'text-navy-950 dark:text-white' : 'text-navy-400 dark:text-navy-300'
+                active || done ? 'text-navy-950 dark:text-white' : 'text-navy-800 dark:text-navy-300'
               }`}
             >
               {label}

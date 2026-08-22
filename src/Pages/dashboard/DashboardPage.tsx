@@ -35,7 +35,7 @@ const DashboardPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <p className="text-sm text-navy-500 dark:text-navy-400 mb-1">
+        <p className="text-sm text-navy-800 dark:text-navy-300 mb-1">
           Welcome back,
         </p>
         <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 dark:text-white">
@@ -86,7 +86,7 @@ const DashboardPage: React.FC = () => {
                   </Badge>
                 )}
               </div>
-              <p className="text-xs font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-wider mb-1">
+              <p className="text-xs font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-wider mb-1">
                 {stat.label}
               </p>
               {!stat.badge && (
@@ -127,7 +127,7 @@ const DashboardPage: React.FC = () => {
                     <item.icon className="w-4 h-4 text-navy-500 dark:text-navy-400" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-semibold text-navy-400 dark:text-navy-500 uppercase tracking-wider">
+                    <p className="text-xs font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-wider">
                       {item.label}
                     </p>
                     <p className="text-sm font-medium text-navy-800 dark:text-navy-200 truncate">
@@ -169,7 +169,7 @@ const DashboardPage: React.FC = () => {
                       <p className="text-sm font-semibold text-navy-800 dark:text-navy-200">
                         {action.label}
                       </p>
-                      <p className="text-xs text-navy-400 dark:text-navy-500">
+                      <p className="text-xs text-navy-800 dark:text-navy-300">
                         {action.desc}
                       </p>
                     </div>
@@ -189,7 +189,7 @@ const DashboardPage: React.FC = () => {
                 <p className="text-sm font-bold text-navy-900 dark:text-white">
                   Account Status
                 </p>
-                <p className="text-xs text-navy-500 dark:text-navy-400">
+                <p className="text-xs text-navy-800 dark:text-navy-300">
                   Your account is active
                 </p>
               </div>

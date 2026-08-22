@@ -191,7 +191,7 @@ const Leads: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{b.trade}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500">{b.description.slice(0, 60)}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300">{b.description.slice(0, 60)}</p>
                 </div>
               ),
             },
@@ -201,7 +201,7 @@ const Leads: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="text-navy-700 dark:text-navy-200">{b.fullName}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500">{b.email}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300">{b.email}</p>
                 </div>
               ),
             },
@@ -209,12 +209,12 @@ const Leads: React.FC = () => {
               key: 'schedule',
               header: 'Preferred date & time',
               render: (b) => (
-                <div className="text-navy-500 dark:text-navy-400">
+                <div className="text-navy-800 dark:text-navy-300">
                   <p className="inline-flex items-center gap-1.5">
                     <Calendar className="w-3.5 3" />
                     {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5 inline-flex items-center gap-1">
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-0.5 inline-flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {b.timeSlot}
                   </p>
@@ -226,7 +226,7 @@ const Leads: React.FC = () => {
               header: 'Location',
               hideOn: 'lg',
               render: (b) => (
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs">
                   <MapPin className="w-3 h-3" />
                   {b.address}, {b.postcode}
                 </span>
@@ -268,7 +268,7 @@ const Leads: React.FC = () => {
               <button
                 onClick={() => openReschedule(booking)}
                 disabled={actionLoading === booking.id}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
               >
                 <Calendar className="w-3.5 3" />
                 Reschedule
@@ -291,7 +291,7 @@ const Leads: React.FC = () => {
             <button
               onClick={() => setQuoteBooking(null)}
               disabled={accepting}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
@@ -343,7 +343,7 @@ const Leads: React.FC = () => {
             <button
               onClick={() => setRescheduleTarget(null)}
               disabled={rescheduling}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>

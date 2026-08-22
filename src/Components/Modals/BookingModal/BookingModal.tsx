@@ -101,7 +101,7 @@ export const BookingModal: React.FC = () => {
             <h3 className="font-heading text-lg font-extrabold tracking-tight text-navy-950 dark:text-white">
               Book a Local Hero
             </h3>
-            <p className="text-xs font-medium text-navy-500 dark:text-navy-300">
+            <p className="text-xs font-medium text-navy-800 dark:text-navy-300">
               Guaranteed fixed quotes &amp; vetted UK tradespeople
             </p>
           </div>
@@ -147,7 +147,7 @@ export const BookingModal: React.FC = () => {
                   </span>
                   <span
                     className={`hidden sm:inline text-[11px] font-heading font-bold uppercase tracking-wider ${
-                      active || done ? 'text-navy-950 dark:text-white' : 'text-navy-400 dark:text-navy-300'
+                      active || done ? 'text-navy-950 dark:text-white' : 'text-navy-800 dark:text-navy-300'
                     }`}
                   >
                     {label}
@@ -169,36 +169,36 @@ export const BookingModal: React.FC = () => {
             <h4 className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
               Booking request dispatched!
             </h4>
-            <p className="text-sm text-navy-600 dark:text-navy-300 max-w-md mx-auto">
+            <p className="text-sm text-navy-800 dark:text-navy-300 max-w-md mx-auto">
               We've matched your request with 3 vetted{' '}
               <span className="font-bold text-primary capitalize">{displayTrade}s</span> near{' '}
               <span className="font-bold text-navy-950 dark:text-white">{bookingData.postcode}</span>.
               You'll receive direct SMS quotes within 5 minutes.
             </p>
             <div className="bg-cream-100 dark:bg-navy-800 border border-navy-100 dark:border-white/10 rounded-2xl p-4 max-w-sm mx-auto text-left space-y-2 text-xs">
-              <div className="flex justify-between text-navy-500 dark:text-navy-300">
+              <div className="flex justify-between text-navy-800 dark:text-navy-300">
                 <span>Reference ID</span>
                 <span className="font-mono font-bold text-navy-950 dark:text-white">
                   {createdBooking ? createdBooking.id.slice(0, 8).toUpperCase() : '—'}
                 </span>
               </div>
-              <div className="flex justify-between text-navy-500 dark:text-navy-300">
+              <div className="flex justify-between text-navy-800 dark:text-navy-300">
                 <span>Trade category</span>
                 <span className="font-bold text-navy-950 dark:text-white capitalize">{displayTrade}</span>
               </div>
-              <div className="flex justify-between text-navy-500 dark:text-navy-300">
+              <div className="flex justify-between text-navy-800 dark:text-navy-300">
                 <span>Postcode area</span>
                 <span className="font-bold text-navy-950 dark:text-white">{bookingData.postcode}</span>
               </div>
               {bookingData.professionalName && (
-                <div className="flex justify-between text-navy-500 dark:text-navy-300">
+                <div className="flex justify-between text-navy-800 dark:text-navy-300">
                   <span>Professional</span>
                   <span className="font-bold text-navy-950 dark:text-white">
                     {bookingData.professionalName}
                   </span>
                 </div>
               )}
-              <div className="flex justify-between text-navy-500 dark:text-navy-300">
+              <div className="flex justify-between text-navy-800 dark:text-navy-300">
                 <span>Urgency</span>
                 <span className="font-bold text-primary">{selectedUrgency.label}</span>
               </div>

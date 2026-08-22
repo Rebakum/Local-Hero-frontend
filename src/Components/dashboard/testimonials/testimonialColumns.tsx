@@ -17,7 +17,7 @@ export const testimonialColumns = (): DataTableColumn<Testimonial>[] => [
         </div>
         <div className="min-w-0">
           <p className="font-semibold text-navy-800 dark:text-navy-200 truncate max-w-[160px]">{t.author}</p>
-          <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[160px]">
+          <p className="text-[11px] text-navy-800 dark:text-navy-300 truncate max-w-[160px]">
             {t.role} &bull; {t.city}
           </p>
         </div>
@@ -46,7 +46,7 @@ export const testimonialColumns = (): DataTableColumn<Testimonial>[] => [
     header: 'Review',
     hideOn: 'sm',
     render: (t) => (
-      <span title={t.comment} className="text-navy-500 dark:text-navy-400 block truncate max-w-[240px] cursor-help">
+      <span title={t.comment} className="text-navy-800 dark:text-navy-300 block truncate max-w-[240px] cursor-help">
         &ldquo;{t.comment}&rdquo;
       </span>
     ),
@@ -57,7 +57,7 @@ export const testimonialColumns = (): DataTableColumn<Testimonial>[] => [
     hideOn: 'md',
     sortValue: (t) => professionalName(t),
     render: (t) => (
-      <span className="text-navy-500 dark:text-navy-400 truncate block max-w-[160px]">{professionalName(t)}</span>
+      <span className="text-navy-800 dark:text-navy-300 truncate block max-w-[160px]">{professionalName(t)}</span>
     ),
   },
   {
@@ -65,7 +65,7 @@ export const testimonialColumns = (): DataTableColumn<Testimonial>[] => [
     header: 'Date',
     hideOn: 'lg',
     sortValue: (t) => t.createdAt ?? t.date,
-    render: (t) => <span className="text-navy-500 dark:text-navy-400">{formatTestimonialDate(t)}</span>,
+    render: (t) => <span className="text-navy-800 dark:text-navy-300">{formatTestimonialDate(t)}</span>,
   },
   {
     key: 'status',

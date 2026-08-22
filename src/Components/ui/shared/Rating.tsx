@@ -22,7 +22,7 @@ export const Rating: React.FC<RatingProps> = ({
       <Star className={`${starSize} fill-amber-400 text-amber-400`} />
       <span className={`font-bold ${textSize} text-navy-950 dark:text-white`}>{rating}</span>
       {reviewCount !== undefined && (
-        <span className={`${textSize} text-navy-500 dark:text-navy-400`}>({reviewCount})</span>
+        <span className={`${textSize} text-navy-800 dark:text-navy-300`}>({reviewCount})</span>
       )}
     </div>
   );

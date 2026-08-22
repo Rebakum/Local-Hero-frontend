@@ -48,7 +48,7 @@ export const DashboardPreview: React.FC = () => {
             <span className="w-3 h-3 rounded-full bg-primary" />
             <span className="w-3 h-3 rounded-full bg-black" />
             <span className="w-3 h-3 rounded-full bg-navy-200" />
-            <div className="mx-auto hidden sm:flex items-center gap-1.5 bg-cream-100 dark:bg-navy-800 rounded-full px-3 py-1 text-[11px] font-mono text-navy-500 dark:text-navy-300">
+            <div className="mx-auto hidden sm:flex items-center gap-1.5 bg-cream-100 dark:bg-navy-800 rounded-full px-3 py-1 text-[11px] font-mono text-navy-800 dark:text-navy-300">
               <ShieldCheck className="w-3 h-3 text-primary" />
               app.localhero.com/dashboard
             </div>
@@ -63,7 +63,7 @@ export const DashboardPreview: React.FC = () => {
                   <div
                     key={item.label}
                     className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-[13px] font-bold transition-colors ${
-                      item.active ? 'bg-black dark:bg-white text-white dark:text-navy-950 shadow-soft' : 'text-navy-600 dark:text-navy-300'
+                      item.active ? 'bg-black dark:bg-white text-white dark:text-navy-950 shadow-soft' : 'text-navy-800 dark:text-navy-300'
                     }`}
                   >
                     <Icon className="w-4 h-4" /> {item.label}
@@ -77,7 +77,7 @@ export const DashboardPreview: React.FC = () => {
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h3 className="font-heading text-lg font-extrabold text-navy-950 dark:text-white">Good evening, James</h3>
-                  <p className="text-xs font-medium text-navy-500 dark:text-navy-300 mt-0.5">Monday, 3 August  3 jobs scheduled</p>
+                  <p className="text-xs font-medium text-navy-800 dark:text-navy-300 mt-0.5">Monday, 3 August  3 jobs scheduled</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="chip">
@@ -99,7 +99,7 @@ export const DashboardPreview: React.FC = () => {
                       className="rounded-2xl border border-navy-100 dark:border-white/10 bg-cream-100 dark:bg-navy-800 p-3 sm:p-4"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300">
+                        <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-800 dark:text-navy-300">
                           {tile.label}
                         </span>
                         <span className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
@@ -107,7 +107,7 @@ export const DashboardPreview: React.FC = () => {
                         </span>
                       </div>
                       <div className="mt-2 font-heading text-xl font-extrabold text-navy-950 dark:text-white">{tile.value}</div>
-                      <div className={`mt-0.5 text-[11px] font-bold ${tile.delta.startsWith('-') ? 'text-navy-400 dark:text-navy-300' : 'text-primary'}`}>
+                      <div className={`mt-0.5 text-[11px] font-bold ${tile.delta.startsWith('-') ? 'text-navy-800 dark:text-navy-300' : 'text-primary'}`}>
                         {tile.delta} vs last month
                       </div>
                     </div>
@@ -132,7 +132,7 @@ export const DashboardPreview: React.FC = () => {
                           </span>
                           <div className="flex-1 min-w-0">
                             <div className="text-[13px] font-bold text-navy-950 dark:text-white truncate">{b.name}</div>
-                            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] font-medium text-navy-500 dark:text-navy-300">
+                            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] font-medium text-navy-800 dark:text-navy-300">
                               <span>{b.pro}</span>
                               <span className="flex items-center gap-1">
                                 <Clock className="w-3 h-3" /> {b.time}
@@ -168,7 +168,7 @@ export const DashboardPreview: React.FC = () => {
                       />
                     ))}
                   </div>
-                  <div className="mt-2.5 hidden sm:flex justify-between text-[9px] font-semibold text-navy-400 dark:text-navy-300">
+                  <div className="mt-2.5 hidden sm:flex justify-between text-[9px] font-semibold text-navy-800 dark:text-navy-300">
                     {WEEK_LABELS.map((w) => (
                       <span key={w}>{w}</span>
                     ))}

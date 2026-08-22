@@ -16,7 +16,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({ itemVariant }) => {
 
   <motion.h1
     variants={itemVariant}
-    className="font-heading text-[2rem]  sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.08] tracking-tight text-white"
+    className="font-heading text-[1.75rem] min-[400px]:text-[2rem] sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.08] tracking-tight text-white"
   >
     Trusted Local<span className="text-primary"> Pros </span><span>Instantly.</span>
   </motion.h1>

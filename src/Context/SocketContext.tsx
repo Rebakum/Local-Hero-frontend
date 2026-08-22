@@ -16,13 +16,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      disconnectSocket();
-      setSocket(null);
-      setConnected(false);
-      return;
-    }
-
     const s = connectSocket();
     setSocket(s);
 

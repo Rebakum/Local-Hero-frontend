@@ -20,7 +20,7 @@ const SubscriptionCancel: React.FC = () => {
         <h2 className="text-xl font-bold text-navy-900 dark:text-white mt-4">
           Checkout cancelled
         </h2>
-        <p className="text-sm text-navy-500 dark:text-navy-400 mt-2">
+        <p className="text-sm text-navy-800 dark:text-navy-300 mt-2">
           Your subscription was not changed. You can return to your subscription page at any time to upgrade or change plans.
         </p>
 

@@ -110,7 +110,7 @@ export const AllCategoriesPage: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-xs font-bold text-navy-600 dark:text-navy-300 hover:text-primary transition-colors w-fit my-8"
+          className="inline-flex items-center gap-2 text-xs font-bold text-navy-800 dark:text-navy-300 hover:text-primary transition-colors w-fit my-8"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Home</span>
@@ -173,7 +173,7 @@ export const AllCategoriesPage: React.FC = () => {
           <div className="mt-6 group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white px-6 py-16 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 text-center">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <SearchX size={28} className="mx-auto text-primary" />
-            <p className="mt-4 text-navy-500 dark:text-navy-300 font-semibold text-sm">
+            <p className="mt-4 text-navy-800 dark:text-navy-300 font-semibold text-sm">
               No categories found matching "{searchTerm}"
             </p>
           </div>

@@ -46,7 +46,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
                     <h3 className="text-base font-bold text-navy-900 dark:text-white group-hover:text-primary transition-colors">
                       {rs.title}
                     </h3>
-                    <p className="mt-2 text-xs text-navy-500 dark:text-navy-300 line-clamp-2 leading-relaxed">
+                    <p className="mt-2 text-xs text-navy-800 dark:text-navy-300 line-clamp-2 leading-relaxed">
                       {rs.description}
                     </p>
 
@@ -54,7 +54,7 @@ export const RelatedServices: React.FC<RelatedServicesProps> = ({ related }) => 
                       <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
                         {rs.estimatedPrice}
                       </span>
-                      <span className="text-xs text-navy-500 flex items-center gap-1">
+                      <span className="text-xs text-navy-800 dark:text-navy-300 flex items-center gap-1">
                         <Clock size={12} /> {rs.timeEstimate}
                       </span>
                     </div>

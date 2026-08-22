@@ -161,7 +161,7 @@ const BeforeAfterSubmissions: React.FC = () => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-navy-900 dark:text-white">New showcase</h2>
-            <p className="text-xs text-navy-400 dark:text-navy-500">Pick one of your completed bookings</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300">Pick one of your completed bookings</p>
           </div>
         </div>
 
@@ -171,11 +171,11 @@ const BeforeAfterSubmissions: React.FC = () => {
               Completed booking <span className="text-primary">*</span>
             </label>
             {loading ? (
-              <div className="flex items-center gap-2 text-xs text-navy-400">
+              <div className="flex items-center gap-2 text-xs text-navy-800 dark:text-navy-300">
                 <Loader2 className="w-4 h-4 animate-spin" /> Loading bookings…
               </div>
             ) : eligible.length === 0 ? (
-              <p className="text-sm text-navy-500 dark:text-navy-400">
+              <p className="text-sm text-navy-800 dark:text-navy-300">
                 No completed bookings available for a before/after showcase yet.
               </p>
             ) : (
@@ -195,7 +195,7 @@ const BeforeAfterSubmissions: React.FC = () => {
           </div>
 
           {selectedBooking && (
-            <div className="flex items-center gap-2 text-xs text-navy-500 dark:text-navy-400 bg-navy-50 dark:bg-white/5 rounded-xl px-3 py-2.5 border border-navy-100 dark:border-white/10">
+            <div className="flex items-center gap-2 text-xs text-navy-800 dark:text-navy-300 bg-navy-50 dark:bg-white/5 rounded-xl px-3 py-2.5 border border-navy-100 dark:border-white/10">
               <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
               Booking for {selectedBooking.fullName} · {selectedBooking.trade} · completed on{' '}
               {new Date(selectedBooking.bookingDate).toLocaleDateString('en-GB')}
@@ -251,7 +251,7 @@ const BeforeAfterSubmissions: React.FC = () => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-navy-900 dark:text-white">My submissions</h2>
-            <p className="text-xs text-navy-400 dark:text-navy-500">Track the status of every showcase you've submitted</p>
+            <p className="text-xs text-navy-800 dark:text-navy-300">Track the status of every showcase you've submitted</p>
           </div>
         </div>
 
@@ -260,7 +260,7 @@ const BeforeAfterSubmissions: React.FC = () => {
             <Loader2 className="w-6 h-6 animate-spin" />
           </div>
         ) : submissions.length === 0 ? (
-          <p className="text-sm text-navy-500 dark:text-navy-400 py-8 text-center">
+          <p className="text-sm text-navy-800 dark:text-navy-300 py-8 text-center">
             You haven't submitted any before/after showcases yet.
           </p>
         ) : (
@@ -277,7 +277,7 @@ const BeforeAfterSubmissions: React.FC = () => {
                   </div>
                   <div className="min-w-0">
                     <p className="font-semibold text-navy-800 dark:text-navy-200 truncate">{p.title}</p>
-                    <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate">
+                    <p className="text-[11px] text-navy-800 dark:text-navy-300 truncate">
                       {p.location} · {p.cost} · {p.completionDays}
                     </p>
                     {p.status === 'REJECTED' && p.rejectionReason && (
@@ -298,7 +298,7 @@ const BeforeAfterSubmissions: React.FC = () => {
                   ) : (
                     <button
                       onClick={() => openEdit(p)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-navy-200 dark:border-white/10 text-xs font-semibold text-navy-600 dark:text-navy-300 hover:bg-primary/10 hover:text-primary transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-navy-200 dark:border-white/10 text-xs font-semibold text-navy-800 dark:text-navy-300 hover:bg-primary/10 hover:text-primary transition-colors"
                     >
                       {p.status === 'REJECTED' ? <RefreshCw className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
                       {p.status === 'REJECTED' ? 'Resubmit' : 'Edit'}
@@ -324,7 +324,7 @@ const BeforeAfterSubmissions: React.FC = () => {
             <button
               onClick={() => setEditing(null)}
               disabled={editSaving}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>

@@ -195,11 +195,11 @@ export const ProviderBookingDashboard: React.FC = () => {
 
       {/* Booking Cards Grid */}
       {loading ? (
-        <div className="text-center py-16 text-gray-400 dark:text-navy-400">Loading your assigned jobs...</div>
+        <div className="text-center py-16 text-gray-400 dark:text-navy-300">Loading your assigned jobs...</div>
       ) : filteredBookings.length === 0 ? (
         <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800">
           <Wrench className="w-12 h-12 text-gray-300 dark:text-navy-500 mx-auto mb-3" />
-          <p className="text-gray-500 dark:text-navy-400 font-medium">No assigned jobs found in this section.</p>
+          <p className="text-gray-500 dark:text-navy-300 font-medium">No assigned jobs found in this section.</p>
         </div>
       ) : (
         <>
@@ -275,7 +275,7 @@ export const ProviderBookingDashboard: React.FC = () => {
                   </span>
                 </div>
                 {booking.notes && (
-                  <p className="text-[11px] text-gray-500 bg-gray-50 dark:bg-gray-800 p-2 rounded-lg mt-1">
+                  <p className="text-[11px] text-gray-500 bg-gray-50 dark:bg-gray-800 dark:text-navy-300 p-2 rounded-lg mt-1">
                     <strong>Notes:</strong> {booking.notes}
                   </p>
                 )}
@@ -328,7 +328,7 @@ export const ProviderBookingDashboard: React.FC = () => {
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">
               Update Job Status
             </h3>
-            <p className="text-xs text-gray-500 dark:text-navy-400">
+            <p className="text-xs text-gray-500 dark:text-navy-300">
               Update status for job #{selectedBooking.id.slice(-6)} ({selectedBooking.trade})
             </p>
 

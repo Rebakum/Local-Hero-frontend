@@ -40,7 +40,7 @@ export const AdminBeforeAfterManager: React.FC = () => {
           <h2 className="text-xl font-bold text-slate-800 dark:text-white">
             Manage Before/After Projects
           </h2>
-          <p className="text-sm text-slate-500">View and manage all showcase items</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">View and manage all showcase items</p>
         </div>
         <button
           onClick={() => alert("Open Add Modal")}

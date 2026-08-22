@@ -110,7 +110,7 @@ const ProfilePage: React.FC = () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 dark:text-white">
           Profile Settings
         </h1>
-        <p className="mt-2 text-sm text-navy-500 dark:text-navy-400">
+        <p className="mt-2 text-sm text-navy-800 dark:text-navy-300">
           Update your personal information and account settings.
         </p>
       </motion.div>
@@ -153,7 +153,7 @@ const ProfilePage: React.FC = () => {
               </div>
               <div>
                 <p className="text-sm font-semibold text-navy-800 dark:text-navy-200">{user?.name}</p>
-                <p className="text-xs text-navy-400 dark:text-navy-500">{user?.email}</p>
+                <p className="text-xs text-navy-800 dark:text-navy-300">{user?.email}</p>
                 {avatarError && <p className="mt-1 text-xs text-red-500">{avatarError}</p>}
               </div>
             </div>
@@ -203,7 +203,7 @@ const ProfilePage: React.FC = () => {
                     className="input-lh pl-10 opacity-60 cursor-not-allowed"
                   />
                 </div>
-                <p className="mt-1 text-xs text-navy-400 dark:text-navy-500">Email cannot be changed.</p>
+                <p className="mt-1 text-xs text-navy-800 dark:text-navy-300">Email cannot be changed.</p>
               </div>
 
               <div>
@@ -260,7 +260,7 @@ const ProfilePage: React.FC = () => {
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-bold text-navy-900 dark:text-white">Danger Zone</h2>
-              <p className="mt-1 text-sm text-navy-500 dark:text-navy-400">
+              <p className="mt-1 text-sm text-navy-800 dark:text-navy-300">
                 Permanently delete your account and all associated data. This action cannot be undone.
               </p>
               <button
@@ -284,7 +284,7 @@ const ProfilePage: React.FC = () => {
             <h2 className="text-lg font-bold text-navy-900 dark:text-white">Delete Account</h2>
           </div>
 
-          <p className="text-sm text-navy-500 dark:text-navy-400 mb-6">
+          <p className="text-sm text-navy-800 dark:text-navy-300 mb-6">
             This will permanently delete your account and all associated data. Please enter your password to confirm.
           </p>
 

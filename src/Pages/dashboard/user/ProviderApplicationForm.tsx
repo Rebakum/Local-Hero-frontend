@@ -112,7 +112,7 @@ const ProviderApplicationForm: React.FC = () => {
               <h2 className="text-2xl font-bold text-navy-900 dark:text-white mb-2">
                 Application Submitted
               </h2>
-              <p className="text-navy-500 dark:text-navy-400 mb-8 max-w-md">
+              <p className="text-navy-800 dark:text-navy-300 mb-8 max-w-md">
                 Your application is under review by Super Admin. You'll receive a notification once your account is approved.
               </p>
               <button
@@ -261,7 +261,7 @@ const ProviderApplicationForm: React.FC = () => {
       >
         <button
           onClick={() => navigate('/dashboard/user')}
-          className="flex items-center gap-2 text-sm text-navy-500 dark:text-navy-400 hover:text-navy-700 dark:hover:text-navy-200 transition-colors mb-4"
+          className="flex items-center gap-2 text-sm text-navy-800 dark:text-navy-300 hover:text-navy-700 dark:hover:text-navy-200 transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Dashboard
@@ -272,7 +272,7 @@ const ProviderApplicationForm: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 dark:text-white">
             Service Provider Application
           </h1>
-          <p className="text-sm text-navy-500 dark:text-navy-400 mt-1">
+          <p className="text-sm text-navy-800 dark:text-navy-300 mt-1">
             Fill out the details below to apply as a service provider.
           </p>
         </div>
@@ -510,7 +510,7 @@ const ProviderApplicationForm: React.FC = () => {
                 </div>
 
                 {isUploadingAvatar && (
-                  <div className="flex items-center gap-2 text-sm text-navy-500 dark:text-navy-400">
+                  <div className="flex items-center gap-2 text-sm text-navy-800 dark:text-navy-300">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Uploading profile photo...
                   </div>
@@ -521,7 +521,7 @@ const ProviderApplicationForm: React.FC = () => {
                     <img src={form.avatar} alt="Profile preview" className="h-14 w-14 rounded-full object-cover" />
                     <div className="min-w-0">
                       <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Profile photo ready</p>
-                      <p className="truncate text-[11px] text-navy-500 dark:text-navy-400">{form.avatar}</p>
+                      <p className="truncate text-[11px] text-navy-800 dark:text-navy-300">{form.avatar}</p>
                     </div>
                   </div>
                 )}
@@ -544,7 +544,7 @@ const ProviderApplicationForm: React.FC = () => {
                 />
 
                 {isUploadingPortfolio && (
-                  <div className="flex items-center gap-2 text-sm text-navy-500 dark:text-navy-400">
+                  <div className="flex items-center gap-2 text-sm text-navy-800 dark:text-navy-300">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Uploading portfolio images...
                   </div>

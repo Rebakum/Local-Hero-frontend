@@ -34,13 +34,13 @@ const ResetPasswordPage: React.FC = () => {
                 <MailX className="w-9 h-9 text-red-600 dark:text-red-400" />
               </div>
               <h1 className="text-2xl font-bold text-navy-900 dark:text-white">Link is missing</h1>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 This page needs a reset link. Open the link from your email, or request a new one below.
               </p>
               <RouterLink to="/forgot-password" className="btn btn-primary w-full h-12 text-sm mt-2">
                 Request a new link
               </RouterLink>
-              <p className="mt-4 text-sm text-navy-500 dark:text-navy-400">
+              <p className="mt-4 text-sm text-navy-800 dark:text-navy-300">
                 <RouterLink to="/login" className="font-semibold text-primary hover:underline">
                   Back to sign in
                 </RouterLink>
@@ -97,7 +97,7 @@ const ResetPasswordPage: React.FC = () => {
               <img src="/logoBlack/logo3.png" alt="LocalHero" className="h-10 w-auto mx-auto hidden dark:block" />
             </RouterLink>
             <h1 className="text-2xl font-bold text-navy-900 dark:text-white">Set a new password</h1>
-            <p className="mt-2 text-sm text-navy-500 dark:text-navy-400">
+            <p className="mt-2 text-sm text-navy-800 dark:text-navy-300">
               Choose a strong password you don&apos;t use elsewhere.
             </p>
           </div>
@@ -108,7 +108,7 @@ const ResetPasswordPage: React.FC = () => {
                 <CheckCircle2 className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h2 className="text-xl font-bold text-navy-900 dark:text-white">Password updated!</h2>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 Your password has been changed. You can now sign in with your new password.
               </p>
               <button

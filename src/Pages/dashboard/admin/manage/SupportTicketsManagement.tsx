@@ -97,7 +97,7 @@ const SupportTicketsManagement: React.FC = () => {
             className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors ${
               statusFilter === f.value
                 ? 'bg-white dark:bg-navy-800 text-primary shadow-sm'
-                : 'text-navy-500 dark:text-navy-400 hover:text-navy-700 dark:hover:text-navy-200'
+                : 'text-navy-800 dark:text-navy-300 hover:text-navy-700 dark:hover:text-navy-200'
             }`}
           >
             {f.label}
@@ -126,7 +126,7 @@ const SupportTicketsManagement: React.FC = () => {
             render: (t) => (
               <div className="min-w-0">
                 <p className="font-semibold text-navy-800 dark:text-navy-200 truncate max-w-[220px]">{t.subject}</p>
-                <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[220px]">
+                <p className="text-[11px] text-navy-800 dark:text-navy-300 truncate max-w-[220px]">
                   {t.message}
                 </p>
               </div>
@@ -139,7 +139,7 @@ const SupportTicketsManagement: React.FC = () => {
             render: (t) => (
               <div className="min-w-0">
                 <p className="font-semibold text-navy-800 dark:text-navy-200">{t.name || '—'}</p>
-                <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[180px]">{t.email || '—'}</p>
+                <p className="text-[11px] text-navy-800 dark:text-navy-300 truncate max-w-[180px]">{t.email || '—'}</p>
               </div>
             ),
           },
@@ -153,7 +153,7 @@ const SupportTicketsManagement: React.FC = () => {
             header: 'Submitted',
             hideOn: 'md',
             render: (t) => (
-              <span className="text-xs text-navy-500 dark:text-navy-400">{relative(t.createdAt)}</span>
+              <span className="text-xs text-navy-800 dark:text-navy-300">{relative(t.createdAt)}</span>
             ),
           },
         ]}

@@ -28,7 +28,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     {error ? (
       <p className="text-xs font-medium text-red-500">{error}</p>
     ) : hint ? (
-      <p className="text-xs text-navy-400 dark:text-navy-500">{hint}</p>
+      <p className="text-xs text-navy-800 dark:text-navy-300">{hint}</p>
     ) : null}
   </div>
 );

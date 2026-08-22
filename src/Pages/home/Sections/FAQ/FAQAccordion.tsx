@@ -28,7 +28,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
       {items.length === 0 && (
         <div className="rounded-2xl border border-neutral-200 bg-white px-6 py-12 text-center shadow-soft dark:border-white/10 dark:bg-navy-900">
           <SearchX size={28} className="mx-auto text-primary" />
-          <p className="mt-4 text-sm font-semibold text-navy-500 dark:text-navy-300">
+          <p className="mt-4 text-sm font-semibold text-navy-800 dark:text-navy-300">
             No results for &quot;{query}&quot; — try another search term.
           </p>
           <button

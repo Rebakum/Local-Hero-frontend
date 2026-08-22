@@ -62,7 +62,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
                 {rating} ({reviewsCount})
               </span>
             </div>
-            <p className="text-xs text-navy-500 dark:text-navy-300 mt-1 flex items-center gap-3">
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-1 flex items-center gap-3">
               <span className="flex items-center gap-1"><Users className="w-3.5 3 text-primary" /> {prosCount}+ Verified Pros</span>
               <span className="flex items-center gap-1"><Clock className="w-3.5 3 text-primary" /> ~45 min ETA</span>
             </p>
@@ -82,7 +82,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
         {/* Pricing Box */}
         <div className="p-4 rounded-2xl bg-cream-100 dark:bg-navy-800 border border-navy-100 dark:border-white/10 flex items-center justify-between">
           <div>
-            <span className="text-xs font-heading font-bold uppercase tracking-wider text-navy-500 dark:text-navy-300">Starting Rate</span>
+            <span className="text-xs font-heading font-bold uppercase tracking-wider text-navy-800 dark:text-navy-300">Starting Rate</span>
             <div className="text-2xl font-heading font-extrabold text-primary">{startingPrice}</div>
           </div>
           <div className="text-right">
@@ -97,7 +97,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
           <h4 className="text-xs font-heading font-bold uppercase tracking-wider text-navy-700 dark:text-navy-200 mb-2">
             Service Overview
           </h4>
-          <p className="text-sm text-navy-600 dark:text-navy-300 leading-relaxed">
+          <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
             {description}
           </p>
         </div>
@@ -123,7 +123,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
         <button
           type="button"
           onClick={onClose}
-          className="px-5 py-3 text-sm font-heading font-bold text-navy-600 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white transition-colors"
+          className="px-5 py-3 text-sm font-heading font-bold text-navy-800 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white transition-colors"
         >
           Close
         </button>

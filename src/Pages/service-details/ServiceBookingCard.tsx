@@ -30,11 +30,11 @@ export const ServiceBookingCard: React.FC<ServiceBookingCardProps> = ({
 
         <div className="relative z-10">
           <div className="mb-4">
-            <span className="text-xs font-heading font-bold uppercase tracking-wider text-navy-400">Fixed Instant Quote</span>
+            <span className="text-xs font-heading font-bold uppercase tracking-wider text-navy-800 dark:text-navy-300">Fixed Instant Quote</span>
             <div className="text-4xl font-heading font-black text-primary mt-1">{estimatedPrice}</div>
           </div>
 
-          <div className="flex items-center gap-2 text-sm text-navy-600 dark:text-navy-300 mb-6 bg-slate-50 dark:bg-navy-800 p-3 rounded-xl border border-slate-100 dark:border-white/5">
+          <div className="flex items-center gap-2 text-sm text-navy-800 dark:text-navy-300 mb-6 bg-slate-50 dark:bg-navy-800 p-3 rounded-xl border border-slate-100 dark:border-white/5">
             <Clock size={16} className="text-primary" />
             <span>Estimated Duration: <strong>{timeEstimate}</strong></span>
           </div>
@@ -48,7 +48,7 @@ export const ServiceBookingCard: React.FC<ServiceBookingCardProps> = ({
 
           <button
             onClick={() => navigate('/services')}
-            className="mt-3 w-full flex items-center justify-center gap-2 rounded-full border border-slate-200 dark:border-white/10 py-3 text-sm font-semibold text-navy-600 dark:text-navy-300 transition hover:bg-slate-50 dark:hover:bg-navy-800"
+            className="mt-3 w-full flex items-center justify-center gap-2 rounded-full border border-slate-200 dark:border-white/10 py-3 text-sm font-semibold text-navy-800 dark:text-navy-300 transition hover:bg-slate-50 dark:hover:bg-navy-800"
           >
             <ArrowLeft size={14} />
             Browse Other Services

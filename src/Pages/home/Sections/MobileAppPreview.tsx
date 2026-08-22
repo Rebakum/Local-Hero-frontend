@@ -75,20 +75,20 @@ export const MobileAppPreview: React.FC = () => {
                       />
                       <div className="flex-1 min-w-0">
                         <div className="text-[13px] font-heading font-extrabold text-navy-950 dark:text-white truncate">James Stirling</div>
-                        <div className="text-[10px] font-medium text-navy-500 dark:text-navy-300 truncate">Stirling Heating &amp; Gas</div>
+                        <div className="text-[10px] font-medium text-navy-800 dark:text-navy-300 truncate">Stirling Heating &amp; Gas</div>
                         <div className="mt-0.5 flex items-center gap-1">
                           <span className="flex gap-0.5">
                             {[...Array(5)].map((_, i) => (
                               <Star key={i} className="w-3 h-3 fill-primary text-primary" />
                             ))}
                           </span>
-                          <span className="text-[10px] font-bold text-navy-600 dark:text-navy-300">4.98</span>
+                          <span className="text-[10px] font-bold text-navy-800 dark:text-navy-300">4.98</span>
                         </div>
                       </div>
                       <span className="shrink-0 bg-primary text-white text-[10px] font-bold rounded-full px-2.5 py-1">£55/hr</span>
                     </div>
                     {/* Mock actions  plain text, deliberately not clickable */}
-                    <div className="mt-3 pt-3 border-t border-navy-100 dark:border-white/10 flex items-center gap-3 text-xs font-semibold text-navy-500 dark:text-navy-300">
+                    <div className="mt-3 pt-3 border-t border-navy-100 dark:border-white/10 flex items-center gap-3 text-xs font-semibold text-navy-800 dark:text-navy-300">
                       <span>Confirm booking</span>
                       <span className="w-px h-3 bg-navy-200 dark:bg-white/15" />
                       <span>View details</span>
@@ -102,7 +102,7 @@ export const MobileAppPreview: React.FC = () => {
                     </span>
                     <div>
                       <div className="text-[11px] font-heading font-extrabold text-navy-950 dark:text-white">New quote received</div>
-                      <div className="text-[10px] font-semibold text-navy-500 dark:text-navy-300">Boiler repair • £180 fixed</div>
+                      <div className="text-[10px] font-semibold text-navy-800 dark:text-navy-300">Boiler repair • £180 fixed</div>
                     </div>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ export const MobileAppPreview: React.FC = () => {
                         <Icon className="w-5 h-5" />
                       </div>
                       <h3 className="mt-3 sm:mt-4 font-heading text-[14px] sm:text-[15px] font-extrabold text-navy-950 dark:text-white">{feature.title}</h3>
-                      <p className="mt-1 sm:mt-1.5 text-[12px] sm:text-[13px] leading-relaxed text-navy-600 dark:text-navy-300">{feature.desc}</p>
+                      <p className="mt-1 sm:mt-1.5 text-[12px] sm:text-[13px] leading-relaxed text-navy-800 dark:text-navy-300">{feature.desc}</p>
                     </div>
                   </StaggerItem>
                 );
@@ -167,7 +167,7 @@ export const MobileAppPreview: React.FC = () => {
               </a>
             </div>
 
-            <div className="mt-5 md:mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-navy-500 dark:text-navy-300">
+            <div className="mt-5 md:mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-navy-800 dark:text-navy-300">
               <span className="flex gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 3 fill-primary text-primary" />

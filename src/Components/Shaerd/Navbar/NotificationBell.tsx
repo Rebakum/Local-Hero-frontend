@@ -204,10 +204,10 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, varia
               {!isAuthenticated || !user ? (
                 <div className="py-10 text-center px-6">
                   <Bell className="w-10 h-10 text-navy-300 dark:text-navy-600 mx-auto mb-3" />
-                  <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">
+                  <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
                     Stay in the loop
                   </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-1">
                     Sign in to see job updates, quotes and reminders.
                   </p>
                   <Link
@@ -225,10 +225,10 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, varia
               ) : notifications.length === 0 ? (
                 <div className="py-10 text-center px-6">
                   <Inbox className="w-10 h-10 text-navy-300 dark:text-navy-600 mx-auto mb-3" />
-                  <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">
+                  <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
                     No notifications
                   </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">You're all caught up.</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-1">You're all caught up.</p>
                 </div>
               ) : (
                 notifications.map((notification) => (
@@ -249,11 +249,11 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({ atTop, varia
                         {notification.title}
                       </span>
                       {notification.body && (
-                        <span className="block text-xs text-navy-400 dark:text-navy-500 mt-0.5 line-clamp-2">
+                        <span className="block text-xs text-navy-800 dark:text-navy-300 mt-0.5 line-clamp-2">
                           {notification.body}
                         </span>
                       )}
-                      <span className="block text-[10px] text-navy-300 dark:text-navy-600 mt-1">
+                      <span className="block text-[10px] text-navy-800 dark:text-navy-300 mt-1">
                         {new Date(notification.createdAt).toLocaleString('en-GB', {
                           day: 'numeric',
                           month: 'short',

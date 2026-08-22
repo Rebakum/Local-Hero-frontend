@@ -34,7 +34,7 @@ export const HideReviewModal: React.FC<HideReviewModalProps> = ({
             type="button"
             onClick={onClose}
             disabled={hiding}
-            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>
@@ -52,7 +52,7 @@ export const HideReviewModal: React.FC<HideReviewModalProps> = ({
     >
       <div className="rounded-xl bg-navy-50 dark:bg-white/5 border border-navy-100 dark:border-white/10 p-4 mb-4 text-sm">
         <p className="font-semibold text-navy-800 dark:text-navy-200">{target?.author}</p>
-        <p className="text-navy-500 dark:text-navy-400 line-clamp-3 mt-1">&ldquo;{target?.comment}&rdquo;</p>
+        <p className="text-navy-800 dark:text-navy-300 line-clamp-3 mt-1">&ldquo;{target?.comment}&rdquo;</p>
       </div>
       <Textarea
         label="Reason (sent to the reviewer)"
@@ -60,7 +60,7 @@ export const HideReviewModal: React.FC<HideReviewModalProps> = ({
         value={note}
         onChange={(e) => onNoteChange(e.target.value)}
       />
-      <p className="flex items-center gap-1.5 text-xs text-navy-400 dark:text-navy-500 mt-2">
+      <p className="flex items-center gap-1.5 text-xs text-navy-800 dark:text-navy-300 mt-2">
         <ShieldCheck className="w-3.5 h-3.5" />
         The reason is included in the notification and email sent to the reviewer.
       </p>

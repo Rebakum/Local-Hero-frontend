@@ -46,7 +46,7 @@ export const TestimonialFormModal: React.FC<TestimonialFormModalProps> = ({
             type="button"
             onClick={onClose}
             disabled={saving}
-            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>

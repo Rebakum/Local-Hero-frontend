@@ -49,7 +49,7 @@ export const TradeStep: React.FC<TradeStepProps> = ({
               <span className="font-heading text-base font-extrabold text-navy-950 dark:text-white mt-2 capitalize">
                 {catName}
               </span>
-              <span className="flex items-center gap-1 text-[11px] font-medium text-navy-500 dark:text-navy-300 mt-1">
+              <span className="flex items-center gap-1 text-[11px] font-medium text-navy-800 dark:text-navy-300 mt-1">
                 <Users className="w-3 h-3" /> {prosCount.toLocaleString()} active pros
               </span>
             </button>

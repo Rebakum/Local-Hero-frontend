@@ -201,7 +201,7 @@ const SubscriptionsManagement: React.FC = () => {
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+        <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
           {filtered.length} {filtered.length === 1 ? 'subscription' : 'subscriptions'}
         </p>
         <div className="relative sm:ml-auto w-full sm:w-72">
@@ -254,7 +254,7 @@ const SubscriptionsManagement: React.FC = () => {
                 <p className="font-semibold text-navy-800 dark:text-navy-200">
                   {s.professional?.name ?? '—'}
                 </p>
-                <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[180px]">
+                <p className="text-[11px] text-navy-800 dark:text-navy-300 truncate max-w-[180px]">
                   {s.professional?.companyName || s.professional?.trade || '—'}
                 </p>
               </div>
@@ -294,7 +294,7 @@ const SubscriptionsManagement: React.FC = () => {
             header: 'Expires',
             hideOn: 'md',
             render: (s) => (
-              <span className="text-navy-500 dark:text-navy-400">
+              <span className="text-navy-800 dark:text-navy-300">
                 {s.expiresAt
                   ? new Date(s.expiresAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                   : '—'}
@@ -325,7 +325,7 @@ const SubscriptionsManagement: React.FC = () => {
               type="button"
               onClick={() => setModalOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>

@@ -148,7 +148,7 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
           <button
             onClick={handleMarkAll}
             disabled={updating === 'all' || unread === 0}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
           >
             {updating === 'all' ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -208,7 +208,7 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
               <div className={n.isRead ? '' : 'font-semibold text-navy-900 dark:text-white'}>
                 <p>{n.title}</p>
                 {n.body && (
-                  <p className="text-xs text-navy-400 dark:text-navy-500 font-normal mt-0.5">
+                  <p className="text-xs text-navy-800 dark:text-navy-300 font-normal mt-0.5">
                     {n.body}
                   </p>
                 )}
@@ -220,7 +220,7 @@ export const NotificationsManager: React.FC<NotificationsManagerProps> = ({
             header: 'Received',
             hideOn: 'md',
             render: (n) => (
-              <span className="text-xs text-navy-400 dark:text-navy-500">
+              <span className="text-xs text-navy-800 dark:text-navy-300">
                 {new Date(n.createdAt).toLocaleDateString('en-GB', {
                   day: 'numeric',
                   month: 'short',

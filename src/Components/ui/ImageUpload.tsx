@@ -73,7 +73,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         <p className="text-xs font-semibold text-navy-700 dark:text-navy-300">
           {label}
           {multiple && (
-            <span className="font-normal text-navy-400 dark:text-navy-500 ml-1">
+            <span className="font-normal text-navy-800 dark:text-navy-300 ml-1">
               ({urls.length}/{maxFiles})
             </span>
           )}
@@ -139,7 +139,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
             <p className="text-sm font-semibold text-navy-700 dark:text-navy-300">
               {uploading ? 'Uploading…' : isDragging ? 'Drop to upload' : 'Drag & drop or click to upload'}
             </p>
-            <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">
+            <p className="text-xs text-navy-800 dark:text-navy-300 mt-1">
               {hint ?? 'JPG, PNG, WEBP — max 10 images'}
             </p>
           </div>

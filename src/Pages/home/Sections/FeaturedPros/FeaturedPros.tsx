@@ -12,7 +12,7 @@ export const FeaturedPros: React.FC = () => {
           <h2 className="mt-3 text-3xl sm:text-4xl font-heading font-bold text-navy-950 dark:text-white">
             Trusted pros, ready
           </h2>
-          <p className="mt-4 text-lg text-navy-600 dark:text-navy-300">
+          <p className="mt-4 text-lg text-navy-800 dark:text-navy-300">
             Browse verified local experts with strong ratings, clear pricing, and fast response times.
           </p>
         </div>

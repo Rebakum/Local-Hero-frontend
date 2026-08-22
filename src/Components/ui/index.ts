@@ -16,4 +16,13 @@ export { Modal } from './Modal';
 export { PageHeader } from './PageHeader';
 export { StatusBadge } from './StatusBadge';
 
+export {
+  FilterSidebar,
+  emptyProfessionalFilters,
+  professionalFiltersActive,
+  type FilterOption,
+  type ProfessionalFilters,
+} from './FilterSidebar';
+export { FilterToolbar, type SortOption } from './FilterToolbar';
+
 export { FormField, Input, Select, Textarea } from './form';

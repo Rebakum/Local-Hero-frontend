@@ -21,14 +21,14 @@ interface RowActionsProps {
 
 const toneStyles: Record<RowActionTone, string> = {
   default:
-    'border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 hover:border-primary/40 hover:bg-primary/10 hover:text-primary',
+    'border-neutral-200 dark:border-white/10 text-navy-800 dark:text-navy-300 hover:border-primary/40 hover:bg-primary/10 hover:text-primary',
   danger:
-    'border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 hover:border-red-400/40 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500',
-  info: 'border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 hover:border-sky-400/40 hover:bg-sky-50 dark:hover:bg-sky-500/10 hover:text-sky-500',
+    'border-neutral-200 dark:border-white/10 text-navy-800 dark:text-navy-300 hover:border-red-400/40 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500',
+  info: 'border-neutral-200 dark:border-white/10 text-navy-800 dark:text-navy-300 hover:border-sky-400/40 hover:bg-sky-50 dark:hover:bg-sky-500/10 hover:text-sky-500',
   success:
-    'border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 hover:border-emerald-400/40 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:text-emerald-500',
+    'border-neutral-200 dark:border-white/10 text-navy-800 dark:text-navy-300 hover:border-emerald-400/40 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:text-emerald-500',
   warning:
-    'border-neutral-200 dark:border-white/10 text-navy-500 dark:text-navy-400 hover:border-amber-400/40 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:text-amber-500',
+    'border-neutral-200 dark:border-white/10 text-navy-800 dark:text-navy-300 hover:border-amber-400/40 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:text-amber-500',
 };
 
 /**

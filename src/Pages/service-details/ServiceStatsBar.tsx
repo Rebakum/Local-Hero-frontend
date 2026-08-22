@@ -17,7 +17,7 @@ export const ServiceStatsBar: React.FC = () => {
           {stats.map((stat) => (
             <div key={stat.label} className="p-2">
               <div className="font-heading text-3xl sm:text-4xl font-black text-primary">{stat.value}</div>
-              <div className="mt-1 text-xs font-semibold text-navy-500 dark:text-navy-300 uppercase tracking-wider">{stat.label}</div>
+              <div className="mt-1 text-xs font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-wider">{stat.label}</div>
             </div>
           ))}
         </div>

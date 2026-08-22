@@ -13,7 +13,7 @@ const variantStyles: Record<string, string> = {
   approve: 'bg-emerald-500 text-white hover:bg-emerald-600 focus:ring-emerald-500/20 disabled:bg-emerald-300',
   reject: 'bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20 focus:ring-red-500/20',
   primary: 'bg-primary text-white hover:bg-primary/90 focus:ring-primary/20 disabled:opacity-50',
-  ghost: 'bg-transparent text-navy-600 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-white/5',
+  ghost: 'bg-transparent text-navy-800 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-white/5',
 };
 
 const sizeStyles: Record<string, string> = {

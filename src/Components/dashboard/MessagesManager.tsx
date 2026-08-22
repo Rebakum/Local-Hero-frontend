@@ -193,7 +193,7 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
                   className="input-lh pl-9 h-9 text-xs"
                 />
               </div>
-              <p className="text-xs text-navy-400 dark:text-navy-500">
+              <p className="text-xs text-navy-800 dark:text-navy-300">
                 {filteredConversations.length} total
               </p>
             </div>
@@ -205,10 +205,10 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
               ) : filteredConversations.length === 0 ? (
                 <div className="py-12 text-center px-6">
                   <MessageSquare className="w-10 h-10 text-navy-300 dark:text-navy-600 mx-auto mb-3" />
-                  <p className="text-sm font-semibold text-navy-500 dark:text-navy-300">
+                  <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
                     {conversations.length === 0 ? 'No conversations yet' : 'No matches found'}
                   </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-1">
                     Messages will appear here once a customer and business start chatting.
                   </p>
                 </div>
@@ -231,11 +231,11 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
                         <p className="text-sm font-semibold text-navy-800 dark:text-white truncate">
                           {participantName(c)}
                         </p>
-                        <span className="text-[10px] text-navy-400 dark:text-navy-500 shrink-0">
+                        <span className="text-[10px] text-navy-800 dark:text-navy-300 shrink-0">
                           {formatTime(c.lastMessageAt)}
                         </span>
                       </div>
-                      <p className="text-xs text-navy-400 dark:text-navy-500 truncate mt-0.5">
+                      <p className="text-xs text-navy-800 dark:text-navy-300 truncate mt-0.5">
                         {lastMessagePreview(c)}
                       </p>
                     </div>
@@ -298,7 +298,7 @@ export const MessagesManager: React.FC<MessagesManagerProps> = ({
                           )}
                           <p
                             className={`text-[10px] mt-1 ${
-                              mine ? 'text-white/70' : 'text-navy-400 dark:text-navy-500'
+                              mine ? 'text-white/70' : 'text-navy-800 dark:text-navy-300'
                             }`}
                           >
                             {formatTime(message.createdAt)}

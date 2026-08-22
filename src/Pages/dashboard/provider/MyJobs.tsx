@@ -121,7 +121,7 @@ const MyJobs: React.FC = () => {
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
               activeStatus === status
                 ? 'bg-primary text-white shadow-md shadow-primary/25'
-                : 'bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10'
+                : 'bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 hover:bg-navy-200 dark:hover:bg-white/10'
             }`}
           >
             {status === 'ALL' ? 'All Jobs' : status.replace('_', ' ').toLowerCase()}
@@ -154,7 +154,7 @@ const MyJobs: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{b.trade}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500 font-mono">
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300 font-mono">
                     {b.id.slice(0, 8).toUpperCase()}
                   </p>
                 </div>
@@ -166,7 +166,7 @@ const MyJobs: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="text-navy-700 dark:text-navy-200">{b.fullName}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500">{b.email}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300">{b.email}</p>
                 </div>
               ),
             },
@@ -175,7 +175,7 @@ const MyJobs: React.FC = () => {
               header: 'Date',
               hideOn: 'md',
               render: (b) => (
-                <div className="text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                <div className="text-navy-800 dark:text-navy-300 whitespace-nowrap">
                   <span className="inline-flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5" />
                     {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
@@ -188,7 +188,7 @@ const MyJobs: React.FC = () => {
               header: 'Time',
               hideOn: 'lg',
               render: (b) => (
-                <div className="text-navy-500 dark:text-navy-400">
+                <div className="text-navy-800 dark:text-navy-300">
                   <p className="font-medium text-navy-700 dark:text-navy-200 whitespace-nowrap">{b.timeSlot}</p>
                 </div>
               ),
@@ -198,7 +198,7 @@ const MyJobs: React.FC = () => {
               header: 'Location',
               hideOn: 'lg',
               render: (b) => (
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs">
                   <MapPin className="w-3 h-3" />
                   {b.address}, {b.postcode}
                 </span>
@@ -224,7 +224,7 @@ const MyJobs: React.FC = () => {
                       ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                       : b.payment?.status === 'FAILED'
                         ? 'bg-red-500/10 text-red-600 dark:text-red-400'
-                        : 'bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400'
+                        : 'bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300'
                   }`}
                 >
                   {b.payment?.status === 'PAID'

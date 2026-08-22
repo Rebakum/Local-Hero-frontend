@@ -104,7 +104,7 @@ export const ProDetailsPage: React.FC = () => {
     return (
       <div className="page-top min-h-screen bg-white flex flex-col items-center justify-center p-4 dark:bg-navy-950">
         <div className="w-10 h-10 border-4 border-red-200 border-t-red-600 rounded-full animate-spin mb-3" />
-        <p className="text-xs font-semibold text-slate-500 animate-pulse dark:text-navy-300">Loading profile details...</p>
+        <p className="text-xs font-semibold text-navy-800 animate-pulse dark:text-navy-300">Loading profile details...</p>
       </div>
     );
   }
@@ -114,7 +114,7 @@ export const ProDetailsPage: React.FC = () => {
       <div className="page-top min-h-screen bg-slate-50 flex items-center justify-center px-4 dark:bg-navy-950">
         <div className="max-w-md w-full border border-slate-200 bg-white p-8 shadow-sm text-center rounded-lg dark:border-white/10 dark:bg-navy-900">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">Professional Not Found</h2>
-          <p className="text-xs text-slate-500 mt-2 dark:text-navy-300">
+          <p className="text-xs text-navy-800 mt-2 dark:text-navy-300">
             The profile you are looking for might have been removed or is temporarily unavailable.
           </p>
           <Link to="/professionals" className="inline-flex items-center gap-2 text-xs font-bold text-red-600 hover:underline mt-6">
@@ -402,7 +402,7 @@ export const ProDetailsPage: React.FC = () => {
                 </select>
                 <ChevronDown className="pointer-events-none absolute right-3 top-2.5 h-4 w-4 text-slate-400 dark:text-navy-400" />
               </div>
-              <p className="mt-1 text-[10px] italic text-slate-400 dark:text-navy-400">
+              <p className="mt-1 text-[10px] italic text-navy-800 dark:text-navy-300">
                 (*) Fuel type should be written on the boiler
               </p>
             </div>

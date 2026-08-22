@@ -111,7 +111,7 @@ const VerifyEmailPage: React.FC = () => {
           {status === 'checking' && (
             <div className="flex flex-col items-center gap-4 py-6">
               <Loader2 className="w-8 h-8 text-primary animate-spin" />
-              <p className="text-sm text-navy-500 dark:text-navy-400">Checking your verification link...</p>
+              <p className="text-sm text-navy-800 dark:text-navy-300">Checking your verification link...</p>
             </div>
           )}
 
@@ -121,7 +121,7 @@ const VerifyEmailPage: React.FC = () => {
                 <Mail className="w-9 h-9 text-amber-600 dark:text-amber-400" />
               </div>
               <h2 className="text-xl font-bold text-navy-900 dark:text-white">Confirm your email</h2>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 This verification link is valid. Click below to finish confirming your email address.
               </p>
               <button
@@ -148,7 +148,7 @@ const VerifyEmailPage: React.FC = () => {
                 <CheckCircle2 className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h2 className="text-xl font-bold text-navy-900 dark:text-white">Email verified successfully</h2>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 You can now sign in and start using LocalHero.
               </p>
               <button
@@ -169,7 +169,7 @@ const VerifyEmailPage: React.FC = () => {
               <h2 className="text-xl font-bold text-navy-900 dark:text-white">
                 {status === 'no-token' ? 'Link is missing' : 'Verification failed'}
               </h2>
-              <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed">
+              <p className="text-sm text-navy-800 dark:text-navy-300 leading-relaxed">
                 {status === 'no-token'
                   ? 'This page needs a verification link. Open the link from your email, or request a new one below.'
                   : errorMessage || 'This link is invalid or has expired.'}
@@ -178,7 +178,7 @@ const VerifyEmailPage: React.FC = () => {
               <div className="w-full mt-2 text-left">
                 <form onSubmit={handleResend} className="space-y-3">
                   {emailFromLink ? (
-                    <p className="text-sm text-navy-500 dark:text-navy-300 bg-navy-50 dark:bg-navy-800 border border-navy-100 dark:border-white/10 rounded-xl px-3 py-2.5">
+                    <p className="text-sm text-navy-800 dark:text-navy-300 bg-navy-50 dark:bg-navy-800 border border-navy-100 dark:border-white/10 rounded-xl px-3 py-2.5">
                       Resending to <span className="font-semibold text-navy-700 dark:text-navy-200">{emailFromLink}</span>
                     </p>
                   ) : (
@@ -219,7 +219,7 @@ const VerifyEmailPage: React.FC = () => {
             </div>
           )}
 
-          <p className="mt-6 text-center text-sm text-navy-500 dark:text-navy-400">
+          <p className="mt-6 text-center text-sm text-navy-800 dark:text-navy-300">
             Already verified?{' '}
             <RouterLink to="/login" className="font-semibold text-primary hover:underline">
               Sign in

@@ -17,13 +17,13 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ eyebrow, title, descript
   >
     <div>
       {eyebrow && (
-        <p className="text-sm text-navy-500 dark:text-navy-400 mb-1">{eyebrow}</p>
+        <p className="text-sm text-navy-800 dark:text-navy-300 mb-1">{eyebrow}</p>
       )}
       <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 dark:text-white tracking-tight">
         {title}
       </h1>
       {description && (
-        <p className="text-sm text-navy-500 dark:text-navy-400 mt-1 max-w-xl leading-relaxed">
+        <p className="text-sm text-navy-800 dark:text-navy-300 mt-1 max-w-xl leading-relaxed">
           {description}
         </p>
       )}

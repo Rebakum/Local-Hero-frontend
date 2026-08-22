@@ -77,7 +77,7 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
       <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full p-6 shadow-xl space-y-4 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
         >
           <X className="w-5 h-5" />
         </button>
@@ -186,7 +186,7 @@ export const CreateTestimonialModal: React.FC<CreateTestimonialModalProps> = ({
                     className={`w-6 h-6 ${
                       (formData.rating ?? 5) >= star
                         ? "fill-amber-400 text-amber-400"
-                        : "text-gray-300"
+                        : "text-gray-300 dark:text-gray-600"
                     }`}
                   />
                 </button>

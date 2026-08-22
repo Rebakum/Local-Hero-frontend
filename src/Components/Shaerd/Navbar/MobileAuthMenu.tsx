@@ -36,7 +36,7 @@ export const MobileAuthMenu: React.FC<MobileAuthMenuProps> = ({ close }) => {
           <LogIn className="w-4 h-4" />
           Login to your account
         </Link>
-        <p className="text-center text-xs text-navy-400 dark:text-navy-500 mt-3">
+        <p className="text-center text-xs text-navy-800 dark:text-navy-300 mt-3">
           New to LocalHero?{' '}
           <Link to="/register" onClick={close} className="font-semibold text-primary hover:underline">
             Create an account
@@ -95,7 +95,7 @@ export const MobileAuthMenu: React.FC<MobileAuthMenuProps> = ({ close }) => {
           <p className="font-heading text-sm font-bold text-navy-950 dark:text-white truncate">
             {user.name}
           </p>
-          <p className="text-xs text-navy-400 dark:text-navy-500 truncate">{user.email}</p>
+          <p className="text-xs text-navy-800 dark:text-navy-300 truncate">{user.email}</p>
         </div>
       </div>
 

@@ -47,7 +47,7 @@ export const Modal: React.FC<ModalProps> = ({
           {title}
         </h2>
         {description && (
-          <p className="text-xs text-navy-400 dark:text-navy-500 mt-1 leading-relaxed">
+          <p className="text-xs text-navy-800 dark:text-navy-300 mt-1 leading-relaxed">
             {description}
           </p>
         )}

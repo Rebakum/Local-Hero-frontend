@@ -227,7 +227,7 @@ export const ServicesGrid: React.FC = () => {
                 <p className="font-semibold text-navy-900 dark:text-white">
                   No services found
                 </p>
-                <p className="mt-1 text-sm text-navy-400">
+                <p className="mt-1 text-sm text-navy-800 dark:text-navy-300">
                   Try a different search term or category.
                 </p>
               </div>

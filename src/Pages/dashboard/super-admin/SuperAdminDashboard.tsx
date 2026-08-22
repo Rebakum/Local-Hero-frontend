@@ -289,7 +289,7 @@ const SuperAdminDashboard: React.FC = () => {
               <p className="text-3xl font-bold text-navy-900 dark:text-white tracking-tight">
                 <AnimatedCounter value={stat.value} />
               </p>
-              <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1.5">{stat.label}</p>
+              <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest mt-1.5">{stat.label}</p>
             </Card>
           </motion.div>
         ))}
@@ -311,7 +311,7 @@ const SuperAdminDashboard: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-navy-900 dark:text-white">Admin Management</h2>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">Pending admin account approvals</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-0.5">Pending admin account approvals</p>
                 </div>
               </div>
               <Badge variant="warning">{pendingAdmins.length} Pending</Badge>
@@ -347,7 +347,7 @@ const SuperAdminDashboard: React.FC = () => {
                   header: 'Email',
                   sortValue: (a) => a.email,
                   render: (a) => (
-                    <div className="flex items-center gap-1.5 text-navy-500 dark:text-navy-400">
+                    <div className="flex items-center gap-1.5 text-navy-800 dark:text-navy-300">
                       <Mail className="w-3.5 3" />
                       <span className="truncate max-w-[180px]">{a.email}</span>
                     </div>
@@ -359,7 +359,7 @@ const SuperAdminDashboard: React.FC = () => {
                   hideOn: 'sm',
                   sortValue: (a) => new Date(a.createdAt).getTime(),
                   render: (a) => (
-                    <div className="flex items-center gap-1.5 text-navy-400 dark:text-navy-500 text-xs">
+                    <div className="flex items-center gap-1.5 text-navy-800 dark:text-navy-300 text-xs">
                       <Calendar className="w-3.5 3" />
                       {new Date(a.createdAt).toLocaleDateString('en-GB')}
                     </div>
@@ -417,7 +417,7 @@ const SuperAdminDashboard: React.FC = () => {
                       <div className="w-7 h-7 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center">
                         <item.icon className="w-3.5 3 text-navy-500 dark:text-navy-400" />
                       </div>
-                      <span className="text-xs font-semibold text-navy-600 dark:text-navy-300">{item.label}</span>
+                      <span className="text-xs font-semibold text-navy-800 dark:text-navy-300">{item.label}</span>
                     </div>
                     <Badge variant={item.status}>{item.value}</Badge>
                   </div>
@@ -455,7 +455,7 @@ const SuperAdminDashboard: React.FC = () => {
                 <RouterLink
                   key={action.label}
                   to={action.href}
-                  className="flex items-center gap-3 p-3 rounded-xl text-sm font-semibold text-navy-600 dark:text-navy-400 hover:bg-navy-100 dark:hover:bg-white/5 hover:text-navy-900 dark:hover:text-white transition-all duration-200 group"
+                  className="flex items-center gap-3 p-3 rounded-xl text-sm font-semibold text-navy-800 dark:text-navy-300 hover:bg-navy-100 dark:hover:bg-white/5 hover:text-navy-900 dark:hover:text-white transition-all duration-200 group"
                 >
                   <div className="w-8 h-8 rounded-lg bg-navy-100 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <action.icon className={`w-4 h-4 ${action.color}`} />
@@ -481,7 +481,7 @@ const SuperAdminDashboard: React.FC = () => {
             </div>
             <div>
               <h2 className="text-lg font-bold text-navy-900 dark:text-white">Platform Analytics</h2>
-              <p className="text-xs text-navy-400 dark:text-navy-500">Key performance metrics</p>
+              <p className="text-xs text-navy-800 dark:text-navy-300">Key performance metrics</p>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -495,7 +495,7 @@ const SuperAdminDashboard: React.FC = () => {
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                 <div className="relative">
                   <p className="text-2xl font-bold text-navy-900 dark:text-white">{item.value}</p>
-                  <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1">{item.label}</p>
+                  <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest mt-1">{item.label}</p>
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-500 mt-2">
                     <ArrowUpRight className="w-3 h-3" />
                     {item.change}

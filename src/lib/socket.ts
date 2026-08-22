@@ -14,6 +14,7 @@ export const connectSocket = (): Socket => {
 
   socket = io(SOCKET_URL, {
     withCredentials: true,
+    auth: { guest: true },
     transports: ['websocket', 'polling'],
   });
 

@@ -174,10 +174,10 @@ export const BookingManagement: React.FC = () => {
             render: (b) => (
               <div className="space-y-0.5">
                 <p className="font-semibold text-gray-900 dark:text-white">{b.fullName}</p>
-                <p className="text-xs text-gray-400 flex items-center gap-1 dark:text-navy-400">
+                <p className="text-xs text-gray-400 flex items-center gap-1 dark:text-navy-300">
                   <Mail className="w-3 h-3" /> {b.email}
                 </p>
-                <p className="text-xs text-gray-400 flex items-center gap-1 dark:text-navy-400">
+                <p className="text-xs text-gray-400 flex items-center gap-1 dark:text-navy-300">
                   <Phone className="w-3 h-3" /> {b.phone}
                 </p>
               </div>
@@ -208,7 +208,7 @@ export const BookingManagement: React.FC = () => {
                   <Calendar className="w-3.5 3 text-gray-400 dark:text-navy-400" />
                   {new Date(b.bookingDate).toLocaleDateString("en-GB")} ({b.timeSlot})
                 </div>
-                <div className="flex items-center gap-1 text-gray-500 dark:text-navy-400">
+                <div className="flex items-center gap-1 text-gray-500 dark:text-navy-300">
                   <MapPin className="w-3.5 3 text-gray-400 dark:text-navy-400" />
                   {b.postcode}, {b.address}
                 </div>
@@ -229,13 +229,13 @@ export const BookingManagement: React.FC = () => {
                     <p className="font-medium text-xs text-gray-900 dark:text-white">
                       {b.professional.name}
                     </p>
-                    <p className="text-[10px] text-gray-400 dark:text-navy-400">
+                    <p className="text-[10px] text-gray-400 dark:text-navy-300">
                       {b.professional.companyName || "Freelance"}
                     </p>
                   </div>
                 </div>
               ) : (
-                <span className="text-xs text-gray-400 italic dark:text-navy-400">Unassigned</span>
+                <span className="text-xs text-gray-400 italic dark:text-navy-300">Unassigned</span>
               ),
           },
           {
@@ -304,7 +304,7 @@ export const BookingManagement: React.FC = () => {
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">
               Assign Professional
             </h3>
-            <p className="text-xs text-gray-500 dark:text-navy-400">
+            <p className="text-xs text-gray-500 dark:text-navy-300">
               Assign a provider to booking #{selectedBooking.id.slice(-6)} ({selectedBooking.trade})
             </p>
 
@@ -393,7 +393,7 @@ export const BookingManagement: React.FC = () => {
                     className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
-                <p className="text-[11px] text-gray-400 mt-1 dark:text-navy-400">
+                <p className="text-[11px] text-gray-400 mt-1 dark:text-navy-300">
                   Setting a price allows customer to proceed with Stripe checkout.
                 </p>
               </div>

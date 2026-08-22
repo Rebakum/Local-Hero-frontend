@@ -21,6 +21,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { getAdminDashboardStats, type AdminDashboardStats } from '../../../services/auth.service';
+import { getSystemHealth, type SystemHealth } from '../../../services/auth.service';
 import { getAdminBookings, type BookingRecord } from '../../../services/booking.service';
 import { getPaymentHistory, type PaymentRecord } from '../../../services/payment.service';
 
@@ -41,6 +42,7 @@ const relative = (iso?: string | null): string => {
 
 const SystemPage: React.FC = () => {
   const [stats, setStats] = useState<AdminDashboardStats | null>(null);
+  const [health, setHealth] = useState<SystemHealth | null>(null);
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [payments, setPayments] = useState<PaymentRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,12 +52,14 @@ const SystemPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const [statsData, bookingData, paymentData] = await Promise.all([
+      const [statsData, healthData, bookingData, paymentData] = await Promise.all([
         getAdminDashboardStats(),
+        getSystemHealth(),
         getAdminBookings({ page: 1, limit: 8 }),
         getPaymentHistory({ page: 1, limit: 8 }),
       ]);
       setStats(statsData);
+      setHealth(healthData);
       setBookings(bookingData.bookings ?? []);
       setPayments(paymentData.payments ?? []);
     } catch (err: unknown) {
@@ -70,15 +74,49 @@ const SystemPage: React.FC = () => {
   }, [load]);
 
   const healthy = (stats?.systemHealth ?? 0) >= 100;
-  const systemStatus = stats?.systemStatus ?? 'Checking...';
 
-  const healthCards = [
-    { icon: Server, label: 'API Server', value: systemStatus, status: healthy ? 'success' as const : 'warning' as const, bar: stats ? `${stats.systemHealth}%` : '—' },
-    { icon: Database, label: 'Database', value: healthy ? 'Operational' : 'Unavailable', status: healthy ? 'success' as const : 'warning' as const, bar: healthy ? '99.99%' : '0%' },
-    { icon: Wifi, label: 'Platform', value: 'Live', status: 'success' as const, bar: '100%' },
-    { icon: Lock, label: 'Auth Service', value: 'Operational', status: 'success' as const, bar: '99.97%' },
-    { icon: Globe, label: 'Payment Gateway', value: 'Operational', status: 'success' as const, bar: '99.9%' },
-  ];
+  // Health cards are wired to the real /super-admin/system/health probe —
+  // DB latency, process uptime/memory and payment-gateway reachability are
+  // all live values, never hardcoded uptime percentages.
+  const healthCards = health
+    ? [
+        {
+          icon: Server,
+          label: 'API Server',
+          status: 'success' as const,
+          value: 'Operational',
+          bar: `${Math.round(health.platform.uptimeSeconds / 60)}m up`,
+        },
+        {
+          icon: Database,
+          label: 'Database',
+          status: health.database.status === 'operational' ? ('success' as const) : ('warning' as const),
+          value: health.database.status === 'operational' ? 'Operational' : 'Unavailable',
+          bar: health.database.latencyMs != null ? `${health.database.latencyMs}ms` : '—',
+        },
+        {
+          icon: Wifi,
+          label: 'Platform',
+          status: health.platform.status === 'operational' ? ('success' as const) : ('warning' as const),
+          value: health.platform.status === 'operational' ? 'Live' : 'Degraded',
+          bar: `${health.platform.memoryMb} MB RAM`,
+        },
+        {
+          icon: Lock,
+          label: 'Auth Service',
+          status: health.authService.status === 'operational' ? ('success' as const) : ('warning' as const),
+          value: health.authService.status === 'operational' ? 'Operational' : 'Degraded',
+          bar: health.authService.latencyMs != null ? `${health.authService.latencyMs}ms` : '—',
+        },
+        {
+          icon: Globe,
+          label: 'Payment Gateway',
+          status: health.paymentGateway.status === 'operational' ? ('success' as const) : ('neutral' as const),
+          value: health.paymentGateway.status === 'operational' ? 'Operational' : 'Not configured',
+          bar: '—',
+        },
+      ]
+    : [];
 
   const kpis = stats
     ? [
@@ -154,8 +192,8 @@ const SystemPage: React.FC = () => {
                     <kpi.icon className="w-5 h-5" />
                   </div>
                   <p className="text-2xl font-black text-navy-900 dark:text-white">{kpi.value}</p>
-                  <p className="text-xs font-bold uppercase tracking-wider text-navy-400 dark:text-navy-500 mt-1">{kpi.label}</p>
-                  <p className="text-[11px] text-navy-400/80 dark:text-navy-500/80 mt-0.5">{kpi.sub}</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-navy-800 dark:text-navy-300 mt-1">{kpi.label}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300 mt-0.5">{kpi.sub}</p>
                 </Card>
               </motion.div>
             ))}
@@ -178,14 +216,28 @@ const SystemPage: React.FC = () => {
             <button
               onClick={() => void load()}
               disabled={loading}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 3 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {healthCards.map((item, i) => (
+            {loading || healthCards.length === 0
+              ? [1, 2, 3, 4, 5].map((n) => (
+                  <div
+                    key={n}
+                    className="p-3 rounded-xl bg-cream-50 dark:bg-navy-800/50 border border-navy-100 dark:border-white/5 animate-pulse"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-4 h-4 rounded bg-navy-100 dark:bg-white/5" />
+                      <div className="h-3 w-16 rounded bg-navy-100 dark:bg-white/5" />
+                    </div>
+                    <div className="h-5 w-24 rounded bg-navy-100 dark:bg-white/5 mb-2" />
+                    <div className="w-full h-1.5 rounded-full bg-navy-100 dark:bg-white/5" />
+                  </div>
+                ))
+              : healthCards.map((item, i) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, y: 12 }}
@@ -195,11 +247,11 @@ const SystemPage: React.FC = () => {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <item.icon className="w-4 h-4 text-navy-500 dark:text-navy-400" />
-                  <span className="text-xs font-semibold text-navy-600 dark:text-navy-300">{item.label}</span>
+                  <span className="text-xs font-semibold text-navy-800 dark:text-navy-300">{item.label}</span>
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <Badge variant={item.status}>{item.value}</Badge>
-                  <span className="text-[10px] font-bold text-navy-400">{item.bar}</span>
+                  <span className="text-[10px] font-bold text-navy-800 dark:text-navy-300">{item.bar}</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full bg-navy-100 dark:bg-white/5 overflow-hidden">
                   <motion.div
@@ -230,7 +282,7 @@ const SystemPage: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-navy-900 dark:text-white">Recent Bookings</h2>
-                  <p className="text-xs text-navy-400 dark:text-navy-500">Latest booking requests</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300">Latest booking requests</p>
                 </div>
               </div>
               <Badge variant="primary">{bookings.length}</Badge>
@@ -239,7 +291,7 @@ const SystemPage: React.FC = () => {
               {loading ? (
                 <div className="flex items-center justify-center py-16"><Activity className="w-6 h-6 animate-pulse text-primary" /></div>
               ) : bookings.length === 0 ? (
-                <p className="py-16 text-center text-sm text-navy-400">No bookings yet.</p>
+                <p className="py-16 text-center text-sm text-navy-800 dark:text-navy-300">No bookings yet.</p>
               ) : (
                 bookings.map((b) => (
                   <motion.div
@@ -255,7 +307,7 @@ const SystemPage: React.FC = () => {
                         {b.status}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] text-navy-400 dark:text-navy-500">
+                    <div className="flex items-center gap-2 text-[10px] text-navy-800 dark:text-navy-300">
                       <FileText className="w-3 h-3" />
                       {b.trade}
                       <span className="text-navy-300 dark:text-navy-600">·</span>
@@ -283,7 +335,7 @@ const SystemPage: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-navy-900 dark:text-white">Recent Payments</h2>
-                  <p className="text-xs text-navy-400 dark:text-navy-500">Latest transaction activity</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300">Latest transaction activity</p>
                 </div>
               </div>
               <Badge variant="primary">{payments.length}</Badge>
@@ -292,7 +344,7 @@ const SystemPage: React.FC = () => {
               {loading ? (
                 <div className="flex items-center justify-center py-16"><Activity className="w-6 h-6 animate-pulse text-primary" /></div>
               ) : payments.length === 0 ? (
-                <p className="py-16 text-center text-sm text-navy-400">No payments yet.</p>
+                <p className="py-16 text-center text-sm text-navy-800 dark:text-navy-300">No payments yet.</p>
               ) : (
                 payments.map((p) => (
                   <motion.div
@@ -308,7 +360,7 @@ const SystemPage: React.FC = () => {
                       </p>
                       <span className="text-xs font-bold text-emerald-600">{formatPence(p.amountInPence)}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] text-navy-400 dark:text-navy-500">
+                    <div className="flex items-center gap-2 text-[10px] text-navy-800 dark:text-navy-300">
                       <TrendingUp className="w-3 h-3" />
                       {p.status}
                       <span className="text-navy-300 dark:text-navy-600">·</span>

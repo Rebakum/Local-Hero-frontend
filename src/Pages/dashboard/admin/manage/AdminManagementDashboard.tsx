@@ -173,7 +173,7 @@ export const AdminManagementDashboard: React.FC = () => {
             className={`flex items-center gap-2 font-bold text-sm px-4 py-2 rounded-xl transition-all ${
               activeTab === tab.key
                 ? "bg-primary text-white"
-                : "text-gray-500 hover:bg-gray-100 dark:text-navy-400 dark:hover:bg-white/5"
+                : "text-gray-500 hover:bg-gray-100 dark:text-navy-300 dark:hover:bg-white/5"
             }`}
           >
             <tab.icon className="w-4 h-4" /> {tab.label}
@@ -202,11 +202,11 @@ export const AdminManagementDashboard: React.FC = () => {
           {loading ? (
             <div className="py-12 flex justify-center"><Loader2 className="animate-spin w-6 h-6 text-primary" /></div>
           ) : filteredPayments.length === 0 ? (
-            <p className="py-12 text-center text-sm text-navy-400">No payments found.</p>
+            <p className="py-12 text-center text-sm text-navy-800 dark:text-navy-300">No payments found.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-navy-400 uppercase text-xs">
+                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-navy-300 uppercase text-xs">
                   <tr>
                     <th className="p-3">Payment ID</th>
                     <th className="p-3">Customer</th>
@@ -226,7 +226,7 @@ export const AdminManagementDashboard: React.FC = () => {
                           {p.status}
                         </span>
                       </td>
-                      <td className="p-3 text-gray-400 dark:text-navy-400">{formatDate(p.createdAt)}</td>
+                      <td className="p-3 text-gray-400 dark:text-navy-300">{formatDate(p.createdAt)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -245,11 +245,11 @@ export const AdminManagementDashboard: React.FC = () => {
           {loading ? (
             <div className="py-12 flex justify-center"><Loader2 className="animate-spin w-6 h-6 text-primary" /></div>
           ) : filteredBookings.length === 0 ? (
-            <p className="py-12 text-center text-sm text-navy-400">No bookings found.</p>
+            <p className="py-12 text-center text-sm text-navy-800 dark:text-navy-300">No bookings found.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-navy-400 uppercase text-xs">
+                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-navy-300 uppercase text-xs">
                   <tr>
                     <th className="p-3">Booking ID</th>
                     <th className="p-3">Customer</th>
@@ -269,7 +269,7 @@ export const AdminManagementDashboard: React.FC = () => {
                           {b.status}
                         </span>
                       </td>
-                      <td className="p-3 text-gray-400 dark:text-navy-400">{formatDate(b.bookingDate)}</td>
+                      <td className="p-3 text-gray-400 dark:text-navy-300">{formatDate(b.bookingDate)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -288,7 +288,7 @@ export const AdminManagementDashboard: React.FC = () => {
           {loading ? (
             <div className="py-12 flex justify-center"><Loader2 className="animate-spin w-6 h-6 text-primary" /></div>
           ) : testimonials.length === 0 ? (
-            <p className="py-12 text-center text-sm text-navy-400">No testimonials found.</p>
+            <p className="py-12 text-center text-sm text-navy-800 dark:text-navy-300">No testimonials found.</p>
           ) : (
             <div className="space-y-4">
               {testimonials.map((t) => (

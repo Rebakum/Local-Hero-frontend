@@ -6,8 +6,6 @@ import type {
   FAQItem,
 } from "../types";
 
-import { FAQS } from "../data/mockData";
-
 /* =========================================================
    TYPES
 ========================================================= */
@@ -35,13 +33,6 @@ const RAW_API_URL =
   "http://localhost:5000/api/v1";
 
 const API_BASE_URL = RAW_API_URL.replace(/\/+$/, "");
-
-/* =========================================================
-   COMMON HELPERS
-========================================================= */
-
-const delay = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
 
 /* =========================================================
    AUTH HEADERS
@@ -90,44 +81,6 @@ const parseResponse = async <T>(
 
   return result as ApiResponse<T>;
 };
-
-/* =========================================================
-   PAGINATION
-========================================================= */
-
-function paginate<T>(
-  items: T[],
-  page?: number,
-  limit?: number,
-): {
-  items: T[];
-  meta: PageMeta;
-} {
-  if (!page && !limit) {
-    return {
-      items,
-      meta: {
-        page: 1,
-        limit: items.length || 50,
-        total: items.length,
-      },
-    };
-  }
-
-  const safePage = page ?? 1;
-  const safeLimit = limit ?? 10;
-
-  const start = (safePage - 1) * safeLimit;
-
-  return {
-    items: items.slice(start, start + safeLimit),
-    meta: {
-      page: safePage,
-      limit: safeLimit,
-      total: items.length,
-    },
-  };
-}
 
 /* =========================================================
    1. TRADES
@@ -246,6 +199,15 @@ export async function getProfessionals(params?: {
   trade?: string;
   featured?: boolean;
   search?: string;
+  rating?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  isVerified?: boolean;
+  isEmergency?: boolean;
+  availability?: string;
+  postcode?: string;
+  distance?: number;
+  sortBy?: string;
 }): Promise<{
   professionals: Professional[];
   meta?: PageMeta;
@@ -257,6 +219,15 @@ export async function getProfessionals(params?: {
   if (params?.trade?.trim()) queryParams.set("trade", params.trade.trim());
   if (params?.featured) queryParams.set("featured", "true");
   if (params?.search?.trim()) queryParams.set("search", params.search.trim());
+  if (params?.rating) queryParams.set("rating", String(params.rating));
+  if (params?.minPrice) queryParams.set("minPrice", String(params.minPrice));
+  if (params?.maxPrice) queryParams.set("maxPrice", String(params.maxPrice));
+  if (params?.isVerified !== undefined) queryParams.set("isVerified", String(params.isVerified));
+  if (params?.isEmergency !== undefined) queryParams.set("isEmergency", String(params.isEmergency));
+  if (params?.availability?.trim()) queryParams.set("availability", params.availability.trim());
+  if (params?.postcode?.trim()) queryParams.set("postcode", params.postcode.trim());
+  if (params?.distance) queryParams.set("distance", String(params.distance));
+  if (params?.sortBy) queryParams.set("sortBy", params.sortBy);
 
   const query = queryParams.toString();
 
@@ -667,7 +638,8 @@ export async function deleteTestimonialApi(
 
 /* =========================================================
    5. FAQ
-   Currently using mock data
+   Backed by the real /faqs API (public GET + admin management).
+   No mock fallback data — an empty database returns an empty list.
 ========================================================= */
 
 export async function getFAQs(params?: {
@@ -679,77 +651,227 @@ export async function getFAQs(params?: {
   faqs: FAQItem[];
   meta?: PageMeta;
 }> {
-  await delay(100);
+  const queryParams = new URLSearchParams();
 
-  let filtered = [...FAQS];
-
+  if (params?.page) queryParams.set("page", String(params.page));
+  if (params?.limit) queryParams.set("limit", String(params.limit));
   if (params?.category?.trim()) {
-    const categoryQuery =
-      params.category.trim().toLowerCase();
-
-    filtered = filtered.filter(
-      (faq) =>
-        faq.category.toLowerCase() ===
-        categoryQuery,
-    );
+    queryParams.set("category", params.category.trim());
   }
-
   if (params?.search?.trim()) {
-    const query =
-      params.search.trim().toLowerCase();
-
-    filtered = filtered.filter((faq) =>
-      [
-        faq.question,
-        faq.answer,
-        faq.category,
-      ].some((value) =>
-        String(value || "")
-          .toLowerCase()
-          .includes(query),
-      ),
-    );
+    queryParams.set("search", params.search.trim());
   }
 
-  const { items, meta } = paginate(
-    filtered,
-    params?.page,
-    params?.limit,
+  const query = queryParams.toString();
+
+  const response = await fetch(
+    `${API_BASE_URL}/faqs${query ? `?${query}` : ""}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
   );
 
+  const result = await parseResponse<FAQItem[]>(response);
+
   return {
-    faqs: items,
-    meta,
+    faqs: result.data ?? [],
+    meta: result.meta,
   };
 }
 
-export async function getFAQById(
-  id: string,
-): Promise<FAQItem> {
-  await delay(100);
+// Admin-only view: includes hidden FAQs so the management screen can
+// review, hide or restore entries.
+export async function getFAQsAdmin(params?: {
+  page?: number;
+  limit?: number;
+  category?: string;
+  search?: string;
+  isActive?: boolean;
+}): Promise<{
+  faqs: FAQItem[];
+  meta?: PageMeta;
+}> {
+  const queryParams = new URLSearchParams();
 
-  const faq = FAQS.find(
-    (item) => item.id === id,
-  );
-
-  if (!faq) {
-    throw new Error(
-      `FAQ ${id} not found`,
-    );
+  if (params?.page) queryParams.set("page", String(params.page));
+  if (params?.limit) queryParams.set("limit", String(params.limit));
+  if (params?.category?.trim()) {
+    queryParams.set("category", params.category.trim());
+  }
+  if (params?.search?.trim()) {
+    queryParams.set("search", params.search.trim());
+  }
+  if (params?.isActive !== undefined) {
+    queryParams.set("isActive", String(params.isActive));
   }
 
-  return faq;
+  const query = queryParams.toString();
+
+  const response = await fetch(
+    `${API_BASE_URL}/faqs/admin${query ? `?${query}` : ""}`,
+    {
+      method: "GET",
+      headers: getAuthHeaders(),
+      credentials: "include",
+    },
+  );
+
+  const result = await parseResponse<FAQItem[]>(response);
+
+  return {
+    faqs: result.data ?? [],
+    meta: result.meta,
+  };
 }
 
-export async function getAllFAQs(): Promise<
-  FAQItem[]
-> {
+export async function getFAQById(id: string): Promise<FAQItem> {
+  const response = await fetch(`${API_BASE_URL}/faqs/${id}`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    credentials: "include",
+  });
+
+  const result = await parseResponse<FAQItem>(response);
+
+  return result.data;
+}
+
+export async function createFaqApi(data: {
+  question: string;
+  answer: string;
+  category?: string | null;
+  sortOrder?: number;
+  isActive?: boolean;
+}): Promise<FAQItem> {
+  const response = await fetch(`${API_BASE_URL}/faqs`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+
+  const result = await parseResponse<FAQItem>(response);
+
+  return result.data;
+}
+
+export async function updateFaqApi(
+  id: string,
+  data: {
+    question?: string;
+    answer?: string;
+    category?: string | null;
+    sortOrder?: number;
+    isActive?: boolean;
+  },
+): Promise<FAQItem> {
+  const response = await fetch(`${API_BASE_URL}/faqs/${id}`, {
+    method: "PATCH",
+    headers: getAuthHeaders(),
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+
+  const result = await parseResponse<FAQItem>(response);
+
+  return result.data;
+}
+
+export async function deleteFaqApi(id: string): Promise<boolean> {
+  const response = await fetch(`${API_BASE_URL}/faqs/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+    credentials: "include",
+  });
+
+  await parseResponse<unknown>(response);
+
+  return true;
+}
+
+export async function getAllFAQs(): Promise<FAQItem[]> {
   const result = await getFAQs({
     page: 1,
-    limit: 50,
+    limit: 100,
   });
 
   return result.faqs;
+}
+
+export interface LiveChatMessage {
+  id: string;
+  threadId: string;
+  senderId?: string | null;
+  senderRole: 'GUEST' | 'USER' | 'ADMIN' | 'AI';
+  body: string;
+  createdAt: string;
+}
+
+export type LiveChatStatus = 'AI_ACTIVE' | 'PENDING_HUMAN' | 'RESOLVED';
+
+export interface LiveChatThread {
+  id: string;
+  userId?: string | null;
+  guestName?: string | null;
+  guestEmail?: string | null;
+  sessionId?: string | null;
+  status: string;
+  lastMessageAt: string;
+  messages: LiveChatMessage[];
+}
+
+export async function createLiveChatThread(input: { name?: string; email?: string; body?: string; sessionId?: string }) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads`, {
+    method: 'POST', headers: getAuthHeaders(), credentials: 'include', body: JSON.stringify(input),
+  });
+  return (await parseResponse<LiveChatThread>(response)).data;
+}
+
+export async function getLiveChatThread(id: string) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads/${id}`, { credentials: 'include' });
+  return (await parseResponse<LiveChatThread>(response)).data;
+}
+
+export async function sendLiveChatMessage(id: string, body: string) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads/${id}/messages`, {
+    method: 'POST', headers: getAuthHeaders(), credentials: 'include', body: JSON.stringify({ body }),
+  });
+  return (await parseResponse<LiveChatMessage>(response)).data;
+}
+
+export async function requestHumanHandoff(id: string) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads/${id}/handoff`, {
+    method: 'POST', headers: getAuthHeaders(), credentials: 'include',
+  });
+  return (await parseResponse<LiveChatThread>(response)).data;
+}
+
+export async function resolveLiveChatThread(id: string) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads/${id}/resolve`, {
+    method: 'PATCH', headers: getAuthHeaders(), credentials: 'include',
+  });
+  return (await parseResponse<LiveChatThread>(response)).data;
+}
+
+export async function reactivateLiveChatAi(id: string) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads/${id}/reactivate`, {
+    method: 'PATCH', headers: getAuthHeaders(), credentials: 'include',
+  });
+  return (await parseResponse<LiveChatThread>(response)).data;
+}
+
+export async function getLiveChatThreads() {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads`, { headers: getAuthHeaders(), credentials: 'include' });
+  return (await parseResponse<LiveChatThread[]>(response)).data;
+}
+
+export async function closeLiveChatThread(id: string) {
+  const response = await fetch(`${API_BASE_URL}/live-chat/threads/${id}/close`, {
+    method: 'PATCH', headers: getAuthHeaders(), credentials: 'include',
+  });
+  return (await parseResponse<LiveChatThread>(response)).data;
 }
 
 /* =========================================================

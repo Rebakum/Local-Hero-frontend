@@ -7,6 +7,7 @@ import { LoadingSplash } from '../Components/ui/LoadingSplash';
 import { BookingModal } from '../Components/Modals/BookingModal/BookingModal';
 import { EmergencyModal } from '../Components/Modals/EmergencyModal';
 import { ProDetailsModal } from '../Components/Modals/ProDetailsModal';
+import { LiveChatWidget } from '../Components/Shaerd/LiveChatWidget';
 
 import { Footer } from '../Components/Shaerd/Footer/Footer';
 import Navbar from '../Components/Shaerd/Navbar/Navbar';
@@ -32,6 +33,7 @@ export const RootLayout: React.FC = () => {
             <BookingModal />
             <EmergencyModal />
             <ProDetailsModal />
+            <LiveChatWidget />
           </div>
           </BookingProvider>
         </SmoothScroll>

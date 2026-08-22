@@ -149,7 +149,7 @@ export const TrustSafetyPage: React.FC = () => {
                   <h3 className="mt-5 font-heading text-lg font-bold text-navy-950 dark:text-white">
                     {title}
                   </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-navy-500 dark:text-navy-300">
+                  <p className="mt-2.5 text-sm leading-relaxed text-navy-800 dark:text-navy-300">
                     {text}
                   </p>
                 </div>
@@ -172,7 +172,7 @@ export const TrustSafetyPage: React.FC = () => {
                 Fair for you.
                 <span className="text-primary"> Fair for the pro.</span>
               </h2>
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-navy-500 dark:text-navy-300">
+              <p className="mt-4 text-sm sm:text-base leading-relaxed text-navy-800 dark:text-navy-300">
                 Trust works both ways. The same guarantees that protect your
                 home also make sure the tradespeople who work in it are treated
                 and paid properly.
@@ -192,7 +192,7 @@ export const TrustSafetyPage: React.FC = () => {
                     <h3 className="font-heading text-base font-bold text-navy-950 dark:text-white">
                       {title}
                     </h3>
-                    <p className="mt-1.5 text-[13px] leading-relaxed text-navy-500 dark:text-navy-300">
+                    <p className="mt-1.5 text-[13px] leading-relaxed text-navy-800 dark:text-navy-300">
                       {text}
                     </p>
                   </div>

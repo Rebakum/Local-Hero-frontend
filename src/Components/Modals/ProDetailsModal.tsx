@@ -54,7 +54,7 @@ export const ProDetailsModal: React.FC = () => {
                 )}
               </div>
               <p className="text-sm font-bold text-primary mt-0.5">{selectedPro.companyName}</p>
-              <div className="flex items-center gap-3 text-xs font-medium text-navy-500 dark:text-navy-300 mt-1.5">
+              <div className="flex items-center gap-3 text-xs font-medium text-navy-800 dark:text-navy-300 mt-1.5">
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 3" /> {selectedPro.location} ({selectedPro.postcodeArea})
                 </span>
@@ -67,12 +67,12 @@ export const ProDetailsModal: React.FC = () => {
 
           <div className="sm:text-right">
             <div className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
-              £{selectedPro.hourlyRate}<span className="text-xs font-medium text-navy-500 dark:text-navy-300">/hr</span>
+              £{selectedPro.hourlyRate}<span className="text-xs font-medium text-navy-800 dark:text-navy-300">/hr</span>
             </div>
             <div className="flex items-center sm:justify-end gap-1 mt-1">
               <Star className="w-4 h-4 fill-primary text-primary" />
               <span className="text-sm font-heading font-extrabold text-navy-950 dark:text-white">{selectedPro.rating}</span>
-              <span className="text-xs font-medium text-navy-500 dark:text-navy-300">({selectedPro.reviewCount} reviews)</span>
+              <span className="text-xs font-medium text-navy-800 dark:text-navy-300">({selectedPro.reviewCount} reviews)</span>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ export const ProDetailsModal: React.FC = () => {
 
         {/* Bio */}
         <div>
-          <h4 className="text-xs font-heading font-bold text-navy-400 dark:text-navy-300 uppercase tracking-wider mb-2">
+          <h4 className="text-xs font-heading font-bold text-navy-800 dark:text-navy-300 uppercase tracking-wider mb-2">
             About the professional
           </h4>
           <p className="text-sm leading-relaxed text-navy-700 dark:text-navy-200">{selectedPro.bio}</p>
@@ -104,7 +104,7 @@ export const ProDetailsModal: React.FC = () => {
 
         {/* Specialties */}
         <div>
-          <h4 className="text-xs font-heading font-bold text-navy-400 dark:text-navy-300 uppercase tracking-wider mb-2">
+          <h4 className="text-xs font-heading font-bold text-navy-800 dark:text-navy-300 uppercase tracking-wider mb-2">
             Core services &amp; expertise
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -117,7 +117,7 @@ export const ProDetailsModal: React.FC = () => {
         {/* Portfolio */}
         {selectedPro.portfolioImages && selectedPro.portfolioImages.length > 0 && (
           <div>
-            <h4 className="text-xs font-heading font-bold text-navy-400 dark:text-navy-300 uppercase tracking-wider mb-2">
+            <h4 className="text-xs font-heading font-bold text-navy-800 dark:text-navy-300 uppercase tracking-wider mb-2">
               Recent completed jobs
             </h4>
             <div className="grid grid-cols-2 gap-3">
@@ -136,7 +136,7 @@ export const ProDetailsModal: React.FC = () => {
         {/* Action bar */}
         <div className="pt-5 border-t border-navy-100 dark:border-white/10 flex items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-medium text-navy-500 dark:text-navy-300">Availability</span>
+            <span className="text-xs font-medium text-navy-800 dark:text-navy-300">Availability</span>
             <div className="text-sm font-heading font-extrabold text-primary flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               {selectedPro.availability}

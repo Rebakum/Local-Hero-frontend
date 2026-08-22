@@ -84,7 +84,7 @@ const ProCard: React.FC<ProCardProps> = ({ pro, active, onSelect }) => {
             <span className="truncate">{proName}</span>
             <BadgeCheck className="h-4 w-4 shrink-0 text-primary" />
           </p>
-          <p className="truncate text-[11px] font-medium text-navy-400 dark:text-navy-500">
+          <p className="truncate text-[11px] font-medium text-navy-800 dark:text-navy-300">
             {trade}
           </p>
         </div>
@@ -145,11 +145,11 @@ export default function ProfessionSlider({ pros, activePro, setActivePro }: Prof
 
       <div className="container-lh relative">
       
-        <div className="overflow-x-hidden overflow-y-visible px-12 py-4 md:px-14">
+        <div className="overflow-x-clip overflow-y-visible px-8 sm:px-10 md:px-14 py-4">
           <Swiper
             modules={[Autoplay]}
             spaceBetween={12}
-            slidesPerView={1}
+            slidesPerView={1.05}
             loop
             speed={700}
             autoplay={{

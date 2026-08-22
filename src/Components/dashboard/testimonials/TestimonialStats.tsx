@@ -66,7 +66,7 @@ export const TestimonialStats: React.FC<{ stats: TestimonialStats }> = ({ stats 
           </div>
           <div className="min-w-0">
             <p className="text-lg font-bold text-navy-900 dark:text-white leading-tight">{stat.format(stats)}</p>
-            <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest truncate">{stat.label}</p>
+            <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest truncate">{stat.label}</p>
           </div>
         </div>
       ))}

@@ -53,7 +53,7 @@ export const SectionTitle: React.FC<SectionTitleProps> = ({
       {subtitle && (
         <p
           className={`mt-3 sm:mt-4 text-[14px] sm:text-[15px] md:text-base leading-relaxed transition-colors duration-300 ${
-            isDark ? 'text-white/60' : 'text-navy-500'
+            isDark ? 'text-white/60' : 'text-navy-800'
           }`}
         >
           {subtitle}

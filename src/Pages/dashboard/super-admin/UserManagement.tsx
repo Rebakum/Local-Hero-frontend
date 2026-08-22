@@ -260,10 +260,10 @@ const UserManagement: React.FC = () => {
             <p className="relative mt-4 text-3xl font-black tracking-tight text-navy-900 dark:text-white">
               {stat.value.toLocaleString()}
             </p>
-            <p className="relative mt-1 text-xs font-bold uppercase tracking-wider text-navy-400 dark:text-navy-500">
+            <p className="relative mt-1 text-xs font-bold uppercase tracking-wider text-navy-800 dark:text-navy-300">
               {stat.label}
             </p>
-            <p className="relative mt-0.5 text-[11px] text-navy-400/80 dark:text-navy-500/80">
+            <p className="relative mt-0.5 text-[11px] text-navy-800 dark:text-navy-300">
               {stat.sub}
             </p>
           </motion.div>
@@ -294,7 +294,7 @@ const UserManagement: React.FC = () => {
                 className={`group inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 ${
                   active
                     ? 'bg-gradient-to-r from-primary to-rose-500 text-white shadow-md shadow-primary/30'
-                    : 'bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 text-navy-600 dark:text-navy-400 hover:border-primary/40 hover:text-primary'
+                    : 'bg-white dark:bg-navy-800 border border-neutral-200 dark:border-white/10 text-navy-800 dark:text-navy-300 hover:border-primary/40 hover:text-primary'
                 }`}
               >
                 {tab.label}
@@ -302,7 +302,7 @@ const UserManagement: React.FC = () => {
                   className={`flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold ${
                     active
                       ? 'bg-white/20 text-white'
-                      : 'bg-navy-100 text-navy-500 dark:bg-white/10 dark:text-navy-300'
+                      : 'bg-navy-100 text-navy-800 dark:bg-white/10 dark:text-navy-300'
                   }`}
                 >
                   {filterCounts[tab.key]}
@@ -321,7 +321,7 @@ const UserManagement: React.FC = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="input-lh pl-10 pr-16 h-11 text-sm rounded-2xl"
           />
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-md border border-neutral-200 dark:border-white/10 bg-navy-50 dark:bg-navy-900 px-1.5 py-0.5 text-[10px] font-semibold text-navy-400">
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-md border border-neutral-200 dark:border-white/10 bg-navy-50 dark:bg-navy-900 px-1.5 py-0.5 text-[10px] font-semibold text-navy-800 dark:text-navy-300">
             <Command className="w-2.5 h-2.5" /> K
           </span>
         </div>
@@ -358,7 +358,7 @@ const UserManagement: React.FC = () => {
                     <p className="truncate font-semibold text-navy-800 dark:text-navy-100">
                       {u.name}
                     </p>
-                    <p className="flex items-center gap-1 text-xs text-navy-400 dark:text-navy-500">
+                    <p className="flex items-center gap-1 text-xs text-navy-800 dark:text-navy-300">
                       <Mail className="w-3 h-3 shrink-0" />
                       <span className="truncate max-w-[200px]">{u.email}</span>
                     </p>
@@ -372,7 +372,7 @@ const UserManagement: React.FC = () => {
             header: 'Phone',
             hideOn: 'md',
             render: (u) => (
-              <span className="inline-flex items-center gap-2 rounded-xl bg-navy-50 dark:bg-white/5 px-2.5 py-1.5 text-xs font-medium text-navy-500 dark:text-navy-400">
+              <span className="inline-flex items-center gap-2 rounded-xl bg-navy-50 dark:bg-white/5 px-2.5 py-1.5 text-xs font-medium text-navy-800 dark:text-navy-300">
                 <Phone className="w-3 h-3 shrink-0 text-navy-400" />
                 {u.phone || '—'}
               </span>
@@ -413,7 +413,7 @@ const UserManagement: React.FC = () => {
             hideOn: 'lg',
             sortValue: (u) => u.createdAt ?? '',
             render: (u) => (
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-navy-500 dark:text-navy-400">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-navy-800 dark:text-navy-300">
                 <CalendarDays className="w-3 h-3 text-navy-400" />
                 {formatDate(u.createdAt)}
               </span>
@@ -454,7 +454,7 @@ const UserManagement: React.FC = () => {
                 <button
                   onClick={() => setRoleDropdownOpen(roleDropdownOpen === u.id ? null : u.id)}
                   disabled={actionLoading === u.id}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-navy-800 px-3 py-1.5 text-xs font-bold text-navy-600 dark:text-navy-300 transition-all duration-200 hover:border-primary/40 hover:text-primary disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-navy-800 px-3 py-1.5 text-xs font-bold text-navy-800 dark:text-navy-300 transition-all duration-200 hover:border-primary/40 hover:text-primary disabled:opacity-50"
                   title="Change role"
                 >
                   <Shield className="w-3.5 h-3.5" />
@@ -476,7 +476,7 @@ const UserManagement: React.FC = () => {
                           className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors ${
                             selected
                               ? 'cursor-default bg-primary/10 text-primary'
-                              : 'text-navy-600 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-white/5'
+                              : 'text-navy-800 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-white/5'
                           }`}
                         >
                           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-navy-100 dark:bg-white/10">

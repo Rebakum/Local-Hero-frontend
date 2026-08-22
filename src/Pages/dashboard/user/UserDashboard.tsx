@@ -181,7 +181,7 @@ const UserDashboard: React.FC = () => {
               <p className="text-3xl font-bold text-navy-900 dark:text-white tracking-tight">
                 <AnimatedCounter value={stat.value} />
               </p>
-              <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1.5">
+              <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest mt-1.5">
                 {stat.label}
               </p>
             </Card>
@@ -243,7 +243,7 @@ const UserDashboard: React.FC = () => {
               hideOn: 'md',
               sortValue: (b) => b.professional?.companyName || b.professional?.name || 'Unassigned',
               render: (booking) => (
-                <span className="text-navy-500 dark:text-navy-400">
+                <span className="text-navy-800 dark:text-navy-300">
                   {booking.professional?.companyName || booking.professional?.name || 'Unassigned'}
                 </span>
               ),
@@ -254,7 +254,7 @@ const UserDashboard: React.FC = () => {
               hideOn: 'sm',
               sortValue: (b) => new Date(b.bookingDate).getTime(),
               render: (booking) => (
-                <span className="text-navy-500 dark:text-navy-400 text-sm">
+                <span className="text-navy-800 dark:text-navy-300 text-sm">
                   {new Date(booking.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                 </span>
               ),
@@ -265,7 +265,7 @@ const UserDashboard: React.FC = () => {
               hideOn: 'lg',
               sortValue: (b) => b.postcode,
               render: (booking) => (
-                <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+                <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs">
                   <MapPin className="w-3 h-3" />
                   {booking.postcode}
                 </div>
@@ -311,7 +311,7 @@ const UserDashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-navy-800 dark:text-navy-200">{action.label}</p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">{action.desc}</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300 mt-0.5">{action.desc}</p>
                 </div>
               </div>
               <div className="w-8 h-8 rounded-full bg-navy-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white text-navy-400 transition-all duration-300">
@@ -338,7 +338,7 @@ const UserDashboard: React.FC = () => {
               <h2 className="text-lg font-bold text-navy-900 dark:text-white">
                 {submitted ? 'Thank you for your review!' : 'Share your experience'}
               </h2>
-              <p className="text-xs text-navy-400 dark:text-navy-500 mt-0.5">
+              <p className="text-xs text-navy-800 dark:text-navy-300 mt-0.5">
                 {submitted
                   ? 'Your testimonial has been submitted and will be reviewed by our team.'
                   : 'Tell us about the professional who helped you — your review helps other homeowners.'}

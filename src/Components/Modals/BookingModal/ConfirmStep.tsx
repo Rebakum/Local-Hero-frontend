@@ -79,27 +79,27 @@ export const ConfirmStep: React.FC<ConfirmStepProps> = ({
         <div className="font-heading font-extrabold text-navy-950 dark:text-white border-b border-navy-100 dark:border-white/10 pb-2 flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-primary" /> Booking summary
         </div>
-        <div className="flex justify-between text-navy-500 dark:text-navy-300">
+        <div className="flex justify-between text-navy-800 dark:text-navy-300">
           <span>Selected trade</span>
           <span className="font-bold text-navy-950 dark:text-white capitalize">{displayTrade}</span>
         </div>
         {bookingData.professionalName && (
-          <div className="flex justify-between text-navy-500 dark:text-navy-300">
+          <div className="flex justify-between text-navy-800 dark:text-navy-300">
             <span>Professional</span>
             <span className="font-bold text-navy-950 dark:text-white">
               {bookingData.professionalName}
             </span>
           </div>
         )}
-        <div className="flex justify-between text-navy-500 dark:text-navy-300">
+        <div className="flex justify-between text-navy-800 dark:text-navy-300">
           <span>Postcode / location</span>
           <span className="font-bold text-navy-950 dark:text-white">{bookingData.postcode}</span>
         </div>
-        <div className="flex justify-between text-navy-500 dark:text-navy-300">
+        <div className="flex justify-between text-navy-800 dark:text-navy-300">
           <span>Estimated arrival</span>
           <span className="font-bold text-primary">{selectedUrgency.eta}</span>
         </div>
-        <div className="flex justify-between text-navy-500 dark:text-navy-300">
+        <div className="flex justify-between text-navy-800 dark:text-navy-300">
           <span>Protection</span>
           <span className="font-bold text-primary flex items-center gap-1">
             <ShieldCheck className="w-3.5 3" /> £2M insurance included
@@ -118,7 +118,7 @@ export const ConfirmStep: React.FC<ConfirmStepProps> = ({
           type="button"
           onClick={onBack}
           disabled={isSubmitting}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-500 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-800 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white disabled:opacity-50"
         >
           <ArrowLeft className="w-3.5 3" /> Back
         </button>

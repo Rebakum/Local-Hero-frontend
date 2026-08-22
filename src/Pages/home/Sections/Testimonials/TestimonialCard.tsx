@@ -35,7 +35,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ t }) => {
           <div className="font-heading text-sm font-extrabold text-navy-950 dark:text-white truncate">
             {t.author}
           </div>
-          <div className="text-xs font-medium text-navy-500 dark:text-navy-300 truncate">
+          <div className="text-xs font-medium text-navy-800 dark:text-navy-300 truncate">
             {t.role} &bull; {t.city}
           </div>
         </div>

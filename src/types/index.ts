@@ -159,9 +159,13 @@ export interface BookingFormData {
 
 export interface FAQItem {
   id: string;
-  category: 'General' | 'Booking' | 'Pricing' | 'Pros & Vetting' | 'Emergency';
+  category: string | null;
   question: string;
   answer: string;
+  sortOrder?: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface FeaturedService {

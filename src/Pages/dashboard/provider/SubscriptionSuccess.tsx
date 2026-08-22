@@ -39,21 +39,21 @@ const SubscriptionSuccess: React.FC = () => {
         <h2 className="text-xl font-bold text-navy-900 dark:text-white mt-4">
           Your subscription payment was submitted
         </h2>
-        <p className="text-sm text-navy-500 dark:text-navy-400 mt-2">
+        <p className="text-sm text-navy-800 dark:text-navy-300 mt-2">
           We're confirming your subscription. It will become active once the payment is verified — this usually takes a moment.
         </p>
 
         {loading ? (
-          <div className="flex items-center justify-center gap-2 text-xs text-navy-400 mt-6">
+          <div className="flex items-center justify-center gap-2 text-xs text-navy-800 dark:text-navy-300 mt-6">
             <Loader2 className="w-4 h-4 animate-spin" /> Checking subscription status…
           </div>
         ) : subscription ? (
           <div className="flex items-center justify-center gap-2 mt-6 text-sm">
-            <span className="text-navy-500 dark:text-navy-400">Current status:</span>
+            <span className="text-navy-800 dark:text-navy-300">Current status:</span>
             <StatusBadge status={subscription.status} />
           </div>
         ) : (
-          <p className="text-xs text-navy-400 mt-6">Subscription status will appear here shortly.</p>
+          <p className="text-xs text-navy-800 dark:text-navy-300 mt-6">Subscription status will appear here shortly.</p>
         )}
 
         <div className="flex flex-wrap items-center justify-center gap-3 mt-8">

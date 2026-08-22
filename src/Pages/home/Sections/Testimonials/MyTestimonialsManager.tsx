@@ -264,7 +264,7 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+        <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
           {filtered.length} {filtered.length === 1 ? 'review' : 'reviews'}
         </p>
         <div className="relative sm:ml-auto w-full sm:w-72">
@@ -325,7 +325,7 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
             header: 'Review',
             hideOn: 'sm',
             render: (t) => (
-              <span className="text-navy-500 dark:text-navy-400 truncate block max-w-[260px]">
+              <span className="text-navy-800 dark:text-navy-300 truncate block max-w-[260px]">
                 &ldquo;{t.comment}&rdquo;
               </span>
             ),
@@ -349,7 +349,7 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
             header: 'Verified Job',
             hideOn: 'md',
             render: (t) => (
-              <span className="text-navy-500 dark:text-navy-400">{t.verifiedJob || '—'}</span>
+              <span className="text-navy-800 dark:text-navy-300">{t.verifiedJob || '—'}</span>
             ),
           },
         ]}
@@ -358,14 +358,14 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
             <button
               onClick={() => openEdit(testimonial)}
               title="Edit"
-              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-800 dark:text-navy-300 border border-navy-200 dark:border-white/10 hover:bg-primary/10 hover:text-primary transition-colors"
             >
               <Pencil className="w-3.5 3" />
             </button>
             <button
               onClick={() => setDeleteTarget(testimonial)}
               title="Delete"
-              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
+              className="w-8 h-8 rounded-full flex items-center justify-center text-navy-800 dark:text-navy-300 border border-navy-200 dark:border-white/10 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 transition-colors"
             >
               <Trash2 className="w-3.5 3" />
             </button>
@@ -386,7 +386,7 @@ export const MyTestimonialsManager: React.FC<MyTestimonialsManagerProps> = ({
             <button
               onClick={() => setModalOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>

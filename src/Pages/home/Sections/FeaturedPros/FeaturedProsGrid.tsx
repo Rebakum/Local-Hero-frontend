@@ -3,8 +3,15 @@ import { SearchX } from 'lucide-react';
 import { ProCard } from './FeaturedProCard';
 import { useProfessionals } from '@/src/Context/ProfessionalsContext';
 import { Pagination } from '@/src/Components/ui/Pagination';
-import { FilterSidebar, type FilterOption } from '@/src/Components/ui/FilterSidebar';
-import { FilterToolbar, type SortOption } from '@/src/Components/ui/FilterToolbar';
+import {
+  FilterSidebar,
+  FilterToolbar,
+  type SortOption,
+  type FilterOption,
+  type ProfessionalFilters,
+  emptyProfessionalFilters,
+  professionalFiltersActive,
+} from '@/src/Components/ui';
 
 interface FeaturedProsGridProps {
   limit?: number; // Optional limit prop (home page teaser)
@@ -19,11 +26,21 @@ const SORT_OPTIONS: SortOption[] = [
   { value: 'hourly-desc', label: 'Price (High to Low)' },
 ];
 
+// Local-area distance approximation: compare the outward postcode code.
+const outwardCode = (value: string): string =>
+  value
+    .trim()
+    .split(/\s+/)[0]
+    .replace(/[^A-Za-z0-9]/g, '')
+    .toUpperCase()
+    .slice(0, 2);
+
 export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => {
   const { professionals, isLoading, refresh } = useProfessionals();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTrade, setActiveTrade] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState('featured');
+  const [filters, setFilters] = useState<ProfessionalFilters>(emptyProfessionalFilters);
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 8;
 
@@ -63,6 +80,42 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
       );
     }
 
+    // --- Smart filters (Distance, Rating, Price, Availability, Verified, Emergency) ---
+    if (filters.postcode.trim() && filters.distance !== null) {
+      const out = outwardCode(filters.postcode);
+      if (out) {
+        list = list.filter((p) => {
+          const area = p.postcodeArea?.toUpperCase() ?? '';
+          const location = p.location?.toUpperCase() ?? '';
+          return area.startsWith(out) || location.startsWith(out);
+        });
+      }
+    }
+
+    if (filters.minRating !== null) {
+      list = list.filter((p) => (p.rating ?? 0) >= (filters.minRating ?? 0));
+    }
+
+    if (filters.minPrice !== null) {
+      list = list.filter((p) => (p.hourlyRate ?? 0) >= (filters.minPrice ?? 0));
+    }
+
+    if (filters.maxPrice !== null) {
+      list = list.filter((p) => (p.hourlyRate ?? 0) <= (filters.maxPrice ?? 0));
+    }
+
+    if (filters.availability) {
+      list = list.filter((p) => (p.availability ?? '') === filters.availability);
+    }
+
+    if (filters.isVerified !== null) {
+      list = list.filter((p) => p.isVerified === filters.isVerified);
+    }
+
+    if (filters.isEmergency !== null) {
+      list = list.filter((p) => p.isEmergency === filters.isEmergency);
+    }
+
     const sorted = [...list];
     switch (sortBy) {
       case 'rating-desc':
@@ -85,17 +138,34 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
     }
 
     return sorted;
-  }, [professionals, activeTrade, searchQuery, sortBy]);
+  }, [professionals, activeTrade, searchQuery, sortBy, filters]);
 
   const totalCount = limit ? professionals.length : filtered.length;
   const displayed = limit
     ? professionals.slice(0, limit)
     : filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
+  const smartFilterCount =
+    (filters.distance !== null ? 1 : 0) +
+    (filters.postcode.trim() ? 1 : 0) +
+    (filters.minRating !== null ? 1 : 0) +
+    (filters.minPrice !== null ? 1 : 0) +
+    (filters.maxPrice !== null ? 1 : 0) +
+    (filters.availability !== null ? 1 : 0) +
+    (filters.isVerified !== null ? 1 : 0) +
+    (filters.isEmergency !== null ? 1 : 0);
+
+  const clearAll = () => {
+    setSearchQuery('');
+    setActiveTrade(null);
+    setFilters(emptyProfessionalFilters);
+    setPage(1);
+  };
+
   if (isLoading) {
     return (
       <div className="mt-8 md:mt-12 text-center py-10">
-        <p className="text-sm font-semibold text-slate-500 dark:text-navy-400 animate-pulse">
+        <p className="text-sm font-semibold text-slate-500 dark:text-navy-300 animate-pulse">
           Loading professionals...
         </p>
       </div>
@@ -110,7 +180,7 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
         <p className="mt-4 font-heading text-lg font-bold text-navy-950 dark:text-white">
           No professionals found
         </p>
-        <p className="text-sm text-navy-500 dark:text-navy-400 mt-1.5">
+        <p className="text-sm text-navy-800 dark:text-navy-300 mt-1.5">
           Try clearing your filters or search term.
         </p>
       </div>
@@ -147,10 +217,12 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
             setActiveTrade(v);
             setPage(1);
           }}
-          hasActiveFilters={searchQuery.trim() !== '' || activeTrade !== null}
-          onClear={() => {
-            setSearchQuery('');
-            setActiveTrade(null);
+          hasActiveFilters={searchQuery.trim() !== '' || activeTrade !== null || professionalFiltersActive(filters)}
+          onClear={clearAll}
+          filters={filters}
+          onFiltersChange={(next) => {
+            setFilters(next);
+            setPage(1);
           }}
         />
 
@@ -171,6 +243,11 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
               setPage(1);
             }}
             sortOptions={SORT_OPTIONS}
+            activeFilterCount={smartFilterCount}
+            onClearFilters={() => {
+              setFilters(emptyProfessionalFilters);
+              setPage(1);
+            }}
           />
 
           <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">

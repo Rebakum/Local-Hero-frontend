@@ -27,14 +27,14 @@ export const ServiceOverview: React.FC<ServiceOverviewProps> = ({
             Service Overview
           </h2>
         </div>
-        <p className="text-sm sm:text-base text-navy-600 dark:text-navy-300 leading-relaxed">
+        <p className="text-sm sm:text-base text-navy-800 dark:text-navy-300 leading-relaxed">
           {description}
         </p>
 
         {/* Badges Bar */}
         <div className="mt-8 pt-6 border-t border-slate-100 dark:border-white/5 flex flex-wrap gap-4">
           <div className="flex items-center gap-2.5 rounded-2xl bg-primary/10 border border-primary/20 px-4 py-3">
-            <span className="text-xs font-bold text-navy-400 uppercase tracking-wider">Starting From</span>
+            <span className="text-xs font-bold text-navy-800 dark:text-navy-300 uppercase tracking-wider">Starting From</span>
             <span className="text-base font-black text-primary">{estimatedPrice}</span>
           </div>
           <div className="flex items-center gap-2 rounded-2xl bg-slate-100 dark:bg-navy-800 px-4 py-3">

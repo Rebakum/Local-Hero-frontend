@@ -103,10 +103,10 @@ const SavedPros: React.FC = () => {
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
               <Bookmark className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-sm font-medium text-navy-500 dark:text-navy-400">Your Saved Pros</span>
+            <span className="text-sm font-medium text-navy-800 dark:text-navy-300">Your Saved Pros</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Saved Professionals</h1>
-          <p className="mt-2 text-sm text-navy-500 dark:text-navy-400 max-w-md leading-relaxed">
+          <p className="mt-2 text-sm text-navy-800 dark:text-navy-300 max-w-md leading-relaxed">
             Quick access to your favourite service providers for fast rebooking.
           </p>
         </div>
@@ -169,7 +169,7 @@ const SavedPros: React.FC = () => {
           <Card padding="lg">
             <div className="flex flex-col items-center text-center py-10">
               <Loader2 className="w-8 h-8 text-primary animate-spin mb-4" />
-              <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">Loading saved professionals...</p>
+              <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">Loading saved professionals...</p>
             </div>
           </Card>
         </motion.div>
@@ -182,10 +182,10 @@ const SavedPros: React.FC = () => {
           <Card padding="lg">
             <div className="flex flex-col items-center text-center py-8">
               <Heart className="w-12 h-12 text-navy-300 dark:text-navy-600 mb-4" />
-              <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+              <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
                 {professionals.length === 0 ? 'No saved professionals' : 'No matches found'}
               </p>
-              <p className="text-xs text-navy-400 dark:text-navy-500 mt-1">
+              <p className="text-xs text-navy-800 dark:text-navy-300 mt-1">
                 Browse professionals and save your favourites for quick access.
               </p>
             </div>
@@ -219,7 +219,7 @@ const SavedPros: React.FC = () => {
                     )}
                     <div>
                       <h3 className="text-sm font-bold text-navy-900 dark:text-white">{pro.name}</h3>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${TRADE_COLORS[pro.trade] || 'bg-navy-100 text-navy-600'}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${TRADE_COLORS[pro.trade] || 'bg-navy-100 dark:bg-white/10 text-navy-800 dark:text-navy-300'}`}>
                         {pro.trade}
                       </span>
                     </div>
@@ -242,7 +242,7 @@ const SavedPros: React.FC = () => {
                     <Star className="w-3.5 3 text-amber-400 fill-amber-400" />
                     <span className="text-sm font-bold text-navy-900 dark:text-white">{pro.rating.toFixed(1)}</span>
                   </div>
-                  <span className="text-xs text-navy-400 dark:text-navy-500">({pro.reviewCount} reviews)</span>
+                  <span className="text-xs text-navy-800 dark:text-navy-300">({pro.reviewCount} reviews)</span>
                   {pro.isVerified && (
                     <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
                       <Shield className="w-3 h-3" /> Verified
@@ -250,7 +250,7 @@ const SavedPros: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-4 mb-4 text-xs text-navy-500 dark:text-navy-400">
+                <div className="flex items-center gap-4 mb-4 text-xs text-navy-800 dark:text-navy-300">
                   <span className="inline-flex items-center gap-1">
                     <MapPin className="w-3 h-3" /> {pro.postcodeArea || pro.location || 'N/A'}
                   </span>

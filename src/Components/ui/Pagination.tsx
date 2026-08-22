@@ -45,7 +45,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 border-t border-navy-200/70 dark:border-white/10 bg-navy-50/40 dark:bg-navy-900/20">
       <div className="flex flex-wrap items-center gap-3">
         {onPageSizeChange && (
-          <label className="flex items-center gap-2 text-xs text-navy-400 dark:text-navy-500">
+          <label className="flex items-center gap-2 text-xs text-navy-800 dark:text-navy-300">
             Rows per page
             <select
               value={pageSize}
@@ -63,7 +63,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             </select>
           </label>
         )}
-        <p className="text-xs text-navy-400 dark:text-navy-500">
+        <p className="text-xs text-navy-800 dark:text-navy-300">
           {showRange ? `${rangeStart}–${rangeEnd} of ${total}` : `Page ${page} of ${totalPages}`}
         </p>
       </div>
@@ -73,7 +73,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(page - 1)}
           disabled={!canPrev}
           aria-label="Previous page"
-          className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-navy-50 dark:hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-navy-800 dark:text-navy-300 border border-navy-200 dark:border-white/10 hover:bg-navy-50 dark:hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -92,7 +92,7 @@ export const Pagination: React.FC<PaginationProps> = ({
               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold border transition-colors ${
                 n === page
                   ? 'bg-primary text-white border-primary shadow-sm shadow-primary/25'
-                  : 'text-navy-500 dark:text-navy-400 border-navy-200 dark:border-white/10 hover:bg-navy-50 dark:hover:bg-white/5'
+                  : 'text-navy-800 dark:text-navy-300 border-navy-200 dark:border-white/10 hover:bg-navy-50 dark:hover:bg-white/5'
               }`}
             >
               {n}
@@ -104,7 +104,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(page + 1)}
           disabled={!canNext}
           aria-label="Next page"
-          className="w-8 h-8 rounded-full flex items-center justify-center text-navy-500 dark:text-navy-400 border border-navy-200 dark:border-white/10 hover:bg-navy-50 dark:hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-navy-800 dark:text-navy-300 border border-navy-200 dark:border-white/10 hover:bg-navy-50 dark:hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none transition-colors"
         >
           <ChevronRight className="w-4 h-4" />
         </button>

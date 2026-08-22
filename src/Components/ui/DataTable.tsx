@@ -251,7 +251,7 @@ export function DataTable<T>({
             </div>
           )}
 
-          <p className="text-xs text-navy-400 dark:text-navy-500 lg:ml-auto shrink-0">
+          <p className="text-xs text-navy-800 dark:text-navy-300 lg:ml-auto shrink-0">
             {processed.length} {processed.length === 1 ? 'record' : 'records'}
           </p>
         </div>
@@ -260,7 +260,7 @@ export function DataTable<T>({
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-16 gap-3">
           <Loader2 className="w-6 h-6 text-primary animate-spin" />
-          <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">{loadingText}</p>
+          <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">{loadingText}</p>
         </div>
       ) : visibleRows.length === 0 ? (
         <EmptyState
@@ -276,7 +276,7 @@ export function DataTable<T>({
                 {columns.map((col) => (
                   <th
                     key={col.key}
-                    className={`text-left py-3.5 px-5 font-semibold text-navy-600 dark:text-navy-300 text-[11px] uppercase tracking-[0.12em] whitespace-nowrap ${col.hideOn ? HIDE_CLASS[col.hideOn] : ''} ${col.headerClassName ?? ''}`}
+                    className={`text-left py-3.5 px-5 font-semibold text-navy-800 dark:text-navy-300 text-[11px] uppercase tracking-[0.12em] whitespace-nowrap ${col.hideOn ? HIDE_CLASS[col.hideOn] : ''} ${col.headerClassName ?? ''}`}
                   >
                     {sortable ? (
                       <button
@@ -301,7 +301,7 @@ export function DataTable<T>({
                   </th>
                 ))}
                 {actions && (
-                  <th className="text-right py-3.5 px-5 font-semibold text-navy-600 dark:text-navy-300 text-[11px] uppercase tracking-[0.12em]">
+                  <th className="text-right py-3.5 px-5 font-semibold text-navy-800 dark:text-navy-300 text-[11px] uppercase tracking-[0.12em]">
                     Actions
                   </th>
                 )}
@@ -331,7 +331,7 @@ export function DataTable<T>({
                         {(() => {
                           const actionContent = actions(row);
                           const childCount = React.Children.count(actionContent);
-                          return childCount > 0 ? actionContent : <span className="text-xs text-navy-400 dark:text-navy-500">—</span>;
+                          return childCount > 0 ? actionContent : <span className="text-xs text-navy-800 dark:text-navy-300">—</span>;
                         })()}
                       </div>
                     </td>

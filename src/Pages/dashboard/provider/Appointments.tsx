@@ -127,7 +127,7 @@ const Appointments: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="text-navy-700 dark:text-navy-200">{b.fullName}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500">{b.email}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300">{b.email}</p>
                 </div>
               ),
             },
@@ -135,7 +135,7 @@ const Appointments: React.FC = () => {
               key: 'date',
               header: 'Date',
               render: (b) => (
-                <div className="text-navy-500 dark:text-navy-400 whitespace-nowrap">
+                <div className="text-navy-800 dark:text-navy-300 whitespace-nowrap">
                   {new Date(b.bookingDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </div>
               ),
@@ -144,7 +144,7 @@ const Appointments: React.FC = () => {
               key: 'time',
               header: 'Time',
               render: (b) => (
-                <div className="text-navy-500 dark:text-navy-400">
+                <div className="text-navy-800 dark:text-navy-300">
                   <p className="font-medium text-navy-700 dark:text-navy-200 whitespace-nowrap">{b.timeSlot}</p>
                 </div>
               ),
@@ -154,7 +154,7 @@ const Appointments: React.FC = () => {
               header: 'Address',
               hideOn: 'lg',
               render: (b) => (
-                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs">
                   <MapPin className="w-3 h-3" />
                   {b.address}, {b.postcode}
                 </span>
@@ -178,7 +178,7 @@ const Appointments: React.FC = () => {
                   className={`inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-semibold ${
                     b.payment?.status === 'PAID'
                       ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                      : 'bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400'
+                      : 'bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300'
                   }`}
                 >
                   {b.payment?.status === 'PAID' ? 'Paid' : b.payment?.status || 'Unpaid'}

@@ -224,7 +224,7 @@ const BeforeAfterManagement: React.FC = () => {
                     {p.professional?.name || 'Professional'}
                   </span>
                   {p.professional?.companyName && (
-                    <span className="block text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[180px]">
+                    <span className="block text-[11px] text-navy-800 dark:text-navy-300 truncate max-w-[180px]">
                       {p.professional.companyName}
                     </span>
                   )}
@@ -246,7 +246,7 @@ const BeforeAfterManagement: React.FC = () => {
             hideOn: 'sm',
             sortValue: (p) => (p.createdAt ? new Date(p.createdAt).getTime() : 0),
             render: (p) => (
-              <span className="text-xs text-navy-500 dark:text-navy-400" title={p.createdAt ? new Date(p.createdAt).toLocaleString() : undefined}>
+              <span className="text-xs text-navy-800 dark:text-navy-300" title={p.createdAt ? new Date(p.createdAt).toLocaleString() : undefined}>
                 {relativeTime(p.createdAt)}
               </span>
             ),
@@ -326,7 +326,7 @@ const BeforeAfterManagement: React.FC = () => {
             <button
               onClick={() => setRejectTarget(null)}
               disabled={rejecting}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
@@ -361,7 +361,7 @@ const BeforeAfterManagement: React.FC = () => {
         footer={
           <button
             onClick={() => setPreview(null)}
-            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
+            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
           >
             Close
           </button>
@@ -370,11 +370,11 @@ const BeforeAfterManagement: React.FC = () => {
         {preview && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-2xl overflow-hidden border border-navy-100 dark:border-white/10">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-navy-400 dark:text-navy-500 px-4 py-2 bg-cream-50 dark:bg-navy-800">Before</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-navy-800 dark:text-navy-300 px-4 py-2 bg-cream-50 dark:bg-navy-800">Before</p>
               <img src={preview.beforeImage} alt="Before" className="w-full h-72 object-cover" />
             </div>
             <div className="rounded-2xl overflow-hidden border border-navy-100 dark:border-white/10">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-navy-400 dark:text-navy-500 px-4 py-2 bg-cream-50 dark:bg-navy-800">After</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-navy-800 dark:text-navy-300 px-4 py-2 bg-cream-50 dark:bg-navy-800">After</p>
               <img src={preview.afterImage} alt="After" className="w-full h-72 object-cover" />
             </div>
           </div>

@@ -49,7 +49,7 @@ export const StatCard: React.FC<StatCardProps> = ({
               <Icon className={`w-5 h-5 ${iconTextColor}`} />
             </div>
             <div>
-              <p className="text-xs font-medium text-navy-400 dark:text-navy-500">{title}</p>
+              <p className="text-xs font-medium text-navy-800 dark:text-navy-300">{title}</p>
               <h3 className="text-2xl font-bold text-navy-900 dark:text-white mt-0.5">{value}</h3>
             </div>
           </div>
@@ -62,7 +62,7 @@ export const StatCard: React.FC<StatCardProps> = ({
         </div>
 
         {subtitle && (
-          <p className="text-xs text-navy-400 dark:text-navy-500 mt-3 pt-3 border-t border-navy-50 dark:border-white/5">
+          <p className="text-xs text-navy-800 dark:text-navy-300 mt-3 pt-3 border-t border-navy-50 dark:border-white/5">
             {subtitle}
           </p>
         )}

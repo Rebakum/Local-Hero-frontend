@@ -75,7 +75,7 @@ export const SortDropdown: React.FC<SortDropdownProps> = ({
                 className={`flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-xs font-semibold transition-colors ${
                   isActive
                     ? 'bg-primary/10 text-primary'
-                    : 'text-navy-600 hover:bg-neutral-50 dark:text-navy-300 dark:hover:bg-white/5'
+                    : 'text-navy-800 hover:bg-neutral-50 dark:text-navy-300 dark:hover:bg-white/5'
                 }`}
               >
                 {opt.label}

@@ -32,7 +32,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             className="input-lh !pl-12 py-3.5"
           />
         </div>
-        <p className="text-[11px] font-medium text-navy-500 dark:text-navy-300 mt-1.5">
+        <p className="text-[11px] font-medium text-navy-800 dark:text-navy-300 mt-1.5">
           We cover all major UK postcode sectors with guaranteed local dispatch.
         </p>
       </div>
@@ -67,7 +67,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-500 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-heading font-bold text-navy-800 hover:text-navy-950 dark:text-navy-300 dark:hover:text-white"
         >
           <ArrowLeft className="w-3.5 3" /> Back
         </button>

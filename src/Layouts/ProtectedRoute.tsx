@@ -29,7 +29,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
           <LoadingSplash
           />
           {/* <Loader2 className="w-8 h-8 text-primary animate-spin" /> */}
-          <p className="text-sm text-navy-500 dark:text-navy-400">Loading...</p>
+          <p className="text-sm text-navy-800 dark:text-navy-300">Loading...</p>
         </div>
       </div>
     );

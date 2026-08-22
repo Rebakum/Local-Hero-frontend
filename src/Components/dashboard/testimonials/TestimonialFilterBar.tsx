@@ -32,7 +32,7 @@ export const TestimonialFilterBar: React.FC<TestimonialFilterBarProps> = ({
             </option>
           ))}
         </select>
-        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+        <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
           {count} {count === 1 ? 'review' : 'reviews'}
         </p>
       </div>

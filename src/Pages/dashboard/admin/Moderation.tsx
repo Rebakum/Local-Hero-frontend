@@ -210,7 +210,7 @@ const Moderation: React.FC = () => {
                 <stat.icon className={`w-5 h-5 ${stat.textColor}`} />
               </div>
               <p className="text-2xl font-bold text-navy-900 dark:text-white">{stat.value}</p>
-              <p className="text-[11px] font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-widest mt-1">{stat.label}</p>
+              <p className="text-[11px] font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-widest mt-1">{stat.label}</p>
             </Card>
           </motion.div>
         ))}
@@ -238,7 +238,7 @@ const Moderation: React.FC = () => {
               className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
                 activeFilter === tab.key
                   ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 border border-red-200 dark:border-red-500/20'
-                  : 'bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10 border border-transparent'
+                  : 'bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 hover:bg-navy-200 dark:hover:bg-white/10 border border-transparent'
               }`}
             >
               {tab.label}
@@ -257,7 +257,7 @@ const Moderation: React.FC = () => {
               className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ${
                 statusFilter === s
                   ? 'bg-navy-800 dark:bg-white/10 text-white'
-                  : 'bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 hover:bg-navy-200 dark:hover:bg-white/10'
+                  : 'bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 hover:bg-navy-200 dark:hover:bg-white/10'
               }`}
             >
               {s === 'ALL' ? 'All Status' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -293,7 +293,7 @@ const Moderation: React.FC = () => {
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 gap-3">
               <Shield className="w-12 h-12 text-navy-300 dark:text-navy-600" />
-              <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">No items in the moderation queue</p>
+              <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">No items in the moderation queue</p>
             </div>
           ) : (
             <div className="divide-y divide-navy-50 dark:divide-white/5">
@@ -316,8 +316,8 @@ const Moderation: React.FC = () => {
                             <Badge variant="success">Resolved</Badge>
                           )}
                         </div>
-                        <p className="text-xs text-navy-400 dark:text-navy-500 mb-2 line-clamp-2">{item.description}</p>
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-navy-500 dark:text-navy-400">
+                        <p className="text-xs text-navy-800 dark:text-navy-300 mb-2 line-clamp-2">{item.description}</p>
+                        <div className="flex flex-wrap items-center gap-3 text-xs text-navy-800 dark:text-navy-300">
                           <span>By: <span className="font-semibold text-navy-700 dark:text-navy-300">{item.author}</span></span>
                           {item.service && <span>Trade: {item.service}</span>}
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-navy-100 dark:bg-white/5">

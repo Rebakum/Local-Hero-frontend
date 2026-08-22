@@ -110,7 +110,7 @@ const LoginPage: React.FC = () => {
             <h1 className="text-2xl font-bold text-navy-900 dark:text-white">
               Welcome back
             </h1>
-            <p className="mt-2 text-sm text-navy-500 dark:text-navy-400">
+            <p className="mt-2 text-sm text-navy-800 dark:text-navy-300">
               Sign in to your account to continue
             </p>
           </div>
@@ -215,7 +215,7 @@ const LoginPage: React.FC = () => {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-navy-500 dark:text-navy-400">
+          <p className="mt-6 text-center text-sm text-navy-800 dark:text-navy-300">
             Don&apos;t have an account?{' '}
             <RouterLink to="/register" className="font-semibold text-primary hover:underline">
               Sign Up

@@ -144,7 +144,7 @@ export const BeforeAfter: React.FC = () => {
                 aria-label="Before after slider"
               />
             </div>
-            <p className="text-center text-xs font-medium text-navy-400 dark:text-navy-500 mt-3">
+            <p className="text-center text-xs font-medium text-navy-800 dark:text-navy-300 mt-3">
               Drag the handle to compare before vs. after
             </p>
           </Reveal>
@@ -159,7 +159,7 @@ export const BeforeAfter: React.FC = () => {
               <h3 className="font-heading text-2xl font-extrabold tracking-tight text-navy-950 dark:text-white leading-tight">
                 {project.title}
               </h3>
-              <p className="text-sm leading-relaxed text-navy-600 dark:text-navy-300">
+              <p className="text-sm leading-relaxed text-navy-800 dark:text-navy-300">
                 {project.description}
               </p>
             </div>
@@ -167,7 +167,7 @@ export const BeforeAfter: React.FC = () => {
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-3.5 sm:p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 space-y-1">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300 flex items-center gap-1">
+                <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-800 dark:text-navy-300 flex items-center gap-1">
                   <PoundSterling className="w-3.5 3 text-primary" /> Project cost
                 </div>
                 <div className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
@@ -177,13 +177,13 @@ export const BeforeAfter: React.FC = () => {
               </div>
               <div className="group relative h-full overflow-hidden rounded-2xl border border-neutral-200 bg-white p-3.5 sm:p-5 shadow-soft transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-card dark:border-white/10 dark:bg-navy-900 dark:hover:border-primary/40 dark:hover:bg-navy-800 space-y-1">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-400 dark:text-navy-300 flex items-center gap-1">
+                <div className="text-[10px] font-heading font-bold uppercase tracking-widest text-navy-800 dark:text-navy-300 flex items-center gap-1">
                   <Clock className="w-3.5 3 text-primary" /> Time to complete
                 </div>
                 <div className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
                   {project.completionDays}
                 </div>
-                <div className="text-[11px] font-semibold text-navy-500 dark:text-navy-400">Warranty included</div>
+                <div className="text-[11px] font-semibold text-navy-800 dark:text-navy-300">Warranty included</div>
               </div>
             </div>
 

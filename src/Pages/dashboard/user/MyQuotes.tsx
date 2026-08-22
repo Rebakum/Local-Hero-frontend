@@ -185,7 +185,7 @@ const MyQuotes: React.FC = () => {
       )}
 
       <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-        <p className="text-sm font-semibold text-navy-500 dark:text-navy-400">
+        <p className="text-sm font-semibold text-navy-800 dark:text-navy-300">
           {filtered.length} {filtered.length === 1 ? 'quote' : 'quotes'}
         </p>
         <div className="relative sm:ml-auto w-full sm:w-72">
@@ -216,7 +216,7 @@ const MyQuotes: React.FC = () => {
             render: (q) => (
               <div>
                 <p className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{q.trade}</p>
-                <p className="text-[11px] text-navy-400 dark:text-navy-500 truncate max-w-[220px]">
+                <p className="text-[11px] text-navy-800 dark:text-navy-300 truncate max-w-[220px]">
                   {q.description}
                 </p>
               </div>
@@ -226,7 +226,7 @@ const MyQuotes: React.FC = () => {
             key: 'location',
             header: 'Location',
             render: (q) => (
-              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-500 dark:text-navy-400 text-xs">
+              <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-xs">
                 <MapPin className="w-3 h-3" />
                 {q.city}, {q.postcode}
               </span>
@@ -277,7 +277,7 @@ const MyQuotes: React.FC = () => {
             <button
               onClick={() => setFormOpen(false)}
               disabled={saving}
-              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
@@ -372,7 +372,7 @@ const MyQuotes: React.FC = () => {
         footer={
           <button
             onClick={() => setViewing(null)}
-            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-600 dark:text-navy-400 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
+            className="px-4 py-2 rounded-full bg-navy-100 dark:bg-white/5 text-navy-800 dark:text-navy-300 text-sm font-semibold hover:bg-navy-200 dark:hover:bg-white/10 transition-colors"
           >
             Close
           </button>
@@ -380,7 +380,7 @@ const MyQuotes: React.FC = () => {
       >
         {viewing && (
           <div className="space-y-4">
-            <div className="flex items-center gap-3 text-xs text-navy-500 dark:text-navy-400">
+            <div className="flex items-center gap-3 text-xs text-navy-800 dark:text-navy-300">
               <span className="inline-flex items-center gap-1">
                 <MapPin className="w-3 h-3" />
                 {viewing.postcode}
@@ -390,7 +390,7 @@ const MyQuotes: React.FC = () => {
             </div>
 
             {viewing.responses.length === 0 ? (
-              <p className="text-sm text-navy-400 dark:text-navy-500">
+              <p className="text-sm text-navy-800 dark:text-navy-300">
                 No professionals have responded yet. Check back soon.
               </p>
             ) : (
@@ -408,7 +408,7 @@ const MyQuotes: React.FC = () => {
                         {response.professional?.companyName || 'Professional'}
                       </p>
                       {response.message && (
-                        <p className="text-xs text-navy-400 dark:text-navy-500 truncate">{response.message}</p>
+                        <p className="text-xs text-navy-800 dark:text-navy-300 truncate">{response.message}</p>
                       )}
                     </div>
                   </div>

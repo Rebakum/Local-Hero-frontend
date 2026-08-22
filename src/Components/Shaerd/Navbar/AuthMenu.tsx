@@ -130,7 +130,7 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
                   <p className="font-heading text-sm font-bold text-navy-950 dark:text-white truncate">
                     {user.name}
                   </p>
-                  <p className="text-xs text-navy-400 dark:text-navy-500 truncate">{user.email}</p>
+                  <p className="text-xs text-navy-800 dark:text-navy-300 truncate">{user.email}</p>
                 </div>
               </div>
 
@@ -155,7 +155,7 @@ export const AuthMenu: React.FC<AuthMenuProps> = ({ atTop }) => {
                   to={link.to}
                   role="menuitem"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 px-5 py-2.5 text-sm font-medium text-navy-600 dark:text-navy-300 hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-3 px-5 py-2.5 text-sm font-medium text-navy-800 dark:text-navy-300 hover:text-primary hover:bg-primary/5 dark:hover:bg-white/5 transition-colors"
                 >
                   <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${link.chip} ${link.color}`}>
                     <link.icon className="w-4 h-4" />

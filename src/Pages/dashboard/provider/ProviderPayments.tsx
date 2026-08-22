@@ -64,7 +64,7 @@ const ProviderPayments: React.FC = () => {
               <Wallet className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <p className="text-2xl font-bold text-navy-900 dark:text-white">{formatPrice(totalEarned)}</p>
-            <p className="text-xs font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-wider mt-1">
+            <p className="text-xs font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-wider mt-1">
               Total earned
             </p>
           </Card>
@@ -79,7 +79,7 @@ const ProviderPayments: React.FC = () => {
               <CreditCard className="w-5 h-5 text-primary" />
             </div>
             <p className="text-2xl font-bold text-navy-900 dark:text-white">{paidBookings.length}</p>
-            <p className="text-xs font-semibold text-navy-500 dark:text-navy-400 uppercase tracking-wider mt-1">
+            <p className="text-xs font-semibold text-navy-800 dark:text-navy-300 uppercase tracking-wider mt-1">
               Paid bookings
             </p>
           </Card>
@@ -121,7 +121,7 @@ const ProviderPayments: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="font-semibold text-navy-800 dark:text-navy-200 capitalize">{b.trade}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500 font-mono">{b.id.slice(0, 8).toUpperCase()}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300 font-mono">{b.id.slice(0, 8).toUpperCase()}</p>
                 </div>
               ),
             },
@@ -131,7 +131,7 @@ const ProviderPayments: React.FC = () => {
               render: (b) => (
                 <div>
                   <p className="text-navy-700 dark:text-navy-200">{b.fullName}</p>
-                  <p className="text-[11px] text-navy-400 dark:text-navy-500">{b.email}</p>
+                  <p className="text-[11px] text-navy-800 dark:text-navy-300">{b.email}</p>
                 </div>
               ),
             },
@@ -150,7 +150,7 @@ const ProviderPayments: React.FC = () => {
               header: 'Paid on',
               hideOn: 'md',
               render: (b) => (
-                <span className="text-navy-500 dark:text-navy-400">
+                <span className="text-navy-800 dark:text-navy-300">
                   {b.payment?.paidAt ? new Date(b.payment.paidAt).toLocaleDateString('en-GB') : '—'}
                 </span>
               ),

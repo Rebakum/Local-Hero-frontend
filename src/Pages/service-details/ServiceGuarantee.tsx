@@ -14,7 +14,7 @@ export const ServiceGuarantee: React.FC = () => {
             <h3 className="font-heading font-extrabold text-navy-950 dark:text-white text-base mb-1">
               LocalHero Guarantee
             </h3>
-            <p className="text-xs text-navy-600 dark:text-navy-300 leading-relaxed">
+            <p className="text-xs text-navy-800 dark:text-navy-300 leading-relaxed">
               Every booking is backed by our £2M public liability insurance and 100% satisfaction promise.
             </p>
           </div>

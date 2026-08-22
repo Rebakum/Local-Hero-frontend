@@ -72,16 +72,16 @@ export const EmergencyModal: React.FC = () => {
             <h4 className="font-heading text-2xl font-extrabold text-navy-950 dark:text-white">
               Emergency broadcast active
             </h4>
-            <p className="text-sm text-navy-600 dark:text-navy-300">
+            <p className="text-sm text-navy-800 dark:text-navy-300">
               Paging <span className="font-bold text-primary">14 verified {trade}s</span> within 3
               miles of <span className="font-mono font-bold text-navy-950 dark:text-white">{postcode}</span>.
             </p>
             <div className="bg-cream-100 dark:bg-navy-800 border border-navy-100 dark:border-white/10 rounded-2xl p-4 text-xs text-left space-y-2">
-              <div className="flex justify-between text-navy-500 dark:text-navy-300">
+              <div className="flex justify-between text-navy-800 dark:text-navy-300">
                 <span>Guaranteed dispatch time</span>
                 <span className="font-bold text-primary">35 – 45 minutes</span>
               </div>
-              <div className="flex justify-between text-navy-500 dark:text-navy-300">
+              <div className="flex justify-between text-navy-800 dark:text-navy-300">
                 <span>Hotline support</span>
                 <span className="font-mono font-bold text-navy-950 dark:text-white">+44 800 917 8020</span>
               </div>
@@ -114,7 +114,7 @@ export const EmergencyModal: React.FC = () => {
                       <Icon className={`w-5 h-5 ${active ? 'text-primary' : 'text-navy-400 dark:text-navy-300'}`} />
                       <span
                         className={`text-xs font-heading font-bold ${
-                          active ? 'text-navy-950 dark:text-white' : 'text-navy-600 dark:text-navy-300'
+                          active ? 'text-navy-950 dark:text-white' : 'text-navy-800 dark:text-navy-300'
                         }`}
                       >
                         {item.label}
