@@ -174,10 +174,10 @@ export const BookingManagement: React.FC = () => {
             render: (b) => (
               <div className="space-y-0.5">
                 <p className="font-semibold text-gray-900 dark:text-white">{b.fullName}</p>
-                <p className="text-xs text-gray-400 flex items-center gap-1">
+                <p className="text-xs text-gray-400 flex items-center gap-1 dark:text-navy-400">
                   <Mail className="w-3 h-3" /> {b.email}
                 </p>
-                <p className="text-xs text-gray-400 flex items-center gap-1">
+                <p className="text-xs text-gray-400 flex items-center gap-1 dark:text-navy-400">
                   <Phone className="w-3 h-3" /> {b.phone}
                 </p>
               </div>
@@ -205,11 +205,11 @@ export const BookingManagement: React.FC = () => {
             render: (b) => (
               <div className="text-xs space-y-1">
                 <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300">
-                  <Calendar className="w-3.5 3 text-gray-400" />
+                  <Calendar className="w-3.5 3 text-gray-400 dark:text-navy-400" />
                   {new Date(b.bookingDate).toLocaleDateString("en-GB")} ({b.timeSlot})
                 </div>
-                <div className="flex items-center gap-1 text-gray-500">
-                  <MapPin className="w-3.5 3 text-gray-400" />
+                <div className="flex items-center gap-1 text-gray-500 dark:text-navy-400">
+                  <MapPin className="w-3.5 3 text-gray-400 dark:text-navy-400" />
                   {b.postcode}, {b.address}
                 </div>
               </div>
@@ -229,13 +229,13 @@ export const BookingManagement: React.FC = () => {
                     <p className="font-medium text-xs text-gray-900 dark:text-white">
                       {b.professional.name}
                     </p>
-                    <p className="text-[10px] text-gray-400">
+                    <p className="text-[10px] text-gray-400 dark:text-navy-400">
                       {b.professional.companyName || "Freelance"}
                     </p>
                   </div>
                 </div>
               ) : (
-                <span className="text-xs text-gray-400 italic">Unassigned</span>
+                <span className="text-xs text-gray-400 italic dark:text-navy-400">Unassigned</span>
               ),
           },
           {
@@ -267,7 +267,7 @@ export const BookingManagement: React.FC = () => {
                 setSelectedProfessionalId(b.professionalId || "");
                 setIsAssignModalOpen(true);
               }}
-              className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
+              className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:text-navy-300 dark:hover:bg-gray-800"
             >
               <UserPlus className="w-4 h-4" />
             </button>
@@ -282,7 +282,7 @@ export const BookingManagement: React.FC = () => {
                 );
                 setIsStatusModalOpen(true);
               }}
-              className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:hover:bg-gray-800"
+              className="p-1.5 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-full dark:text-navy-300 dark:hover:bg-gray-800"
             >
               <Edit3 className="w-4 h-4" />
             </button>
@@ -296,7 +296,7 @@ export const BookingManagement: React.FC = () => {
           <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 relative">
             <button
               onClick={() => setIsAssignModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-navy-400 dark:hover:text-navy-200"
             >
               <X className="w-5 h-5" />
             </button>
@@ -304,7 +304,7 @@ export const BookingManagement: React.FC = () => {
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">
               Assign Professional
             </h3>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-navy-400">
               Assign a provider to booking #{selectedBooking.id.slice(-6)} ({selectedBooking.trade})
             </p>
 
@@ -327,7 +327,7 @@ export const BookingManagement: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsAssignModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200"
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 dark:text-navy-300 dark:bg-navy-800 dark:hover:bg-navy-700"
                 >
                   Cancel
                 </button>
@@ -350,7 +350,7 @@ export const BookingManagement: React.FC = () => {
           <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4 relative">
             <button
               onClick={() => setIsStatusModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-navy-400 dark:hover:text-navy-200"
             >
               <X className="w-5 h-5" />
             </button>
@@ -383,7 +383,7 @@ export const BookingManagement: React.FC = () => {
                   Price Quote (£ GBP)
                 </label>
                 <div className="relative">
-                  <PoundSterling className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <PoundSterling className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-navy-400" />
                   <input
                     type="number"
                     step="0.01"
@@ -393,7 +393,7 @@ export const BookingManagement: React.FC = () => {
                     className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
-                <p className="text-[11px] text-gray-400 mt-1">
+                <p className="text-[11px] text-gray-400 mt-1 dark:text-navy-400">
                   Setting a price allows customer to proceed with Stripe checkout.
                 </p>
               </div>
@@ -402,7 +402,7 @@ export const BookingManagement: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsStatusModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200"
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 dark:text-navy-300 dark:bg-navy-800 dark:hover:bg-navy-700"
                 >
                   Cancel
                 </button>

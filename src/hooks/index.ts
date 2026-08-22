@@ -5,3 +5,5 @@ export { useEscapeKey } from './useEscapeKey';
 export { useMediaQuery } from './useMediaQuery';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { useScrollPosition } from './useScrollPosition';
+export { useTrades } from './useTrades';
+export { useAvailabilityOptions } from './useAvailabilityOptions';

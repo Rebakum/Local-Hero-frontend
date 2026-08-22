@@ -23,6 +23,7 @@ import {
   Command,
   ArrowUpRight,
   Check,
+  RefreshCw,
 } from 'lucide-react';
 import {
   DataTable,
@@ -43,23 +44,7 @@ import {
 } from '../../../../services/content.service';
 import type { Professional } from '../../../../types';
 import { useProfessionals } from '../../../../Context/ProfessionalsContext';
-
-const TRADE_OPTIONS = [
-  { value: 'Plumber', label: 'Plumber' },
-  { value: 'Electrician', label: 'Electrician' },
-  { value: 'Cleaner', label: 'Cleaner' },
-  { value: 'Painter', label: 'Painter' },
-  { value: 'Gardener', label: 'Gardener' },
-  { value: 'Carpenter', label: 'Carpenter' },
-  { value: 'Locksmith', label: 'Locksmith' },
-  { value: 'Roofer', label: 'Roofer' },
-];
-
-const AVAILABILITY_OPTIONS = [
-  { value: 'Available Today', label: 'Available Today' },
-  { value: 'Available Tomorrow', label: 'Available Tomorrow' },
-  { value: 'Booked 2 Days', label: 'Booked 2 Days' },
-];
+import { useTrades, useAvailabilityOptions } from '../../../../hooks';
 
 interface TradeMeta {
   icon: React.FC<{ className?: string }>;
@@ -151,6 +136,8 @@ const toPayload = (values: ProFormValues): ProfessionalInput => ({
 
 const ProfessionalsManagement: React.FC = () => {
   const { professionals, isLoading, refresh } = useProfessionals();
+  const { options: tradeOptions, isLoading: tradesLoading, error: tradesError, refetch: refetchTrades } = useTrades();
+  const { options: availabilityOptions, isLoading: availabilityLoading, error: availabilityError, refetch: refetchAvailability } = useAvailabilityOptions();
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [tradeFilter, setTradeFilter] = useState('');
@@ -311,6 +298,23 @@ const ProfessionalsManagement: React.FC = () => {
         </motion.div>
       )}
 
+      {(tradesError || availabilityError) && (
+        <div className="flex flex-wrap items-center gap-2.5 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 text-amber-700 dark:text-amber-400 text-sm">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{tradesError || availabilityError}</span>
+          <button
+            onClick={() => {
+              refetchTrades();
+              refetchAvailability();
+            }}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-colors shrink-0"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            Retry
+          </button>
+        </div>
+      )}
+
       {/* Filters + Search */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
         <div className="relative w-full lg:w-72">
@@ -341,7 +345,7 @@ const ProfessionalsManagement: React.FC = () => {
               {professionals.length}
             </span>
           </button>
-          {TRADE_OPTIONS.map((opt) => {
+          {tradeOptions.map((opt) => {
             const active = tradeFilter === opt.value;
             const count = professionals.filter((p) => p.trade === opt.value).length;
             if (count === 0) return null;
@@ -517,8 +521,8 @@ const ProfessionalsManagement: React.FC = () => {
               title="Save changes"
               className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> :  <Check className="w-4 h-4" />}
-              save changes
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> :  'Save changes'}
+             
             </button>
           </>
         }
@@ -535,8 +539,9 @@ const ProfessionalsManagement: React.FC = () => {
             <Select
               label="Trade"
               required
-              options={TRADE_OPTIONS}
-              placeholder="Select a trade"
+              options={tradeOptions}
+              placeholder={tradesLoading ? 'Loading trades…' : 'Select a trade'}
+              disabled={tradesLoading}
               error={errors.trade?.message}
               {...register('trade', { required: 'Trade is required' })}
             />
@@ -560,7 +565,13 @@ const ProfessionalsManagement: React.FC = () => {
               placeholder="Boiler Replacements, Power Flushing"
               {...register('specialties')}
             />
-            <Select label="Availability" options={AVAILABILITY_OPTIONS} {...register('availability')} />
+            <Select
+              label="Availability"
+              options={availabilityOptions}
+              placeholder={availabilityLoading ? 'Loading availability…' : 'Select availability'}
+              disabled={availabilityLoading}
+              {...register('availability')}
+            />
           </div>
 
           <div className="mt-6 pt-5 border-t border-navy-100 dark:border-white/10 space-y-5">

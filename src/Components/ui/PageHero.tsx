@@ -56,7 +56,7 @@ export const PageHero: React.FC<PageHeroProps> = ({
 
               {/* Subtitle (যদি প্রয়োজন হয়) */}
               {subtitle && (
-                <p className="text-xs sm:text-sm md:text-base text-gray-200 font-medium max-w-lg md:max-w-xl leading-relaxed drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                <p className="text-xs sm:text-sm md:text-base text-gray-200 dark:text-navy-200 font-medium max-w-lg md:max-w-xl leading-relaxed drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                   {subtitle}
                 </p>
               )}

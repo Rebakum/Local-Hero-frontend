@@ -77,7 +77,7 @@ export const CreateBeforeAfterModal: React.FC<CreateBeforeAfterModalProps> = ({
           </h3>
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full transition"
+            className="p-1 text-slate-400 hover:text-slate-600 dark:text-navy-400 dark:hover:text-slate-200 rounded-full transition"
           >
             <X size={20} />
           </button>
@@ -146,19 +146,19 @@ export const CreateBeforeAfterModal: React.FC<CreateBeforeAfterModalProps> = ({
           {(formData.beforeImage || formData.afterImage) && (
             <div className="grid grid-cols-2 gap-2 p-2 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
               <div className="text-center">
-                <span className="text-[10px] uppercase font-semibold text-slate-500 block mb-1">Before Preview</span>
+                <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-navy-400 block mb-1">Before Preview</span>
                 {formData.beforeImage ? (
                   <img src={formData.beforeImage} alt="Before Preview" className="h-20 w-full object-cover rounded" onError={(e) => (e.currentTarget.style.display = 'none')} />
                 ) : (
-                  <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-400"><ImageIcon size={20} /></div>
+                  <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-400 dark:text-navy-400"><ImageIcon size={20} /></div>
                 )}
               </div>
               <div className="text-center">
-                <span className="text-[10px] uppercase font-semibold text-slate-500 block mb-1">After Preview</span>
+                <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-navy-400 block mb-1">After Preview</span>
                 {formData.afterImage ? (
                   <img src={formData.afterImage} alt="After Preview" className="h-20 w-full object-cover rounded" onError={(e) => (e.currentTarget.style.display = 'none')} />
                 ) : (
-                  <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-400"><ImageIcon size={20} /></div>
+                  <div className="h-20 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-400 dark:text-navy-400"><ImageIcon size={20} /></div>
                 )}
               </div>
             </div>

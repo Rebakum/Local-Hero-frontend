@@ -95,7 +95,7 @@ export const FeaturedProsGrid: React.FC<FeaturedProsGridProps> = ({ limit }) => 
   if (isLoading) {
     return (
       <div className="mt-8 md:mt-12 text-center py-10">
-        <p className="text-sm font-semibold text-slate-500 animate-pulse">
+        <p className="text-sm font-semibold text-slate-500 dark:text-navy-400 animate-pulse">
           Loading professionals...
         </p>
       </div>

@@ -28,7 +28,7 @@ const PAYMENT_TONE: Record<string, string> = {
   PAID: "bg-emerald-100 text-emerald-600",
   PENDING: "bg-amber-100 text-amber-600",
   FAILED: "bg-red-100 text-red-600",
-  REFUNDED: "bg-slate-100 text-slate-600",
+  REFUNDED: "bg-slate-100 text-slate-600 dark:bg-navy-800 dark:text-navy-300",
 };
 
 const BOOKING_TONE: Record<string, string> = {
@@ -173,7 +173,7 @@ export const AdminManagementDashboard: React.FC = () => {
             className={`flex items-center gap-2 font-bold text-sm px-4 py-2 rounded-xl transition-all ${
               activeTab === tab.key
                 ? "bg-primary text-white"
-                : "text-gray-500 hover:bg-gray-100 dark:hover:bg-white/5"
+                : "text-gray-500 hover:bg-gray-100 dark:text-navy-400 dark:hover:bg-white/5"
             }`}
           >
             <tab.icon className="w-4 h-4" /> {tab.label}
@@ -206,7 +206,7 @@ export const AdminManagementDashboard: React.FC = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 uppercase text-xs">
+                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-navy-400 uppercase text-xs">
                   <tr>
                     <th className="p-3">Payment ID</th>
                     <th className="p-3">Customer</th>
@@ -222,11 +222,11 @@ export const AdminManagementDashboard: React.FC = () => {
                       <td className="p-3">{p.booking?.fullName ?? "—"}</td>
                       <td className="p-3 font-bold text-emerald-600">{formatPence(p.amountInPence)}</td>
                       <td className="p-3">
-                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${PAYMENT_TONE[p.status] ?? "bg-gray-100 text-gray-600"}`}>
+                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${PAYMENT_TONE[p.status] ?? "bg-gray-100 text-gray-600 dark:bg-navy-800 dark:text-navy-300"}`}>
                           {p.status}
                         </span>
                       </td>
-                      <td className="p-3 text-gray-400">{formatDate(p.createdAt)}</td>
+                      <td className="p-3 text-gray-400 dark:text-navy-400">{formatDate(p.createdAt)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -249,7 +249,7 @@ export const AdminManagementDashboard: React.FC = () => {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 uppercase text-xs">
+                <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-navy-400 uppercase text-xs">
                   <tr>
                     <th className="p-3">Booking ID</th>
                     <th className="p-3">Customer</th>
@@ -265,11 +265,11 @@ export const AdminManagementDashboard: React.FC = () => {
                       <td className="p-3">{b.fullName}</td>
                       <td className="p-3">{b.professional?.name ?? "Unassigned"}</td>
                       <td className="p-3">
-                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${BOOKING_TONE[b.status] ?? "bg-gray-100 text-gray-600"}`}>
+                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${BOOKING_TONE[b.status] ?? "bg-gray-100 text-gray-600 dark:bg-navy-800 dark:text-navy-300"}`}>
                           {b.status}
                         </span>
                       </td>
-                      <td className="p-3 text-gray-400">{formatDate(b.bookingDate)}</td>
+                      <td className="p-3 text-gray-400 dark:text-navy-400">{formatDate(b.bookingDate)}</td>
                     </tr>
                   ))}
                 </tbody>

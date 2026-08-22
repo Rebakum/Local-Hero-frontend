@@ -142,7 +142,7 @@ export const ServiceDetailsPage: React.FC = () => {
 
         <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
           <span>Services</span>
-          <ChevronRight className="w-3 h-3 text-slate-400" />
+          <ChevronRight className="w-3 h-3 text-slate-400 dark:text-navy-400" />
           <span className="text-red-600 dark:text-red-500">{tradeName}</span>
         </div>
       </div>
@@ -203,7 +203,7 @@ export const ServiceDetailsPage: React.FC = () => {
                   <Clock size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Rate</p>
+                  <p className="text-[10px] font-bold text-slate-400 dark:text-navy-400 uppercase tracking-wider">Rate</p>
                   <p className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
                     {trade.avgHourlyRate || '£40/hr'}/hr
                   </p>
@@ -215,7 +215,7 @@ export const ServiceDetailsPage: React.FC = () => {
                   <Users size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Experts</p>
+                  <p className="text-[10px] font-bold text-slate-400 dark:text-navy-400 uppercase tracking-wider">Experts</p>
                   <p className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
                     {trade.activeProsCount != null ? trade.activeProsCount.toLocaleString() : 0} Pros
                   </p>
@@ -314,7 +314,7 @@ export const ServiceDetailsPage: React.FC = () => {
         {prosLoading ? (
           <div className="mt-20 flex flex-col items-center justify-center py-16">
             <Loader2 className="w-8 h-8 animate-spin text-red-600 dark:text-red-500 mb-3" />
-            <p className="text-xs font-semibold text-slate-500">Loading top professionals...</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-navy-400">Loading top professionals...</p>
           </div>
         ) : professionals.length > 0 ? (
           <section className="mt-24 pt-10 border-t border-slate-200/60 dark:border-white/10">

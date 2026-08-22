@@ -88,7 +88,7 @@ export const AdminPaymentHistory: React.FC = () => {
           </span>
         );
       default:
-        return <span className="text-xs text-gray-400">{status}</span>;
+        return <span className="text-xs text-gray-400 dark:text-navy-400">{status}</span>;
     }
   };
 
@@ -124,7 +124,7 @@ export const AdminPaymentHistory: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase text-gray-500">Total Revenue</p>
+              <p className="text-xs font-semibold uppercase text-gray-500 dark:text-navy-400">Total Revenue</p>
               <h3 className="text-2xl font-bold text-emerald-600 mt-1">
                 {formatGBP(stats.totalRevenueInPence)}
               </h3>
@@ -136,7 +136,7 @@ export const AdminPaymentHistory: React.FC = () => {
 
           <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase text-gray-500">Successful Payments</p>
+              <p className="text-xs font-semibold uppercase text-gray-500 dark:text-navy-400">Successful Payments</p>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
                 {stats.paidCount}
               </h3>
@@ -148,7 +148,7 @@ export const AdminPaymentHistory: React.FC = () => {
 
           <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase text-gray-500">Pending</p>
+              <p className="text-xs font-semibold uppercase text-gray-500 dark:text-navy-400">Pending</p>
               <h3 className="text-2xl font-bold text-amber-600 mt-1">
                 {stats.pendingCount}
               </h3>
@@ -160,7 +160,7 @@ export const AdminPaymentHistory: React.FC = () => {
 
           <div className="p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase text-gray-500">Failed / Expired</p>
+              <p className="text-xs font-semibold uppercase text-gray-500 dark:text-navy-400">Failed / Expired</p>
               <h3 className="text-2xl font-bold text-red-600 mt-1">
                 {stats.failedCount}
               </h3>
@@ -215,7 +215,7 @@ export const AdminPaymentHistory: React.FC = () => {
                   <p className="font-semibold text-gray-900 dark:text-white">
                     {p.booking?.fullName || "Unknown"}
                   </p>
-                  <p className="text-xs text-gray-400">{p.booking?.email || "—"}</p>
+                  <p className="text-xs text-gray-400 dark:text-navy-400">{p.booking?.email || "—"}</p>
                 </div>
               </div>
             ),
@@ -256,11 +256,11 @@ export const AdminPaymentHistory: React.FC = () => {
             sortValue: (p) => p.stripePaymentIntentId ?? '',
             render: (p) =>
               p.stripePaymentIntentId ? (
-                <span className="text-xs font-mono text-gray-500 truncate max-w-[120px] block" title={p.stripePaymentIntentId}>
+                <span className="text-xs font-mono text-gray-500 dark:text-navy-400 truncate max-w-[120px] block" title={p.stripePaymentIntentId}>
                   {p.stripePaymentIntentId}
                 </span>
               ) : (
-                <span className="text-xs text-gray-400">N/A</span>
+                <span className="text-xs text-gray-400 dark:text-navy-400">N/A</span>
               ),
           },
           {
@@ -268,7 +268,7 @@ export const AdminPaymentHistory: React.FC = () => {
             header: 'Date',
             sortValue: (p) => new Date(p.createdAt).getTime(),
             render: (p) => (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 dark:text-navy-400">
                 {p.createdAt
                   ? new Date(p.createdAt).toLocaleDateString("en-GB", {
                       day: "2-digit",
