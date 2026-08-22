@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { MessageSquareText, Send, X, Loader2, Bot, User as UserIcon, Headset } from 'lucide-react';
+import { MessageSquareText, Send, X, Loader2, Bot, User as UserIcon, Headset, RotateCcw } from 'lucide-react';
 import { useAuth } from '../../Context/AuthContext';
 import { useSocket } from '../../Context/SocketContext';
 import {
@@ -7,6 +7,7 @@ import {
   getLiveChatThread,
   sendLiveChatMessage,
   requestHumanHandoff,
+  reactivateLiveChatAi,
   type LiveChatMessage,
   type LiveChatStatus,
 } from '../../services/api';
@@ -42,7 +43,9 @@ export const LiveChatWidget: React.FC = () => {
   const [body, setBody] = useState('');
   const [starting, setStarting] = useState(false);
   const [handingOff, setHandingOff] = useState(false);
+  const [reactivating, setReactivating] = useState(false);
   const [thinking, setThinking] = useState(false);
+  const [chatInstanceKey, setChatInstanceKey] = useState(0);
 
   const applyThread = useCallback((thread: { id: string; status: string; messages: LiveChatMessage[] }) => {
     setThreadId(thread.id);
@@ -91,6 +94,8 @@ export const LiveChatWidget: React.FC = () => {
     const content = (text ?? body).trim();
     if (!content || starting) return;
     setStarting(true);
+    const shouldShowTyping = status === 'AI_ACTIVE';
+    if (shouldShowTyping) setThinking(true);
     try {
       if (!threadId) {
         const thread = await createLiveChatThread({
@@ -98,13 +103,20 @@ export const LiveChatWidget: React.FC = () => {
           body: content,
         });
         applyThread(thread);
+        setThinking(!thread.messages.some((message) => message.senderRole === 'AI'));
       } else {
         const message = await sendLiveChatMessage(threadId, content);
         setMessages((current) => (current.some((m) => m.id === message.id) ? current : [...current, message]));
+        if (shouldShowTyping) {
+          const updatedThread = await getLiveChatThread(threadId);
+          setMessages(updatedThread.messages ?? []);
+          setStatus((updatedThread.status as LiveChatStatus) || status);
+          setThinking(!updatedThread.messages?.some((item) => item.senderRole === 'AI'));
+        } else {
+          setThinking(false);
+        }
       }
       setBody('');
-      // If the thread is still AI-managed, show a subtle "typing" indicator.
-      if (status === 'AI_ACTIVE') setThinking(true);
     } finally {
       setStarting(false);
     }
@@ -119,6 +131,27 @@ export const LiveChatWidget: React.FC = () => {
     } finally {
       setHandingOff(false);
     }
+  };
+
+  const reactivateAi = async () => {
+    if (!threadId || reactivating) return;
+    setReactivating(true);
+    try {
+      const thread = await reactivateLiveChatAi(threadId);
+      setStatus((thread.status as LiveChatStatus) || 'AI_ACTIVE');
+    } finally {
+      setReactivating(false);
+    }
+  };
+
+  const resetChat = () => {
+    localStorage.removeItem(THREAD_KEY);
+    setThreadId(null);
+    setMessages([]);
+    setStatus('AI_ACTIVE');
+    setBody('');
+    setThinking(false);
+    setChatInstanceKey((current) => current + 1);
   };
 
   const isAiMessage = (m: LiveChatMessage) => m.senderRole === 'AI';
@@ -136,7 +169,7 @@ export const LiveChatWidget: React.FC = () => {
 
       {open && (
         <div className="fixed inset-0 z-50 sm:inset-auto sm:bottom-5 sm:right-5 sm:w-95">
-          <section className="flex h-full min-h-screen flex-col bg-white shadow-2xl dark:bg-navy-900 sm:min-h-0 sm:h-140 sm:rounded-3xl sm:border sm:border-neutral-200 dark:sm:border-white/10">
+          <section key={chatInstanceKey} className="flex h-full min-h-screen flex-col bg-white shadow-2xl dark:bg-navy-900 sm:min-h-0 sm:h-140 sm:rounded-3xl sm:border sm:border-neutral-200 dark:sm:border-white/10">
             <header className="flex items-center justify-between bg-navy-950 px-5 py-4 text-white sm:rounded-t-3xl">
               <div className="flex items-center gap-2">
                 {status === 'PENDING_HUMAN' ? <Headset className="h-5 w-5 text-amber-400" /> : <Bot className="h-5 w-5 text-primary" />}
@@ -149,9 +182,14 @@ export const LiveChatWidget: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close live chat">
-                <X className="h-5 w-5" />
-              </button>
+              <div className="flex items-center gap-3">
+                <button type="button" onClick={resetChat} aria-label="Reset chat" title="Reset chat">
+                  <RotateCcw className="h-4 w-4" />
+                </button>
+                <button type="button" onClick={() => setOpen(false)} aria-label="Close live chat">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
             </header>
 
             <div className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -226,6 +264,29 @@ export const LiveChatWidget: React.FC = () => {
               {status === 'PENDING_HUMAN' && (
                 <div className="rounded-2xl border border-amber-300/40 bg-amber-50 p-3 text-center text-xs font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
                   You&apos;re now connected to our support team — they&apos;ll reply here shortly.
+                  <button
+                    type="button"
+                    onClick={() => void reactivateAi()}
+                    disabled={reactivating}
+                    className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full border border-amber-400/60 bg-white px-3 py-1.5 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100 disabled:opacity-50 dark:bg-white/5 dark:text-amber-300"
+                  >
+                    {reactivating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Bot className="h-3.5 w-3.5" />}
+                    Cancel &amp; talk to AI again
+                  </button>
+                </div>
+              )}
+
+              {status === 'RESOLVED' && (
+                <div className="rounded-2xl border border-neutral-300/60 bg-neutral-100 p-3 text-center text-xs font-semibold text-navy-700 dark:border-white/10 dark:bg-white/5 dark:text-navy-200">
+                  <p>This conversation has been closed.</p>
+                  <button
+                    type="button"
+                    onClick={resetChat}
+                    className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-red-700"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    Start New Chat
+                  </button>
                 </div>
               )}
             </div>
@@ -254,10 +315,10 @@ export const LiveChatWidget: React.FC = () => {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') void send();
                 }}
-                disabled={status === 'PENDING_HUMAN' || status === 'RESOLVED'}
+                disabled={starting || status === 'RESOLVED'}
                 placeholder={
                   status === 'PENDING_HUMAN'
-                    ? 'Waiting for our support team…'
+                    ? 'Type a message…'
                     : status === 'RESOLVED'
                       ? 'This chat has been closed'
                       : 'Ask me anything…'
@@ -267,7 +328,7 @@ export const LiveChatWidget: React.FC = () => {
               <button
                 type="button"
                 onClick={() => void send()}
-                disabled={starting || status === 'PENDING_HUMAN' || status === 'RESOLVED'}
+                disabled={starting || status === 'RESOLVED'}
                 aria-label="Send message"
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-600 text-white disabled:opacity-50"
               >
